@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WarehouseControlSystem.View.Pages.ZonesScheme.ZonesFieldParamsPage"
+             xmlns:sc="clr-namespace:WarehouseControlSystem.Helpers.Containers.StateContainer"
+             xmlns:vc="clr-namespace:WarehouseControlSystem.View.Content"
+             xmlns:i18n="clr-namespace:WarehouseControlSystem;assembly=WarehouseControlSystem">
+
+    <ContentPage.Content>
+        <sc:StateContainer State="{Binding State}">
+            <sc:StateCondition State="Loading">
+                <ActivityIndicator IsRunning="{Binding LoadAnimation}" HeightRequest="50" WidthRequest="50" VerticalOptions="Center" HorizontalOptions="Center"/>
+            </sc:StateCondition>
+            <sc:StateCondition State="Normal">
+                <Grid Padding="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackLayout Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" 
+                                 HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" 
+                                 Orientation="Vertical">
+                        <Label Text="Height" HorizontalOptions="Center"></Label>
+                        <Slider HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
+                                Maximum="80" Minimum="{Binding MinHeight}" 
+                                Value="{Binding PlanHeight, Mode=TwoWay}"
+                                ValueChanged="Slider_ValueChangedHeight" 
+                                x:Name="heightslider"></Slider>
+                        <Label Text="{Binding PlanHeight}" HorizontalOptions="Center"></Label>
+                    </StackLayout>
+                    <StackLayout Grid.Row="0" Grid.Column="5" Grid.ColumnSpan="3" 
+                                 HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" Orientation="Vertical">
+                        <Label Text="Width" HorizontalOptions="Center"></Label>
+                        <Slider HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
+                               Maximum="80" Minimum="{Binding MinWidth}"
+                               Value="{Binding PlanWidth, Mode=TwoWay}"
+                               ValueChanged="Slider_ValueChangedWidth" 
+                               x:Name="widthslider"></Slider>
+                        <Label Text="{Binding PlanWidth}" HorizontalOptions="Center"></Label>
+                    </StackLayout>
+
+                    <vc:SchemeView x:Name="scheme"
+                        Grid.Row="1" Grid.Column="1" 
+                        Grid.ColumnSpan="7" Grid.RowSpan="6"  
+                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
+                        PlanWidth="{Binding PlanWidth}"
+                        PlanHeight="{Binding PlahHeight}"
+                        Zones="{Binding ZoneViewModels}">
+                    </vc:SchemeView>
+                </Grid>
+            </sc:StateCondition>
+
+            <sc:StateCondition State="Error">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="4*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" Text="{i18n:Translate StateContainer_Error}" FontSize="Large" HorizontalOptions="Center" VerticalOptions="Center"/>
+                    <ScrollView Orientation="Vertical" Grid.Row="1" >
+                        <StackLayout>
+                            <Label Text="{Binding ErrorText}" FontSize="Large" 
+                                   HorizontalOptions="FillAndExpand" 
+                                   VerticalOptions="FillAndExpand" 
+                                   HorizontalTextAlignment="Center"
+                                   VerticalTextAlignment="Center"/>
+                        </StackLayout>
+                    </ScrollView>
+                    <Button Grid.Row="2" Text="OK" FontSize="Large" Command="{Binding ErrorOKCommand}" BackgroundColor="White"/>
+                </Grid>
+            </sc:StateCondition>
+
+            <sc:StateCondition State="Warning">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="4*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" Text="{i18n:Translate StateContainer_Warning}" FontSize="Large" HorizontalOptions="Center" VerticalOptions="Center"/>
+                    <ScrollView Orientation="Vertical" Grid.Row="1" >
+                        <StackLayout>
+                            <Label Text="{Binding ErrorText}" FontSize="Large" 
+                                   HorizontalOptions="FillAndExpand" 
+                                   VerticalOptions="FillAndExpand" 
+                                   HorizontalTextAlignment="Center"
+                                   VerticalTextAlignment="Center"/>
+                        </StackLayout>
+                    </ScrollView>
+                    <Button Grid.Row="2" Text="OK" FontSize="Large" Command="{Binding ErrorOKCommand}" BackgroundColor="White"/>
+                </Grid>
+            </sc:StateCondition>
+
+            <sc:StateCondition State="NoInternet">
+                <StackLayout>
+                    <Label Text="{i18n:Translate StateContainer_StateNoInternet_Error}" HorizontalOptions="Center" VerticalOptions="Center"/>
+                </StackLayout>
+            </sc:StateCondition>
+
+            <sc:StateCondition State="NoData">
+                <Label Text="" FontSize="Large" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+            </sc:StateCondition>
+
+            <sc:StateCondition State="Request">
+                <Label Text="" FontSize="Large" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+            </sc:StateCondition>
+        </sc:StateContainer>
+    </ContentPage.Content>
+</ContentPage>

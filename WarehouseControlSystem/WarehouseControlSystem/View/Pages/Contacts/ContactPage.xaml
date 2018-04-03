@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:sc="clr-namespace:WarehouseControlSystem.Helpers.Containers.StateContainer"
+             xmlns:pv="clr-namespace:WarehouseControlSystem.Helpers.Containers.ParallaxContainer"
+             xmlns:i18n="clr-namespace:WarehouseControlSystem;assembly=WarehouseControlSystem"
+             x:Class="WarehouseControlSystem.View.Pages.Contacts.ContactPage">
+    <ContentPage.Content>
+        <sc:StateContainer State="{Binding State}">
+            <sc:StateCondition State="Loading">
+                <ActivityIndicator IsRunning="{Binding LoadAnimation}" HeightRequest="50" WidthRequest="50" VerticalOptions="Center" HorizontalOptions="Center"/>
+            </sc:StateCondition>
+            <sc:StateCondition State="Normal">
+                <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="50"/>
+                    </Grid.RowDefinitions>
+                    <pv:ParallaxView Grid.Row="0" x:Name="MainParallax" BodyMargin="0,300,0,0" HeaderScrollSpeed="4">
+                        <pv:ParallaxView.HeaderContent>
+                            <ContentView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="White">
+                                <Image Aspect="AspectFill" VerticalOptions="Start">
+                                    <Image.Source>
+                                        <OnPlatform x:TypeArguments="FileImageSource">
+                                            <On Platform="UWP,WinPhone">
+                                                <FileImageSource File="Assets/Images/ParallaxBackground.jpg"/>
+                                            </On>
+                                            <On Platform="iOS,Android">
+                                                <FileImageSource File="ParallaxBackground.jpg"/>
+                                            </On>
+                                        </OnPlatform>
+                                    </Image.Source>
+                                </Image>
+                            </ContentView>
+                        </pv:ParallaxView.HeaderContent>
+                        <pv:ParallaxView.BodyContent>
+                            <ContentView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="White" HeightRequest="500">
+                                <ContentView.Margin>
+                                    <OnPlatform x:TypeArguments="Thickness" WinPhone="200,300,200,200" Android="200,300,200,200"/>
+                                </ContentView.Margin> 
+                                <Grid Padding="5,15,5,5" x:Name="fieldsgrid">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="50" />
+                                        <RowDefinition Height="50" />
+                                        <RowDefinition Height="50" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="50" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="300" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label Text="{i18n:Translate ContactPage_Name}" Grid.Row="0" Grid.Column="0" HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
+                                    <Entry Text="{Binding Name, Mode=TwoWay}" 
+                                           Grid.Row="0" Grid.Column="1"
+                                           Keyboard="Text" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"  />
+
+                                    <Label Text="{i18n:Translate ContactPage_Email}" Grid.Row="1" Grid.Column="0" HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
+                                    <Entry Text="{Binding Email, Mode=TwoWay}" 
+                                           Grid.Row="1" Grid.Column="1"
+                                           Keyboard="Url" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
+
+                                    <Label Text="{i18n:Translate ContactPage_Type}" Grid.Row="2" Grid.Column="0" HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
+                                    <Picker x:Name="messagetypepicker" 
+                                           Grid.Row="2" Grid.Column="1" 
+                                           SelectedIndexChanged="Picker_SelectedIndexChanged" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="Snow"/>
+
+                                    <Label Text="{i18n:Translate ContactPage_Message}" Grid.Row="3" Grid.Column="0" HorizontalOptions="Start" VerticalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
+                                    <Editor Text="{Binding Message, Mode=TwoWay}" 
+                                            Grid.Row="3" Grid.Column="1" 
+                                            Keyboard="Text"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
+                                </Grid>
+                            </ContentView>
+                        </pv:ParallaxView.BodyContent>
+                    </pv:ParallaxView>
+                    <Grid Grid.Row="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" Text="{i18n:Translate ContactPage_SendTest}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Clicked="ButtonSendClicked" BorderRadius="0" BackgroundColor="{StaticResource PageHeaderBarBackgoundColor}" TextColor="White"/>
+                        <Button Grid.Column="1" Text="{i18n:Translate ContactPage_CancelButton}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Clicked="ButtonCancelClicked" BorderRadius="0" BackgroundColor="{StaticResource PageHeaderBarBackgoundColor}" TextColor="White"/>
+                    </Grid>
+                </Grid>
+            </sc:StateCondition>
+            <sc:StateCondition State="Error">
+                <StackLayout Orientation="Vertical" HorizontalOptions="Center" VerticalOptions="Center">
+                    <Label Text="{i18n:Translate StateContainer_StateError_Header}" FontSize="Large"/>
+                    <Label Text="" x:Name="errortextlabel"/>
+                    <Button Text="{i18n:Translate GlobalButtonOK}" Command="{Binding ErrorCommand}"/>
+                </StackLayout>
+            </sc:StateCondition>
+        </sc:StateContainer>
+    </ContentPage.Content>
+</ContentPage>

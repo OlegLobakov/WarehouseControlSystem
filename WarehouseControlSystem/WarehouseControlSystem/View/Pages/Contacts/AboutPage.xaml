@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WarehouseControlSystem.View.Pages.Contacts.AboutPage"
+             xmlns:parallax="clr-namespace:WarehouseControlSystem.Helpers.Containers.ParallaxContainer"
+             xmlns:i18n="clr-namespace:WarehouseControlSystem;assembly=WarehouseControlSystem">
+    <ContentPage.Content>
+        <parallax:ParallaxView x:Name="MainParallax" BodyMargin="0,400,0,0" HeaderScrollSpeed="4">
+            <parallax:ParallaxView.HeaderContent>
+                <ContentView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                    <Image Aspect="AspectFill" VerticalOptions="Start">
+                        <Image.Source>
+                            <OnPlatform x:TypeArguments="FileImageSource">
+                                <On Platform="UWP,WinPhone">
+                                    <FileImageSource File="Assets/Images/ParallaxBackground.jpg"/>
+                                </On>
+                                <On Platform="iOS,Android">
+                                    <FileImageSource File="ParallaxBackground.jpg"/>
+                                </On>
+                            </OnPlatform>
+                        </Image.Source>
+                    </Image>
+                </ContentView>
+            </parallax:ParallaxView.HeaderContent>
+            <parallax:ParallaxView.BodyContent>
+                <ContentView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="White" HeightRequest="1200">
+                    <ContentView.Margin>
+                        <OnPlatform x:TypeArguments="Thickness" WinPhone="0,400,0,0"/>
+                    </ContentView.Margin>
+                    <Grid Padding="5,5,5,5" x:Name="fieldsgrid" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="15">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        
+                        <StackLayout  Grid.Row="0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Image Grid.Column="0"  Aspect="AspectFit" VerticalOptions="CenterAndExpand" Margin="20,20,20,70">
+                                    <Image.Source>
+                                        <OnPlatform x:TypeArguments="FileImageSource">
+                                            <On Platform="UWP,WinPhone">
+                                                <FileImageSource File="Assets/Images/icon.png"/>
+                                            </On>
+                                            <On Platform="iOS,Android">
+                                                <FileImageSource File="icon.png"/>
+                                            </On>
+                                        </OnPlatform>
+                                    </Image.Source>
+                                </Image>
+                                <Grid Grid.Column="1">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <Label Text="{i18n:Translate AboutPage_Name}" 
+                                       Grid.Row="0"
+                                       FontSize="40" TextColor="Black" HorizontalOptions="Start" 
+                                       HorizontalTextAlignment="Start" VerticalTextAlignment="Center" ></Label>
+                                    <Label Text="{i18n:Translate AboutPage_Name2}"
+                                       Grid.Row="1" 
+                                       FontSize="Medium"  TextColor="Black" HorizontalOptions="Start" 
+                                       HorizontalTextAlignment="Start" VerticalTextAlignment="Center" ></Label>
+                                    <Label Text="{Binding Version}"
+                                       Grid.Row="2"
+                                       FontSize="Medium"  TextColor="Black" HorizontalOptions="Start" 
+                                       HorizontalTextAlignment="Start" VerticalTextAlignment="Center" ></Label>
+                                </Grid>
+                            </Grid>
+                        </StackLayout>
+
+                        <StackLayout  Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
+                            <Label Text="{i18n:Translate AboutPage_Copyright}"></Label>
+                        </StackLayout>
+                        
+                        <StackLayout  Grid.Row="2" Grid.Column="0" Orientation="Horizontal">
+                            <Label Text="{i18n:Translate AboutPage_ProjectSite}" VerticalOptions="Center"></Label>
+                            <Button Text="{i18n:Translate AboutPage_ProjectSiteButton}" 
+                                    Clicked="Button_ProjectSiteClicked" 
+                                    FontAttributes="Bold" TextColor="Black" BackgroundColor="White"/>
+                        </StackLayout>
+
+                        <StackLayout  Grid.Row="3" Grid.Column="0" Orientation="Horizontal">
+                            <Label  Text="{i18n:Translate AboutPage_Contact}" VerticalOptions="Center"/>
+                            <Button Text="{i18n:Translate AboutPage_SendMessage}" 
+                                    Clicked="Button_Clicked" 
+                                    FontAttributes="Bold" TextColor="Black" BackgroundColor="White"/>
+                        </StackLayout>
+
+                    </Grid>
+                </ContentView>
+            </parallax:ParallaxView.BodyContent>
+        </parallax:ParallaxView>
+    </ContentPage.Content>
+</ContentPage>

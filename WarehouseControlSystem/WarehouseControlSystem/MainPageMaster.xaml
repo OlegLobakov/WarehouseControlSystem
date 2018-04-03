@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WarehouseControlSystem.MainPageMaster"
+             Title="Master">
+    <StackLayout>
+        <ListView x:Name="MenuItemsListView"
+              SeparatorVisibility="None"
+              HasUnevenRows="true"
+              ItemsSource="{Binding MenuItems}">
+            <ListView.Header>
+                <Grid BackgroundColor="{StaticResource PageHeaderBarBackgoundColor}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="10"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="80"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="10"/>
+                    </Grid.RowDefinitions>
+                    <Image Grid.Column="2" Grid.Row="1" Aspect="AspectFit">
+                        <Image.Source>
+                            <OnPlatform x:TypeArguments="FileImageSource">
+                                <On Platform="UWP,WinPhone">
+                                    <FileImageSource File="Assets/Images/LogoWhite.png"/>
+                                </On>
+                                <On Platform="iOS,Android">
+                                    <FileImageSource File="LogoWhite.png"/>
+                                </On>
+                            </OnPlatform>
+                        </Image.Source>
+                    </Image>
+                    <Label Grid.Column="2" Grid.Row="2" Text="Warehouse Control System" TextColor="White" 
+                           HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" VerticalTextAlignment="End" 
+                           Style="{DynamicResource SubtitleStyle}" FontSize="Medium" />
+                    <Label Grid.Column="2" Grid.Row="3" Text="for Microsoft Dynamics NAV" TextColor="White" 
+                           HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" VerticalTextAlignment="Start" FontSize="Small" 
+                           Style="{DynamicResource SubtitleStyle}"/>
+                </Grid>
+            </ListView.Header>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <StackLayout Padding="15,10" HorizontalOptions="FillAndExpand">
+                            <Label VerticalOptions="FillAndExpand" VerticalTextAlignment="Center"  Text="{Binding Title}" FontSize="24"/>
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </StackLayout>
+</ContentPage>

@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:sc="clr-namespace:WarehouseControlSystem.Helpers.Containers.StateContainer"
+             xmlns:vc="clr-namespace:WarehouseControlSystem.View.Content"
+             xmlns:hs="clr-namespace:WarehouseControlSystem.Helpers.Containers.HorizontalListView"
+             xmlns:components="clr-namespace:WarehouseControlSystem.View.Content"
+             x:Class="WarehouseControlSystem.View.Pages.RackScheme.RacksSchemePage"
+             xmlns:i18n="clr-namespace:WarehouseControlSystem;assembly=WarehouseControlSystem">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem  Order="Primary" Priority="10" Text="{i18n:Translate LocationsSchemePage_Toolbar_List}" Command="{Binding RackListCommand}" >
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="UWP,WinPhone">
+                        <FileImageSource File="Assets/Images/ic_action_dehaze.png"/>
+                    </On>
+                    <On Platform="iOS,Android">
+                        <FileImageSource File="ic_action_dehaze.png"/>
+                    </On>
+                </OnPlatform>
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+        <ToolbarItem  Order="Primary"  Priority="20" Text="{i18n:Translate LocationsSchemePage_Toolbar_New}" Command="{Binding NewRackCommand}" >
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="UWP,WinPhone">
+                        <FileImageSource File="Assets/Images/ic_action_add_circle.png"/>
+                    </On>
+                    <On Platform="iOS,Android">
+                        <FileImageSource File="ic_action_add_circle.png"/>
+                    </On>
+                </OnPlatform>
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+        <ToolbarItem  Order="Primary"  Priority="40" Text="{i18n:Translate LocationsSchemePage_Toolbar_Scheme}" Command="{Binding ParamsCommand}" >
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="UWP,WinPhone">
+                        <FileImageSource File="Assets/Images/ic_action_aspect_ratio.png"/>
+                    </On>
+                    <On Platform="iOS,Android">
+                        <FileImageSource File="ic_action_aspect_ratio.png"/>
+                    </On>
+                </OnPlatform>
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+        <ToolbarItem  Order="Primary" Priority="1000" Text="{i18n:Translate LocationsSchemePage_Toolbar_Mode}"  Clicked="ToolbarItem_Clicked">
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="UWP,WinPhone">
+                        <FileImageSource File="Assets/Images/ic_action_dashboard.png"/>
+                    </On>
+                    <On Platform="iOS,Android">
+                        <FileImageSource File="ic_action_dashboard.png"/>
+                    </On>
+                </OnPlatform>
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+        <ToolbarItem  Order="Primary" Priority="2000" Text="{i18n:Translate LocationsSchemePage_Toolbar_Search}" Clicked="ToolbarItem_Search">
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="UWP,WinPhone">
+                        <FileImageSource File="Assets/Images/ic_action_search.png"/>
+                    </On>
+                    <On Platform="iOS,Android">
+                        <FileImageSource File="ic_action_search.png"/>
+                    </On>
+                </OnPlatform>
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+        <ToolbarItem  Order="Primary" Priority="3000" Text="{i18n:Translate LocationsSchemePage_Toolbar_UDSF}" Clicked="ToolbarItem_UDS">
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="UWP,WinPhone">
+                        <FileImageSource File="Assets/Images/ic_action_widgets.png"/>
+                    </On>
+                    <On Platform="iOS,Android">
+                        <FileImageSource File="ic_action_widgets.png"/>
+                    </On>
+                </OnPlatform>
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <sc:StateContainer State="{Binding State}" Padding="5">
+            <sc:StateCondition State="Loading">
+                <ActivityIndicator IsRunning="{Binding LoadAnimation}" HeightRequest="50" WidthRequest="50" VerticalOptions="Center" HorizontalOptions="Center"/>
+            </sc:StateCondition>
+            <sc:StateCondition State="Normal">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <AbsoluteLayout Grid.Row="0" Grid.RowSpan="2" x:Name="abslayout">
+                        <vc:SchemeView x:Name="schemegrid" 
+                                   AbsoluteLayout.LayoutBounds="0,0, 1, 1" 
+                                   AbsoluteLayout.LayoutFlags="All" 
+                                   PlanWidth="{Binding PlanWidth}"
+                                   PlanHeight="{Binding PlanHeight}"
+                                   IsVisible="False">
+                        </vc:SchemeView>
+                    </AbsoluteLayout>
+                    <ScrollView Grid.Row="1" HeightRequest="{Binding UDSPanelHeight}" IsVisible="{Binding IsVisibleUDS}" Orientation="Horizontal">
+                        <hs:HorizontalListView  x:Name="hlv">
+                            <hs:HorizontalListView.ItemTemplate>
+                                <DataTemplate>
+                                    <components:UserDefinedSelectionView/>
+                                </DataTemplate>
+                            </hs:HorizontalListView.ItemTemplate>
+                        </hs:HorizontalListView>
+                    </ScrollView>
+                </Grid>
+            </sc:StateCondition>
+            <sc:StateCondition State="Error">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="4*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" Text="{i18n:Translate StateContainer_StateError_Header}" FontSize="Large" HorizontalOptions="Center" VerticalOptions="Center"/>
+                    <ScrollView Orientation="Vertical" Grid.Row="1" >
+                        <StackLayout>
+                            <Label Text="{Binding ErrorText}" FontSize="Large" 
+                                   HorizontalOptions="FillAndExpand" 
+                                   VerticalOptions="FillAndExpand" 
+                                   HorizontalTextAlignment="Center"
+                                   VerticalTextAlignment="Center"/>
+                        </StackLayout>
+                    </ScrollView>
+                    <Button Grid.Row="2" Text="OK" FontSize="Large" Command="{Binding ErrorOKCommand}" BackgroundColor="White"/>
+                </Grid>
+            </sc:StateCondition>
+            <sc:StateCondition State="Warning">
+                <StackLayout HorizontalOptions="Center" VerticalOptions="Center" Orientation="Vertical">
+                    <Label x:Name="warninglabel" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Black" FontSize="Large"></Label>
+                    <Button Text="{i18n:Translate GlobalButtonOK}" />
+                </StackLayout>
+            </sc:StateCondition>
+            <sc:StateCondition State="NoInternet">
+                <StackLayout>
+                    <Label Text="{i18n:Translate StateContainer_StateNoInternet_Error}" HorizontalOptions="Center" VerticalOptions="Center"/>
+                </StackLayout>
+            </sc:StateCondition>
+            <sc:StateCondition State="NoData">
+                <Label Text="{i18n:Translate RackSchemePage_StateMessageNoData}" FontSize="Large" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+            </sc:StateCondition>
+            <sc:StateCondition State="Request">
+                <StackLayout Orientation="Vertical" HorizontalOptions="Center" VerticalOptions="Center">
+                    <Label x:Name="requestnamelabel" FontSize="Large"/>
+                    <Label x:Name="requestmessagelabel"/>
+                    <Label Text=""/>
+                    <StackLayout Orientation="Horizontal">
+                        <!--<Button Text="{i18n:Translate GlobalButtonOK}" Clicked="Button_Clicked_OkMessage" WidthRequest="150"/>
+                        <Button Text="{i18n:Translate GlobalButtonCancel}" Clicked="Button_Clicked_CancelMessage" WidthRequest="150"/>-->
+                    </StackLayout>
+                </StackLayout>
+            </sc:StateCondition>
+        </sc:StateContainer>
+    </ContentPage.Content>
+</ContentPage>

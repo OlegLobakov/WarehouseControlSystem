@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+    
+    
+    
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WarehouseControlSystem.View.Content.BinViewInRack">
+  <ContentView.Content>
+        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <StackLayout.Triggers>
+                <DataTrigger Binding="{Binding Selected}" TargetType="StackLayout" Value="true">
+                    <Setter Property="Padding" Value="3"  />
+                    <Setter Property="BackgroundColor" Value="Red"  />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Selected}" TargetType="StackLayout" Value="false">
+                    <Setter Property="Padding" Value="0"  />
+                    <Setter Property="BackgroundColor" Value="Transparent"  />
+                </DataTrigger>
+            </StackLayout.Triggers>
+
+            <Grid x:Name="grid" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="#e2dacf">
+                <Grid.Triggers>
+                    <DataTrigger Binding="{Binding Blocked}" TargetType="Grid" Value="true">
+                        <Setter Property="BackgroundColor" Value="#ff9a99"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding ExcludeFromSearch}" TargetType="Grid" Value="true">
+                        <Setter Property="Opacity" Value="0.3"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding ExcludeFromSearch}" TargetType="Grid" Value="false">
+                        <Setter Property="Opacity" Value="1"/>
+                    </DataTrigger>
+                </Grid.Triggers>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0" x:Name="codelabel" Text="{Binding Code}" 
+                       FontSize="Small" 
+                       HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
+                       HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="7,2,0,0"/>
+
+                <ActivityIndicator Grid.Row="2" IsVisible="{Binding LoadAnimation}" IsRunning="{Binding LoadAnimation}" HeightRequest="30" WidthRequest="30" HorizontalOptions="Center" VerticalOptions="Center"/>
+
+                <Image Grid.Row="2" x:Name="iconelement" HorizontalOptions="CenterAndExpand" 
+                       VerticalOptions="CenterAndExpand" Aspect="AspectFit"
+                       IsVisible="{Binding IsContent}">
+                    <Image.Source>
+                        <OnPlatform x:TypeArguments="FileImageSource">
+                            <On Platform="UWP,WinPhone">
+                                <FileImageSource File="Assets/Images/ic_action_view_module_light.png"/>
+                            </On>
+                            <On Platform="iOS,Android">
+                                <FileImageSource File="ic_action_view_module_light.png"/>
+                            </On>
+                        </OnPlatform>
+                    </Image.Source>
+                </Image>
+            </Grid>
+        </StackLayout>
+  </ContentView.Content>
+</ContentView>

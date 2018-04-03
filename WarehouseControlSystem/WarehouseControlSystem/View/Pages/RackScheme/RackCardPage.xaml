@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:sc="clr-namespace:WarehouseControlSystem.Helpers.Containers.StateContainer"
+             xmlns:rv="clr-namespace:WarehouseControlSystem.View.Pages.RackScheme"
+             xmlns:vc="clr-namespace:WarehouseControlSystem.View.Content"
+             xmlns:convertors="clr-namespace:WarehouseControlSystem.Helpers.Converters"
+             x:Class="WarehouseControlSystem.View.Pages.RackScheme.RackCardPage"
+             xmlns:i18n="clr-namespace:WarehouseControlSystem;assembly=WarehouseControlSystem">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem  Order="Primary" Priority="2000" Text="{i18n:Translate RackCardPage_Toolbar_Search}" Clicked="ToolbarItem_Search">
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="UWP,WinPhone">
+                        <FileImageSource File="Assets/Images/ic_action_search.png"/>
+                    </On>
+                    <On Platform="iOS,Android">
+                        <FileImageSource File="ic_action_search.png"/>
+                    </On>
+                </OnPlatform>
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <sc:StateContainer State="{Binding State}" OnAfterStateSet="AfterStateSet">
+            <sc:StateCondition State="Loading">
+                <StackLayout VerticalOptions="Center" HorizontalOptions="Center" Orientation="Vertical">
+                    <ActivityIndicator IsRunning="{Binding LoadAnimation}" HeightRequest="50" WidthRequest="50"/>
+                    <Label Text="{Binding LoadingText}" FontSize="Small"/>
+                </StackLayout>
+            </sc:StateCondition>
+            <sc:StateCondition State="Normal">
+                <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" x:Name="maingrid">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0" BackgroundColor="{StaticResource PageHeaderBarBackgoundColor}" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <!--<Entry Grid.Column="4" x:Name="searchentry" HorizontalOptions="FillAndExpand" Text="{Binding SearchRequest}" Margin="5"></Entry>-->
+                        <Label Grid.Column="4" Text="{Binding SearchResult}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                               HorizontalTextAlignment="End" VerticalTextAlignment="Center" Margin="10" TextColor="White"/>
+                    </Grid>
+
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <ScrollView Grid.Row="0" Margin="5" 
+                                Orientation="Horizontal" BackgroundColor="White"
+                                x:Name="rackviewpanel">
+                                <rv:RackView x:Name="rackview"/>
+                            </ScrollView>
+                        </Grid>
+                        <vc:BinInfoPanelRackCard Grid.Column="1" x:Name="infopanel" 
+                               IsVisible="{Binding IsSelectedBins}"
+                               BinContentTap="BinInfopanelItemTap"
+                               UserDefinedFunctionTap="UserDefinedFunctionTap"/>
+                    </Grid>
+
+                </Grid>
+            </sc:StateCondition>
+            <sc:StateCondition State="Error">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="4*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" Text="{i18n:Translate StateContainer_StateError_Header}" FontSize="Large" HorizontalOptions="Center" VerticalOptions="Center"/>
+                    <ScrollView Orientation="Vertical" Grid.Row="1" >
+                        <StackLayout>
+                            <Label Text="{Binding ErrorText}" 
+                                   FontSize="Large" 
+                                   HorizontalOptions="FillAndExpand" 
+                                   VerticalOptions="FillAndExpand" 
+                                   HorizontalTextAlignment="Center"
+                                   VerticalTextAlignment="Center"/>
+                        </StackLayout>
+                    </ScrollView>
+                    <Button Grid.Row="2" Text="OK" FontSize="Large" Command="{Binding ErrorOKCommand}" BackgroundColor="White"/>
+                </Grid>
+            </sc:StateCondition>
+            <sc:StateCondition State="Warning">
+                <StackLayout HorizontalOptions="Center" VerticalOptions="Center" Orientation="Vertical">
+                    <Label Text="{Binding InfoText}" 
+                           HorizontalOptions="Center" VerticalOptions="Center" 
+                           TextColor="Black" FontSize="Large"></Label>
+                    <Label Text=" "/>
+                    <Label Text=" "/>
+                    <Button Text="{i18n:Translate GlobalButtonOK}" Command="{Binding WarningOKCommand}"/>
+                </StackLayout>
+            </sc:StateCondition>
+            <sc:StateCondition State="Request">
+                <StackLayout Orientation="Vertical" HorizontalOptions="Center" VerticalOptions="Center">
+
+                    <Label Text="{Binding RequestMessageText}" FontSize="Large" HorizontalOptions="CenterAndExpand"/>
+                    <Label Text=" "/>
+                    <Label Text=" "/>
+                    <StackLayout Orientation="Horizontal">
+                        <Button Text="{i18n:Translate RackNewPage_ButtonsOK}" Clicked="Button_Clicked_OkMessage" WidthRequest="150" Margin="20"/>
+                        <Button Text="{i18n:Translate RackNewPage_ButtonsCancel}" Clicked="Button_Clicked_CancelMessage" WidthRequest="150" Margin="20"/>
+                    </StackLayout>
+                </StackLayout>
+            </sc:StateCondition>
+        </sc:StateContainer>
+    </ContentPage.Content>
+</ContentPage>

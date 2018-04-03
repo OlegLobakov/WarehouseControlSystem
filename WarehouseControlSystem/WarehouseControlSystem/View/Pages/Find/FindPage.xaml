@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WarehouseControlSystem.View.Pages.Find.FindPage"
+             xmlns:sc="clr-namespace:WarehouseControlSystem.Helpers.Containers.StateContainer"
+             xmlns:i18n="clr-namespace:WarehouseControlSystem;assembly=WarehouseControlSystem">
+    <ContentPage.Resources>
+        <ResourceDictionary x:Name="AppDictionary">
+            <Color x:Key="BackgroundColor">#FFFFFF</Color>
+            <Color x:Key="BorderColor">#E1E1E1</Color>
+            <Style x:Key="InternalViewStyle" TargetType="ContentView">
+                <Setter Property="BackgroundColor" Value="{StaticResource BackgroundColor}"/>
+                <Setter Property="VerticalOptions" Value="Fill"/>
+                <Setter Property="Padding" Value="2,2,2,2"></Setter>
+            </Style>
+            <Style x:Key="BorderStyle" TargetType="ContentView">
+                <Setter Property="BackgroundColor" Value="{StaticResource BorderColor}"/>
+                <Setter Property="Padding" Value="3,1,1,3"></Setter>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <sc:StateContainer State="{Binding State}">
+            <sc:StateCondition State="Loading">
+                <ActivityIndicator IsRunning="{Binding LoadAnimation}" HeightRequest="50" WidthRequest="50" VerticalOptions="Center" HorizontalOptions="Center"/>
+            </sc:StateCondition>
+            <sc:StateCondition State="Normal">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <ContentView Grid.Row="0" HorizontalOptions="Center" VerticalOptions="Center">
+                        <Grid HorizontalOptions="FillAndExpand"  VerticalOptions="FillAndExpand" ColumnSpacing="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="300"/>
+                                <ColumnDefinition Width="60"/>
+                                <ColumnDefinition Width="60"/>
+                            </Grid.ColumnDefinitions>
+                            <Entry Grid.Column="0"  x:Name="entry"></Entry>
+                            <Button Grid.Column="1" Clicked="ButtonFindClick" BackgroundColor="{StaticResource PageHeaderBarBackgoundColor}">
+                                <Button.Image>
+                                    <OnPlatform x:TypeArguments="FileImageSource">
+                                        <On Platform="UWP,WinPhone">
+                                            <FileImageSource File="Assets/Images/ic_action_search.png"/>
+                                        </On>
+                                        <On Platform="iOS,Android">
+                                            <FileImageSource File="ic_action_search.png"/>
+                                        </On>
+                                    </OnPlatform>
+                                </Button.Image>
+                            </Button>
+                            <Button Grid.Column="2" Clicked="ButtonScanClick" BackgroundColor="{StaticResource PageHeaderBarBackgoundColor}">
+                                <Button.Image>
+                                    <OnPlatform x:TypeArguments="FileImageSource">
+                                        <OnPlatform.iOS>
+                                            <FileImageSource File="ic_action_fullscreen.png"/>
+                                        </OnPlatform.iOS>
+                                        <OnPlatform.Android>
+                                            <FileImageSource File="ic_action_fullscreen.png"/>
+                                        </OnPlatform.Android>
+                                        <OnPlatform.WinPhone>
+                                            <FileImageSource File="Assets/Images/ic_action_fullscreen.png"/>
+                                        </OnPlatform.WinPhone>
+                                    </OnPlatform>
+                                </Button.Image>
+                            </Button>
+                        </Grid>
+                    </ContentView>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" Text="{Binding CurrentRequest}" Margin="20,10,10,10"/>
+                        <Button Grid.Column="2" Text="{i18n:Translate FindPage_Reset}"
+                                Margin="20,10,20,10"
+                                BorderWidth="0" BorderRadius="0" 
+                                BackgroundColor="White" Command="{Binding ClearCommand}"/>
+                    </Grid>
+                </Grid>
+            </sc:StateCondition>
+
+            <sc:StateCondition State="Error">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="4*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" Text="{i18n:Translate StateContainer_Error}" FontSize="Large" HorizontalOptions="Center" VerticalOptions="Center"/>
+                    <ScrollView Orientation="Vertical" Grid.Row="1" >
+                        <StackLayout>
+                            <Label Text="{Binding ErrorText}" FontSize="Large" 
+                                   HorizontalOptions="FillAndExpand" 
+                                   VerticalOptions="FillAndExpand" 
+                                   HorizontalTextAlignment="Center"
+                                   VerticalTextAlignment="Center"/>
+                        </StackLayout>
+                    </ScrollView>
+                    <Button Grid.Row="2" Text="OK" FontSize="Large" Command="{Binding ErrorOKCommand}" BackgroundColor="White"/>
+                </Grid>
+            </sc:StateCondition>
+
+            <sc:StateCondition State="Warning">
+                <StackLayout HorizontalOptions="Center" VerticalOptions="Center" Orientation="Vertical">
+                    <Label x:Name="warninglabel" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Black" FontSize="Large"></Label>
+                </StackLayout>
+            </sc:StateCondition>
+
+            <sc:StateCondition State="NoInternet">
+                <StackLayout>
+                    <Label Text="{i18n:Translate StateContainer_StateNoInternet_Error}" HorizontalOptions="Center" VerticalOptions="Center"/>
+                </StackLayout>
+            </sc:StateCondition>
+        </sc:StateContainer>
+
+    </ContentPage.Content>
+</ContentPage>

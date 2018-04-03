@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WarehouseControlSystem.MainPageDetail"
+             xmlns:sc="clr-namespace:WarehouseControlSystem.Helpers.Containers.StateContainer"
+             xmlns:vc="clr-namespace:WarehouseControlSystem.View.Content"
+             xmlns:i18n="clr-namespace:WarehouseControlSystem;assembly=WarehouseControlSystem"
+             Title="Warehouse Control System">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem  Order="Primary" Priority="10" Text="{i18n:Translate LocationsSchemePage_Toolbar_List}" Clicked="TestClicked">
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="UWP,WinPhone">
+                        <FileImageSource File="Assets/Images/ic_action_dehaze.png"/>
+                    </On>
+                    <On Platform="iOS,Android">
+                        <FileImageSource File="ic_action_dehaze.png"/>
+                    </On>
+                </OnPlatform>
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.Content>
+        <sc:StateContainer State="{Binding State}">
+            <sc:StateCondition State="Loading">
+                <ActivityIndicator IsRunning="True" HeightRequest="50" WidthRequest="50" VerticalOptions="Center" HorizontalOptions="Center"/>
+            </sc:StateCondition>
+
+            <sc:StateCondition State="Normal">
+                <Grid RowSpacing="6" ColumnSpacing="6">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <vc:WellcomeBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"  Grid.RowSpan="3" 
+                         Name="{i18n:Translate WellcomePage_Locations}" 
+                         BackgroundColor="{StaticResource WellcodeButtonBackgoundColor}" 
+                         Taped="LocationsTaped"/>
+                    <vc:WellcomeBlock Grid.Row="1" Grid.Column="3" 
+                         Name="{i18n:Translate WellcomePage_About}" 
+                         BackgroundColor="{StaticResource WellcodeButtonBackgoundColor}"
+                         Taped="AboutTaped"/>
+                    <vc:WellcomeBlock Grid.Row="2" Grid.Column="3" 
+                         Name="{i18n:Translate WellcomePage_Connections}" 
+                         BackgroundColor="{StaticResource WellcodeButtonBackgoundColor}"
+                         Taped="ConnectionsTaped"/>
+                    <vc:WellcomeBlock Grid.Row="3" Grid.Column="3" 
+                         Name="{i18n:Translate WellcomePage_Options}" 
+                         BackgroundColor="{StaticResource WellcodeButtonBackgoundColor}"
+                         Taped="OptionsTaped"/>
+                    <vc:WellcomeBlock Grid.Row="4" Grid.Column="1" 
+                         Name="{i18n:Translate WellcomePage_AddLocation}" 
+                         BackgroundColor="DarkGreen"
+                         Taped="AddLocation"/>
+                    <vc:WellcomeBlock Grid.Row="4" Grid.Column="2" 
+                         Name="{i18n:Translate WellcomePage_AddZone}" 
+                         BackgroundColor="DarkGreen"
+                         Taped="AddZoneTaped"/>
+                    <vc:WellcomeBlock Grid.Row="4" Grid.Column="3" 
+                         Name="{i18n:Translate WellcomePage_AddRack}"  
+                         BackgroundColor="DarkGreen"
+                         Taped="AddRackTaped"/>
+
+                </Grid>
+            </sc:StateCondition>
+
+            <sc:StateCondition State="Error">
+                <StackLayout Orientation="Vertical" HorizontalOptions="Center" VerticalOptions="Center">
+                    <Label Text="Ошибка" FontSize="Large"/>
+                    <Label Text="" x:Name="errortextlabel"/>
+                    <Button Text="OK" />
+                </StackLayout>
+            </sc:StateCondition>
+
+            <sc:StateCondition State="Warning">
+                <StackLayout HorizontalOptions="Center" VerticalOptions="Center" Orientation="Vertical">
+                    <Label x:Name="warninglabel" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Black" FontSize="Large"></Label>
+                </StackLayout>
+            </sc:StateCondition>
+
+            <sc:StateCondition State="NoInternet">
+                <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
+                    <Label Text="Отсутствует интернет-соединение" HorizontalOptions="Center" VerticalOptions="Center"/>
+                </StackLayout>
+            </sc:StateCondition>
+
+            <sc:StateCondition State="NoData">
+                <Label Text="No Data" FontSize="Large" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+            </sc:StateCondition>
+        </sc:StateContainer>
+    </ContentPage.Content>
+</ContentPage>

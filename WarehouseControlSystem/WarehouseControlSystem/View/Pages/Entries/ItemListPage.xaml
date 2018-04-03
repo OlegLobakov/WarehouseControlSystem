@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WarehouseControlSystem.Pages.ItemListPage"
+
+             xmlns:i18n="clr-namespace:WarehouseControlSystem;assembly=WarehouseControlSystem">
+    <ContentPage.Content>
+        <!--<dxGrid:GridControl x:Name="grid" 
+	 					NewItemRowVisibility = "false"    
+                        IsReadOnly="True" 
+                        SortMode="Single"
+                        RowHeight="60">
+
+            <dxGrid:GridControl.Columns>
+                <dxGrid:TextColumn   FieldName="EntryNo"            Caption = "{i18n:Translate ItemLedgerEntriesPage_ColumnEntryNo}" IsVisible="False"/>
+                <dxGrid:TextColumn   FieldName="EntryType"          Caption = "{i18n:Translate ItemLedgerEntriesPage_ColumnEntryType}" />
+                <dxGrid:DateColumn   FieldName="PostingDate"        Caption = "{i18n:Translate ItemLedgerEntriesPage_ColumnPostingDate}"/>
+                <dxGrid:TextColumn   FieldName="DocumentNo"         Caption = "{i18n:Translate ItemLedgerEntriesPage_ColumnDocumentNo}"/>
+                <dxGrid:TextColumn   FieldName="LocationCode"       Caption = "{i18n:Translate ItemLedgerEntriesPage_ColumnLocationCode}"/>
+                <dxGrid:TextColumn   FieldName="ItemNo"             Caption = "{i18n:Translate ItemLedgerEntriesPage_ColumnItemNo}" />
+                <dxGrid:TextColumn   FieldName="VariantCode"        Caption = "{i18n:Translate ItemLedgerEntriesPage_ColumnVariantCode}" IsVisible="False" />
+                <dxGrid:TextColumn   FieldName="Description"        Caption = "{i18n:Translate ItemLedgerEntriesPage_ColumnDescription}"/>
+                <dxGrid:TextColumn   FieldName="UnitofMeasureCode"  Caption = "{i18n:Translate ItemLedgerEntriesPage_ColumnUnitofMeasureCode}"/>
+                <dxGrid:SwitchColumn FieldName="Open"               Caption = "{i18n:Translate ItemLedgerEntriesPage_ColumnOpen}"/>
+                <dxGrid:NumberColumn FieldName="Quantity"           Caption = "{i18n:Translate ItemLedgerEntriesPage_ColumnQuantity}"/>
+                <dxGrid:NumberColumn FieldName="RemainingQuantity"  Caption = "{i18n:Translate ItemLedgerEntriesPage_ColumnRemainingQuantity}"/>
+                <dxGrid:NumberColumn FieldName="ReservedQuantity"   Caption = "{i18n:Translate ItemLedgerEntriesPage_ColumnReservedQuantity}"/>
+            </dxGrid:GridControl.Columns>
+
+            --><!--<dxGrid:GridControl.RightSwipeButtons>
+                <dxGrid:SwipeButtonInfo ButtonName="RightButton" Caption="{i18n:Translate ConnectionsPage_SwipRightButton}" BackgroundColor="Red" Width="150" />
+            </dxGrid:GridControl.RightSwipeButtons>--><!--
+        </dxGrid:GridControl>-->
+    </ContentPage.Content>
+</ContentPage>

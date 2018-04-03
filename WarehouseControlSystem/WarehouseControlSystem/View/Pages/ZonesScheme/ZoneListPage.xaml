@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WarehouseControlSystem.View.Pages.ZonesScheme.ZoneListPage"
+             xmlns:sc="clr-namespace:WarehouseControlSystem.Helpers.Containers.StateContainer"
+             xmlns:i18n="clr-namespace:WarehouseControlSystem;assembly=WarehouseControlSystem"
+             Title="{Binding Title}"
+             x:Name="ThisPage">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem  Order="Primary" Priority="20" Text="{i18n:Translate LocationsSchemePage_Toolbar_New}" Command="{Binding NewZoneCommand}">
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="UWP,WinPhone">
+                        <FileImageSource File="Assets/Images/ic_action_add_circle.png"/>
+                    </On>
+                    <On Platform="iOS,Android">
+                        <FileImageSource File="ic_action_add_circle.png"/>
+                    </On>
+                </OnPlatform>
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <sc:StateContainer State="{Binding State}">
+            <sc:StateCondition State="Loading">
+                <ActivityIndicator IsRunning="{Binding LoadAnimation}" HeightRequest="50" WidthRequest="50" VerticalOptions="Center" HorizontalOptions="Center"/>
+            </sc:StateCondition>
+            <sc:StateCondition State="Normal">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0" HeightRequest="70" BackgroundColor="White" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label  Grid.Column="0" Text="{i18n:Translate ZoneListPage_ColumnCode}"
+                                Margin="10,0,0,0"
+                                HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+
+                        <Label  Grid.Column="1" Text="{i18n:Translate ZoneListPage_ColumnDescription}" 
+                                Margin="10,0,0,0" 
+                                HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+
+                        <Label  Grid.Column="2" Text="{i18n:Translate ZoneListPage_ColumnSchemeVisible}" 
+                                Margin="10,0,0,0" 
+                                HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+
+                        <Label  Grid.Column="3" Text="{i18n:Translate ZoneListPage_ColumnRackQuantity}" 
+                                Margin="10,0,20,0"  
+                                HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
+
+                        <Label  Grid.Column="4" Text="{i18n:Translate ZoneListPage_ColumnBinQuantity}" 
+                                Margin="10,0,20,0"
+                                HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
+                    </Grid>
+                    <ListView Grid.Row="1" RowHeight="70" ItemsSource="{Binding ZoneViewModels}" SelectedItem="{Binding SelectedZoneViewModel,Mode=TwoWay}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <ViewCell.ContextActions>
+                                        <MenuItem Text="Edit"
+                                            Command="{Binding Path=BindingContext.EditZoneCommand, Source={x:Reference Name=ThisPage}}" 
+                                            CommandParameter="{Binding .}" />
+                                        <MenuItem Text="Delete" IsDestructive="True"
+                                            Command="{Binding Path=BindingContext.DeleteZoneCommand, Source={x:Reference Name=ThisPage}}" 
+                                            CommandParameter="{Binding .}"  />
+                                    </ViewCell.ContextActions>
+
+                                    <StackLayout Padding="0,1,0,1" BackgroundColor="LightGray" HeightRequest="70">
+                                        <Grid BackgroundColor="White" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="1*"/>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="1*"/>
+                                                <ColumnDefinition Width="1*"/>
+                                                <ColumnDefinition Width="1*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label  Grid.Column="0" Text="{Binding Code}"    Margin="10,0,0,0"
+                                                HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                                HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+
+                                            <Label  Grid.Column="1" Text="{Binding Description}" Margin="10,0,0,0"  
+                                                HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                                HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+
+                                            <Switch Grid.Column="2"  IsToggled="{Binding SchemeVisible, Mode=TwoWay}" 
+                                                HorizontalOptions="FillAndExpand" VerticalOptions="Center"/>
+
+                                            <Label  Grid.Column="3" Text="{Binding RackQuantity}" Margin="10,0,20,0"  
+                                                HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                                HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
+
+                                            <Label  Grid.Column="4" Text="{Binding BinQuantity}" Margin="10,0,20,0"  
+                                                HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                                HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
+                                        </Grid>
+                                    </StackLayout>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
+            </sc:StateCondition>
+
+            <sc:StateCondition State="Error">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="4*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" Text="{i18n:Translate StateContainer_Error}" FontSize="Large" HorizontalOptions="Center" VerticalOptions="Center"/>
+                    <ScrollView Orientation="Vertical" Grid.Row="1" >
+                        <StackLayout>
+                            <Label Text="{Binding ErrorText}" FontSize="Large" 
+                                   HorizontalOptions="FillAndExpand" 
+                                   VerticalOptions="FillAndExpand" 
+                                   HorizontalTextAlignment="Center"
+                                   VerticalTextAlignment="Center"/>
+                        </StackLayout>
+                    </ScrollView>
+                    <Button Grid.Row="2" Text="OK" FontSize="Large" Command="{Binding ErrorOKCommand}" BackgroundColor="White"/>
+                </Grid>
+            </sc:StateCondition>
+
+            <sc:StateCondition State="Warning">
+
+            </sc:StateCondition>
+
+            <sc:StateCondition State="NoInternet">
+                <StackLayout>
+                    <Label Text="{i18n:Translate StateContainer_StateNoInternet_Error}" HorizontalOptions="Center" VerticalOptions="Center"/>
+                </StackLayout>
+            </sc:StateCondition>
+
+            <sc:StateCondition State="NoData">
+                <Label Text="" FontSize="Large" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+            </sc:StateCondition>
+
+        </sc:StateContainer>
+    </ContentPage.Content>
+</ContentPage>

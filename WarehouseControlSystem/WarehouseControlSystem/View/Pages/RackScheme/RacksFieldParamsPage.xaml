@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WarehouseControlSystem.View.Pages.RackScheme.RacksFieldParamsPage"
+             xmlns:vc="clr-namespace:WarehouseControlSystem.View.Content"
+             xmlns:sc="clr-namespace:WarehouseControlSystem.Helpers.Containers.StateContainer"
+             xmlns:i18n="clr-namespace:WarehouseControlSystem;assembly=WarehouseControlSystem">
+    <ContentPage.Content>
+        <sc:StateContainer State="{Binding State}">
+            <sc:StateCondition State="Loading">
+                <ActivityIndicator IsRunning="{Binding LoadAnimation}" HeightRequest="50" WidthRequest="50" VerticalOptions="Center" HorizontalOptions="Center"/>
+            </sc:StateCondition>
+            <sc:StateCondition State="Normal">
+                <Grid Padding="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackLayout Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" 
+                                 HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" Orientation="Vertical">
+                        <Label Text="{i18n:Translate ZoneFieldParamsPage_Height}" 
+                               HorizontalOptions="Center"></Label>
+                        <Slider HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"  
+                                Maximum="100" Minimum="{Binding MinPlanHeight}" 
+                                Value="{Binding PlanHeight, Mode=TwoWay}"
+                                ValueChanged="Slider_ValueChanged"></Slider>
+                        <Label Text="{Binding PlanHeight}" HorizontalOptions="Center"></Label>
+                    </StackLayout>
+                    <StackLayout Grid.Row="0" Grid.Column="5" Grid.ColumnSpan="3" 
+                                 HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" Orientation="Vertical">
+                        <Label Text="{i18n:Translate ZoneFieldParamsPage_Width}" 
+                               HorizontalOptions="Center"></Label>
+                        <Slider HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
+                                Maximum="100" Minimum="{Binding MinPlanWidth}" 
+                                Value="{Binding PlanWidth, Mode=TwoWay}"
+                                ValueChanged="Slider_ValueChanged_1"></Slider>
+                        <Label Text="{Binding PlanWidth}" HorizontalOptions="Center"></Label>
+                    </StackLayout>
+
+                    <vc:SchemeView x:Name="scheme"
+                        Grid.Row="1" Grid.Column="1" 
+                        Grid.ColumnSpan="7" Grid.RowSpan="6"  
+                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"  
+                        PlanWidth="{Binding PlanWidth}"
+                        PlanHeight="{Binding PlahHeight}"
+                        Racks="{Binding RackViewModels}">
+                    </vc:SchemeView>
+                </Grid>
+
+            </sc:StateCondition>
+            <sc:StateCondition State="Error">
+                <StackLayout Orientation="Vertical" HorizontalOptions="Center" VerticalOptions="Center">
+                    <Label Text="{i18n:Translate StateContainer_StateError_Header}" FontSize="Large"/>
+                    <Label Text="" x:Name="errortextlabel"/>
+                    <Button Text="{i18n:Translate GlobalButtonOK}" />
+                </StackLayout>
+            </sc:StateCondition>
+            <sc:StateCondition State="Warning">
+                <StackLayout HorizontalOptions="Center" VerticalOptions="Center" Orientation="Vertical">
+                    <Label x:Name="warninglabel" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Black" FontSize="Large"></Label>
+                    <Button Text="{i18n:Translate GlobalButtonOK}"/>
+                </StackLayout>
+            </sc:StateCondition>
+            <sc:StateCondition State="NoInternet">
+                <StackLayout>
+                    <Label Text="{i18n:Translate StateContainer_StateNoInternet_Error}"  HorizontalOptions="Center" VerticalOptions="Center"/>
+                </StackLayout>
+            </sc:StateCondition>
+            <sc:StateCondition State="NoData">
+                <Label Text="" FontSize="Large" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+            </sc:StateCondition>
+            <sc:StateCondition State="Request">
+                <StackLayout Orientation="Vertical" HorizontalOptions="Center" VerticalOptions="Center">
+                    <Label x:Name="requestnamelabel" FontSize="Large"/>
+                    <Label x:Name="requestlabel"/>
+                    <Label Text=""/>
+                    <StackLayout Orientation="Horizontal">
+                        <!--<Button Text="{i18n:Translate GlobalButtonOK}" Clicked="Button_Clicked_OkMessage" WidthRequest="150"/>
+                        <Button Text="{i18n:Translate GlobalButtonCancel}" Clicked="Button_Clicked_CancelMessage" WidthRequest="150"/>-->
+                    </StackLayout>
+                </StackLayout>
+            </sc:StateCondition>
+        </sc:StateContainer>
+    </ContentPage.Content>
+</ContentPage>

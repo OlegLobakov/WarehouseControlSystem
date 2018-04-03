@@ -1,0 +1,209 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WarehouseControlSystem.View.Pages.Connections.NewConnectionPage"
+             xmlns:sc="clr-namespace:WarehouseControlSystem.Helpers.Containers.StateContainer"
+             xmlns:i18n="clr-namespace:WarehouseControlSystem;assembly=WarehouseControlSystem">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem  Order="Primary" Priority="10" Command="{Binding TestConnectionCommand}" Text="{i18n:Translate NewConnectionPage_Test}">
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <OnPlatform.iOS>
+                        <FileImageSource File="ic_action_check_circle.png"/>
+                    </OnPlatform.iOS>
+                    <OnPlatform.Android>
+                        <FileImageSource File="ic_action_check_circle.png"/>
+                    </OnPlatform.Android>
+                    <OnPlatform.WinPhone>
+                        <FileImageSource File="Assets/Images/ic_action_check_circle.png"/>
+                    </OnPlatform.WinPhone>
+                </OnPlatform>
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <sc:StateContainer State="{Binding State}"  OnAfterStateSet="AfterChangeState">
+            <sc:StateCondition State="Loading">
+                <ActivityIndicator IsRunning="True" HeightRequest="50" WidthRequest="50" VerticalOptions="Center" HorizontalOptions="Center"/>
+            </sc:StateCondition>
+
+            <sc:StateCondition State="Normal">
+                <Grid Padding="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <ScrollView Grid.Row="0" Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                        <Grid Padding="5,5,5,5" x:Name="fieldsgrid" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" RowSpacing="20">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="300" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Text="{i18n:Translate NewConnectionPage_FieldName}" 
+                                   Grid.Row="0" Grid.Column="0" 
+                                   HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
+                            <Entry Text="{Binding Name, Mode=TwoWay}" 
+                                   Grid.Row="0" Grid.Column="1" Keyboard="Text" 
+                                   HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"  />
+                            
+                            <Label Text="{i18n:Translate NewConnectionPage_FieldComment}" 
+                                   Grid.Row="1" Grid.Column="0" 
+                                   HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
+                            <Entry Text="{Binding Comment, Mode=TwoWay}" 
+                                   Grid.Row="1" Grid.Column="1" Keyboard="Text" 
+                                   HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"  />
+                            
+                            <Label Text="{i18n:Translate NewConnectionPage_FieldHttps}" 
+                                   Grid.Row="2" Grid.Column="0" 
+                                   HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
+                            <Switch Grid.Row="2" Grid.Column="1" 
+                                    IsToggled="{Binding Https, Mode=TwoWay}" HorizontalOptions="Start"/>
+
+                            <Label Text="{i18n:Translate NewConnectionPage_FieldServer}" 
+                                   Grid.Row="3" Grid.Column="0" 
+                                   HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
+                            <Entry Text="{Binding Server, Mode=TwoWay}" 
+                                   Grid.Row="3" Grid.Column="1" 
+                                   Keyboard="Text" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
+
+                            <Label Text="{i18n:Translate NewConnectionPage_FieldPort}" 
+                                   Grid.Row="4" Grid.Column="0" 
+                                   HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
+                            <Entry Text="{Binding Port, Mode=TwoWay}" 
+                                   Grid.Row="4" Grid.Column="1"  
+                                   Keyboard="Numeric" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
+
+                            <Label Text="{i18n:Translate NewConnectionPage_FieldInstance}" 
+                                   Grid.Row="5" Grid.Column="0" 
+                                   HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
+                            <Entry Text="{Binding Instance, Mode=TwoWay}" 
+                                   Grid.Row="5" Grid.Column="1" 
+                                   Keyboard="Text" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
+
+                            <Label Text="{i18n:Translate NewConnectionPage_FieldCompany}" 
+                                   Grid.Row="6" Grid.Column="0" 
+                                   HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
+                            <Entry Text="{Binding Company, Mode=TwoWay}" 
+                                   Grid.Row="6" Grid.Column="1" 
+                                   Keyboard="Text" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
+
+                            <Label Text="Creditials" 
+                                   Grid.Row="7" Grid.Column="0" 
+                                   HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
+                            <Picker x:Name="creditialspicker" 
+                                    Grid.Row="7" Grid.Column="1"
+                                    ItemsSource="{Binding CreditialList}" 
+                                    SelectedIndexChanged="creditialspicker_SelectedIndexChanged"
+                                    HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"></Picker>
+
+                            <Label Text="{i18n:Translate NewConnectionPage_FieldUser}" 
+                                   Grid.Row="8" Grid.Column="0" HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
+                            <Entry Text="{Binding User, Mode=TwoWay}" 
+                                   Grid.Row="8" Grid.Column="1" 
+                                   Keyboard="Text" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
+
+                            <Label Text="{i18n:Translate NewConnectionPage_FieldPassword}" 
+                                   Grid.Row="9" Grid.Column="0" 
+                                   HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
+                            <Entry Text="{Binding Password, Mode=TwoWay}" IsPassword="True"
+                                   Grid.Row="9" Grid.Column="1" 
+                                   Keyboard="Text" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
+
+                            <Label Text="{i18n:Translate NewConnectionPage_FieldDomen}" 
+                                   Grid.Row="10" Grid.Column="0" 
+                                   HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
+                            <Entry Text="{Binding Domen, Mode=TwoWay}" 
+                                   Grid.Row="10" Grid.Column="1" 
+                                   Keyboard="Text" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
+                            
+                            <Label Text="{i18n:Translate NewConnectionPage_FieldCodeunit}" 
+                                   Grid.Row="11" Grid.Column="0" 
+                                   HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
+                            <Entry Text="{Binding Codeunit, Mode=TwoWay}" 
+                                   Grid.Row="11" Grid.Column="1" Keyboard="Text" 
+                                   HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"  />
+
+                            <Label Text="{i18n:Translate NewConnectionPage_FieldVerified}" 
+                                   Grid.Row="12" Grid.Column="0" 
+                                   HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
+                            <Image Grid.Row="12" Grid.Column="1" IsVisible="{Binding Verified}" HorizontalOptions="Start" VerticalOptions="CenterAndExpand">
+                                <Image.Source>
+                                    <OnPlatform x:TypeArguments="FileImageSource">
+                                        <On Platform="UWP,WinPhone">
+                                            <FileImageSource File="Assets/Images/ic_action_check_circle_dark.png"/>
+                                        </On>
+                                        <On Platform="iOS,Android">
+                                            <FileImageSource File="ic_action_check_circle_dark.png"/>
+                                        </On>
+                                    </OnPlatform>
+                                </Image.Source>
+                            </Image>
+                        </Grid>
+                    </ScrollView>
+                    <Button  Grid.Row="1" HorizontalOptions="End" Text="{i18n:Translate StateContainer_CancelChanges}" 
+                             Command="{Binding CancelChangesCommand}" 
+                             BackgroundColor="White" FontAttributes="Bold" Margin="20"/>
+                </Grid>
+            </sc:StateCondition>
+            
+            <sc:StateCondition State="Request">
+            </sc:StateCondition>
+            
+            <sc:StateCondition State="Error">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="4*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" Text="{i18n:Translate StateContainer_StateError_Header}" FontSize="Large" HorizontalOptions="Center" VerticalOptions="Center"/>
+                    <ScrollView Orientation="Vertical" Grid.Row="1" >
+                        <StackLayout>
+                            <Label Text="{Binding ErrorText}" FontSize="Large" 
+                                   HorizontalOptions="FillAndExpand" 
+                                   VerticalOptions="FillAndExpand" 
+                                   HorizontalTextAlignment="Center"
+                                   VerticalTextAlignment="Center"/>
+                        </StackLayout>
+                    </ScrollView>
+                    <Button Grid.Row="2" Text="OK" FontSize="Large" Command="{Binding ErrorOKCommand}" BackgroundColor="White"/>
+                </Grid>
+            </sc:StateCondition>
+
+            <sc:StateCondition State="Warning">
+                <StackLayout HorizontalOptions="Center" VerticalOptions="Center" Orientation="Vertical">
+                    <Label x:Name="warninglabel" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Black" FontSize="Large"></Label>
+                </StackLayout>
+            </sc:StateCondition>
+
+            <sc:StateCondition State="NoInternet">
+                <StackLayout>
+                    <Label Text="{i18n:Translate StateContainer_StateNoInternet_Error}" HorizontalOptions="Center" VerticalOptions="Center"/>
+                </StackLayout>
+            </sc:StateCondition>
+
+            <sc:StateCondition State="NoData">
+                <Label Text="" FontSize="Large" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+            </sc:StateCondition>
+
+        </sc:StateContainer>
+    </ContentPage.Content>
+</ContentPage>

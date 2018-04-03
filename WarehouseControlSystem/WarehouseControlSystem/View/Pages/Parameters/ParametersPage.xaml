@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WarehouseControlSystem.View.Pages.Parameters.ParametersPage"
+             xmlns:i18n="clr-namespace:WarehouseControlSystem;assembly=WarehouseControlSystem">
+    <ContentPage.Content>
+        <ScrollView Orientation="Vertical">
+            <Grid Padding="5,5,5,5" x:Name="fieldsgrid">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="2*" />
+                </Grid.ColumnDefinitions>
+                <Label Text="{i18n:Translate ParametersPage_Section_RackCreation_Title}" 
+                       Grid.Row="0" Grid.Column="0"  FontAttributes="Bold" HorizontalOptions="Start" 
+                       HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
+
+                <Label Text="{i18n:Translate ParametersPage_Section_RackCreation_DCQ}" 
+                       Grid.Row="1" Grid.Column="0" 
+                       HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
+                <Entry Text="{Binding DefaultRackSections, Mode=TwoWay}" 
+                       Grid.Row="1" Grid.Column="1"
+                       Keyboard="Numeric" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"  />
+
+                <Label Text="{i18n:Translate ParametersPage_Section_RackCreation_DLQ}" 
+                       Grid.Row="2" Grid.Column="0" 
+                       HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
+                <Entry Text="{Binding DefaultRackLevels, Mode=TwoWay}" 
+                       Grid.Row="2" Grid.Column="1" 
+                       Keyboard="Numeric" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
+
+                <Label Text="{i18n:Translate ParametersPage_Section_RackCreation_DD}" 
+                       Grid.Row="3" Grid.Column="0" 
+                       HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
+                <Entry Text="{Binding DefaultRackDepth, Mode=TwoWay}" 
+                       Grid.Row="3" Grid.Column="1"
+                       Keyboard="Numeric" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
+
+                <Label Text="{i18n:Translate ParametersPage_Section_BinsCreation_Title}" 
+                       Grid.Row="4" Grid.Column="0"  FontAttributes="Bold" HorizontalOptions="Start" 
+                       HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
+
+                <Label Text="{i18n:Translate ParametersPage_Section_BinsCreation_RS}" 
+                       Grid.Row="5" Grid.Column="0" 
+                       HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
+                <Entry Text="{Binding DefaultRackSectionSeparator, Mode=TwoWay}" 
+                       Grid.Row="5" Grid.Column="1"
+                       HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
+
+                <Label Text="{i18n:Translate ParametersPage_Section_BinsCreation_SL}" 
+                       Grid.Row="6" Grid.Column="0" 
+                       HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
+                <Entry Text="{Binding DefaultSectionLevelSeparator, Mode=TwoWay}" 
+                       Grid.Row="6" Grid.Column="1"
+                       HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
+
+                <Label Text="{i18n:Translate ParametersPage_Section_BinsCreation_LD}" 
+                       Grid.Row="7" Grid.Column="0" 
+                       HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
+                <Entry Text="{Binding DefaultLevelDepthSeparator, Mode=TwoWay}" 
+                       Grid.Row="7" Grid.Column="1"
+                       HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
+
+
+                <Label Text="{i18n:Translate ParametersPage_Section_ZoneCreation_Title}" 
+                       Grid.Row="8" Grid.Column="0"  
+                       FontAttributes="Bold" HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
+
+                <Label Text="{i18n:Translate ParametersPage_Section_ZoneCreation_DZPW}" 
+                       Grid.Row="9" Grid.Column="0" 
+                       HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
+                <Entry Text="{Binding DefaultZonePlanWidth, Mode=TwoWay}" 
+                       Grid.Row="9" Grid.Column="1"
+                       Keyboard="Numeric" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
+
+                <Label Text="{i18n:Translate ParametersPage_Section_ZoneCreation_DZPH}" 
+                       Grid.Row="10" Grid.Column="0" 
+                       HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
+                <Entry Text="{Binding DefaultZonePlanHeight, Mode=TwoWay}" 
+                       Grid.Row="10" Grid.Column="1"
+                       Keyboard="Numeric" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
+                
+                <Label Text="{i18n:Translate ParametersPage_Section_Location_Title}" 
+                       Grid.Row="11" Grid.Column="0"  
+                       FontAttributes="Bold" HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
+
+                <Label Text="{i18n:Translate ParametersPage_Section_LocationCreation_DLPW}" 
+                       Grid.Row="12" Grid.Column="0" 
+                       HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
+                <Entry Text="{Binding DefaultLocationPlanWidth, Mode=TwoWay}" 
+                       Grid.Row="12" Grid.Column="1" 
+                       Keyboard="Numeric" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
+
+                <Label Text="{i18n:Translate ParametersPage_Section_LocationCreation_DLPH}" 
+                       Grid.Row="13" Grid.Column="0" 
+                       HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
+                <Entry Text="{Binding DefaultLocationPlanHeight, Mode=TwoWay}" 
+                       Grid.Row="13" Grid.Column="1" 
+                       Keyboard="Numeric" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
+
+                <Label Text="{i18n:Translate ParametersPage_Section_Localization_Title}" 
+                       Grid.Row="14" Grid.Column="0" 
+                       HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
+                <Picker x:Name="localizationpicker" 
+                        Grid.Row="14" Grid.Column="1"  
+                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" ItemDisplayBinding="{Binding Name}" SelectedIndexChanged="localizationpicker_SelectedIndexChanged"></Picker>
+                
+                <StackLayout  Grid.Row="17" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal">
+                    <Label  Text="{i18n:Translate AboutPage_LocalPath}" VerticalOptions="Center" Margin="10"/>
+                    <Label  Text="{Binding LocalFilePath}" VerticalOptions="Center" Margin="10"/>
+                </StackLayout>
+            </Grid>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WarehouseControlSystem.Pages.WarehouseEntriesPage"
+
+             xmlns:i18n="clr-namespace:WarehouseControlSystem;assembly=WarehouseControlSystem">
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" HeightRequest="70" BackgroundColor="White" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" x:Name="grid">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label  Grid.Column="0" Text="{i18n:Translate WarehouseEntriesPage_ColumnEntryNo}" Margin="20,0,0,0"         
+                     HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                     HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+                <Label  Grid.Column="1" Text="{i18n:Translate WarehouseEntriesPage_ColumnLocationCode}"  Margin="20,0,0,0"  
+                     HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                     HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+                <Label  Grid.Column="2" Text="{i18n:Translate WarehouseEntriesPage_ColumnZoneCode}" Margin="20,0,0,0"  
+                     HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                     HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+                <Label  Grid.Column="3" Text="{i18n:Translate WarehouseEntriesPage_ColumnBinCode}" Margin="20,0,0,0"  
+                     HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                     HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+                <Label  Grid.Column="4" Text="{i18n:Translate WarehouseEntriesPage_ColumnItemNo}" Margin="20,0,0,0"  
+                     HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                     HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+                <Label  Grid.Column="5" Text="{i18n:Translate WarehouseEntriesPage_ColumnVariantCode}" Margin="20,0,0,0"  
+                     HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                     HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+                <Label  Grid.Column="6" Text="{i18n:Translate WarehouseEntriesPage_ColumnDescription}" Margin="20,0,0,0"  
+                     HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                     HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+                <Label  Grid.Column="7" Text="{i18n:Translate WarehouseEntriesPage_ColumnUnitofMeasureCode}" Margin="20,0,0,0"  
+                     HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                     HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+                <Label  Grid.Column="8" Text="{i18n:Translate WarehouseEntriesPage_ColumnRegisteringDate}" Margin="20,0,0,0"  
+                     HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                     HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+                <Label  Grid.Column="9" Text="{i18n:Translate WarehouseEntriesPage_ColumnQuantity}" Margin="20,0,0,0"  
+                     HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                     HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
+                <Label  Grid.Column="10" Text="{i18n:Translate WarehouseEntriesPage_ColumnQuantityBase}" Margin="20,0,0,0"  
+                     HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                     HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
+                <Label  Grid.Column="11" Text="{i18n:Translate WarehouseEntriesPage_ColumnEntryType}" Margin="20,0,0,0"  
+                     HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                     HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+                <Label  Grid.Column="12" Text="{i18n:Translate WarehouseEntriesPage_ColumnWarrantyDate}" Margin="20,0,0,0"  
+                     HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                     HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+                <Label  Grid.Column="13" Text="{i18n:Translate WarehouseEntriesPage_ColumnSourceNo}" Margin="20,0,0,0"  
+                     HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                     HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+            </Grid>
+
+            <ListView Grid.Row="1" RowHeight="70" 
+                  ItemsSource="{Binding Items}">
+
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Padding="0,0,0,1" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                                <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="White">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Label  Grid.Column="0" Text="{Binding EntryNo}" Margin="20,0,0,0"       
+                                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                        HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
+                                    <Label  Grid.Column="1" Text="{Binding LocationCode}" Margin="20,0,0,0"       
+                                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                        HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+                                    <Label  Grid.Column="2" Text="{Binding ZoneCode}" Margin="20,0,0,0"       
+                                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                        HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+                                    <Label  Grid.Column="3" Text="{Binding BinCode}" Margin="20,0,0,0"       
+                                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                        HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+                                    <Label  Grid.Column="4" Text="{Binding ItemNo}" Margin="20,0,0,0"       
+                                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                        HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+                                    <Label  Grid.Column="5" Text="{Binding VariantCode}" Margin="20,0,0,0"       
+                                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                        HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+                                    <Label  Grid.Column="6" Text="{Binding Description}" Margin="20,0,0,0"       
+                                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                        HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+                                    <Label  Grid.Column="7" Text="{Binding UnitofMeasureCode}" Margin="20,0,0,0"       
+                                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                        HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+                                    <Label  Grid.Column="8" Text="{Binding RegisteringDate}" Margin="20,0,0,0"       
+                                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                        HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+                                    <Label  Grid.Column="9" Text="{Binding Quantity}" Margin="20,0,0,0"       
+                                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                        HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
+                                    <Label  Grid.Column="10" Text="{Binding QuantityBase}" Margin="20,0,0,0"       
+                                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                        HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
+                                    <Label  Grid.Column="11" Text="{Binding EntryType}" Margin="20,0,0,0"       
+                                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                        HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+                                    <Label  Grid.Column="12" Text="{Binding WarrantyDate}" Margin="20,0,0,0"       
+                                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                        HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+                                    <Label  Grid.Column="13" Text="{Binding SourceNo}" Margin="20,0,0,0"       
+                                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                        HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+                                </Grid>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+
+     
+    </ContentPage.Content>
+</ContentPage>

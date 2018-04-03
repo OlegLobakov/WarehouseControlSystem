@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WarehouseControlSystem.Pages.BinContentPage"
+             xmlns:i18n="clr-namespace:WarehouseControlSystem;assembly=WarehouseControlSystem">
+    <ContentPage.Content>
+        <!--<dxGrid:GridControl x:Name="grid" 
+	 					NewItemRowVisibility = "false"    
+                        AllowEditRows="false"
+                        SortMode="Single"
+                        RowHeight="60">
+            
+            <dxGrid:GridControl.Columns>
+                <dxGrid:TextColumn   FieldName="LocationCode"      Caption = "{i18n:Translate BinContentPage_ColumnLocationCode}" IsGrouped="True"/>
+                <dxGrid:TextColumn   FieldName="ZoneCode"          Caption = "{i18n:Translate BinContentPage_ColumnZoneCode}" IsGrouped="True"/>
+                <dxGrid:TextColumn   FieldName="BinCode"           Caption = "{i18n:Translate BinContentPage_ColumnBinCode}"/>
+                <dxGrid:TextColumn   FieldName="BinType"           Caption = "{i18n:Translate BinContentPage_ColumnBinType}"/>
+                <dxGrid:TextColumn   FieldName="ItemNo"            Caption = "{i18n:Translate BinContentPage_ColumnItemNo}"/>
+                <dxGrid:TextColumn   FieldName="VariantCode"       Caption = "{i18n:Translate BinContentPage_ColumnVariantCode}" IsVisible="False" />
+                <dxGrid:TextColumn   FieldName="Description"       Caption = "{i18n:Translate BinContentPage_ColumnDescription}"/>
+                <dxGrid:TextColumn   FieldName="BlockMovement"     Caption = "{i18n:Translate BinContentPage_ColumnBlockMovement}" />
+                <dxGrid:TextColumn   FieldName="UnitofMeasureCode" Caption = "{i18n:Translate BinContentPage_ColumnUnitofMeasureCode}"/>
+                <dxGrid:NumberColumn FieldName="Quantity"          Caption = "{i18n:Translate BinContentPage_ColumnQuantity}" />
+                <dxGrid:NumberColumn FieldName="QuantityBase"      Caption = "{i18n:Translate BinContentPage_ColumnQuantityBase}" />
+                <dxGrid:NumberColumn FieldName="PickQty"           Caption = "{i18n:Translate BinContentPage_ColumnPickQty}" />
+                <dxGrid:NumberColumn FieldName="NegAdjmtQty"       Caption = "{i18n:Translate BinContentPage_ColumnNegAdjmtQty}" />
+                <dxGrid:NumberColumn FieldName="PutawayQty"        Caption = "{i18n:Translate BinContentPage_ColumnPutawayQty}" />
+                <dxGrid:NumberColumn FieldName="PosAdjmtQty"       Caption = "{i18n:Translate BinContentPage_ColumnPosAdjmtQty}" />
+            </dxGrid:GridControl.Columns>
+            
+            --><!--<dxGrid:GridControl.RightSwipeButtons>
+                <dxGrid:SwipeButtonInfo ButtonName="RightButton" Caption="{i18n:Translate ConnectionsPage_SwipRightButton}" BackgroundColor="Red" Width="150" />
+            </dxGrid:GridControl.RightSwipeButtons>--><!--
+        </dxGrid:GridControl>-->
+    </ContentPage.Content>
+</ContentPage>

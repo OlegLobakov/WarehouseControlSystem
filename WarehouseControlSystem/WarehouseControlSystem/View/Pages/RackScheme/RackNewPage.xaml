@@ -1,0 +1,309 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:sc="clr-namespace:WarehouseControlSystem.Helpers.Containers.StateContainer"
+             xmlns:rv="clr-namespace:WarehouseControlSystem.View.Pages.RackScheme"
+             xmlns:vc="clr-namespace:WarehouseControlSystem.View.Content"
+             xmlns:convertors="clr-namespace:WarehouseControlSystem.Helpers.Converters"
+             x:Class="WarehouseControlSystem.View.Pages.RackScheme.RackNewPage"
+             xmlns:i18n="clr-namespace:WarehouseControlSystem;assembly=WarehouseControlSystem">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <convertors:RackOrientationConverter x:Key="orientationConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem  Order="Primary" Text="" Command="{Binding CreateRackCommand}">
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="UWP,WinPhone">
+                        <FileImageSource File="Assets/Images/ic_action_check_circle.png"/>
+                    </On>
+                    <On Platform="iOS,Android">
+                        <FileImageSource File="ic_action_check_circle.png"/>
+                    </On>
+                </OnPlatform>
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <sc:StateContainer State="{Binding State}" Padding="5">
+            <sc:StateCondition State="Loading">
+                <StackLayout VerticalOptions="Center" HorizontalOptions="Center" Orientation="Vertical">
+                    <ActivityIndicator IsRunning="{Binding LoadAnimation}" HeightRequest="50" WidthRequest="50"/>
+                    <Label Text="{Binding LoadingText}" FontSize="Small"/>
+                </StackLayout>
+            </sc:StateCondition>
+            <sc:StateCondition State="Normal">
+                <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" x:Name="maingrid">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="50" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <ProgressBar Grid.Row="0" HeightRequest="20" IsVisible="{Binding IsBusy}"/>
+
+                        <StackLayout Grid.Row="1" Orientation="Horizontal">
+                            <Label Text="{i18n:Translate RackNewPage_RackNo}" WidthRequest="100" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="20,0,0,0"></Label>
+                            <Entry x:Name="codeentry" Text="{Binding No, Mode=TwoWay}" Keyboard="Text" Margin="0" 
+                               BackgroundColor="White" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="100" 
+                               TextChanged="CodeEntryChanged"/>
+                            <Label Text="{Binding NoWarningText}" HorizontalOptions="Start" VerticalOptions="Center" Margin="40,0,0,0"/>
+
+                            <StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand" x:Name="desctination">
+                                <Label HorizontalOptions="Start" VerticalTextAlignment="Center" Text="{i18n:Translate RackNewPage_IncludeIn}"/>
+                                <Picker x:Name="locationpicker" WidthRequest="200"  
+                                    VerticalOptions="Center" 
+                                    IsEnabled="{Binding LocationsIsLoaded}" 
+                                    ItemDisplayBinding="{Binding Name}" 
+                                    SelectedIndexChanged="PickerLocation"></Picker>
+                                <Picker x:Name="zonepicker"     
+                                    WidthRequest="200"  
+                                    VerticalOptions="Center" IsEnabled="{Binding ZonesIsLoaded}" 
+                                    ItemDisplayBinding="{Binding Description}" 
+                                    SelectedIndexChanged="PickerZone"></Picker>
+                            </StackLayout>
+                        </StackLayout>
+
+                        <ScrollView Grid.Row="2"  
+                                Orientation="Horizontal" BackgroundColor="White"
+                                x:Name="rackviewpanel">
+                            <rv:RackView x:Name="rackview"></rv:RackView>
+                        </ScrollView>
+
+                        <StackLayout Grid.Row="3" VerticalOptions="End">
+                            <ScrollView  Orientation="Horizontal" >
+                                <Grid Padding="2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="200"/>
+                                        <ColumnDefinition Width="200"/>
+                                        <ColumnDefinition Width="200"/>
+                                        <ColumnDefinition Width="200"/>
+                                        <ColumnDefinition Width="200"/>
+                                        <ColumnDefinition Width="200"/>
+                                        <ColumnDefinition Width="200"/>
+                                        <ColumnDefinition Width="200"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Grid Grid.Column="0" Padding="3" VerticalOptions="Start">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <StackLayout  Grid.Row="0" Orientation="Vertical">
+                                            <Label Text="{i18n:Translate RackNewPage_Sections}"  HorizontalOptions="Center" x:Name="sectionlabel"></Label>
+                                            <Slider  Maximum="40" Minimum="1" Value="{Binding Sections, Mode=TwoWay}" ValueChanged="Slider_SectionsValueChanged" x:Name="sectionslider"></Slider>
+                                        </StackLayout>
+                                        <StackLayout  Grid.Row="1" Orientation="Vertical">
+                                            <Label Text="{i18n:Translate RackNewPage_Levels}"  HorizontalOptions="Center"  x:Name="levelslabel"></Label>
+                                            <Slider Maximum="7"  Minimum="1" Value="{Binding Levels, Mode=TwoWay}" ValueChanged="Slider_LevelsValueChanged" x:Name="levelsslider"></Slider>
+                                        </StackLayout>
+                                        <StackLayout  Grid.Row="2" Orientation="Vertical">
+                                            <Label Text="{i18n:Translate RackNewPage_Depth}"  HorizontalOptions="Center"  x:Name="depthlabel"></Label>
+                                            <Slider Maximum="3" Minimum="1" Value="{Binding Depth, Mode=TwoWay}" ValueChanged="Slider_DepthValueChanged" x:Name="depthslider" IsEnabled="False"></Slider>
+                                        </StackLayout>
+                                    </Grid>
+
+                                    <Grid Grid.Column="1" Padding="3" VerticalOptions="Start">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <StackLayout Grid.Row="0" Orientation="Vertical">
+                                            <Label  Text="{i18n:Translate RackNewPage_Orientation}" HorizontalOptions="Start"/>
+                                            <Picker  x:Name="orientationpicker" HorizontalOptions="FillAndExpand" 
+                                                 ItemDisplayBinding="{Binding Name}" 
+                                                 SelectedIndexChanged="Picker_SelectedIndexChanged"
+                                                 SelectedItem="{Binding RackOrientation, Mode=OneWayToSource,Converter={StaticResource orientationConverter}}"></Picker>
+                                        </StackLayout>
+                                        <StackLayout Grid.Row="1" Orientation="Vertical">
+                                            <Label HorizontalOptions="Start" VerticalTextAlignment="Center" Text="{i18n:Translate RackTemplate_FieldBinTemplateCode}"/>
+                                            <Picker x:Name="bintemplatepicker" HorizontalOptions="FillAndExpand" 
+                                                IsEnabled="{Binding BinTemplatesIsLoaded}" 
+                                                VerticalOptions="Start" 
+                                                ItemDisplayBinding="{Binding Code}"
+                                                SelectedItem="{Binding SelectedBinTemplate, Mode=OneWayToSource}"/>
+                                        </StackLayout>
+                                        <StackLayout Grid.Row="2" Orientation="Vertical">
+                                            <Button Text="{i18n:Translate RackNewPage_CreateNewTemplate}"/>
+                                        </StackLayout>
+
+                                    </Grid>
+
+                                    <Grid Grid.Column="2" Padding="3" VerticalOptions="Start">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <StackLayout Grid.Row="0" Orientation="Vertical">
+                                            <Label  HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
+                                                Text="{i18n:Translate RackNewPage_Conflict}"/>
+                                            <Label  HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
+                                                Text=" "/>
+                                        </StackLayout>
+
+                                        <StackLayout Grid.Row="1" Orientation="Vertical">
+                                            <Label  HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
+                                                Text="{i18n:Translate RackNewPage_ConflictBins}"/>
+                                            <Switch HorizontalOptions="Start" VerticalOptions="Center" 
+                                                IsToggled="{Binding ConflictBinChange, Mode=TwoWay}"></Switch>
+                                        </StackLayout>
+
+                                        <StackLayout Grid.Row="2" Orientation="Vertical">
+                                            <Label  HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
+                                                Text="{i18n:Translate RackNewPage_ConflictRack}"/>
+                                            <Switch HorizontalOptions="Start" VerticalOptions="Center" 
+                                                IsToggled="{Binding ConflictRackChange, Mode=TwoWay}"></Switch>
+                                        </StackLayout>
+                                    </Grid>
+                                    <Grid Grid.Column="3" Padding="3" VerticalOptions="Start">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <StackLayout Grid.Row="0" Orientation="Vertical">
+                                            <Label  HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
+                                                Text="{i18n:Translate RackNewPage_InversNumebringSections}"/>
+                                            <Switch HorizontalOptions="Start" VerticalOptions="Center" 
+                                                IsToggled="{Binding ReversSectionNumbering, Mode=TwoWay}"></Switch>
+                                        </StackLayout>
+
+                                        <StackLayout Grid.Row="1" Orientation="Vertical">
+                                            <Label  HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
+                                                Text="{i18n:Translate RackNewPage_InversNumebringLevels}"/>
+                                            <Switch HorizontalOptions="Start" VerticalOptions="Center" 
+                                                IsToggled="{Binding ReversLevelNumbering, Mode=TwoWay}"></Switch>
+                                        </StackLayout>
+                                    </Grid>
+
+                                    <Grid Grid.Column="4" Padding="3" VerticalOptions="Start">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+
+                                        <StackLayout Grid.Row="0"  Orientation="Vertical">
+                                            <Label HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
+                                               Text="{i18n:Translate RackNewPage_StartSectionNumbering}"/>
+                                            <Entry Text="{Binding NumberingSectionBegin, Mode=TwoWay}" Keyboard="Numeric" BackgroundColor="White" />
+                                        </StackLayout>
+
+                                        <StackLayout Grid.Row="1"  Orientation="Vertical">
+                                            <Label HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
+                                               Text="{i18n:Translate RackNewPage_StartLevelsNumbering}"/>
+                                            <Entry Text="{Binding NumberingLevelBegin, Mode=TwoWay}" Keyboard="Numeric" BackgroundColor="White" />
+                                        </StackLayout>
+                                    </Grid>
+
+                                    <Grid Grid.Column="5" Padding="3" VerticalOptions="Start">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+
+                                        <StackLayout Grid.Row="0"  Orientation="Vertical">
+                                            <Label HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
+                                               Text="{i18n:Translate RackNewPage_RackSectionSeparator}"/>
+                                            <Entry Text="{Binding RackSectionSeparator, Mode=TwoWay}" 
+                                               Keyboard="Numeric" BackgroundColor="White" />
+                                        </StackLayout>
+
+                                        <StackLayout Grid.Row="1"  Orientation="Vertical">
+                                            <Label HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
+                                               Text="{i18n:Translate RackNewPage_SectionLevelSeparator}"/>
+                                            <Entry Text="{Binding SectionLevelSeparator, Mode=TwoWay}" 
+                                               Keyboard="Numeric" BackgroundColor="White" />
+                                        </StackLayout>
+
+                                        <StackLayout Grid.Row="2"  Orientation="Vertical">
+                                            <Label HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
+                                               Text="{i18n:Translate RackNewPage_LevelDepthSeparator}"/>
+                                            <Entry Text="{Binding LevelDepthSeparator, Mode=TwoWay}" 
+                                               Keyboard="Numeric" BackgroundColor="White" />
+                                        </StackLayout>
+                                    </Grid>
+
+                                    <Grid Grid.Column="6" Padding="3" VerticalOptions="Start">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+
+                                        <StackLayout Grid.Row="0"  Orientation="Vertical">
+                                            <Label HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
+                                               Text="{i18n:Translate RackNewPage_StepSectionNumbering}"/>
+                                            <Entry Text="{Binding StepNumberingSection, Mode=TwoWay}" 
+                                               Keyboard="Numeric" BackgroundColor="White" />
+                                        </StackLayout>
+
+                                    </Grid>
+                                </Grid>
+                            </ScrollView>
+                        </StackLayout>
+                    </Grid>
+                    <vc:BinInfoPanel Grid.Column="1" x:Name="infopanel" IsVisible="{Binding IsSelectedBins}"/>
+                </Grid>
+            </sc:StateCondition>
+            <sc:StateCondition State="Error">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="4*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" Text="{i18n:Translate StateContainer_StateError_Header}" FontSize="Large" HorizontalOptions="Center" VerticalOptions="Center"/>
+                    <ScrollView Orientation="Vertical" Grid.Row="1" >
+                        <StackLayout>
+                            <Label Text="{Binding ErrorText}" FontSize="Large" 
+                                   HorizontalOptions="FillAndExpand" 
+                                   VerticalOptions="FillAndExpand" 
+                                   HorizontalTextAlignment="Center"
+                                   VerticalTextAlignment="Center"/>
+                        </StackLayout>
+                    </ScrollView>
+                    <Button Grid.Row="2" Text="OK" FontSize="Large" Command="{Binding ErrorOKCommand}" BackgroundColor="White"/>
+                </Grid>
+            </sc:StateCondition>
+            <sc:StateCondition State="Warning">
+                <!--<StackLayout HorizontalOptions="Center" VerticalOptions="Center" Orientation="Vertical">
+                    <Label x:Name="warninglabel" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Black" FontSize="Large"></Label>
+                    <Button Text="OK" />
+                </StackLayout>-->
+            </sc:StateCondition>
+            <sc:StateCondition State="NoInternet">
+                <!--<StackLayout Orientation="Vertical" HorizontalOptions="Center" VerticalOptions="Center">
+                    <Label Text="{i18n:Translate StateContainer_StateNoInternet_Error}" FontSize="Large" HorizontalOptions="Center" VerticalOptions="Center"/>
+                </StackLayout>-->
+            </sc:StateCondition>
+            <sc:StateCondition State="NoData">
+                <!--<Label Text="No Data" FontSize="Large" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>-->
+            </sc:StateCondition>
+            <sc:StateCondition State="Request">
+                <!--<StackLayout Orientation="Vertical" HorizontalOptions="Center" VerticalOptions="Center">
+                    <Label x:Name="requestnamelabel" FontSize="Large"/>
+                    <Label x:Name="requestmessagelabel"/>
+                    <StackLayout Orientation="Horizontal">
+                        -->
+                <!--<Button Text="{i18n:Translate RackNewPage_ButtonsOK}" Clicked="Button_Clicked_OkMessage" WidthRequest="150"/>
+                        <Button Text="{i18n:Translate RackNewPage_ButtonsCancel}" Clicked="Button_Clicked_CancelMessage" WidthRequest="150"/>-->
+                <!--
+                    </StackLayout>
+                </StackLayout>-->
+            </sc:StateCondition>
+        </sc:StateContainer>
+    </ContentPage.Content>
+</ContentPage>

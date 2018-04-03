@@ -1,0 +1,1355 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BinTemplatesPage_GridColumnBinDescr" xml:space="preserve">
+    <value>Описание ячеек</value>
+  </data>
+  <data name="BinTemplatesPage_GridColumnBinRanking" xml:space="preserve">
+    <value>Рейтинг ячеек</value>
+  </data>
+  <data name="BinTemplatesPage_GridColumnBinType" xml:space="preserve">
+    <value>Тип ячеек</value>
+  </data>
+  <data name="BinTemplatesPage_GridColumnCode" xml:space="preserve">
+    <value>Код</value>
+  </data>
+  <data name="BinTemplatesPage_GridColumnLocation" xml:space="preserve">
+    <value>Код склада</value>
+  </data>
+  <data name="BinTemplatesPage_GridColumnMaxCubage" xml:space="preserve">
+    <value>Макс. объем</value>
+  </data>
+  <data name="BinTemplatesPage_GridColumnMaxWeight" xml:space="preserve">
+    <value>Макс. вес</value>
+  </data>
+  <data name="BinTemplatesPage_GridColumnName" xml:space="preserve">
+    <value>Название</value>
+  </data>
+  <data name="BinTemplatesPage_GridColumnWCC" xml:space="preserve">
+    <value>Код класса оборудования</value>
+  </data>
+  <data name="BinTemplatesPage_GridColumnZone" xml:space="preserve">
+    <value>Код зоны</value>
+  </data>
+  <data name="BinTemplatesPage_MenuNew" xml:space="preserve">
+    <value>Новый</value>
+  </data>
+  <data name="BinTemplatesPage_Title" xml:space="preserve">
+    <value>Шаблоны ячеек</value>
+  </data>
+  <data name="MainMenuAbout" xml:space="preserve">
+    <value>О программе</value>
+    <comment>О программе</comment>
+  </data>
+  <data name="MainMenuBinTemplates" xml:space="preserve">
+    <value>Шаблоны ячеек</value>
+    <comment>Шаблоны ячеек</comment>
+  </data>
+  <data name="MainMenuBinTypes" xml:space="preserve">
+    <value>Типы ячеек</value>
+    <comment>Типы ячеек</comment>
+  </data>
+  <data name="MainMenuConnections" xml:space="preserve">
+    <value>Подключения</value>
+  </data>
+  <data name="MainMenuLocations" xml:space="preserve">
+    <value>Склады</value>
+  </data>
+  <data name="MainMenuLog" xml:space="preserve">
+    <value>Лог</value>
+    <comment>Страница лога ошибок</comment>
+  </data>
+  <data name="MainMenuParameters" xml:space="preserve">
+    <value>Параметры</value>
+    <comment>Параметры программы</comment>
+  </data>
+  <data name="MainMenuPurchases" xml:space="preserve">
+    <value>Возможности</value>
+  </data>
+  <data name="MainMenuReserv10" xml:space="preserve">
+    <value />
+  </data>
+  <data name="MainMenuReserv2" xml:space="preserve">
+    <value />
+  </data>
+  <data name="MainMenuReserv3" xml:space="preserve">
+    <value />
+  </data>
+  <data name="MainMenuReserv4" xml:space="preserve">
+    <value />
+  </data>
+  <data name="MainMenuReserv5" xml:space="preserve">
+    <value />
+  </data>
+  <data name="MainMenuReserv6" xml:space="preserve">
+    <value />
+  </data>
+  <data name="MainMenuReserv7" xml:space="preserve">
+    <value />
+  </data>
+  <data name="MainMenuReserv8" xml:space="preserve">
+    <value />
+  </data>
+  <data name="MainMenuReserv9" xml:space="preserve">
+    <value />
+  </data>
+  <data name="NewBinTemplatePage_BinTemplate" xml:space="preserve">
+    <value>Шаблон ячеек</value>
+  </data>
+  <data name="NewBinTemplatePage_BinTypeCodeIsEmpty" xml:space="preserve">
+    <value>Поле код типа ячеек не заполнено!</value>
+  </data>
+  <data name="NewBinTemplatePage_ButtonCancel" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="NewBinTemplatePage_ButtonCreate" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="NewBinTemplatePage_CodeIsEmpty" xml:space="preserve">
+    <value>Поле Код не заполнено!</value>
+  </data>
+  <data name="NewBinTemplatePage_FieldBinDescription" xml:space="preserve">
+    <value>Описание ячеек</value>
+  </data>
+  <data name="NewBinTemplatePage_FieldBinTypeCode" xml:space="preserve">
+    <value>Код типа ячеек</value>
+  </data>
+  <data name="NewBinTemplatePage_FieldCode" xml:space="preserve">
+    <value>Код</value>
+  </data>
+  <data name="NewBinTemplatePage_FieldDedicated" xml:space="preserve">
+    <value>Специальная</value>
+  </data>
+  <data name="NewBinTemplatePage_FieldLocationCode" xml:space="preserve">
+    <value>Код склада</value>
+  </data>
+  <data name="NewBinTemplatePage_FieldMaximumCubage" xml:space="preserve">
+    <value>Макс. объем</value>
+  </data>
+  <data name="NewBinTemplatePage_FieldMaximumWeight" xml:space="preserve">
+    <value>Макс. вес</value>
+  </data>
+  <data name="NewBinTemplatePage_FieldName" xml:space="preserve">
+    <value>Название</value>
+  </data>
+  <data name="NewBinTemplatePage_FieldZoneCode" xml:space="preserve">
+    <value>Код зоны</value>
+  </data>
+  <data name="NewBinTemplatePage_LocationCodeIsEmpty" xml:space="preserve">
+    <value>Поле Код склада не заполнено!</value>
+  </data>
+  <data name="NewBinTemplatePage_Title" xml:space="preserve">
+    <value>Новый шаблон ячеек</value>
+  </data>
+  <data name="NewBinTemplatePage_ZoneCodeIsEmpty" xml:space="preserve">
+    <value>Поле Код Зоны не заполнено!</value>
+  </data>
+  <data name="NewConnectionPage_Error_ConnectionExist" xml:space="preserve">
+    <value>Подключение с таким именем уже существует!</value>
+  </data>
+  <data name="NewConnectionPage_Error_Name" xml:space="preserve">
+    <value>Введите название подключения!</value>
+  </data>
+  <data name="NewConnectionPage_Title" xml:space="preserve">
+    <value>Новое подключение к Microsoft Dynamics NAV</value>
+  </data>
+  <data name="StateContainer_reserv1" xml:space="preserve">
+    <value />
+  </data>
+  <data name="StateContainer_reserv2" xml:space="preserve">
+    <value />
+  </data>
+  <data name="StateContainer_reserv3" xml:space="preserve">
+    <value />
+  </data>
+  <data name="StateContainer_reserv4" xml:space="preserve">
+    <value />
+  </data>
+  <data name="StateContainer_StateError_Header" xml:space="preserve">
+    <value>Ошибка</value>
+  </data>
+  <data name="StateContainer_StateNoInternet_Error" xml:space="preserve">
+    <value>Нет подключения к  Microsoft Dynamics NAV</value>
+  </data>
+  <data name="ConnectionsPage_ColumnConnected" xml:space="preserve">
+    <value>Подключен</value>
+  </data>
+  <data name="ConnectionsPage_ColumnDomen" xml:space="preserve">
+    <value>Домент</value>
+  </data>
+  <data name="ConnectionsPage_ColumnLink" xml:space="preserve">
+    <value>URL</value>
+  </data>
+  <data name="ConnectionsPage_ColumnName" xml:space="preserve">
+    <value>Название</value>
+  </data>
+  <data name="ConnectionsPage_ColumnUser" xml:space="preserve">
+    <value>Пользователь</value>
+  </data>
+  <data name="ConnectionsPage_ColumnVerified" xml:space="preserve">
+    <value>Проверен</value>
+  </data>
+  <data name="ConnectionsPage_SwipRightButton" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="ConnectionsPage_Title" xml:space="preserve">
+    <value>Подключения к Microsoft Dynamics NAV</value>
+  </data>
+  <data name="NewConnectionPage_ButtonCancel" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="NewConnectionPage_ButtonSave" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="NewConnectionPage_ButtonTest" xml:space="preserve">
+    <value>Тест</value>
+  </data>
+  <data name="NewConnectionPage_FieldDomen" xml:space="preserve">
+    <value>Домен</value>
+  </data>
+  <data name="NewConnectionPage_FieldName" xml:space="preserve">
+    <value>Название</value>
+  </data>
+  <data name="NewConnectionPage_FieldPassword" xml:space="preserve">
+    <value>Пароль</value>
+  </data>
+  <data name="NewConnectionPage_FieldUser" xml:space="preserve">
+    <value>Пользователь</value>
+  </data>
+  <data name="NewConnectionPage_FieldWebserviceLink" xml:space="preserve">
+    <value>Web-service url</value>
+  </data>
+  <data name="ParametersPage_Section_Localization_Title" xml:space="preserve">
+    <value>Локализация</value>
+  </data>
+  <data name="ParametersPage_Section_Location_DefaultLocation" xml:space="preserve">
+    <value>Склад по умолчанию</value>
+  </data>
+  <data name="ParametersPage_Section_Location_Title" xml:space="preserve">
+    <value>Склад</value>
+  </data>
+  <data name="ParametersPage_Section_RackCreation_DCQ" xml:space="preserve">
+    <value>Кол-во секций по умол.</value>
+  </data>
+  <data name="ParametersPage_Section_RackCreation_DD" xml:space="preserve">
+    <value>Глубина по умолч.</value>
+  </data>
+  <data name="ParametersPage_Section_RackCreation_DLQ" xml:space="preserve">
+    <value>Кол-во уровней по умол.</value>
+  </data>
+  <data name="ParametersPage_Section_RackCreation_Title" xml:space="preserve">
+    <value>Создание стоек</value>
+  </data>
+  <data name="ParametersPage_Section_Scheme_Blocked" xml:space="preserve">
+    <value>Блокировка</value>
+  </data>
+  <data name="ParametersPage_Section_Scheme_Blocked_Comment" xml:space="preserve">
+    <value>Блокировать передвижение элементов на схеме</value>
+  </data>
+  <data name="ParametersPage_Section_Scheme_Title" xml:space="preserve">
+    <value>Схема</value>
+  </data>
+  <data name="ParametersPage_Section_ZoneCreation_DZPH" xml:space="preserve">
+    <value>Высота плана зоны</value>
+  </data>
+  <data name="ParametersPage_Section_ZoneCreation_DZPW" xml:space="preserve">
+    <value>Ширина плана зоны</value>
+  </data>
+  <data name="ParametersPage_Section_ZoneCreation_Title" xml:space="preserve">
+    <value>Создание зон склада</value>
+  </data>
+  <data name="ParametersPage_Title" xml:space="preserve">
+    <value>Параметры</value>
+  </data>
+  <data name="GlobalButtonCancel" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="GlobalButtonOK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="LocationFieldParamsPage_Title" xml:space="preserve">
+    <value>Параметры схемы склада</value>
+  </data>
+  <data name="LocationListPage_FieldBinMandatory" xml:space="preserve">
+    <value>Ячейка обязательна</value>
+  </data>
+  <data name="LocationListPage_FieldCode" xml:space="preserve">
+    <value>Код</value>
+  </data>
+  <data name="LocationListPage_FieldName" xml:space="preserve">
+    <value>Название</value>
+  </data>
+  <data name="LocationListPage_FieldRequirePick" xml:space="preserve">
+    <value>Требуется подбор</value>
+  </data>
+  <data name="LocationListPage_FieldRequirePutaway" xml:space="preserve">
+    <value>Требуется размещение</value>
+  </data>
+  <data name="LocationListPage_FieldRequireReceive" xml:space="preserve">
+    <value>Требуется приемка</value>
+  </data>
+  <data name="LocationListPage_FieldRequireShipment" xml:space="preserve">
+    <value>Требуется отгрузка</value>
+  </data>
+  <data name="LocationListPage_SwipButton_Delete" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="LocationListPage_Title" xml:space="preserve">
+    <value>Список складов</value>
+  </data>
+  <data name="LocationNewPage_FieldBinMandatory" xml:space="preserve">
+    <value>Ячейка обязательна</value>
+  </data>
+  <data name="LocationNewPage_FieldCode" xml:space="preserve">
+    <value>Код</value>
+  </data>
+  <data name="LocationNewPage_FieldName" xml:space="preserve">
+    <value>Название</value>
+  </data>
+  <data name="LocationNewPage_FieldRequirePick" xml:space="preserve">
+    <value>Требуется подбор</value>
+  </data>
+  <data name="LocationNewPage_FieldRequirePutaway" xml:space="preserve">
+    <value>Требуется размещение</value>
+  </data>
+  <data name="LocationNewPage_FieldRequireReceive" xml:space="preserve">
+    <value>Требуется приемка</value>
+  </data>
+  <data name="LocationNewPage_FieldRequireShipment" xml:space="preserve">
+    <value>Требуется отгрузка</value>
+  </data>
+  <data name="LocationNewPage_Title" xml:space="preserve">
+    <value>Новый склад</value>
+  </data>
+  <data name="ZonesSchemePage_Menu_SchemeParams" xml:space="preserve">
+    <value>Параметры схемы</value>
+  </data>
+  <data name="ZonesSchemePage_Request_Cancel" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="ZonesSchemePage_Request_Delete" xml:space="preserve">
+    <value>Удалить?</value>
+  </data>
+  <data name="ZonesSchemePage_Request_Ok" xml:space="preserve">
+    <value>ОК</value>
+  </data>
+  <data name="ZonesSchemePage_StateMessageNoData" xml:space="preserve">
+    <value>Зоны склада не найдены!</value>
+  </data>
+  <data name="ZonesSchemePage_Title" xml:space="preserve">
+    <value>Cклады | </value>
+  </data>
+  <data name="LogEntryViewPage_Message" xml:space="preserve">
+    <value>Сообщение</value>
+  </data>
+  <data name="LogEntryViewPage_StackTrace" xml:space="preserve">
+    <value>Стек вызова</value>
+  </data>
+  <data name="LogEntryViewPage_Title" xml:space="preserve">
+    <value>Подробности </value>
+  </data>
+  <data name="LogPage_FieldMessage" xml:space="preserve">
+    <value>Описание</value>
+  </data>
+  <data name="LogPage_FieldMoment" xml:space="preserve">
+    <value>Время</value>
+  </data>
+  <data name="LogPage_FieldType" xml:space="preserve">
+    <value>Тип</value>
+  </data>
+  <data name="LogPage_Title" xml:space="preserve">
+    <value>Лог</value>
+  </data>
+  <data name="NewZonePage_ButtonCancel" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="NewZonePage_ButtonCreate" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="NewZonePage_FieldCode" xml:space="preserve">
+    <value>Код</value>
+  </data>
+  <data name="NewZonePage_FieldColor" xml:space="preserve">
+    <value>Цвет</value>
+  </data>
+  <data name="NewZonePage_FieldName" xml:space="preserve">
+    <value>Описание</value>
+  </data>
+  <data name="NewZonePage_Title" xml:space="preserve">
+    <value>New zone </value>
+  </data>
+  <data name="RackListPage_FieldDepth" xml:space="preserve">
+    <value>Глубина</value>
+  </data>
+  <data name="RackListPage_FieldLevels" xml:space="preserve">
+    <value>Уровни</value>
+  </data>
+  <data name="RackListPage_FieldNo" xml:space="preserve">
+    <value>Номер</value>
+  </data>
+  <data name="RackListPage_FieldSections" xml:space="preserve">
+    <value>Секции</value>
+  </data>
+  <data name="RackListPage_SwipButton_Delete" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="RackListPage_Title" xml:space="preserve">
+    <value>Список стоек</value>
+  </data>
+  <data name="RackNewPage_ButtonsBlock" xml:space="preserve">
+    <value>Блокировать</value>
+  </data>
+  <data name="RackNewPage_ButtonsCancel" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="RackNewPage_ButtonsCombine" xml:space="preserve">
+    <value>Совместить</value>
+  </data>
+  <data name="RackNewPage_ButtonsCreate" xml:space="preserve">
+    <value>Создать</value>
+  </data>
+  <data name="RackNewPage_ButtonsDelete" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="RackNewPage_ButtonsOK" xml:space="preserve">
+    <value>ОК</value>
+  </data>
+  <data name="RackNewPage_ButtonsSyncNAV" xml:space="preserve">
+    <value>Синхр. NAV</value>
+  </data>
+  <data name="RackNewPage_Depth" xml:space="preserve">
+    <value>Глубина</value>
+  </data>
+  <data name="RackNewPage_InversNumebringLevels" xml:space="preserve">
+    <value>Инверт. нумер. уровней</value>
+  </data>
+  <data name="RackNewPage_InversNumebringSections" xml:space="preserve">
+    <value>Инверт. нумер. секций</value>
+  </data>
+  <data name="RackNewPage_Levels" xml:space="preserve">
+    <value>Уровни</value>
+  </data>
+  <data name="RackNewPage_Menu_ApplyTemplate" xml:space="preserve">
+    <value>Применить шаблон</value>
+  </data>
+  <data name="RackNewPage_Menu_FieldParameters" xml:space="preserve">
+    <value>Параметры</value>
+  </data>
+  <data name="RackNewPage_Menu_SaveAsTemplate" xml:space="preserve">
+    <value>Сохранить как шаблон</value>
+  </data>
+  <data name="RackNewPage_Orientation" xml:space="preserve">
+    <value>Ориентация</value>
+  </data>
+  <data name="RackNewPage_OrientationRackHL" xml:space="preserve">
+    <value>Горизонтальная слева</value>
+  </data>
+  <data name="RackNewPage_OrientationRackHR" xml:space="preserve">
+    <value>Горизонтальная справа</value>
+  </data>
+  <data name="RackNewPage_OrientationRackVD" xml:space="preserve">
+    <value>Вертикальная снизу</value>
+  </data>
+  <data name="RackNewPage_OrientationRackVU" xml:space="preserve">
+    <value>Вертикальная сверху</value>
+  </data>
+  <data name="RackNewPage_RackNo" xml:space="preserve">
+    <value>Номер</value>
+  </data>
+  <data name="RackNewPage_Sections" xml:space="preserve">
+    <value>Секции</value>
+  </data>
+  <data name="RackNewPage_StartLevelsNumbering" xml:space="preserve">
+    <value>Немерация уровней с</value>
+  </data>
+  <data name="RackNewPage_StartSectionNumbering" xml:space="preserve">
+    <value>Нумерация секций с</value>
+  </data>
+  <data name="RackNewPage_Title" xml:space="preserve">
+    <value>Новый стеллаж</value>
+  </data>
+  <data name="RackTemplate_FieldBinsQuanity" xml:space="preserve">
+    <value>Кол-во ячеек</value>
+  </data>
+  <data name="RackTemplate_FieldCode" xml:space="preserve">
+    <value>Код</value>
+  </data>
+  <data name="RackTemplate_FieldDepth" xml:space="preserve">
+    <value>Глубина</value>
+  </data>
+  <data name="RackTemplate_FieldLevels" xml:space="preserve">
+    <value>Уровни</value>
+  </data>
+  <data name="RackTemplate_FieldOrientation" xml:space="preserve">
+    <value>Ориентация</value>
+  </data>
+  <data name="RackTemplate_FieldSections" xml:space="preserve">
+    <value>Секции</value>
+  </data>
+  <data name="RackTemplate_SwipButtonDelete" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="RackTemplate_Title" xml:space="preserve">
+    <value>Шаблоны стоек</value>
+  </data>
+  <data name="ZoneFieldParamsPage_Height" xml:space="preserve">
+    <value>Высота</value>
+  </data>
+  <data name="ZoneFieldParamsPage_Title" xml:space="preserve">
+    <value>Параметра схемы зоны</value>
+  </data>
+  <data name="ZoneFieldParamsPage_Width" xml:space="preserve">
+    <value>Ширина</value>
+  </data>
+  <data name="ZoneSchemePage_MenuCreateBinTemplate" xml:space="preserve">
+    <value>Создать шаблон ячеек</value>
+  </data>
+  <data name="ZoneSchemePage_MenuCreateRack" xml:space="preserve">
+    <value>Создать стойку</value>
+  </data>
+  <data name="ZoneSchemePage_MenuDeleteRack" xml:space="preserve">
+    <value>Удалить стойку</value>
+  </data>
+  <data name="ZoneSchemePage_MenuZoneSchemeParameters" xml:space="preserve">
+    <value>Параметры схемы зоны</value>
+  </data>
+  <data name="ZoneSchemePage_RequestDelete" xml:space="preserve">
+    <value>Удалить?</value>
+  </data>
+  <data name="ZoneSchemePage_Title" xml:space="preserve">
+    <value>Склад</value>
+  </data>
+  <data name="FindPage_Button" xml:space="preserve">
+    <value>Скан</value>
+  </data>
+  <data name="FindPage_Title" xml:space="preserve">
+    <value>Поиск</value>
+    <comment>or Find?</comment>
+  </data>
+  <data name="RackTemplate_FieldName" xml:space="preserve">
+    <value>Название</value>
+  </data>
+  <data name="RackNewPage_Error_RackNo" xml:space="preserve">
+    <value>Стелаж с таким номеров уже существует!</value>
+  </data>
+  <data name="RackTemplate_FieldBinTemplateCode" xml:space="preserve">
+    <value>Код шаблона ячеек</value>
+  </data>
+  <data name="RacksViewPage_Title" xml:space="preserve">
+    <value>Стеллажи зоны </value>
+  </data>
+  <data name="NewZonePage_Color_Blue" xml:space="preserve">
+    <value>Синий</value>
+  </data>
+  <data name="NewZonePage_Color_BlueLight" xml:space="preserve">
+    <value>Синий светлый</value>
+  </data>
+  <data name="NewZonePage_Color_Green" xml:space="preserve">
+    <value>Зеленый</value>
+  </data>
+  <data name="NewZonePage_Color_Green_Light" xml:space="preserve">
+    <value>Зеленый светлый</value>
+  </data>
+  <data name="NewZonePage_Color_Red" xml:space="preserve">
+    <value>Красный</value>
+  </data>
+  <data name="NewZonePage_Color_RedLight" xml:space="preserve">
+    <value>Красный светлый</value>
+  </data>
+  <data name="AboutPage_Title" xml:space="preserve">
+    <value>О программе</value>
+  </data>
+  <data name="ZonesSchemePage_Menu_EditZone" xml:space="preserve">
+    <value>Изменить</value>
+  </data>
+  <data name="NewZonePage_EditModeTitle" xml:space="preserve">
+    <value>Изменить зону </value>
+  </data>
+  <data name="ContactPage_CancelButton" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="ContactPage_Email" xml:space="preserve">
+    <value>E-mail</value>
+  </data>
+  <data name="ContactPage_Message" xml:space="preserve">
+    <value>Сообщение</value>
+  </data>
+  <data name="ContactPage_Name" xml:space="preserve">
+    <value>Имя</value>
+  </data>
+  <data name="ContactPage_SendTest" xml:space="preserve">
+    <value>Отправить</value>
+  </data>
+  <data name="ContactPage_Title" xml:space="preserve">
+    <value>Контакт</value>
+  </data>
+  <data name="ContactPage_Type" xml:space="preserve">
+    <value>Тип</value>
+  </data>
+  <data name="MainMenuContact" xml:space="preserve">
+    <value>Контакты</value>
+  </data>
+  <data name="MainMenuHome" xml:space="preserve">
+    <value>Начало</value>
+  </data>
+  <data name="AboutPage_Contact" xml:space="preserve">
+    <value>Контакты</value>
+  </data>
+  <data name="AboutPage_ProjectSite" xml:space="preserve">
+    <value>Сайт проекта</value>
+  </data>
+  <data name="AboutPage_SendMessage" xml:space="preserve">
+    <value>Отправить сообщение</value>
+  </data>
+  <data name="LocationNewPage_CancelButton" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="LocationNewPage_CreateButton" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="LocationsSchemePage_Menu_EditLocation" xml:space="preserve">
+    <value>Изменить</value>
+  </data>
+  <data name="LocationsSchemePage_Menu_SchemeParams" xml:space="preserve">
+    <value>Параметры схемы складов</value>
+  </data>
+  <data name="LocationsSchemePage_Request_Cancel" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="LocationsSchemePage_Request_Delete" xml:space="preserve">
+    <value>Удалить?</value>
+  </data>
+  <data name="LocationsSchemePage_Request_Ok" xml:space="preserve">
+    <value>ОК</value>
+  </data>
+  <data name="LocationsSchemePage_StateMessageNoData" xml:space="preserve">
+    <value>Склады не найдены!</value>
+  </data>
+  <data name="LocationsSchemePage_Title" xml:space="preserve">
+    <value>Склады</value>
+  </data>
+  <data name="NewZonePage_CodeAlreadyExist" xml:space="preserve">
+    <value>Зона с данным кодом уже существует!</value>
+  </data>
+  <data name="LocationNewPage_CodeAlreadyExist" xml:space="preserve">
+    <value>Склад с данным кодом уже существует!</value>
+  </data>
+  <data name="LocationNewPage_Color" xml:space="preserve">
+    <value>Цвет</value>
+  </data>
+  <data name="LocationsFieldParamsPage_Title" xml:space="preserve">
+    <value>Параметры схемы</value>
+  </data>
+  <data name="PurchasesPage_Title" xml:space="preserve">
+    <value>Покупки</value>
+  </data>
+  <data name="BinContentPage_ColumnBinCode" xml:space="preserve">
+    <value>Код ячейки</value>
+  </data>
+  <data name="BinContentPage_ColumnBinType" xml:space="preserve">
+    <value>Тип ячейки</value>
+  </data>
+  <data name="BinContentPage_ColumnBlockMovement" xml:space="preserve">
+    <value>Блокировка</value>
+  </data>
+  <data name="BinContentPage_ColumnDescription" xml:space="preserve">
+    <value>Описание</value>
+  </data>
+  <data name="BinContentPage_ColumnItemNo" xml:space="preserve">
+    <value>Номер товара</value>
+  </data>
+  <data name="BinContentPage_ColumnLocationCode" xml:space="preserve">
+    <value>Код склада</value>
+  </data>
+  <data name="BinContentPage_ColumnNegAdjmtQty" xml:space="preserve">
+    <value>Расход кол-во</value>
+  </data>
+  <data name="BinContentPage_ColumnPickQty" xml:space="preserve">
+    <value>Кол-во для подбора</value>
+  </data>
+  <data name="BinContentPage_ColumnPosAdjmtQty" xml:space="preserve">
+    <value>Приход кол-во</value>
+  </data>
+  <data name="BinContentPage_ColumnPutawayQty" xml:space="preserve">
+    <value>Размещ. кол-во</value>
+  </data>
+  <data name="BinContentPage_ColumnQuantity" xml:space="preserve">
+    <value>Количество</value>
+  </data>
+  <data name="BinContentPage_ColumnQuantityBase" xml:space="preserve">
+    <value>Кол-во (баз.)</value>
+  </data>
+  <data name="BinContentPage_ColumnUnitofMeasureCode" xml:space="preserve">
+    <value>Код единицы измерения</value>
+  </data>
+  <data name="BinContentPage_ColumnVariantCode" xml:space="preserve">
+    <value>Код варианта</value>
+  </data>
+  <data name="BinContentPage_ColumnZoneCode" xml:space="preserve">
+    <value>Код зоны</value>
+  </data>
+  <data name="BinContentPage_Title" xml:space="preserve">
+    <value>Содержимое ячеек</value>
+  </data>
+  <data name="WarehouseEntriesPage_ColumnBinCode" xml:space="preserve">
+    <value>Код ячейки</value>
+  </data>
+  <data name="WarehouseEntriesPage_ColumnDescription" xml:space="preserve">
+    <value>Описание</value>
+  </data>
+  <data name="WarehouseEntriesPage_ColumnEntryType" xml:space="preserve">
+    <value>Тип операции</value>
+  </data>
+  <data name="WarehouseEntriesPage_ColumnItemNo" xml:space="preserve">
+    <value>Номер товара</value>
+  </data>
+  <data name="WarehouseEntriesPage_ColumnLocationCode" xml:space="preserve">
+    <value>Код склада</value>
+  </data>
+  <data name="WarehouseEntriesPage_ColumnQuantity" xml:space="preserve">
+    <value>Кол-во</value>
+  </data>
+  <data name="WarehouseEntriesPage_ColumnQuantityBase" xml:space="preserve">
+    <value>Кол-во (баз.)</value>
+    <comment>в базовой единице измерения</comment>
+  </data>
+  <data name="WarehouseEntriesPage_ColumnRegisteringDate" xml:space="preserve">
+    <value>Дата регистрации</value>
+  </data>
+  <data name="WarehouseEntriesPage_ColumnSourceNo" xml:space="preserve">
+    <value>Номер документа</value>
+  </data>
+  <data name="WarehouseEntriesPage_ColumnUnitofMeasureCode" xml:space="preserve">
+    <value>Код единицы измерения</value>
+  </data>
+  <data name="WarehouseEntriesPage_ColumnVariantCode" xml:space="preserve">
+    <value>Код варианта</value>
+  </data>
+  <data name="WarehouseEntriesPage_ColumnWarrantyDate" xml:space="preserve">
+    <value>Гарантийная дата</value>
+  </data>
+  <data name="WarehouseEntriesPage_ColumnZoneCode" xml:space="preserve">
+    <value>Код зоны</value>
+  </data>
+  <data name="WarehouseEntriesPage_Title" xml:space="preserve">
+    <value>Операции склада</value>
+  </data>
+  <data name="NewConnectionPage_FieldCompany" xml:space="preserve">
+    <value>Компания</value>
+  </data>
+  <data name="NewConnectionPage_FieldHttps" xml:space="preserve">
+    <value>Https</value>
+    <comment>если стоит галка значит https</comment>
+  </data>
+  <data name="NewConnectionPage_FieldInstance" xml:space="preserve">
+    <value>Инстанс</value>
+  </data>
+  <data name="NewConnectionPage_FieldPort" xml:space="preserve">
+    <value>Порт</value>
+  </data>
+  <data name="NewConnectionPage_FieldServer" xml:space="preserve">
+    <value>Сервер</value>
+  </data>
+  <data name="NewConnectionPage_FieldVerified" xml:space="preserve">
+    <value>Проверен</value>
+  </data>
+  <data name="NewConnectionPage_TestBinPage" xml:space="preserve">
+    <value>Ячейки</value>
+  </data>
+  <data name="NewConnectionPage_TestBinTemplatePage" xml:space="preserve">
+    <value>Шаблоны ячеек</value>
+  </data>
+  <data name="NewConnectionPage_TestErrorButton" xml:space="preserve">
+    <value>Ошибка</value>
+  </data>
+  <data name="NewConnectionPage_TestLocationsPage" xml:space="preserve">
+    <value>Склады</value>
+  </data>
+  <data name="NewConnectionPage_TestMgtCU" xml:space="preserve">
+    <value>WMC Control Center Management Codeunit</value>
+  </data>
+  <data name="NewConnectionPage_TestRackPage" xml:space="preserve">
+    <value>Стелажи</value>
+  </data>
+  <data name="NewConnectionPage_TestZonesPage" xml:space="preserve">
+    <value>Зоны</value>
+  </data>
+  <data name="BinTemplatesPage_MenuDelete" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="BinTemplatesPage_MenuEdit" xml:space="preserve">
+    <value>Изменить</value>
+  </data>
+  <data name="BinTemplatesPage_RequestDelete" xml:space="preserve">
+    <value>Удалить шаблон ячеек?</value>
+  </data>
+  <data name="NewConnectionPage_TestBinContentPage" xml:space="preserve">
+    <value>Тест Содержимое ячеек</value>
+  </data>
+  <data name="NewConnectionPage_TestBinTypePage" xml:space="preserve">
+    <value>Тест Тип ячеек</value>
+  </data>
+  <data name="NewConnectionPage_TestItemIdentifierPage" xml:space="preserve">
+    <value>Тест Идентификаторов товара</value>
+  </data>
+  <data name="NewConnectionPage_TestItemLedgerEntryPage" xml:space="preserve">
+    <value>Тест Товарных операций</value>
+  </data>
+  <data name="NewConnectionPage_TestWarehouseClassPage" xml:space="preserve">
+    <value>Тест Класс склада</value>
+  </data>
+  <data name="NewConnectionPage_TestWarehouseEntryPage" xml:space="preserve">
+    <value>Тест Складских операций</value>
+  </data>
+  <data name="ItemLedgerEntriesPage_ColumnDescription" xml:space="preserve">
+    <value>Описание</value>
+  </data>
+  <data name="ItemLedgerEntriesPage_ColumnDocumentNo" xml:space="preserve">
+    <value>Номер документа</value>
+  </data>
+  <data name="ItemLedgerEntriesPage_ColumnEntryNo" xml:space="preserve">
+    <value>Номер операции</value>
+  </data>
+  <data name="ItemLedgerEntriesPage_ColumnEntryType" xml:space="preserve">
+    <value>Тип операции</value>
+  </data>
+  <data name="ItemLedgerEntriesPage_ColumnItemNo" xml:space="preserve">
+    <value>Номер товара</value>
+  </data>
+  <data name="ItemLedgerEntriesPage_ColumnLocationCode" xml:space="preserve">
+    <value>Код склада</value>
+  </data>
+  <data name="ItemLedgerEntriesPage_ColumnOpen" xml:space="preserve">
+    <value>Открыта</value>
+  </data>
+  <data name="ItemLedgerEntriesPage_ColumnPostingDate" xml:space="preserve">
+    <value>Дата учета</value>
+  </data>
+  <data name="ItemLedgerEntriesPage_ColumnQuantity" xml:space="preserve">
+    <value>Количество</value>
+  </data>
+  <data name="ItemLedgerEntriesPage_ColumnRemainingQuantity" xml:space="preserve">
+    <value>Остаток кол-во</value>
+  </data>
+  <data name="ItemLedgerEntriesPage_ColumnReservedQuantity" xml:space="preserve">
+    <value>Резерв. кол-во</value>
+  </data>
+  <data name="ItemLedgerEntriesPage_ColumnUnitofMeasureCode" xml:space="preserve">
+    <value>Код единицы измерения</value>
+  </data>
+  <data name="ItemLedgerEntriesPage_ColumnVariantCode" xml:space="preserve">
+    <value>Код варианта</value>
+  </data>
+  <data name="ItemLedgerEntriesPage_Title" xml:space="preserve">
+    <value>Товарные операции</value>
+  </data>
+  <data name="LocationListPage_FieldAddress" xml:space="preserve">
+    <value>Адрес</value>
+  </data>
+  <data name="LocationListPage_FieldBinQuantity" xml:space="preserve">
+    <value>Ячейки</value>
+  </data>
+  <data name="LocationListPage_FieldSchemeVisible" xml:space="preserve">
+    <value>Показывать</value>
+  </data>
+  <data name="LocationListPage_FieldZoneQuantity" xml:space="preserve">
+    <value>Зоны</value>
+  </data>
+  <data name="LocationNewPage_FieldAddress" xml:space="preserve">
+    <value>Адрес</value>
+  </data>
+  <data name="LocationNewPage_FieldSchemeVisible" xml:space="preserve">
+    <value>Показывать</value>
+  </data>
+  <data name="ZoneListPage_ColumnBinQuantity" xml:space="preserve">
+    <value>Кол-во ячеек</value>
+  </data>
+  <data name="ZoneListPage_ColumnCode" xml:space="preserve">
+    <value>Код</value>
+  </data>
+  <data name="ZoneListPage_ColumnDescription" xml:space="preserve">
+    <value>Описание</value>
+  </data>
+  <data name="ZoneListPage_ColumnRackQuantity" xml:space="preserve">
+    <value>Кол-во стеллажей</value>
+  </data>
+  <data name="ZoneListPage_ColumnSchemeVisible" xml:space="preserve">
+    <value>Показывать</value>
+  </data>
+  <data name="ZoneListPage_Title" xml:space="preserve">
+    <value>Зоны склада </value>
+  </data>
+  <data name="NewZonePage_FieldSchemeVisible" xml:space="preserve">
+    <value>Показывать</value>
+  </data>
+  <data name="RackSchemePage_StateMessageNoData" xml:space="preserve">
+    <value>Стеллажи не найдены!</value>
+  </data>
+  <data name="ZonesSchemePage_StateNoData" xml:space="preserve">
+    <value>Зоны не найдены!</value>
+  </data>
+  <data name="RackSchemePage_Title" xml:space="preserve">
+    <value>Зона</value>
+  </data>
+  <data name="ParametersPage_Section_LocationCreation_DLPH" xml:space="preserve">
+    <value>Высота плана склада</value>
+  </data>
+  <data name="ParametersPage_Section_LocationCreation_DLPW" xml:space="preserve">
+    <value>Ширина плана склада</value>
+  </data>
+  <data name="RackNewPage_CreateBin" xml:space="preserve">
+    <value>Ячейки</value>
+  </data>
+  <data name="RackNewPage_LevelDepthSeparator" xml:space="preserve">
+    <value>Уровень-Глубина Разделитель</value>
+  </data>
+  <data name="RackNewPage_RackSectionSeparator" xml:space="preserve">
+    <value>Стеллаж-Секция Разделитель</value>
+  </data>
+  <data name="RackNewPage_SectionLevelSeparator" xml:space="preserve">
+    <value>Секция-Уровень Разделитель</value>
+  </data>
+  <data name="RackNewPage_CodeAlreadyExist" xml:space="preserve">
+    <value>Стеллаж уже создан!</value>
+  </data>
+  <data name="BinEditView_FieldAdjustmentBin" xml:space="preserve">
+    <value>Ячейка коррекции</value>
+  </data>
+  <data name="BinEditView_FieldBinContent" xml:space="preserve">
+    <value>Содержимое</value>
+  </data>
+  <data name="BinEditView_FieldBinRanking" xml:space="preserve">
+    <value>Рейтинг ячейки</value>
+  </data>
+  <data name="BinEditView_FieldBinType" xml:space="preserve">
+    <value>Тип ячейки</value>
+  </data>
+  <data name="BinEditView_FieldDefault" xml:space="preserve">
+    <value>По умолчанию</value>
+  </data>
+  <data name="BinEditView_FieldMaximumCubage" xml:space="preserve">
+    <value>Макс. объем</value>
+  </data>
+  <data name="BinEditView_FieldMaximumWeight" xml:space="preserve">
+    <value>Макс. вес</value>
+  </data>
+  <data name="BinEditView_FieldNoSize" xml:space="preserve">
+    <value>Без размерная</value>
+  </data>
+  <data name="RackSplitPage_Field1_Rack" xml:space="preserve">
+    <value>Стеллаж</value>
+  </data>
+  <data name="RackSplitPage_Field1_Zone" xml:space="preserve">
+    <value>Зона</value>
+  </data>
+  <data name="RackSplitPage_Field2_Rack" xml:space="preserve">
+    <value>Стеллаж</value>
+  </data>
+  <data name="RackSplitPage_Field2_Zone" xml:space="preserve">
+    <value>Зона</value>
+  </data>
+  <data name="RackSplitPage_Title" xml:space="preserve">
+    <value>Стеллажи</value>
+  </data>
+  <data name="BinTemplatesPage_GridColumnSEC" xml:space="preserve">
+    <value>Код оборудования</value>
+  </data>
+  <data name="Error_LoadLocation" xml:space="preserve">
+    <value>Ошибка загрузки складов!</value>
+  </data>
+  <data name="Error_LoadLocationList" xml:space="preserve">
+    <value>Ошибка загрузки списка складов!</value>
+  </data>
+  <data name="Error_LoadRacks" xml:space="preserve">
+    <value>Ошибка загрузки стеллажей!</value>
+  </data>
+  <data name="Error_LoadRacksList" xml:space="preserve">
+    <value>Ошибка загрузки списка стеллажей!</value>
+  </data>
+  <data name="Error_LoadZones" xml:space="preserve">
+    <value>Ошибка загрузки зон склада!</value>
+  </data>
+  <data name="Error_LoadBinTemplates" xml:space="preserve">
+    <value>Ошибка загрузки шаблонов ячеек!</value>
+  </data>
+  <data name="RackListPage_FieldComment" xml:space="preserve">
+    <value>Комментарий</value>
+  </data>
+  <data name="AboutPage_Copyright" xml:space="preserve">
+    <value>Copyright © Lobakov Oleg, 2018</value>
+  </data>
+  <data name="AboutPage_Name" xml:space="preserve">
+    <value>Warehouse Control System</value>
+  </data>
+  <data name="AboutPage_Name2" xml:space="preserve">
+    <value>for Microsoft Dynamiсs NAV</value>
+  </data>
+  <data name="BinEditView_FieldSpecialEquipment" xml:space="preserve">
+    <value>Код оборудования</value>
+  </data>
+  <data name="BinEditView_FieldWarehouseClass" xml:space="preserve">
+    <value>Класс склада</value>
+  </data>
+  <data name="NewConnectionPage_Test" xml:space="preserve">
+    <value>Тест подключения</value>
+  </data>
+  <data name="RackNewPage_IncludeIn" xml:space="preserve">
+    <value>Добавить в</value>
+  </data>
+  <data name="LocationView_EditMode1" xml:space="preserve">
+    <value>Передвижение</value>
+  </data>
+  <data name="LocationView_EditMode2" xml:space="preserve">
+    <value>Размеры</value>
+  </data>
+  <data name="ZoneView_EditMode1" xml:space="preserve">
+    <value>Передвижение</value>
+  </data>
+  <data name="ZoneView_EditMode2" xml:space="preserve">
+    <value>Размеры</value>
+  </data>
+  <data name="ConnectionsPage_Menu_Copy" xml:space="preserve">
+    <value>Копия</value>
+  </data>
+  <data name="ConnectionsPage_Menu_Delete" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="ConnectionsPage_Menu_Edit" xml:space="preserve">
+    <value>Изменить</value>
+  </data>
+  <data name="ConnectionsPage_Menu_New" xml:space="preserve">
+    <value>Создать</value>
+  </data>
+  <data name="StateContainer_CancelChanges" xml:space="preserve">
+    <value>Отменить изменения</value>
+  </data>
+  <data name="NewConnectionPage_FieldComment" xml:space="preserve">
+    <value>Коментарий</value>
+  </data>
+  <data name="NewConnectionPage_FieldCodeunit" xml:space="preserve">
+    <value>Веб-сервис</value>
+  </data>
+  <data name="AboutPage_LocalPath" xml:space="preserve">
+    <value>Расположение программы</value>
+  </data>
+  <data name="NewZonePage_CreateButton" xml:space="preserve">
+    <value>Создать</value>
+  </data>
+  <data name="NewZonePage_CancelButton" xml:space="preserve">
+    <value>Отменить</value>
+  </data>
+  <data name="RackNewPage_LoadingProgressBin" xml:space="preserve">
+    <value>Создание новой ячейки</value>
+  </data>
+  <data name="RackNewPage_LoadingProgressRack" xml:space="preserve">
+    <value>Создание нового стеллажа</value>
+  </data>
+  <data name="NewZonePage_FieldLocationCode" xml:space="preserve">
+    <value>Склад</value>
+  </data>
+  <data name="NewZonePage_CancelChangesButton" xml:space="preserve">
+    <value>Отменить изменения</value>
+  </data>
+  <data name="LocationsSchemePage_Toolbar_Delete" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="LocationsSchemePage_Toolbar_Edit" xml:space="preserve">
+    <value>Изменить</value>
+  </data>
+  <data name="LocationsSchemePage_Toolbar_List" xml:space="preserve">
+    <value>Список</value>
+  </data>
+  <data name="LocationsSchemePage_Toolbar_Mode" xml:space="preserve">
+    <value>Режим</value>
+  </data>
+  <data name="LocationsSchemePage_Toolbar_New" xml:space="preserve">
+    <value>Создать</value>
+  </data>
+  <data name="LocationsSchemePage_Toolbar_Scheme" xml:space="preserve">
+    <value>Схема</value>
+  </data>
+  <data name="LocationsSchemePage_Toolbar_Search" xml:space="preserve">
+    <value>Поиск</value>
+  </data>
+  <data name="StateContainer_Error" xml:space="preserve">
+    <value>Ошибка</value>
+  </data>
+  <data name="StateContainer_Warning" xml:space="preserve">
+    <value>Внимание</value>
+  </data>
+  <data name="RacksFieldParamsPage_Title" xml:space="preserve">
+    <value>Параметры схемы стеллажей</value>
+  </data>
+  <data name="RackListPage_FieldSchemeVisible" xml:space="preserve">
+    <value>Показывать</value>
+  </data>
+  <data name="AboutPage_ProjectSiteButton" xml:space="preserve">
+    <value>GitHub</value>
+  </data>
+  <data name="ConnectionsPage_ColumnServer" xml:space="preserve">
+    <value>Сервер</value>
+  </data>
+  <data name="Colors_Gray1" xml:space="preserve">
+    <value>Серый 1</value>
+  </data>
+  <data name="Colors_Gray2" xml:space="preserve">
+    <value>Серый 2</value>
+  </data>
+  <data name="Colors_Gray3" xml:space="preserve">
+    <value>Серый 3</value>
+  </data>
+  <data name="NewConnectionPage_Test_NotAvailable" xml:space="preserve">
+    <value>Microsoft Dynamics NAV не доступен!</value>
+  </data>
+  <data name="LocationNewPage_CancelChangesButton" xml:space="preserve">
+    <value>Отменить изменения</value>
+  </data>
+  <data name="RackNewPage_StepSectionNumbering" xml:space="preserve">
+    <value>Шаг нумерации секций</value>
+  </data>
+  <data name="BinEditView_FieldEntries" xml:space="preserve">
+    <value>Операции</value>
+  </data>
+  <data name="WarehouseEntriesPage_ColumnEntryNo" xml:space="preserve">
+    <value>Операция Но.</value>
+  </data>
+  <data name="RackNewPage_CreateNewTemplate" xml:space="preserve">
+    <value>Создать новый шаблон</value>
+  </data>
+  <data name="RackNewPage_Error_BinTemplateIsNeeded" xml:space="preserve">
+    <value>Необходимо выбрать шаблон ячеек!</value>
+  </data>
+  <data name="RackNewPage_Error_NoNeeded" xml:space="preserve">
+    <value>Необходимо задать код стеллажа!</value>
+  </data>
+  <data name="RackNewPage_OrientationUndefined" xml:space="preserve">
+    <value>Не задана</value>
+  </data>
+  <data name="RackNewPage_Error_RackOrientationNeeded" xml:space="preserve">
+    <value>Ориентация стеллажа не определена!</value>
+  </data>
+  <data name="NewZonePage_FieldBinTypeCode" xml:space="preserve">
+    <value>Тип ячеек</value>
+  </data>
+  <data name="RackCardPage_RackNo" xml:space="preserve">
+    <value>Номер</value>
+  </data>
+  <data name="RackCardPage_Title" xml:space="preserve">
+    <value>Стеллаж</value>
+  </data>
+  <data name="RackNewPage_Conflict" xml:space="preserve">
+    <value>Разрешение конфликтов</value>
+  </data>
+  <data name="RackNewPage_ConflictBins" xml:space="preserve">
+    <value>Изменить сущ. ячейки и добавить в данный стеллаж</value>
+  </data>
+  <data name="RackNewPage_ConflictRack" xml:space="preserve">
+    <value>Изменить сущ. стеллаж</value>
+  </data>
+  <data name="ParametersPage_Section_BinsCreation_LD" xml:space="preserve">
+    <value>Разделитель уровень-голубина</value>
+  </data>
+  <data name="ParametersPage_Section_BinsCreation_RS" xml:space="preserve">
+    <value>Разделитель стеллаж-секция</value>
+  </data>
+  <data name="ParametersPage_Section_BinsCreation_SL" xml:space="preserve">
+    <value>Разделитель секция-уровень</value>
+  </data>
+  <data name="ParametersPage_Section_BinsCreation_Title" xml:space="preserve">
+    <value>Ячейки</value>
+  </data>
+  <data name="RackNewPage_Error_BinAlreadyExist" xml:space="preserve">
+    <value>Ячейка уже существует!</value>
+  </data>
+  <data name="RackNewPage_Error_RackAlreadyExist" xml:space="preserve">
+    <value>Стеллаж уже существует!</value>
+  </data>
+  <data name="RackCardPage_Toolbar_Search" xml:space="preserve">
+    <value>Поиск</value>
+  </data>
+  <data name="BinInfoPanelRackCard_BinCode" xml:space="preserve">
+    <value>Ячейка</value>
+  </data>
+  <data name="BinInfoPanelRackCard_BinContent" xml:space="preserve">
+    <value>Содержимое</value>
+  </data>
+  <data name="BinInfoPanelRackCard_Commands" xml:space="preserve">
+    <value>Команды</value>
+  </data>
+  <data name="BinInfoPanelRackCard_Content" xml:space="preserve">
+    <value>Содержимое</value>
+  </data>
+  <data name="BinInfoPanelRackCard_Entries" xml:space="preserve">
+    <value>Операции</value>
+  </data>
+  <data name="RackCardPage_LoadingText" xml:space="preserve">
+    <value>Загрузка</value>
+  </data>
+  <data name="RackCardPage_Error_BinDidNotSelect" xml:space="preserve">
+    <value>Выберите ячейку!</value>
+  </data>
+  <data name="RackNewPage_LoadingProgressModifyBin" xml:space="preserve">
+    <value>Изменение существующей ячейки</value>
+  </data>
+  <data name="FindPage_Finded" xml:space="preserve">
+    <value>найдено</value>
+  </data>
+  <data name="FindPage_Request" xml:space="preserve">
+    <value>Запрос: </value>
+  </data>
+  <data name="FindPage_RequestLengthError" xml:space="preserve">
+    <value>Запрос должен быть длиннее 4 символов!</value>
+  </data>
+  <data name="FindPage_Reset" xml:space="preserve">
+    <value>Сбросить </value>
+  </data>
+  <data name="FindPage_Search" xml:space="preserve">
+    <value>Поиск</value>
+  </data>
+  <data name="LocationsSchemePage_Toolbar_UDSF" xml:space="preserve">
+    <value>Функции</value>
+  </data>
+  <data name="WellcomePage_About" xml:space="preserve">
+    <value>О программе</value>
+  </data>
+  <data name="WellcomePage_AddLocation" xml:space="preserve">
+    <value>+ Склад</value>
+  </data>
+  <data name="WellcomePage_AddRack" xml:space="preserve">
+    <value>+ Ячейки</value>
+  </data>
+  <data name="WellcomePage_AddZone" xml:space="preserve">
+    <value>+ Зоны</value>
+  </data>
+  <data name="WellcomePage_Connections" xml:space="preserve">
+    <value>Подключения</value>
+  </data>
+  <data name="WellcomePage_Locations" xml:space="preserve">
+    <value>Склады</value>
+  </data>
+  <data name="WellcomePage_Options" xml:space="preserve">
+    <value>Параметры</value>
+  </data>
+  <data name="RackCardPage_Search_Bins" xml:space="preserve">
+    <value>ячеек</value>
+  </data>
+  <data name="RackCardPage_Search_Finded" xml:space="preserve">
+    <value>найдено</value>
+  </data>
+</root>

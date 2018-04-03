@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WarehouseControlSystem.View.Pages.Connections.ConnectionsPage"
+             xmlns:i18n="clr-namespace:WarehouseControlSystem;assembly=WarehouseControlSystem"
+             x:Name="ThisPage">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem  Order="Primary" Priority="10" Text="{i18n:Translate ConnectionsPage_Menu_New}" 
+                      Command="{Binding NewConnectionCommand}">
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <OnPlatform.iOS>
+                        <FileImageSource File="ic_action_add_circle.png"/>
+                    </OnPlatform.iOS>
+                    <OnPlatform.Android>
+                        <FileImageSource File="ic_action_add_circle.png"/>
+                    </OnPlatform.Android>
+                    <OnPlatform.WinPhone>
+                        <FileImageSource File="Assets/Images/ic_action_add_circle.png"/>
+                    </OnPlatform.WinPhone>
+                </OnPlatform>
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+        <!--<ToolbarItem  Order="Primary" Priority="15" Text="{i18n:Translate ConnectionsPage_Menu_Delete}" 
+                      Command="{Binding DeleteConnectionCommand}"
+                      CommandParameter="{Binding Selected}">
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <OnPlatform.iOS>
+                        <FileImageSource File="ic_action_remove_circle.png"/>
+                    </OnPlatform.iOS>
+                    <OnPlatform.Android>
+                        <FileImageSource File="ic_action_remove_circle.png"/>
+                    </OnPlatform.Android>
+                    <OnPlatform.WinPhone>
+                        <FileImageSource File="Assets/Images/ic_action_remove_circle.png"/>
+                    </OnPlatform.WinPhone>
+                </OnPlatform>
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+        <ToolbarItem  Order="Primary" Priority="20" Text="{i18n:Translate ConnectionsPage_Menu_Edit}" 
+                      Command="{Binding EditConnectionCommand}"
+                      CommandParameter="{Binding Selected}">
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <OnPlatform.iOS>
+                        <FileImageSource File="ic_action_create.png"/>
+                    </OnPlatform.iOS>
+                    <OnPlatform.Android>
+                        <FileImageSource File="ic_action_create.png"/>
+                    </OnPlatform.Android>
+                    <OnPlatform.WinPhone>
+                        <FileImageSource File="Assets/Images/ic_action_create.png"/>
+                    </OnPlatform.WinPhone>
+                </OnPlatform>
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+        <ToolbarItem  Order="Primary" Priority="30" Text="{i18n:Translate ConnectionsPage_Menu_Copy}" 
+                      Command="{Binding CopyConnectionCommand}"
+                      CommandParameter="{Binding Selected}">
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <OnPlatform.iOS>
+                        <FileImageSource File="ic_action_content_copy.png"/>
+                    </OnPlatform.iOS>
+                    <OnPlatform.Android>
+                        <FileImageSource File="ic_action_content_copy.png"/>
+                    </OnPlatform.Android>
+                    <OnPlatform.WinPhone>
+                        <FileImageSource File="Assets/Images/ic_action_content_copy.png"/>
+                    </OnPlatform.WinPhone>
+                </OnPlatform>
+            </ToolbarItem.Icon>
+        </ToolbarItem>-->
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" HeightRequest="70" BackgroundColor="White" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" x:Name="grid">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label  Grid.Column="0" Text="{i18n:Translate ConnectionsPage_ColumnName}" Margin="20,0,0,0"         
+                     HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                     HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+
+                <Label  Grid.Column="1" Text="{i18n:Translate ConnectionsPage_ColumnServer}" Margin="20,0,0,0"  
+                     HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                     HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+
+                <Label  Grid.Column="2" Text="{i18n:Translate ConnectionsPage_ColumnConnected}" Margin="0,0,0,0"  
+                     HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                     HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+            </Grid>
+
+            <ListView Grid.Row="1" RowHeight="70" 
+                  ItemsSource="{Binding ConnectionViewModels}" 
+                  SelectedItem="{Binding SelectedConnection,Mode=TwoWay}" 
+                  ItemTapped="ListView_ItemTapped">
+
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <ViewCell.ContextActions>
+                                <MenuItem Text="Edit"
+                                      Command="{Binding Path=BindingContext.EditConnectionCommand, Source={x:Reference Name=ThisPage}}" 
+                                      CommandParameter="{Binding .}"/>
+                                <MenuItem Text="Copy"
+                                      Command="{Binding Path=BindingContext.CopyConnectionCommand, Source={x:Reference Name=ThisPage}}" 
+                                      CommandParameter="{Binding .}"/>
+                                <MenuItem Text="Delete"
+                                      Command="{Binding Path=BindingContext.DeleteConnectionCommand, Source={x:Reference Name=ThisPage}}" 
+                                      CommandParameter="{Binding .}" IsDestructive="True" />
+                            </ViewCell.ContextActions>
+
+                            <StackLayout Padding="0,0,0,1" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                                <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="White">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="2*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Label  Grid.Column="0" Text="{Binding Name}" Margin="20,0,0,0"       
+                                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                        HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+
+                                    <Label  Grid.Column="1" Text="{Binding Server}" Margin="20,0,0,0"       
+                                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                        HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+
+
+                                    <Image Grid.Column="2" IsVisible="{Binding Connected}" Margin="20,0,0,0" HorizontalOptions="StartAndExpand" VerticalOptions="FillAndExpand">
+                                        <Image.Source>
+                                            <OnPlatform x:TypeArguments="FileImageSource">
+                                                <On Platform="UWP,WinPhone">
+                                                    <FileImageSource File="Assets/Images/ic_action_check_circle_dark.png"/>
+                                                </On>
+                                                <On Platform="iOS,Android">
+                                                    <FileImageSource File="ic_action_check_circle_dark.png"/>
+                                                </On>
+                                            </OnPlatform>
+                                        </Image.Source>
+                                    </Image>
+                                </Grid>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

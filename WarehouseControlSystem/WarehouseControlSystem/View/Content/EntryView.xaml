@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WarehouseControlSystem.View.Content.EntryView">
+    <ContentView.Resources>
+        <ResourceDictionary x:Name="AppDictionary">
+            <Color x:Key="BackgroundColor">#FFFFFF</Color>
+            <Color x:Key="BorderColor">#E1E1E1</Color>
+            <Style x:Key="InternalViewStyle" TargetType="ContentView">
+                <Setter Property="BackgroundColor" Value="{StaticResource BackgroundColor}"/>
+                <Setter Property="VerticalOptions" Value="Fill"/>
+                <Setter Property="Padding" Value="2,2,2,2"></Setter>
+            </Style>
+            <Style x:Key="BorderStyle" TargetType="ContentView">
+                <Setter Property="BackgroundColor" Value="{StaticResource BorderColor}"/>
+                <Setter Property="Padding" Value="3,1,1,3"></Setter>
+            </Style>
+        </ResourceDictionary>
+    </ContentView.Resources>
+    <ContentView.Content>
+        <ContentView Grid.Row="0" Grid.Column="1" Padding="1,1,1,1" Style="{StaticResource BorderStyle}">
+            <ContentView Style="{StaticResource InternalViewStyle}">
+                <Entry Text="{Binding Text, Mode=TwoWay}" Keyboard="Text" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"  />
+            </ContentView>
+        </ContentView>
+    </ContentView.Content>
+</ContentView>

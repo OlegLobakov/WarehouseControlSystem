@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WarehouseControlSystem.View.Content.UserDefinedSelectionView"
+             xmlns:sc="clr-namespace:WarehouseControlSystem.Helpers.Containers.StateContainer">
+
+    <ContentView.Content>
+        <sc:StateContainer State="{Binding State}" Padding="5" BackgroundColor="{Binding Color}" WidthRequest="{Binding UDSWidth}">
+            <sc:StateCondition State="Loading">
+                <ActivityIndicator IsRunning="{Binding LoadAnimation}" HeightRequest="50" WidthRequest="50" 
+                                   Color="White" VerticalOptions="Center" HorizontalOptions="Center"/>
+            </sc:StateCondition>
+            <sc:StateCondition State="Normal">
+                <Grid>
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding TapCommand}"/>
+                    </Grid.GestureRecognizers>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" Text="{Binding Name}"
+                        HorizontalTextAlignment="Start"
+                        FontSize="Medium" TextColor="White" Margin="10,5,5,5"/>
+                    <Label Grid.Row="1" Text="{Binding Detail}" 
+                        HorizontalTextAlignment="Start"
+                        FontSize="Micro" TextColor="White" Margin="10,0,5,0"/>
+                    <Label Grid.Row="3" Text="{Binding Value}" 
+                        HorizontalTextAlignment="End"
+                        FontSize="Small" TextColor="White" Margin="0,0,10,5"/>
+                </Grid>
+            </sc:StateCondition>
+        </sc:StateContainer>
+    </ContentView.Content>
+</ContentView>

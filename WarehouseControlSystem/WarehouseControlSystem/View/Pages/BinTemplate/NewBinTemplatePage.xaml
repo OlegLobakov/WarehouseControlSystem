@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WarehouseControlSystem.View.Pages.BinTemplate.NewBinTemplatePage"
+             xmlns:sc="clr-namespace:WarehouseControlSystem.Helpers.Containers.StateContainer"
+             xmlns:i18n="clr-namespace:WarehouseControlSystem;assembly=WarehouseControlSystem">
+    <ContentPage.Content>
+        <sc:StateContainer State="{Binding State}">
+            <sc:StateCondition State="Loading">
+                <ActivityIndicator IsRunning="{Binding LoadAnimation}" HeightRequest="50" WidthRequest="50" VerticalOptions="Center" HorizontalOptions="Center"/>
+            </sc:StateCondition>
+            <sc:StateCondition State="Normal">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="50"/>
+                    </Grid.RowDefinitions>
+                    <ScrollView Grid.Row="0" Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                        <Grid Padding="10" x:Name="fieldsgrid">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="50" />
+                                <RowDefinition Height="50" />
+                                <RowDefinition Height="50" />
+                                <RowDefinition Height="50" />
+                                <RowDefinition Height="50" />
+                                <RowDefinition Height="50" />
+                                <RowDefinition Height="50" />
+                                <RowDefinition Height="50" />
+                                <RowDefinition Height="50" />
+                            </Grid.RowDefinitions>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="300"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label Text="{i18n:Translate NewBinTemplatePage_FieldCode}" 
+                                   Grid.Row="0" Grid.Column="0" FontAttributes="Bold" 
+                                   HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
+                            <Entry Grid.Row="0" Grid.Column="1" 
+                                   Text="{Binding Code, Mode=TwoWay}" Keyboard="Text" 
+                                   HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" TextChanged="codeentry_TextChanged" />
+
+                            <Label Text="{i18n:Translate NewBinTemplatePage_FieldName}" 
+                                   Grid.Row="1" Grid.Column="0" 
+                                   HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
+                            <Entry Grid.Row="1" Grid.Column="1" 
+                                   Text="{Binding Description, Mode=TwoWay}" Keyboard="Text" 
+                                   HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
+
+                            <Label Text="{i18n:Translate NewBinTemplatePage_FieldLocationCode}" 
+                                   Grid.Row="2" Grid.Column="0" FontAttributes="Bold" 
+                                   HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
+                            <Picker x:Name="locationcodepicker" 
+                                    Grid.Row="2" Grid.Column="1" 
+                                    Title="Select" 
+                                    HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"  
+                                    ItemDisplayBinding="{Binding Name}" 
+                                    ItemsSource="{Binding Locations}"
+                                    SelectedIndexChanged="PickerSelection1"  
+                                    SelectedItem="{Binding SelectedLocation, Mode=TwoWay}"
+                                    BackgroundColor="Snow"></Picker>
+
+                            <Label Text="{i18n:Translate NewBinTemplatePage_FieldZoneCode}" 
+                                   Grid.Row="3" Grid.Column="0" FontAttributes="Bold" 
+                                   HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
+                            <Picker x:Name="zonecodepicker" 
+                                    Grid.Row="3" Grid.Column="1" Title="Select" 
+                                    HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
+                                    ItemDisplayBinding="{Binding Code}" 
+                                    SelectedIndexChanged="PickerSelection2"  
+                                    ItemsSource="{Binding Zones}"
+                                    SelectedItem="{Binding SelectedZone, Mode=TwoWay}"                        
+                                    BackgroundColor="Snow"></Picker>
+
+                            <Label Text="{i18n:Translate NewBinTemplatePage_FieldBinTypeCode}" 
+                                   Grid.Row="4" Grid.Column="0"  FontAttributes="Bold" HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
+                            <Picker x:Name="bintypepicker" 
+                                    Grid.Row="4" Grid.Column="1" Title="Select" 
+                                    HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
+                                    ItemDisplayBinding="{Binding Code}" 
+                                    SelectedIndexChanged="PickerSelection3"  
+                                    ItemsSource="{Binding BinTypes}"
+                                    SelectedItem="{Binding SelectedBinType, Mode=TwoWay}"
+                                    BackgroundColor="Snow"></Picker>
+
+                            <Label Text="{i18n:Translate NewBinTemplatePage_FieldBinDescription}" 
+                                   Grid.Row="5" Grid.Column="0" 
+                                   HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
+                            <Entry Grid.Row="5" Grid.Column="1" 
+                                   Text="{Binding BinDescription, Mode=TwoWay}" Keyboard="Text" 
+                                   HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
+
+                            <Label Text="{i18n:Translate NewBinTemplatePage_FieldMaximumCubage}" 
+                                   Grid.Row="6" Grid.Column="0" HorizontalOptions="Start" 
+                                   HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
+                            <Entry  Grid.Row="6" Grid.Column="1" 
+                                    Text="{Binding MaximumCubage, Mode=TwoWay}" Keyboard="Numeric" 
+                                    HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
+
+                            <Label Text="{i18n:Translate NewBinTemplatePage_FieldMaximumWeight}" 
+                                   Grid.Row="7" Grid.Column="0" HorizontalOptions="Start" 
+                                   HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
+                            <Entry Grid.Row="7" Grid.Column="1" 
+                                   Text="{Binding MaximumWeight, Mode=TwoWay}" Keyboard="Numeric" 
+                                   HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
+
+                            <Label Text="{i18n:Translate NewBinTemplatePage_FieldDedicated}" Grid.Row="8" Grid.Column="0" HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
+                            <Switch Grid.Row="8" Grid.Column="1" 
+                                    IsToggled="{Binding Dedicated, Mode=TwoWay}" HorizontalOptions="Start" VerticalOptions="Center"></Switch>
+                        </Grid>
+                    </ScrollView>
+                    <Grid Grid.Row="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" Text="{i18n:Translate NewBinTemplatePage_ButtonCreate}"  
+                                HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
+                                Command="{Binding OKCommand}" BorderRadius="0" BackgroundColor="{StaticResource PageHeaderBarBackgoundColor}" TextColor="White"/>
+                        <Button Grid.Column="1" Text="{i18n:Translate NewBinTemplatePage_ButtonCancel}"  
+                                HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
+                                Command="{Binding CancelCommand}" BorderRadius="0" BackgroundColor="{StaticResource PageHeaderBarBackgoundColor}" TextColor="White"/>
+                        <Button Grid.Column="2" Text="{i18n:Translate NewBinTemplatePage_ButtonCancel}"  
+                                HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
+                                Command="{Binding CancelChangesCommand}" BorderRadius="0" BackgroundColor="{StaticResource PageHeaderBarBackgoundColor}" TextColor="White"/>
+                    </Grid>
+                </Grid>
+            </sc:StateCondition>
+
+            <sc:StateCondition State="Error">
+                <StackLayout Orientation="Vertical" HorizontalOptions="Center" VerticalOptions="Center">
+                    <Label Text="{i18n:Translate StateContainer_StateError_Header}" FontSize="Large"/>
+                    <Label Text="" x:Name="errortextlabel"/>
+                    <Button Text="OK" Command="{Binding ErrorOKCommand}"/>
+                </StackLayout>
+            </sc:StateCondition>
+
+            <sc:StateCondition State="Warning">
+                <StackLayout HorizontalOptions="Center" VerticalOptions="Center" Orientation="Vertical">
+                    <Label x:Name="warninglabel" HorizontalOptions="Center" 
+                           VerticalOptions="Center" TextColor="Black" FontSize="Large"></Label>
+                </StackLayout>
+            </sc:StateCondition>
+
+            <sc:StateCondition State="NoInternet">
+                <StackLayout>
+                    <Label Text="{i18n:Translate StateContainer_StateNoInternet_Error}" 
+                           HorizontalOptions="Center" VerticalOptions="Center"/>
+                </StackLayout>
+            </sc:StateCondition>
+        </sc:StateContainer>
+    </ContentPage.Content>
+</ContentPage>
