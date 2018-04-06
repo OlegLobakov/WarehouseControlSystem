@@ -55,7 +55,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         requestdoc.Save(writer);
                         request = writer.ToString();
                     }
-                    XElement soapbodynode = await Process(functionname, request, cts);
+                    XElement soapbodynode = await Process(functionname, request, false, cts);
                     int rv = StringToInt(soapbodynode.Value);
                     tcs.SetResult(rv);
                 }
@@ -88,7 +88,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         requestdoc.Save(writer);
                         request = writer.ToString();
                     }
-                    XElement soapbodynode = await Process(functionname, request, cts);
+                    XElement soapbodynode = await Process(functionname, request, false, cts);
                     int rv = StringToInt(soapbodynode.Value);
                     tcs.SetResult(rv);
                 }
@@ -122,7 +122,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         requestdoc.Save(writer);
                         request = writer.ToString();
                     }
-                    XElement soapbodynode = await Process(functionname, request, cts);
+                    XElement soapbodynode = await Process(functionname, request, false, cts);
                     int rv = StringToInt(soapbodynode.Value);
                     tcs.SetResult(rv);
                 }
@@ -156,7 +156,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         requestdoc.Save(writer);
                         request = writer.ToString();
                     }
-                    XElement soapbodynode = await Process(functionname, request, cts);
+                    XElement soapbodynode = await Process(functionname, request, false, cts);
                     int rv = StringToInt(soapbodynode.Value);
                     tcs.SetResult(rv);
                 }
@@ -189,7 +189,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         requestdoc.Save(writer);
                         request = writer.ToString();
                     }
-                    XElement soapbodynode = await Process(functionname, request, cts);
+                    XElement soapbodynode = await Process(functionname, request, false, cts);
                     int rv = StringToInt(soapbodynode.Value);
                     tcs.SetResult(rv);
                 }
@@ -241,7 +241,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         requestdoc.Save(writer);
                         request = writer.ToString();
                     }
-                    XElement soapbodynode = await Process(functionname, request, cts);
+                    XElement soapbodynode = await Process(functionname, request, false, cts);
                     tcs.SetResult(0);
                 }
                 catch (Exception ex)
@@ -291,7 +291,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         requestdoc.Save(writer);
                         request = writer.ToString();
                     }
-                    XElement soapbodynode = await Process(functionname, request, cts);
+                    XElement soapbodynode = await Process(functionname, request, false, cts);
                     tcs.SetResult(0);
                 }
                 catch (Exception ex)
@@ -325,7 +325,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         requestdoc.Save(writer);
                         request = writer.ToString();
                     }
-                    XElement soapbodynode = await Process(functionname, request, cts);
+                    XElement soapbodynode = await Process(functionname, request, false, cts);
                     tcs.SetResult(0);
                 }
                 catch (Exception ex)
@@ -359,7 +359,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         requestdoc.Save(writer);
                         request = writer.ToString();
                     }
-                    XElement soapbodynode = await Process(functionname, request, cts);
+                    XElement soapbodynode = await Process(functionname, request, false, cts);
                     rv = StringToInt(soapbodynode.Value);
                     tcs.SetResult(0);
                 }
@@ -395,7 +395,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         requestdoc.Save(writer);
                         request = writer.ToString();
                     }
-                    XElement soapbodynode = await Process(functionname, request, cts);
+                    XElement soapbodynode = await Process(functionname, request, false, cts);
                     rv = StringToInt(soapbodynode.Value);
                     tcs.SetResult(rv);
                 }
@@ -432,7 +432,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         requestdoc.Save(writer);
                         request = writer.ToString();
                     }
-                    XElement soapbodynode = await Process(functionname, request, cts);
+                    XElement soapbodynode = await Process(functionname, request, false, cts);
                     List<Location> rv = new List<Location>();
                     string response = soapbodynode.Value;
                     XDocument document = GetDoc(response);
@@ -598,7 +598,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         requestdoc.Save(writer);
                         request = writer.ToString();
                     }
-                    XElement soapbodynode = await Process(functionname, request, cts);
+                    XElement soapbodynode = await Process(functionname, request, false, cts);
                     tcs.SetResult(0);
                 }
                 catch (Exception ex)
@@ -647,7 +647,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         requestdoc.Save(writer);
                         request = writer.ToString();
                     }
-                    XElement soapbodynode = await Process(functionname, request, cts);
+                    XElement soapbodynode = await Process(functionname, request, false, cts);
                     tcs.SetResult(0);
                 }
                 catch (Exception ex)
@@ -682,7 +682,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         requestdoc.Save(writer);
                         request = writer.ToString();
                     }
-                    XElement soapbodynode = await Process(functionname, request, cts);
+                    XElement soapbodynode = await Process(functionname, request, false, cts);
                     tcs.SetResult(0);
                 }
                 catch (Exception ex)
@@ -716,7 +716,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         requestdoc.Save(writer);
                         request = writer.ToString();
                     }
-                    XElement soapbodynode = await Process(functionname, request, cts);
+                    XElement soapbodynode = await Process(functionname, request, false, cts);
                     tcs.SetResult(0);
                 }
                 catch (Exception ex)
@@ -753,7 +753,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         requestdoc.Save(writer);
                         request = writer.ToString();
                     }
-                    XElement soapbodynode = await Process(functionname, request, cts);
+                    XElement soapbodynode = await Process(functionname, request, false, cts);
                     rv = StringToInt(soapbodynode.Value);
                     tcs.SetResult(rv);
                 }
@@ -792,7 +792,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         requestdoc.Save(writer);
                         request = writer.ToString();
                     }
-                    XElement soapbodynode = await Process(functionname, request, cts);
+                    XElement soapbodynode = await Process(functionname, request, false, cts);
                     string response = soapbodynode.Value;
                     XDocument document = GetDoc(response);
                     List<Zone> rv = new List<Zone>();
@@ -952,7 +952,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         requestdoc.Save(writer);
                         request = writer.ToString();
                     }
-                    XElement soapbodynode = await Process(functionname, request, cts);
+                    XElement soapbodynode = await Process(functionname, request, false, cts);
                     tcs.SetResult(0);
                 }
                 catch (Exception ex)
@@ -1011,7 +1011,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         requestdoc.Save(writer);
                         request = writer.ToString();
                     }
-                    XElement soapbodynode = await Process(functionname, request, cts);
+                    XElement soapbodynode = await Process(functionname, request, false, cts);
                     tcs.SetResult(0);
                 }
                 catch (Exception ex)
@@ -1049,7 +1049,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         requestdoc.Save(writer);
                         request = writer.ToString();
                     }
-                    XElement soapbodynode = await Process(functionname, request, cts);
+                    XElement soapbodynode = await Process(functionname, request, false, cts);
                     tcs.SetResult(0);
                 }
                 catch (Exception ex)
@@ -1089,7 +1089,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         requestdoc.Save(writer);
                         request = writer.ToString();
                     }
-                    XElement soapbodynode = await Process(functionname, request, cts);
+                    XElement soapbodynode = await Process(functionname, request, false, cts);
                     tcs.SetResult(0);
                 }
                 catch (Exception ex)
@@ -1130,7 +1130,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         requestdoc.Save(writer);
                         request = writer.ToString();
                     }
-                    XElement soapbodynode = await Process(functionname, request, cts);
+                    XElement soapbodynode = await Process(functionname, request, false, cts);
                     int rv = StringToInt(soapbodynode.Value);
                     tcs.SetResult(rv);
                 }
@@ -1175,7 +1175,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         requestdoc.Save(writer);
                         request = writer.ToString();
                     }
-                    XElement soapbodynode = await Process(functionname, request, cts);
+                    XElement soapbodynode = await Process(functionname, request, false, cts);
                     string response = soapbodynode.Value;
                     XDocument document = GetDoc(response);
                     List<Rack> rv = new List<Rack>();
@@ -1319,7 +1319,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         requestdoc.Save(writer);
                         request = writer.ToString();
                     }
-                    XElement soapbodynode = await Process(functionname, request, cts);
+                    XElement soapbodynode = await Process(functionname, request, false, cts);
                     tcs.SetResult(0);
                 }
                 catch (Exception ex)
@@ -1385,7 +1385,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         requestdoc.Save(writer);
                         request = writer.ToString();
                     }
-                    XElement soapbodynode = await Process(functionname, request, cts);
+                    XElement soapbodynode = await Process(functionname, request, false, cts);
                     tcs.SetResult(0);
                 }
                 catch (Exception ex)
@@ -1426,7 +1426,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         requestdoc.Save(writer);
                         request = writer.ToString();
                     }
-                    XElement soapbodynode = await Process(functionname, request, cts);
+                    XElement soapbodynode = await Process(functionname, request, false, cts);
                     tcs.SetResult(0);
                 }
                 catch (Exception ex)
@@ -1466,7 +1466,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         requestdoc.Save(writer);
                         request = writer.ToString();
                     }
-                    XElement soapbodynode = await Process(functionname, request, cts);
+                    XElement soapbodynode = await Process(functionname, request, false, cts);
                     int rv = StringToInt(soapbodynode.Value);
                     tcs.SetResult(rv);
                 }
@@ -1513,7 +1513,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         requestdoc.Save(writer);
                         request = writer.ToString();
                     }
-                    XElement soapbodynode = await Process(functionname, request, cts);
+                    XElement soapbodynode = await Process(functionname, request, false, cts);
                     string response = soapbodynode.Value;
                     XDocument document = GetDoc(response);
                     List<Bin> rv = new List<Bin>();
@@ -1687,7 +1687,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         requestdoc.Save(writer);
                         request = writer.ToString();
                     }
-                    XElement soapbodynode = await Process(functionname, request, cts);
+                    XElement soapbodynode = await Process(functionname, request, false, cts);
                     tcs.SetResult(0);
                 }
                 catch (Exception ex)
@@ -1745,7 +1745,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         requestdoc.Save(writer);
                         request = writer.ToString();
                     }
-                    XElement soapbodynode = await Process(functionname, request, cts);
+                    XElement soapbodynode = await Process(functionname, request, false, cts);
                     tcs.SetResult(0);
                 }
                 catch (Exception ex)
@@ -1779,7 +1779,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         requestdoc.Save(writer);
                         request = writer.ToString();
                     }
-                    XElement soapbodynode = await Process(functionname, request, cts);
+                    XElement soapbodynode = await Process(functionname, request, false, cts);
                     tcs.SetResult(0);
                 }
                 catch (Exception ex)
@@ -1812,7 +1812,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         requestdoc.Save(writer);
                         request = writer.ToString();
                     }
-                    XElement soapbodynode = await Process(functionname, request, cts);
+                    XElement soapbodynode = await Process(functionname, request, false, cts);
                     int rv = StringToInt(soapbodynode.Value);
                     tcs.SetResult(rv);
                 }
@@ -1851,7 +1851,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         requestdoc.Save(writer);
                         request = writer.ToString();
                     }
-                    XElement soapbodynode = await Process(functionname, request, cts);
+                    XElement soapbodynode = await Process(functionname, request, false, cts);
                     string response = soapbodynode.Value;
                     XDocument document = GetDoc(response);
                     List<BinTemplate> rv = new List<BinTemplate>();
@@ -1964,7 +1964,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         requestdoc.Save(writer);
                         request = writer.ToString();
                     }
-                    XElement soapbodynode = await Process(functionname, request, cts);
+                    XElement soapbodynode = await Process(functionname, request, false, cts);
                     int rv = StringToInt(soapbodynode.Value);
                     tcs.SetResult(rv);
                 }
@@ -2003,7 +2003,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         requestdoc.Save(writer);
                         request = writer.ToString();
                     }
-                    XElement soapbodynode = await Process(functionname, request, cts);
+                    XElement soapbodynode = await Process(functionname, request, false, cts);
                     string response = soapbodynode.Value;
                     XDocument document = GetDoc(response);
                     List<BinType> rv = new List<BinType>();
@@ -2094,7 +2094,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         requestdoc.Save(writer);
                         request = writer.ToString();
                     }
-                    XElement soapbodynode = await Process(functionname, request, cts);
+                    XElement soapbodynode = await Process(functionname, request, false, cts);
                     int rv = StringToInt(soapbodynode.Value);
                     tcs.SetResult(rv);
                 }
@@ -2144,7 +2144,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         requestdoc.Save(writer);
                         request = writer.ToString();
                     }
-                    XElement soapbodynode = await Process(functionname, request, cts);
+                    XElement soapbodynode = await Process(functionname, request, false, cts);
                     string response = soapbodynode.Value;
                     XDocument document = GetDoc(response);
                     List<BinContent> rv = new List<BinContent>();
@@ -2277,7 +2277,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         requestdoc.Save(writer);
                         request = writer.ToString();
                     }
-                    XElement soapbodynode = await Process(functionname, request, cts);
+                    XElement soapbodynode = await Process(functionname, request, false, cts);
                     int rv = StringToInt(soapbodynode.Value);
                     tcs.SetResult(rv);
                 }
@@ -2323,7 +2323,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         requestdoc.Save(writer);
                         request = writer.ToString();
                     }
-                    XElement soapbodynode = await Process(functionname, request, cts);
+                    XElement soapbodynode = await Process(functionname, request, false, cts);
                     string response = soapbodynode.Value;
                     XDocument document = GetDoc(response);
                     List<ItemIdentifier> rv = new List<ItemIdentifier>();
@@ -2393,7 +2393,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         requestdoc.Save(writer);
                         request = writer.ToString();
                     }
-                    XElement soapbodynode = await Process(functionname, request, cts);
+                    XElement soapbodynode = await Process(functionname, request, false, cts);
                     int rv = StringToInt(soapbodynode.Value);
                     tcs.SetResult(rv);
                 }
@@ -2433,7 +2433,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         requestdoc.Save(writer);
                         request = writer.ToString();
                     }
-                    XElement soapbodynode = await Process(functionname, request, cts);
+                    XElement soapbodynode = await Process(functionname, request, false, cts);
                     string response = soapbodynode.Value;
                     XDocument document = GetDoc(response);
                     List<WarehouseClass> rv = new List<WarehouseClass>();
@@ -2494,7 +2494,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         requestdoc.Save(writer);
                         request = writer.ToString();
                     }
-                    XElement soapbodynode = await Process(functionname, request, cts);
+                    XElement soapbodynode = await Process(functionname, request, false, cts);
                     int rv = StringToInt(soapbodynode.Value);
                     tcs.SetResult(rv);
                 }
@@ -2534,7 +2534,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         requestdoc.Save(writer);
                         request = writer.ToString();
                     }
-                    XElement soapbodynode = await Process(functionname, request, cts);
+                    XElement soapbodynode = await Process(functionname, request, false, cts);
                     string response = soapbodynode.Value;
                     XDocument document = GetDoc(response);
                     List<SpecialEquipment> rv = new List<SpecialEquipment>();
@@ -2604,7 +2604,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         requestdoc.Save(writer);
                         request = writer.ToString();
                     }
-                    XElement soapbodynode = await Process(functionname, request, cts);
+                    XElement soapbodynode = await Process(functionname, request, false, cts);
                     int rv = StringToInt(soapbodynode.Value);
                     tcs.SetResult(rv);
                 }
@@ -2653,7 +2653,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         requestdoc.Save(writer);
                         request = writer.ToString();
                     }
-                    XElement soapbodynode = await Process(functionname, request, cts);
+                    XElement soapbodynode = await Process(functionname, request, false, cts);
                     string response = soapbodynode.Value;
                     XDocument document = GetDoc(response);
                     List<WarehouseEntry> rv = new List<WarehouseEntry>();
@@ -2768,7 +2768,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         requestdoc.Save(writer);
                         request = writer.ToString();
                     }
-                    XElement soapbodynode = await Process(functionname, request, cts);
+                    XElement soapbodynode = await Process(functionname, request, false, cts);
                     string response = soapbodynode.Value;
                     XDocument document = GetDoc(response);
                     List<UserDefinedSelection> rv = new List<UserDefinedSelection>();
@@ -2847,7 +2847,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         requestdoc.Save(writer);
                         request = writer.ToString();
                     }
-                    XElement soapbodynode = await Process(functionname, request, cts);
+                    XElement soapbodynode = await Process(functionname, request, false, cts);
                     string response = soapbodynode.Value;
                     XDocument document = GetDoc(response);
                     List<UserDefinedSelectionResult> rv = new List<UserDefinedSelectionResult>();
@@ -2939,7 +2939,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         requestdoc.Save(writer);
                         request = writer.ToString();
                     }
-                    XElement soapbodynode = await Process(functionname, request, cts);
+                    XElement soapbodynode = await Process(functionname, request, false, cts);
                     string response = soapbodynode.Value;
                     XDocument document = GetDoc(response);
                     List<UserDefinedFunction> rv = new List<UserDefinedFunction>();
@@ -3022,7 +3022,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         requestdoc.Save(writer);
                         request = writer.ToString();
                     }
-                    XElement soapbodynode = await Process(functionname, request, cts);
+                    XElement soapbodynode = await Process(functionname, request, false, cts);
                     string rv = soapbodynode.Value;
                     tcs.SetResult(rv);
                 }
@@ -3065,7 +3065,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         requestdoc.Save(writer);
                         request = writer.ToString();
                     }
-                    XElement soapbodynode = await Process(functionname, request, cts);
+                    XElement soapbodynode = await Process(functionname, request, false, cts);
                     string response = soapbodynode.Value;
                     XDocument document = GetDoc(response);
                     List<SearchResponse> rv = new List<SearchResponse>();
@@ -3147,7 +3147,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         requestdoc.Save(writer);
                         request = writer.ToString();
                     }
-                    XElement soapbodynode = await Process(functionname, request, cts);
+                    XElement soapbodynode = await Process(functionname, request, true, cts);
                     int rv = StringToInt(soapbodynode.Value);
                     tcs.SetResult(rv);
                 }
@@ -3159,19 +3159,24 @@ namespace WarehouseControlSystem.Helpers.NAV
             return tcs.Task;
         }
 
-
-
-        //public static async Task<XElement> Process(string functionname, string requestbody, CancellationTokenSource cts)
-        //{
-        //    return await DependencyService.Get<IProcess>().Process(functionname, requestbody, cts);
-        //}
-
-        public static async Task<XElement> Process(string functionname, string requestbody, CancellationTokenSource cts)
+        public static async Task<XElement> Process(string functionname, string requestbody, bool testconnection, CancellationTokenSource cts)
         {
-            if (!(Global.CurrentConnection is Connection))
-                return null;
+            Connection connection;
+            if (testconnection)
+            {
+                if (!(Global.TestConnection is Connection))
+                    return null;
 
-            Connection connection = Global.CurrentConnection;
+                connection = Global.TestConnection;
+            }
+            else
+            {
+                if (!(Global.CurrentConnection is Connection))
+                    return null;
+
+                connection = Global.CurrentConnection;
+            }
+
             XElement rv = null;
 
             //Uri u1 = connection.GetUri();
