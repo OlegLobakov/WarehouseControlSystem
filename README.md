@@ -48,7 +48,7 @@ alt="IMAGE ALT TEXT HERE" width="480" height="360" border="10" />
 
 ## Installation
 Microsoft Dynamics NAV:
-[wiki](https://github.com/OlegLobakov/WarehouseControlSystem/wiki/Installation-(Microsoft-Dynamics-NAV))
+[wiki](https://github.com/OlegLobakov/WarehouseControlSystem/wiki/Microsoft-Dynamics-NAV-Installation)
 
 Android, Windows:
 Download, Compile and Run :)
