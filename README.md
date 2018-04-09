@@ -12,10 +12,10 @@
   for Microsoft Dynamics NAV
 </p>
 
-
-<a href="https://www.codefactor.io/repository/github/oleglobakov/warehousecontrolsystem"><img src="https://www.codefactor.io/repository/github/oleglobakov/warehousecontrolsystem/badge" /></a>
-
-
+<p align="left">
+<img src="https://www.codefactor.io/repository/github/oleglobakov/warehousecontrolsystem/badge" />
+<img src='https://bettercodehub.com/edge/badge/OlegLobakov/WarehouseControlSystem?branch=master'>
+</p>
 
 
 ## About
