@@ -28,62 +28,10 @@ using System.Threading;
 
 namespace WarehouseControlSystem.ViewModel
 {
-    public class LocationViewModel : BaseViewModel
+    public class LocationViewModel : NAVBaseViewModel
     {
         public Location Location { get; set; }
 
-        public string Code
-        {
-            get { return code; }
-            set
-            {
-                if (code != value)
-                {
-                    code = value;
-                    Changed = true;
-                    OnPropertyChanged(nameof(Code));
-                }
-            }
-        } string code;
-        public string CodeWarningText
-        {
-            get { return codewarningtext; }
-            set
-            {
-                if (codewarningtext != value)
-                {
-                    codewarningtext = value;
-                    OnPropertyChanged(nameof(CodeWarningText));
-                }
-            }
-        } string codewarningtext;
-
-        public string Name
-        {
-            get { return name; }
-            set
-            {
-                if (name != value)
-                {
-                    name = value;
-                    Changed = true;
-                    OnPropertyChanged(nameof(Name));
-                }
-            }
-        } string name;
-        public Color Color
-        {
-            get { return color; }
-            set
-            {
-                if (color != value)
-                {
-                    color = value;
-                    Changed = true;
-                    OnPropertyChanged(nameof(Color));
-                }
-            }
-        } Color color;
         public string Debug
         {
             get { return debug; }
@@ -215,110 +163,8 @@ namespace WarehouseControlSystem.ViewModel
             }
         } bool requireputaway;
 
-        public SchemeElementEditMode EditMode
-        {
-            get { return editmode; }
-            set
-            {
-                if (editmode != value)
-                {
-                    editmode = value;
-                    switch (editmode)
-                    {
-                        case SchemeElementEditMode.None:
-                            EditModeText = "";
-                            break;
-
-                        case SchemeElementEditMode.Move:
-                            EditModeText = AppResources.LocationView_EditMode1;
-                            break;
-
-                        case SchemeElementEditMode.Resize:
-                            EditModeText = AppResources.LocationView_EditMode2;
-                            break;
-                    }
-                    Changed = true;
-                    OnPropertyChanged("EditMode");
-                }
-            }
-        } SchemeElementEditMode editmode;
-        public string EditModeText
-        {
-            get { return editmodetext; }
-            set
-            {
-                if (editmodetext != value)
-                {
-                    editmodetext = value;
-                    Changed = true;
-                    OnPropertyChanged("EditModeText");
-                }
-            }
-        } string editmodetext = "";
-
-        public bool CreateMode
-        {
-            get { return createmode; }
-            set
-            {
-                if (createmode != value)
-                {
-                    createmode = value;
-                    OnPropertyChanged(nameof(CreateMode));
-                }
-            }
-        } bool createmode;
-
-        public double PrevWidth { get; set; }
-        public double PrevHeight { get; set; }
-
-
-        public int PlanWidth
-        {
-            get { return planwidth; }
-            set
-            {
-                if (planwidth != value)
-                {
-                    planwidth = value;
-                    OnPropertyChanged(nameof(PlanWidth));
-                }
-            }
-        } int planwidth;
-        public int PlanHeight
-        {
-            get { return planheight; }
-            set
-            {
-                if (planheight != value)
-                {
-                    planheight = value;
-                    OnPropertyChanged(nameof(PlanHeight));
-                }
-            }
-        } int planheight;
-
-        public double Left { get; set; }
-        public double Top { get; set; }
-        public double Width { get; set; }
-        public double Height { get; set; }
-
         public ICommand TapCommand { protected set; get; }
         public event Action<LocationViewModel> OnTap;
-
-        public bool Changed
-        {
-            get { return changed; }
-            set
-            {
-                if (changed != value)
-                {
-                    changed = value;
-                    OnPropertyChanged(nameof(Changed));
-                }
-            }
-        } bool changed;
-
 
         public List<SubSchemeElement> SubSchemeElements { get; set; } = new List<SubSchemeElement>();
         public bool ZonesIsLoaded
@@ -345,7 +191,6 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } bool zonesisbeingloaded;
-
 
         public LocationViewModel(INavigation navigation, Location location) : base(navigation)
         {

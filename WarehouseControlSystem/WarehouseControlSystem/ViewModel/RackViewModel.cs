@@ -46,6 +46,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } string no;
+
         public string NoWarningText
         {
             get { return nowarningtext; }
@@ -73,6 +74,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } string locationcode;
+
         public string ZoneCode
         {
             get { return zonecode; }
@@ -140,6 +142,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } int levels;
+
         public int Depth
         {
             get { return depth; }
@@ -187,6 +190,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } string racksectionseparator;
+
         public string SectionLevelSeparator
         {
             get { return sectionlevelseparator; }
@@ -200,6 +204,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } string sectionlevelseparator;
+
         public string LevelDepthSeparator
         {
             get { return leveldepthseparator; }
@@ -227,6 +232,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } bool reverssectionnumbering;
+
         public bool ReversLevelNumbering
         {
             get { return reverslevelbering; }
@@ -240,6 +246,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } bool reverslevelbering;
+
         public bool ReversDepthNumbering
         {
             get { return reversdepthnumbering; }
@@ -267,6 +274,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } int numberingsectionbegin = 1;
+
         public int NumberingLevelBegin
         {
             get { return numberinglevelbegin; }
@@ -280,6 +288,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } int numberinglevelbegin = 1;
+
         public int NumberingDepthBegin
         {
             get { return numberingdepthbegin; }

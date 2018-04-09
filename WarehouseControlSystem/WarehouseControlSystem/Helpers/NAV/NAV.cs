@@ -31,7 +31,6 @@ namespace WarehouseControlSystem.Helpers.NAV
         static XNamespace myns = "urn:microsoft-dynamics-schemas/codeunit/WarehouseControlManagement";
         static XNamespace ns = "http://schemas.xmlsoap.org/soap/envelope/";
 
-
         public static Task<int> GetPlanWidth(CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<int>();

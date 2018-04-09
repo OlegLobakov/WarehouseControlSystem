@@ -29,7 +29,7 @@ using System.Threading;
 
 namespace WarehouseControlSystem.ViewModel
 {
-    public class ZoneViewModel : BaseViewModel
+    public class ZoneViewModel : NAVBaseViewModel
     {
         public Location Location { get; set; }
         public Zone Zone { get; set; }
@@ -47,31 +47,6 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } string locationcode;
-        public string Code
-        {
-            get { return code; }
-            set
-            {
-                if (code != value)
-                {
-                    code = value;
-                    Changed = true;
-                    OnPropertyChanged(nameof(Code));
-                }
-            }
-        } string code;
-        public string CodeWarningText
-        {
-            get { return codewarningtext; }
-            set
-            {
-                if (codewarningtext != value)
-                {
-                    codewarningtext = value;
-                    OnPropertyChanged(nameof(CodeWarningText));
-                }
-            }
-        } string codewarningtext;
 
         public string Description
         {
@@ -86,19 +61,6 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } string description;
-        public Color Color
-        {
-            get { return color; }
-            set
-            {
-                if (color != value)
-                {
-                    color = value;
-                    Changed = true;
-                    OnPropertyChanged(nameof(Color));
-                }
-            }
-        } Color color;
 
         public string BinTypeCode
         {
@@ -115,33 +77,6 @@ namespace WarehouseControlSystem.ViewModel
         }
         string bintypecode;
 
-        public SchemeElementEditMode EditMode
-        {
-            get { return editmode; }
-            set
-            {
-                if (editmode != value)
-                {
-                    editmode = value;
-                    switch (editmode)
-                    {
-                        case SchemeElementEditMode.None:
-                            EditModeText = "";
-                            break;
-
-                        case SchemeElementEditMode.Move:
-                            EditModeText = AppResources.ZoneView_EditMode1;
-                            break;
-
-                        case SchemeElementEditMode.Resize:
-                            EditModeText = AppResources.ZoneView_EditMode2;
-                            break;
-                    }
-                    Changed = true;
-                    OnPropertyChanged("EditMode");
-                }
-            }
-        } SchemeElementEditMode editmode;
         public bool SchemeVisible
         {
             get { return schemevisible; }
@@ -180,79 +115,9 @@ namespace WarehouseControlSystem.ViewModel
             }
         } int binquantity;
 
-        public string EditModeText
-        {
-            get { return editmodetext; }
-            set
-            {
-                if (editmodetext != value)
-                {
-                    editmodetext = value;
-                    OnPropertyChanged(nameof(EditModeText));
-                }
-            }
-        } string editmodetext = "";
-        public bool CreateMode
-        {
-            get { return createmode; }
-            set
-            {
-                if (createmode != value)
-                {
-                    createmode = value;
-                    OnPropertyChanged(nameof(CreateMode));
-                }
-            }
-        } bool createmode;
-
-        public double PrevWidth { get; set; }
-        public double PrevHeight { get; set; }
-
-        public int PlanWidth
-        {
-            get { return planwidth; }
-            set
-            {
-                if (planwidth != value)
-                {
-                    planwidth = value;
-                    OnPropertyChanged(nameof(PlanWidth));
-                }
-            }
-        } int planwidth;
-        public int PlanHeight
-        {
-            get { return planheight; }
-            set
-            {
-                if (planheight != value)
-                {
-                    planheight = value;
-                    OnPropertyChanged(nameof(PlanHeight));
-                }
-            }
-        } int planheight;
-
-        public double Left { get; set; }
-        public double Top { get; set; }
-        public double Width { get; set; }
-        public double Height { get; set; }
-
         public ICommand TapCommand { protected set; get; }
         public event Action<ZoneViewModel> OnTap;
 
-        public bool Changed
-        {
-            get { return changed; }
-            set
-            {
-                if (changed != value)
-                {
-                    changed = value;
-                    OnPropertyChanged(nameof(Changed));
-                }
-            }
-        } bool changed;
 
         public ObservableCollection<Location> Locations { get; set; } = new ObservableCollection<Location>();
         public bool LocationsIsLoaded

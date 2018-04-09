@@ -25,7 +25,7 @@ using System.Collections.ObjectModel;
 
 namespace WarehouseControlSystem.ViewModel
 {
-    public class BinViewModel : BaseViewModel
+    public class BinViewModel : NAVBaseViewModel
     {
         public Bin Bin;
         public string LocationCode
@@ -65,18 +65,6 @@ namespace WarehouseControlSystem.ViewModel
             }
         } string rackno;
 
-        public string Code
-        {
-            get { return code; }
-            set
-            {
-                if (code != value)
-                {
-                    code = value;
-                    OnPropertyChanged(nameof(Code));
-                }
-            }
-        } string code;
         public int Section
         {
             get { return section; }
@@ -188,6 +176,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } string message1;
+
         public bool IsMessageVisibled
         {
             get { return ismessagevisibled; }
@@ -302,6 +291,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } string description;
+
         public string BinType
         {
             get { return bintype; }
@@ -314,6 +304,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } string bintype;
+
         public bool NoSize
         {
             get { return nosize; }
@@ -326,6 +317,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } bool nosize;
+
         public int BinRanking
         {
             get { return binrancking; }
@@ -338,6 +330,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } int binrancking;
+
         public decimal MaximumCubage
         {
             get { return maximumcubage; }
@@ -350,6 +343,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } decimal maximumcubage;
+
         public decimal MaximumWeight
         {
             get { return maximumweight; }
@@ -362,6 +356,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } decimal maximumweight;
+
         public bool AdjustmentBin
         {
             get { return adjustmentbin; }
@@ -374,6 +369,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } bool adjustmentbin;
+
         public string WarehouseClassCode
         {
             get { return warehouseclasscode; }
@@ -386,6 +382,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } string warehouseclasscode;
+
         public string SpecialEquipmentCode
         {
             get { return specialequipmentcode; }
@@ -398,6 +395,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } string specialequipmentcode;
+
         public bool Default
         {
             get { return default1; }
@@ -410,6 +408,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } bool default1;
+
         public bool SchemeVisible
         {
             get { return schemevisible; }
@@ -421,8 +420,8 @@ namespace WarehouseControlSystem.ViewModel
                     OnPropertyChanged(nameof(SchemeVisible));
                 }
             }
-        }
-        bool schemevisible;
+        } bool schemevisible;
+
         public bool Dedicated
         {
             get { return dedicated; }
