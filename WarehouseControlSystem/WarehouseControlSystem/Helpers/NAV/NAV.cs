@@ -25,6 +25,7 @@ using WarehouseControlSystem.Model;
 using ModernHttpClient;
 using WarehouseControlSystem.DependenciesServices;
 using Xamarin.Forms;
+
 namespace WarehouseControlSystem.Helpers.NAV
 {
     public class NAV
@@ -41,21 +42,8 @@ namespace WarehouseControlSystem.Helpers.NAV
                 try
                 {
                     string functionname = "GetPlanWidth";
-                    XDocument requestdoc = new XDocument(
-                        new XElement(ns + "Envelope",
-                            new XAttribute(XNamespace.Xmlns + "soapenv", ns),
-                            new XAttribute(XNamespace.Xmlns + "ns1", myns),
-                            new XElement(ns + "Body",
-                                new XElement(myns + functionname
-                    ))));
-                    requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
-                    string request = "";
-                    using (StringWriter writer = new Utf8StringWriter())
-                    {
-                        requestdoc.Save(writer);
-                        request = writer.ToString();
-                    }
-                    XElement soapbodynode = await Process(functionname, request, false, cts);
+                    XElement body = new XElement(myns + functionname);
+                    XElement soapbodynode = await Process(functionname, body, false, cts);
                     int rv = StringToInt(soapbodynode.Value);
                     tcs.SetResult(rv);
                 }
@@ -66,6 +54,7 @@ namespace WarehouseControlSystem.Helpers.NAV
             });
             return tcs.Task;
         }
+
         public static Task<int> GetPlanHeight(CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<int>();
@@ -74,21 +63,8 @@ namespace WarehouseControlSystem.Helpers.NAV
                 try
                 {
                     string functionname = "GetPlanHeight";
-                    XDocument requestdoc = new XDocument(
-                        new XElement(ns + "Envelope",
-                            new XAttribute(XNamespace.Xmlns + "soapenv", ns),
-                            new XAttribute(XNamespace.Xmlns + "ns1", myns),
-                            new XElement(ns + "Body",
-                                new XElement(myns + functionname
-                    ))));
-                    requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
-                    string request = "";
-                    using (StringWriter writer = new Utf8StringWriter())
-                    {
-                        requestdoc.Save(writer);
-                        request = writer.ToString();
-                    }
-                    XElement soapbodynode = await Process(functionname, request, false, cts);
+                    XElement body = new XElement(myns + functionname);
+                    XElement soapbodynode = await Process(functionname, body, false, cts);
                     int rv = StringToInt(soapbodynode.Value);
                     tcs.SetResult(rv);
                 }
@@ -107,22 +83,9 @@ namespace WarehouseControlSystem.Helpers.NAV
                 try
                 {
                     string functionname = "SetPlanWidth";
-                    XDocument requestdoc = new XDocument(
-                        new XElement(ns + "Envelope",
-                            new XAttribute(XNamespace.Xmlns + "soapenv", ns),
-                            new XAttribute(XNamespace.Xmlns + "ns1", myns),
-                            new XElement(ns + "Body",
-                                new XElement(myns + functionname,
-                                    new XElement(myns + "value", value)
-                    ))));
-                    requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
-                    string request = "";
-                    using (StringWriter writer = new Utf8StringWriter())
-                    {
-                        requestdoc.Save(writer);
-                        request = writer.ToString();
-                    }
-                    XElement soapbodynode = await Process(functionname, request, false, cts);
+                    XElement body = new XElement(myns + functionname,
+                        new XElement(myns + "value", value));
+                    XElement soapbodynode = await Process(functionname, body, false, cts);
                     int rv = StringToInt(soapbodynode.Value);
                     tcs.SetResult(rv);
                 }
@@ -141,22 +104,9 @@ namespace WarehouseControlSystem.Helpers.NAV
                 try
                 {
                     string functionname = "SetPlanHeight";
-                    XDocument requestdoc = new XDocument(
-                        new XElement(ns + "Envelope",
-                            new XAttribute(XNamespace.Xmlns + "soapenv", ns),
-                            new XAttribute(XNamespace.Xmlns + "ns1", myns),
-                            new XElement(ns + "Body",
-                                new XElement(myns + functionname,
-                                    new XElement(myns + "value", value)
-                    ))));
-                    requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
-                    string request = "";
-                    using (StringWriter writer = new Utf8StringWriter())
-                    {
-                        requestdoc.Save(writer);
-                        request = writer.ToString();
-                    }
-                    XElement soapbodynode = await Process(functionname, request, false, cts);
+                    XElement body = new XElement(myns + functionname,
+                        new XElement(myns + "value", value));
+                    XElement soapbodynode = await Process(functionname, body, false, cts);
                     int rv = StringToInt(soapbodynode.Value);
                     tcs.SetResult(rv);
                 }
@@ -175,21 +125,8 @@ namespace WarehouseControlSystem.Helpers.NAV
                 try
                 {
                     string functionname = "APIVersion";
-                    XDocument requestdoc = new XDocument(
-                        new XElement(ns + "Envelope",
-                            new XAttribute(XNamespace.Xmlns + "soapenv", ns),
-                            new XAttribute(XNamespace.Xmlns + "ns1", myns),
-                            new XElement(ns + "Body",
-                                new XElement(myns + functionname
-                    ))));
-                    requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
-                    string request = "";
-                    using (StringWriter writer = new Utf8StringWriter())
-                    {
-                        requestdoc.Save(writer);
-                        request = writer.ToString();
-                    }
-                    XElement soapbodynode = await Process(functionname, request, false, cts);
+                    XElement body = new XElement(myns + functionname);
+                    XElement soapbodynode = await Process(functionname, body, false, cts);
                     int rv = StringToInt(soapbodynode.Value);
                     tcs.SetResult(rv);
                 }
@@ -210,12 +147,8 @@ namespace WarehouseControlSystem.Helpers.NAV
                 try
                 {
                     string functionname = "CreateLocation";
-                    XDocument requestdoc = new XDocument(
-                        new XElement(ns + "Envelope",
-                            new XAttribute(XNamespace.Xmlns + "soapenv", ns),
-                            new XAttribute(XNamespace.Xmlns + "ns1", myns),
-                            new XElement(ns + "Body",
-                                new XElement(myns + functionname,
+                    XElement body = 
+                        new XElement(myns + functionname,
                                     new XElement(myns + "code", location.Code),
                                     new XElement(myns + "name", location.Name),
                                     new XElement(myns + "address", location.Address),
@@ -232,16 +165,8 @@ namespace WarehouseControlSystem.Helpers.NAV
                                     new XElement(myns + "requireReceive", location.RequireReceive),
                                     new XElement(myns + "requireShipment", location.RequireShipment),
                                     new XElement(myns + "requirePick", location.RequirePick),
-                                    new XElement(myns + "requirePutaway", location.RequirePutaway)
-                    ))));
-                    requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
-                    string request = "";
-                    using (StringWriter writer = new Utf8StringWriter())
-                    {
-                        requestdoc.Save(writer);
-                        request = writer.ToString();
-                    }
-                    XElement soapbodynode = await Process(functionname, request, false, cts);
+                                    new XElement(myns + "requirePutaway", location.RequirePutaway));
+                    XElement soapbodynode = await Process(functionname, body, false, cts);
                     tcs.SetResult(0);
                 }
                 catch (Exception ex)
@@ -251,20 +176,16 @@ namespace WarehouseControlSystem.Helpers.NAV
             });
             return tcs.Task;
         }
-        public static Task<int> ModifyLocation(Location location,CancellationTokenSource cts)
-        {            
+        public static Task<int> ModifyLocation(Location location, CancellationTokenSource cts)
+        {
             var tcs = new TaskCompletionSource<int>();
             Task.Run(async () =>
             {
                 try
                 {
                     string functionname = "ModifyLocation";
-                    XDocument requestdoc = new XDocument(
-                        new XElement(ns + "Envelope",
-                            new XAttribute(XNamespace.Xmlns + "soapenv", ns),
-                            new XAttribute(XNamespace.Xmlns + "ns1", myns),
-                            new XElement(ns + "Body",
-                                new XElement(myns + functionname,
+                    XElement body = 
+                        new XElement(myns + functionname,
                                     new XElement(myns + "code", location.Code),
                                     new XElement(myns + "prevCode", location.PrevCode),
                                     new XElement(myns + "name", location.Name),
@@ -282,16 +203,8 @@ namespace WarehouseControlSystem.Helpers.NAV
                                     new XElement(myns + "requireReceive", location.RequireReceive),
                                     new XElement(myns + "requireShipment", location.RequireShipment),
                                     new XElement(myns + "requirePick", location.RequirePick),
-                                    new XElement(myns + "requirePutaway", location.RequirePutaway)
-                    ))));
-                    requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
-                    string request = "";
-                    using (StringWriter writer = new Utf8StringWriter())
-                    {
-                        requestdoc.Save(writer);
-                        request = writer.ToString();
-                    }
-                    XElement soapbodynode = await Process(functionname, request, false, cts);
+                                    new XElement(myns + "requirePutaway", location.RequirePutaway));
+                    XElement soapbodynode = await Process(functionname, body, false, cts);
                     tcs.SetResult(0);
                 }
                 catch (Exception ex)
@@ -309,23 +222,11 @@ namespace WarehouseControlSystem.Helpers.NAV
                 try
                 {
                     string functionname = "SetLocationVisible";
-                    XDocument requestdoc = new XDocument(
-                        new XElement(ns + "Envelope",
-                            new XAttribute(XNamespace.Xmlns + "soapenv", ns),
-                            new XAttribute(XNamespace.Xmlns + "ns1", myns),
-                            new XElement(ns + "Body",
-                                new XElement(myns + functionname,
+                    XElement body = 
+                        new XElement(myns + functionname,
                                     new XElement(myns + "code", location.Code),
-                                    new XElement(myns + "visible", location.SchemeVisible.ToString())))));
-
-                    requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
-                    string request = "";
-                    using (StringWriter writer = new Utf8StringWriter())
-                    {
-                        requestdoc.Save(writer);
-                        request = writer.ToString();
-                    }
-                    XElement soapbodynode = await Process(functionname, request, false, cts);
+                                    new XElement(myns + "visible", location.SchemeVisible.ToString()));
+                    XElement soapbodynode = await Process(functionname, body, false, cts);
                     tcs.SetResult(0);
                 }
                 catch (Exception ex)
@@ -344,22 +245,10 @@ namespace WarehouseControlSystem.Helpers.NAV
                 try
                 {
                     string functionname = "DeleteLocation";
-                    XDocument requestdoc = new XDocument(
-                        new XElement(ns + "Envelope",
-                            new XAttribute(XNamespace.Xmlns + "soapenv", ns),
-                            new XAttribute(XNamespace.Xmlns + "ns1", myns),
-                            new XElement(ns + "Body",
-                                new XElement(myns + functionname,
-                                    new XElement(myns + "name", locationcode)))));
-
-                    requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
-                    string request = "";
-                    using (StringWriter writer = new Utf8StringWriter())
-                    {
-                        requestdoc.Save(writer);
-                        request = writer.ToString();
-                    }
-                    XElement soapbodynode = await Process(functionname, request, false, cts);
+                    XElement body = 
+                        new XElement(myns + functionname,
+                                    new XElement(myns + "name", locationcode));
+                    XElement soapbodynode = await Process(functionname, body, false, cts);
                     rv = StringToInt(soapbodynode.Value);
                     tcs.SetResult(0);
                 }
@@ -379,23 +268,11 @@ namespace WarehouseControlSystem.Helpers.NAV
                 try
                 {
                     string functionname = "GetLocationCount";
-                    XDocument requestdoc = new XDocument(
-                        new XElement(ns + "Envelope",
-                            new XAttribute(XNamespace.Xmlns + "soapenv", ns),
-                            new XAttribute(XNamespace.Xmlns + "ns1", myns),
-                            new XElement(ns + "Body",
-                                new XElement(myns + functionname,
+                    XElement body = 
+                        new XElement(myns + functionname,
                                     new XElement(myns + "codeFilter", codefilter),
-                                    new XElement(myns + "onlyVisibled", onlyvisibled.ToString())))));
-
-                    requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
-                    string request = "";
-                    using (StringWriter writer = new Utf8StringWriter())
-                    {
-                        requestdoc.Save(writer);
-                        request = writer.ToString();
-                    }
-                    XElement soapbodynode = await Process(functionname, request, false, cts);
+                                    new XElement(myns + "onlyVisibled", onlyvisibled.ToString()));
+                    XElement soapbodynode = await Process(functionname, body, false, cts);
                     rv = StringToInt(soapbodynode.Value);
                     tcs.SetResult(rv);
                 }
@@ -414,25 +291,14 @@ namespace WarehouseControlSystem.Helpers.NAV
                 try
                 {
                     string functionname = "GetLocationList";
-                    XDocument requestdoc = new XDocument(
-                        new XElement(ns + "Envelope",
-                            new XAttribute(XNamespace.Xmlns + "soapenv", ns),
-                            new XAttribute(XNamespace.Xmlns + "ns1", myns),
-                            new XElement(ns + "Body",
-                                new XElement(myns + functionname,
+                    XElement body = 
+                        new XElement(myns + functionname,
                                     new XElement(myns + "codeFilter", codefilter),
                                     new XElement(myns + "onlyVisibled", onlyvisibled.ToString()),
                                     new XElement(myns + "entriesPosition", position),
                                     new XElement(myns + "entriesCount", count),
-                                    new XElement(myns + "responseDocument", "")))));
-                    requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
-                    string request = "";
-                    using (StringWriter writer = new Utf8StringWriter())
-                    {
-                        requestdoc.Save(writer);
-                        request = writer.ToString();
-                    }
-                    XElement soapbodynode = await Process(functionname, request, false, cts);
+                                    new XElement(myns + "responseDocument", ""));
+                    XElement soapbodynode = await Process(functionname, body, false, cts);
                     List<Location> rv = new List<Location>();
                     string response = soapbodynode.Value;
                     XDocument document = GetDoc(response);
@@ -568,12 +434,8 @@ namespace WarehouseControlSystem.Helpers.NAV
                 try
                 {
                     string functionname = "CreateZone";
-                    XDocument requestdoc = new XDocument(
-                        new XElement(ns + "Envelope",
-                            new XAttribute(XNamespace.Xmlns + "soapenv", ns),
-                            new XAttribute(XNamespace.Xmlns + "ns1", myns),
-                            new XElement(ns + "Body",
-                                new XElement(myns + functionname,
+                    XElement body = 
+                        new XElement(myns + functionname,
                                     new XElement(myns + "locationCode", zone.LocationCode),
                                     new XElement(myns + "code", zone.Code),
                                     new XElement(myns + "description", zone.Description),
@@ -589,16 +451,8 @@ namespace WarehouseControlSystem.Helpers.NAV
                                     new XElement(myns + "top", zone.Top),
                                     new XElement(myns + "width", zone.Width),
                                     new XElement(myns + "height", zone.Height),
-                                    new XElement(myns + "schemeVisible", zone.SchemeVisible)
-                    ))));
-                    requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
-                    string request = "";
-                    using (StringWriter writer = new Utf8StringWriter())
-                    {
-                        requestdoc.Save(writer);
-                        request = writer.ToString();
-                    }
-                    XElement soapbodynode = await Process(functionname, request, false, cts);
+                                    new XElement(myns + "schemeVisible", zone.SchemeVisible));
+                    XElement soapbodynode = await Process(functionname, body, false, cts);
                     tcs.SetResult(0);
                 }
                 catch (Exception ex)
@@ -616,12 +470,8 @@ namespace WarehouseControlSystem.Helpers.NAV
                 try
                 {
                     string functionname = "ModifyZone";
-                    XDocument requestdoc = new XDocument(
-                        new XElement(ns + "Envelope",
-                            new XAttribute(XNamespace.Xmlns + "soapenv", ns),
-                            new XAttribute(XNamespace.Xmlns + "ns1", myns),
-                            new XElement(ns + "Body",
-                                new XElement(myns + functionname,
+                    XElement body = 
+                        new XElement(myns + functionname,
                                     new XElement(myns + "locationCode", zone.LocationCode),
                                     new XElement(myns + "code", zone.Code),
                                     new XElement(myns + "prevCode", zone.PrevCode),
@@ -638,16 +488,8 @@ namespace WarehouseControlSystem.Helpers.NAV
                                     new XElement(myns + "top", zone.Top),
                                     new XElement(myns + "width", zone.Width),
                                     new XElement(myns + "height", zone.Height),
-                                    new XElement(myns + "schemeVisible", zone.SchemeVisible)
-                    ))));
-                    requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
-                    string request = "";
-                    using (StringWriter writer = new Utf8StringWriter())
-                    {
-                        requestdoc.Save(writer);
-                        request = writer.ToString();
-                    }
-                    XElement soapbodynode = await Process(functionname, request, false, cts);
+                                    new XElement(myns + "schemeVisible", zone.SchemeVisible));
+                    XElement soapbodynode = await Process(functionname, body, false, cts);
                     tcs.SetResult(0);
                 }
                 catch (Exception ex)
@@ -665,24 +507,12 @@ namespace WarehouseControlSystem.Helpers.NAV
                 try
                 {
                     string functionname = "SetZoneVisible";
-                    XDocument requestdoc = new XDocument(
-                        new XElement(ns + "Envelope",
-                            new XAttribute(XNamespace.Xmlns + "soapenv", ns),
-                            new XAttribute(XNamespace.Xmlns + "ns1", myns),
-                            new XElement(ns + "Body",
-                                new XElement(myns + functionname,
+                    XElement body = 
+                        new XElement(myns + functionname,
                                     new XElement(myns + "locationCode", zone.LocationCode),
                                     new XElement(myns + "code", zone.Code),
-                                    new XElement(myns + "visible", zone.SchemeVisible)
-                    ))));
-                    requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
-                    string request = "";
-                    using (StringWriter writer = new Utf8StringWriter())
-                    {
-                        requestdoc.Save(writer);
-                        request = writer.ToString();
-                    }
-                    XElement soapbodynode = await Process(functionname, request, false, cts);
+                                    new XElement(myns + "visible", zone.SchemeVisible));
+                    XElement soapbodynode = await Process(functionname, body, false, cts);
                     tcs.SetResult(0);
                 }
                 catch (Exception ex)
@@ -700,23 +530,11 @@ namespace WarehouseControlSystem.Helpers.NAV
                 try
                 {
                     string functionname = "DeleteZone";
-                    XDocument requestdoc = new XDocument(
-                        new XElement(ns + "Envelope",
-                            new XAttribute(XNamespace.Xmlns + "soapenv", ns),
-                            new XAttribute(XNamespace.Xmlns + "ns1", myns),
-                            new XElement(ns + "Body",
-                                new XElement(myns + functionname,
+                    XElement body = 
+                        new XElement(myns + functionname,
                                     new XElement(myns + "locationCode", zone.LocationCode),
-                                    new XElement(myns + "code", zone.Code)
-                    ))));
-                    requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
-                    string request = "";
-                    using (StringWriter writer = new Utf8StringWriter())
-                    {
-                        requestdoc.Save(writer);
-                        request = writer.ToString();
-                    }
-                    XElement soapbodynode = await Process(functionname, request, false, cts);
+                                    new XElement(myns + "code", zone.Code));
+                    XElement soapbodynode = await Process(functionname, body, false, cts);
                     tcs.SetResult(0);
                 }
                 catch (Exception ex)
@@ -735,25 +553,13 @@ namespace WarehouseControlSystem.Helpers.NAV
                 try
                 {
                     string functionname = "GetZoneCount";
-                    XDocument requestdoc = new XDocument(
-                        new XElement(ns + "Envelope",
-                            new XAttribute(XNamespace.Xmlns + "soapenv", ns),
-                            new XAttribute(XNamespace.Xmlns + "ns1", myns),
-                            new XElement(ns + "Body",
-                                new XElement(myns + functionname,
+                    XElement body = 
+                        new XElement(myns + functionname,
                                     new XElement(myns + "locationFilter", locationfilter),
                                     new XElement(myns + "codeFilter", codefilter),
-                                    new XElement(myns + "onlyVisibled", onlyvisibled)
-                                    ))));
+                                    new XElement(myns + "onlyVisibled", onlyvisibled));
 
-                    requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
-                    string request = "";
-                    using (StringWriter writer = new Utf8StringWriter())
-                    {
-                        requestdoc.Save(writer);
-                        request = writer.ToString();
-                    }
-                    XElement soapbodynode = await Process(functionname, request, false, cts);
+                    XElement soapbodynode = await Process(functionname, body, false, cts);
                     rv = StringToInt(soapbodynode.Value);
                     tcs.SetResult(rv);
                 }
@@ -772,27 +578,15 @@ namespace WarehouseControlSystem.Helpers.NAV
                 try
                 {
                     string functionname = "GetZoneList";
-                    XDocument requestdoc = new XDocument(
-                        new XElement(ns + "Envelope",
-                            new XAttribute(XNamespace.Xmlns + "soapenv", ns),
-                            new XAttribute(XNamespace.Xmlns + "ns1", myns),
-                            new XElement(ns + "Body",
-                                new XElement(myns + functionname,
+                    XElement body = 
+                        new XElement(myns + functionname,
                                     new XElement(myns + "locationFilter", locationfilter),
                                     new XElement(myns + "codeFilter", codefilter),
                                     new XElement(myns + "onlyVisibled", onlyvisibled),
                                     new XElement(myns + "entriesPosition", position),
                                     new XElement(myns + "entriesCount", count),
-                                    new XElement(myns + "responseDocument", "")
-                        ))));
-                    requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
-                    string request = "";
-                    using (StringWriter writer = new Utf8StringWriter())
-                    {
-                        requestdoc.Save(writer);
-                        request = writer.ToString();
-                    }
-                    XElement soapbodynode = await Process(functionname, request, false, cts);
+                                    new XElement(myns + "responseDocument", ""));
+                    XElement soapbodynode = await Process(functionname, body, false, cts);
                     string response = soapbodynode.Value;
                     XDocument document = GetDoc(response);
                     List<Zone> rv = new List<Zone>();
@@ -907,31 +701,14 @@ namespace WarehouseControlSystem.Helpers.NAV
         #region Rack
         public static Task<int> CreateRack(Rack rack, CancellationTokenSource cts)
         {
-            //<element minOccurs="1" maxOccurs="1" name="locationCode" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="zoneCode" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="no" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="sections" type="int"/>
-            //<element minOccurs="1" maxOccurs="1" name="levels" type="int"/>
-            //<element minOccurs="1" maxOccurs="1" name="depth" type="int"/>
-            //<element minOccurs="1" maxOccurs="1" name="left" type="int"/>
-            //<element minOccurs="1" maxOccurs="1" name="top" type="int"/>
-            //<element minOccurs="1" maxOccurs="1" name="width" type="int"/>
-            //<element minOccurs="1" maxOccurs="1" name="height" type="int"/>
-            //<element minOccurs="1" maxOccurs="1" name="rackOrientation" type="int"/>
-            //<element minOccurs="1" maxOccurs="1" name="schemeVisible" type="boolean"/>
-
             var tcs = new TaskCompletionSource<int>();
             Task.Run(async () =>
             {
                 try
                 {
                     string functionname = "CreateRack";
-                    XDocument requestdoc = new XDocument(
-                        new XElement(ns + "Envelope",
-                            new XAttribute(XNamespace.Xmlns + "soapenv", ns),
-                            new XAttribute(XNamespace.Xmlns + "ns1", myns),
-                            new XElement(ns + "Body",
-                                new XElement(myns + functionname,
+                    XElement body = 
+                        new XElement(myns + functionname,
                                     new XElement(myns + "locationCode", rack.LocationCode),
                                     new XElement(myns + "code", rack.ZoneCode),
                                     new XElement(myns + "no", rack.No),
@@ -943,16 +720,8 @@ namespace WarehouseControlSystem.Helpers.NAV
                                     new XElement(myns + "width", rack.Width),
                                     new XElement(myns + "height", rack.Height),
                                     new XElement(myns + "rackOrientation", (int)rack.RackOrientation),
-                                    new XElement(myns + "schemeVisible", rack.SchemeVisible)
-                    ))));
-                    requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
-                    string request = "";
-                    using (StringWriter writer = new Utf8StringWriter())
-                    {
-                        requestdoc.Save(writer);
-                        request = writer.ToString();
-                    }
-                    XElement soapbodynode = await Process(functionname, request, false, cts);
+                                    new XElement(myns + "schemeVisible", rack.SchemeVisible));
+                    XElement soapbodynode = await Process(functionname, body, false, cts);
                     tcs.SetResult(0);
                 }
                 catch (Exception ex)
@@ -964,32 +733,14 @@ namespace WarehouseControlSystem.Helpers.NAV
         }
         public static Task<int> ModifyRack(Rack rack, CancellationTokenSource cts)
         {
-            //<element minOccurs="1" maxOccurs="1" name="locationCode" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="zoneCode" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="no" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="prevNo" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="sections" type="int"/>
-            //<element minOccurs="1" maxOccurs="1" name="levels" type="int"/>
-            //<element minOccurs="1" maxOccurs="1" name="depth" type="int"/>
-            //<element minOccurs="1" maxOccurs="1" name="left" type="int"/>
-            //<element minOccurs="1" maxOccurs="1" name="top" type="int"/>
-            //<element minOccurs="1" maxOccurs="1" name="width" type="int"/>
-            //<element minOccurs="1" maxOccurs="1" name="height" type="int"/>
-            //<element minOccurs="1" maxOccurs="1" name="rackOrientation" type="int"/>
-            //<element minOccurs="1" maxOccurs="1" name="schemeVisible" type="boolean"/>
-
             var tcs = new TaskCompletionSource<int>();
             Task.Run(async () =>
             {
                 try
                 {
                     string functionname = "ModifyRack";
-                    XDocument requestdoc = new XDocument(
-                        new XElement(ns + "Envelope",
-                            new XAttribute(XNamespace.Xmlns + "soapenv", ns),
-                            new XAttribute(XNamespace.Xmlns + "ns1", myns),
-                            new XElement(ns + "Body",
-                                new XElement(myns + functionname,
+                    XElement body = 
+                        new XElement(myns + functionname,
                                     new XElement(myns + "locationCode", rack.LocationCode),
                                     new XElement(myns + "zoneCode", rack.ZoneCode),
                                     new XElement(myns + "no", rack.No),
@@ -1002,16 +753,8 @@ namespace WarehouseControlSystem.Helpers.NAV
                                     new XElement(myns + "width", rack.Width),
                                     new XElement(myns + "height", rack.Height),
                                     new XElement(myns + "rackOrientation", (int)rack.RackOrientation),
-                                    new XElement(myns + "schemeVisible", rack.SchemeVisible)
-                    ))));
-                    requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
-                    string request = "";
-                    using (StringWriter writer = new Utf8StringWriter())
-                    {
-                        requestdoc.Save(writer);
-                        request = writer.ToString();
-                    }
-                    XElement soapbodynode = await Process(functionname, request, false, cts);
+                                    new XElement(myns + "schemeVisible", rack.SchemeVisible));
+                    XElement soapbodynode = await Process(functionname, body, false, cts);
                     tcs.SetResult(0);
                 }
                 catch (Exception ex)
@@ -1023,33 +766,18 @@ namespace WarehouseControlSystem.Helpers.NAV
         }
         public static Task<int> DeleteRack(Rack rack, CancellationTokenSource cts)
         {
-            //<element minOccurs="1" maxOccurs="1" name="locationCode" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="zoneCode" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="no" type="string"/>
             var tcs = new TaskCompletionSource<int>();
             Task.Run(async () =>
             {
                 try
                 {
                     string functionname = "DeleteRack";
-                    XDocument requestdoc = new XDocument(
-                        new XElement(ns + "Envelope",
-                            new XAttribute(XNamespace.Xmlns + "soapenv", ns),
-                            new XAttribute(XNamespace.Xmlns + "ns1", myns),
-                            new XElement(ns + "Body",
-                                new XElement(myns + functionname,
+                    XElement body = 
+                        new XElement(myns + functionname,
                                     new XElement(myns + "locationCode", rack.LocationCode),
                                     new XElement(myns + "zoneCode", rack.ZoneCode),
-                                    new XElement(myns + "no", rack.No)
-                    ))));
-                    requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
-                    string request = "";
-                    using (StringWriter writer = new Utf8StringWriter())
-                    {
-                        requestdoc.Save(writer);
-                        request = writer.ToString();
-                    }
-                    XElement soapbodynode = await Process(functionname, request, false, cts);
+                                    new XElement(myns + "no", rack.No));
+                    XElement soapbodynode = await Process(functionname, body, false, cts);
                     tcs.SetResult(0);
                 }
                 catch (Exception ex)
@@ -1061,35 +789,19 @@ namespace WarehouseControlSystem.Helpers.NAV
         }
         public static Task<int> SetRackVisible(Rack rack, CancellationTokenSource cts)
         {
-            //<element minOccurs="1" maxOccurs="1" name="locationCode" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="zoneCode" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="no" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="visible" type="boolean"/>
             var tcs = new TaskCompletionSource<int>();
             Task.Run(async () =>
             {
                 try
                 {
                     string functionname = "SetRackVisible";
-                    XDocument requestdoc = new XDocument(
-                        new XElement(ns + "Envelope",
-                            new XAttribute(XNamespace.Xmlns + "soapenv", ns),
-                            new XAttribute(XNamespace.Xmlns + "ns1", myns),
-                            new XElement(ns + "Body",
-                                new XElement(myns + functionname,
+                    XElement body = 
+                        new XElement(myns + functionname,
                                     new XElement(myns + "locationCode", rack.LocationCode),
                                     new XElement(myns + "zoneCode", rack.ZoneCode),
                                     new XElement(myns + "no", rack.No),
-                                    new XElement(myns + "visible", rack.SchemeVisible)
-                    ))));
-                    requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
-                    string request = "";
-                    using (StringWriter writer = new Utf8StringWriter())
-                    {
-                        requestdoc.Save(writer);
-                        request = writer.ToString();
-                    }
-                    XElement soapbodynode = await Process(functionname, request, false, cts);
+                                    new XElement(myns + "visible", rack.SchemeVisible));
+                    XElement soapbodynode = await Process(functionname, body, false, cts);
                     tcs.SetResult(0);
                 }
                 catch (Exception ex)
@@ -1101,36 +813,19 @@ namespace WarehouseControlSystem.Helpers.NAV
         }
         public static Task<int> GetRackCount(string locationfilter, string codefilter, string nofilter, bool onlyvisibled, CancellationTokenSource cts)
         {
-            //<element minOccurs="1" maxOccurs="1" name="locationCodeFilter" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="zoneCodeFilter" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="nOFilter" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="onlyVisibled" type="boolean"/>
-
             var tcs = new TaskCompletionSource<int>();
             Task.Run(async () =>
             {
                 try
                 {
                     string functionname = "GetRackCount";
-                    XDocument requestdoc = new XDocument(
-                        new XElement(ns + "Envelope",
-                            new XAttribute(XNamespace.Xmlns + "soapenv", ns),
-                            new XAttribute(XNamespace.Xmlns + "ns1", myns),
-                            new XElement(ns + "Body",
-                                new XElement(myns + functionname,
+                    XElement body = 
+                        new XElement(myns + functionname,
                                     new XElement(myns + "locationCodeFilter", locationfilter),
                                     new XElement(myns + "zoneCodeFilter", codefilter),
                                     new XElement(myns + "nOFilter", nofilter),
-                                    new XElement(myns + "onlyVisibled", onlyvisibled)
-                    ))));
-                    requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
-                    string request = "";
-                    using (StringWriter writer = new Utf8StringWriter())
-                    {
-                        requestdoc.Save(writer);
-                        request = writer.ToString();
-                    }
-                    XElement soapbodynode = await Process(functionname, request, false, cts);
+                                    new XElement(myns + "onlyVisibled", onlyvisibled));
+                    XElement soapbodynode = await Process(functionname, body, false, cts);
                     int rv = StringToInt(soapbodynode.Value);
                     tcs.SetResult(rv);
                 }
@@ -1143,39 +838,21 @@ namespace WarehouseControlSystem.Helpers.NAV
         }
         public static Task<List<Rack>> GetRackList(string locationfilter, string zonefilter, bool onlyvisibled, int position, int count, CancellationTokenSource cts)
         {
-            //<element minOccurs="1" maxOccurs="1" name="locationCodeFilter" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="zoneCodeFilter" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="onlyVisibled" type="boolean"/>
-            //<element minOccurs="1" maxOccurs="1" name="entriesPosition" type="int"/>
-            //<element minOccurs="1" maxOccurs="1" name="entriesCount" type="int"/>
-            //<element minOccurs="1" maxOccurs="1" name="responseDocument" type="string"/>
             var tcs = new TaskCompletionSource<List<Rack>>();
             Task.Run(async () =>
             {
                 try
                 {
                     string functionname = "GetRackList";
-                    XDocument requestdoc = new XDocument(
-                        new XElement(ns + "Envelope",
-                            new XAttribute(XNamespace.Xmlns + "soapenv", ns),
-                            new XAttribute(XNamespace.Xmlns + "ns1", myns),
-                            new XElement(ns + "Body",
-                                new XElement(myns + functionname,
+                    XElement body = 
+                        new XElement(myns + functionname,
                                     new XElement(myns + "locationCodeFilter", locationfilter),
                                     new XElement(myns + "zoneCodeFilter", zonefilter),
                                     new XElement(myns + "onlyVisibled", onlyvisibled),
                                     new XElement(myns + "entriesPosition", position),
                                     new XElement(myns + "entriesCount", count),
-                                    new XElement(myns + "responseDocument", "")
-                        ))));
-                    requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
-                    string request = "";
-                    using (StringWriter writer = new Utf8StringWriter())
-                    {
-                        requestdoc.Save(writer);
-                        request = writer.ToString();
-                    }
-                    XElement soapbodynode = await Process(functionname, request, false, cts);
+                                    new XElement(myns + "responseDocument", ""));
+                    XElement soapbodynode = await Process(functionname, body, false, cts);
                     string response = soapbodynode.Value;
                     XDocument document = GetDoc(response);
                     List<Rack> rv = new List<Rack>();
@@ -1279,28 +956,14 @@ namespace WarehouseControlSystem.Helpers.NAV
         #region Bin
         public static Task<int> CreateBin(BinTemplate bintemplate, Bin bin, CancellationTokenSource cts)
         {
-            //<element minOccurs="1" maxOccurs="1" name="binTemplateCode" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="binCode" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="rackNo" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="section" type="int"/>
-            //<element minOccurs="1" maxOccurs="1" name="level" type="int"/>
-            //<element minOccurs="1" maxOccurs="1" name="depth" type="int"/>
-            //<element minOccurs="1" maxOccurs="1" name="sectionSpan" type="int"/>
-            //<element minOccurs="1" maxOccurs="1" name="levelSpan" type="int"/>
-            //<element minOccurs="1" maxOccurs="1" name="depthSpan" type="int"/>
-
             var tcs = new TaskCompletionSource<int>();
             Task.Run(async () =>
             {
                 try
                 {
                     string functionname = "CreateBin";
-                    XDocument requestdoc = new XDocument(
-                        new XElement(ns + "Envelope",
-                            new XAttribute(XNamespace.Xmlns + "soapenv", ns),
-                            new XAttribute(XNamespace.Xmlns + "ns1", myns),
-                            new XElement(ns + "Body",
-                                new XElement(myns + functionname,
+                    XElement body = 
+                        new XElement(myns + functionname,
                                     new XElement(myns + "binTemplateCode", bintemplate.Code),
                                     new XElement(myns + "binCode", bin.Code),
                                     new XElement(myns + "rackNo", bin.RackNo),
@@ -1309,17 +972,8 @@ namespace WarehouseControlSystem.Helpers.NAV
                                     new XElement(myns + "depth", bin.Depth),
                                     new XElement(myns + "sectionSpan", bin.SectionSpan),
                                     new XElement(myns + "levelSpan", bin.LevelSpan),
-                                    new XElement(myns + "depthSpan", bin.DepthSpan)
-
-                    ))));
-                    requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
-                    string request = "";
-                    using (StringWriter writer = new Utf8StringWriter())
-                    {
-                        requestdoc.Save(writer);
-                        request = writer.ToString();
-                    }
-                    XElement soapbodynode = await Process(functionname, request, false, cts);
+                                    new XElement(myns + "depthSpan", bin.DepthSpan));
+                    XElement soapbodynode = await Process(functionname, body, false, cts);
                     tcs.SetResult(0);
                 }
                 catch (Exception ex)
@@ -1331,35 +985,14 @@ namespace WarehouseControlSystem.Helpers.NAV
         }
         public static Task<int> ModifyBin(Bin bin, CancellationTokenSource cts)
         {
-            //<element minOccurs="1" maxOccurs="1" name="locationCode" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="binCode" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="prevBinCode" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="rackNo" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="section" type="int"/>
-            //<element minOccurs="1" maxOccurs="1" name="level" type="int"/>
-            //<element minOccurs="1" maxOccurs="1" name="depth" type="int"/>
-            //<element minOccurs="1" maxOccurs="1" name="sectionSpan" type="int"/>
-            //<element minOccurs="1" maxOccurs="1" name="levelSpan" type="int"/>
-            //<element minOccurs="1" maxOccurs="1" name="depthSpan" type="int"/>
-            //<element minOccurs="1" maxOccurs="1" name="binRanking" type="int"/>
-            //<element minOccurs="1" maxOccurs="1" name="maximumCubage" type="decimal"/>
-            //<element minOccurs="1" maxOccurs="1" name="maximumWeight" type="decimal"/>
-            //<element minOccurs="1" maxOccurs="1" name="blockMovement" type="int"/>
-            //<element minOccurs="1" maxOccurs="1" name="binTypeCode" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="warehouseClassCode" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="specialEquipmentCode" type="string"/>
             var tcs = new TaskCompletionSource<int>();
             Task.Run(async () =>
             {
                 try
                 {
                     string functionname = "ModifyBin";
-                    XDocument requestdoc = new XDocument(
-                        new XElement(ns + "Envelope",
-                            new XAttribute(XNamespace.Xmlns + "soapenv", ns),
-                            new XAttribute(XNamespace.Xmlns + "ns1", myns),
-                            new XElement(ns + "Body",
-                                new XElement(myns + functionname,
+                    XElement body = 
+                        new XElement(myns + functionname,
                                     new XElement(myns + "locationCode", bin.LocationCode),
                                     new XElement(myns + "binCode", bin.Code),
                                     new XElement(myns + "prevBinCode", bin.PrevCode),
@@ -1375,17 +1008,8 @@ namespace WarehouseControlSystem.Helpers.NAV
                                     new XElement(myns + "blockMovement", bin.BlockMovement),
                                     new XElement(myns + "binTypeCode", bin.BinType),
                                     new XElement(myns + "warehouseClassCode", bin.WarehouseClassCode),
-                                    new XElement(myns + "specialEquipmentCode", bin.SpecialEquipmentCode)
-
-                    ))));
-                    requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
-                    string request = "";
-                    using (StringWriter writer = new Utf8StringWriter())
-                    {
-                        requestdoc.Save(writer);
-                        request = writer.ToString();
-                    }
-                    XElement soapbodynode = await Process(functionname, request, false, cts);
+                                    new XElement(myns + "specialEquipmentCode", bin.SpecialEquipmentCode));
+                    XElement soapbodynode = await Process(functionname, body, false, cts);
                     tcs.SetResult(0);
                 }
                 catch (Exception ex)
@@ -1397,36 +1021,19 @@ namespace WarehouseControlSystem.Helpers.NAV
         }
         public static Task<int> DeleteBin(Bin bin, CancellationTokenSource cts)
         {
-            //<element minOccurs="1" maxOccurs="1" name="locationCodeFilter" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="zoneCodeFilter" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="rackCodeFilter" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="code" type="string"/>
             var tcs = new TaskCompletionSource<int>();
             Task.Run(async () =>
             {
                 try
                 {
                     string functionname = "DeleteBin";
-                    XDocument requestdoc = new XDocument(
-                        new XElement(ns + "Envelope",
-                            new XAttribute(XNamespace.Xmlns + "soapenv", ns),
-                            new XAttribute(XNamespace.Xmlns + "ns1", myns),
-                            new XElement(ns + "Body",
-                                new XElement(myns + functionname,
+                    XElement body = 
+                        new XElement(myns + functionname,
                                     new XElement(myns + "locationCodeFilter", bin.LocationCode),
                                     new XElement(myns + "zoneCodeFilter", bin.Code),
                                     new XElement(myns + "rackCodeFilter", bin.PrevCode),
-                                    new XElement(myns + "code", bin.RackNo)
-
-                    ))));
-                    requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
-                    string request = "";
-                    using (StringWriter writer = new Utf8StringWriter())
-                    {
-                        requestdoc.Save(writer);
-                        request = writer.ToString();
-                    }
-                    XElement soapbodynode = await Process(functionname, request, false, cts);
+                                    new XElement(myns + "code", bin.RackNo));
+                    XElement soapbodynode = await Process(functionname, body, false, cts);
                     tcs.SetResult(0);
                 }
                 catch (Exception ex)
@@ -1438,35 +1045,19 @@ namespace WarehouseControlSystem.Helpers.NAV
         }
         public static Task<int> GetBinCount(string locationfilter, string codefilter, string rackcodefilter, string bincodefilter, CancellationTokenSource cts)
         {
-            //<element minOccurs="1" maxOccurs="1" name="locationCodeFilter" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="zoneCodeFilter" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="rackCodeFilter" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="binCodeFilter" type="string"/>
             var tcs = new TaskCompletionSource<int>();
             Task.Run(async () =>
             {
                 try
                 {
                     string functionname = "GetBinCount";
-                    XDocument requestdoc = new XDocument(
-                        new XElement(ns + "Envelope",
-                            new XAttribute(XNamespace.Xmlns + "soapenv", ns),
-                            new XAttribute(XNamespace.Xmlns + "ns1", myns),
-                            new XElement(ns + "Body",
-                                new XElement(myns + functionname,
+                    XElement body = 
+                        new XElement(myns + functionname,
                                     new XElement(myns + "locationCodeFilter", locationfilter),
                                     new XElement(myns + "zoneCodeFilter", codefilter),
                                     new XElement(myns + "rackCodeFilter", rackcodefilter),
-                                    new XElement(myns + "binCodeFilter", bincodefilter)
-                    ))));
-                    requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
-                    string request = "";
-                    using (StringWriter writer = new Utf8StringWriter())
-                    {
-                        requestdoc.Save(writer);
-                        request = writer.ToString();
-                    }
-                    XElement soapbodynode = await Process(functionname, request, false, cts);
+                                    new XElement(myns + "binCodeFilter", bincodefilter));
+                    XElement soapbodynode = await Process(functionname, body, false, cts);
                     int rv = StringToInt(soapbodynode.Value);
                     tcs.SetResult(rv);
                 }
@@ -1479,41 +1070,22 @@ namespace WarehouseControlSystem.Helpers.NAV
         }
         public static Task<List<Bin>> GetBinList(string locationfilter, string codefilter, string rackcodefilter, string bincodefilter, int position, int count, CancellationTokenSource cts)
         {
-            //<element minOccurs="1" maxOccurs="1" name="locationCodeFilter" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="zoneCodeFilter" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="rackCodeFilter" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="binCodeFilter" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="entriesPosition" type="int"/>
-            //<element minOccurs="1" maxOccurs="1" name="entriesCount" type="int"/>
-            //<element minOccurs="1" maxOccurs="1" name="responseDocument" type="string"/>
             var tcs = new TaskCompletionSource<List<Bin>>();
             Task.Run(async () =>
             {
                 try
                 {
                     string functionname = "GetBinList";
-                    XDocument requestdoc = new XDocument(
-                        new XElement(ns + "Envelope",
-                            new XAttribute(XNamespace.Xmlns + "soapenv", ns),
-                            new XAttribute(XNamespace.Xmlns + "ns1", myns),
-                            new XElement(ns + "Body",
-                                new XElement(myns + functionname,
+                    XElement body = 
+                        new XElement(myns + functionname,
                                     new XElement(myns + "locationCodeFilter", locationfilter),
                                     new XElement(myns + "zoneCodeFilter", codefilter),
                                     new XElement(myns + "rackCodeFilter", rackcodefilter),
                                     new XElement(myns + "binCodeFilter", bincodefilter),
                                     new XElement(myns + "entriesPosition", position),
                                     new XElement(myns + "entriesCount", count),
-                                    new XElement(myns + "responseDocument", "")
-                        ))));
-                    requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
-                    string request = "";
-                    using (StringWriter writer = new Utf8StringWriter())
-                    {
-                        requestdoc.Save(writer);
-                        request = writer.ToString();
-                    }
-                    XElement soapbodynode = await Process(functionname, request, false, cts);
+                                    new XElement(myns + "responseDocument", ""));
+                    XElement soapbodynode = await Process(functionname, body, false, cts);
                     string response = soapbodynode.Value;
                     XDocument document = GetDoc(response);
                     List<Bin> rv = new List<Bin>();
@@ -1641,31 +1213,14 @@ namespace WarehouseControlSystem.Helpers.NAV
         #region BinTemplate
         public static Task<int> CreateBinTemplate(BinTemplate bintemplate, CancellationTokenSource cts)
         {
-            //<element minOccurs="1" maxOccurs="1" name="locationCode" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="zoneCode" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="code" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="description" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="binTypeCode" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="warehouseClassCode" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="blockMovement" type="int"/>
-            //<element minOccurs="1" maxOccurs="1" name="specialEquipmentCode" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="binRanking" type="int"/>
-            //<element minOccurs="1" maxOccurs="1" name="maximumWeight" type="decimal"/>
-            //<element minOccurs="1" maxOccurs="1" name="maximumCubage" type="decimal"/>
-            //<element minOccurs="1" maxOccurs="1" name="dedicated1" type="boolean"/>
-
             var tcs = new TaskCompletionSource<int>();
             Task.Run(async () =>
             {
                 try
                 {
                     string functionname = "CreateBinTemplate";
-                    XDocument requestdoc = new XDocument(
-                        new XElement(ns + "Envelope",
-                            new XAttribute(XNamespace.Xmlns + "soapenv", ns),
-                            new XAttribute(XNamespace.Xmlns + "ns1", myns),
-                            new XElement(ns + "Body",
-                                new XElement(myns + functionname,
+                    XElement body = 
+                        new XElement(myns + functionname,
                                     new XElement(myns + "locationCode", bintemplate.LocationCode),
                                     new XElement(myns + "zoneCode", bintemplate.ZoneCode),
                                     new XElement(myns + "code", bintemplate.Code),
@@ -1677,17 +1232,8 @@ namespace WarehouseControlSystem.Helpers.NAV
                                     new XElement(myns + "binRanking", bintemplate.BinRanking),
                                     new XElement(myns + "maximumCubage", bintemplate.MaximumCubage),
                                     new XElement(myns + "maximumWeight", bintemplate.MaximumWeight),
-                                    new XElement(myns + "dedicated1", bintemplate.Dedicated)
-
-                    ))));
-                    requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
-                    string request = "";
-                    using (StringWriter writer = new Utf8StringWriter())
-                    {
-                        requestdoc.Save(writer);
-                        request = writer.ToString();
-                    }
-                    XElement soapbodynode = await Process(functionname, request, false, cts);
+                                    new XElement(myns + "dedicated1", bintemplate.Dedicated));
+                    XElement soapbodynode = await Process(functionname, body, false, cts);
                     tcs.SetResult(0);
                 }
                 catch (Exception ex)
@@ -1699,31 +1245,15 @@ namespace WarehouseControlSystem.Helpers.NAV
         }
         public static Task<int> ModifyBinTemplate(BinTemplate bintemplate, CancellationTokenSource cts)
         {
-             //<element minOccurs="1" maxOccurs="1" name="locationCode" type="string"/>
-             //<element minOccurs="1" maxOccurs="1" name="zoneCode" type="string"/>
-             //<element minOccurs="1" maxOccurs="1" name="code" type="string"/>
-             //<element minOccurs="1" maxOccurs="1" name="description" type="string"/>
-             //<element minOccurs="1" maxOccurs="1" name="binTypeCode" type="string"/>
-             //<element minOccurs="1" maxOccurs="1" name="warehouseClassCode" type="string"/>
-             //<element minOccurs="1" maxOccurs="1" name="blockMovement" type="int"/>
-             //<element minOccurs="1" maxOccurs="1" name="specialEquipmentCode" type="string"/>
-             //<element minOccurs="1" maxOccurs="1" name="binRanking" type="int"/>
-             //<element minOccurs="1" maxOccurs="1" name="maximumCubage" type="decimal"/>
-             //<element minOccurs="1" maxOccurs="1" name="maximumWeight" type="decimal"/>
-             //<element minOccurs="1" maxOccurs="1" name="dedicated1" type="boolean"/>
-
             var tcs = new TaskCompletionSource<int>();
             Task.Run(async () =>
             {
                 try
                 {
                     string functionname = "ModifyBinTemplate";
-                    XDocument requestdoc = new XDocument(
-                        new XElement(ns + "Envelope",
-                            new XAttribute(XNamespace.Xmlns + "soapenv", ns),
-                            new XAttribute(XNamespace.Xmlns + "ns1", myns),
-                            new XElement(ns + "Body",
-                                new XElement(myns + functionname,
+                
+                    XElement body = 
+                        new XElement(myns + functionname,
                                     new XElement(myns + "locationCode", bintemplate.LocationCode),
                                     new XElement(myns + "zoneCode", bintemplate.ZoneCode),
                                     new XElement(myns + "code", bintemplate.Code),
@@ -1735,17 +1265,8 @@ namespace WarehouseControlSystem.Helpers.NAV
                                     new XElement(myns + "binRanking", bintemplate.BinRanking),
                                     new XElement(myns + "maximumCubage", bintemplate.MaximumCubage),
                                     new XElement(myns + "maximumWeight", bintemplate.MaximumWeight),
-                                    new XElement(myns + "dedicated1", bintemplate.Dedicated)
-
-                    ))));
-                    requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
-                    string request = "";
-                    using (StringWriter writer = new Utf8StringWriter())
-                    {
-                        requestdoc.Save(writer);
-                        request = writer.ToString();
-                    }
-                    XElement soapbodynode = await Process(functionname, request, false, cts);
+                                    new XElement(myns + "dedicated1", bintemplate.Dedicated));
+                    XElement soapbodynode = await Process(functionname, body, false, cts);
                     tcs.SetResult(0);
                 }
                 catch (Exception ex)
@@ -1764,22 +1285,10 @@ namespace WarehouseControlSystem.Helpers.NAV
                 try
                 {
                     string functionname = "DeleteBinTemplate";
-                    XDocument requestdoc = new XDocument(
-                        new XElement(ns + "Envelope",
-                            new XAttribute(XNamespace.Xmlns + "soapenv", ns),
-                            new XAttribute(XNamespace.Xmlns + "ns1", myns),
-                            new XElement(ns + "Body",
-                                new XElement(myns + functionname,
-                                    new XElement(myns + "code", bintemplate.Code)
-                    ))));
-                    requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
-                    string request = "";
-                    using (StringWriter writer = new Utf8StringWriter())
-                    {
-                        requestdoc.Save(writer);
-                        request = writer.ToString();
-                    }
-                    XElement soapbodynode = await Process(functionname, request, false, cts);
+                    XElement body = 
+                        new XElement(myns + functionname,
+                                    new XElement(myns + "code", bintemplate.Code));
+                    XElement soapbodynode = await Process(functionname, body, false, cts);
                     tcs.SetResult(0);
                 }
                 catch (Exception ex)
@@ -1797,22 +1306,8 @@ namespace WarehouseControlSystem.Helpers.NAV
                 try
                 {
                     string functionname = "GetBinTemplateCount";
-                    XDocument requestdoc = new XDocument(
-                        new XElement(ns + "Envelope",
-                            new XAttribute(XNamespace.Xmlns + "soapenv", ns),
-                            new XAttribute(XNamespace.Xmlns + "ns1", myns),
-                            new XElement(ns + "Body",
-                                new XElement(myns + functionname)
-                    )));
-
-                    requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
-                    string request = "";
-                    using (StringWriter writer = new Utf8StringWriter())
-                    {
-                        requestdoc.Save(writer);
-                        request = writer.ToString();
-                    }
-                    XElement soapbodynode = await Process(functionname, request, false, cts);
+                    XElement body = new XElement(myns + functionname);
+                    XElement soapbodynode = await Process(functionname, body, false, cts);
                     int rv = StringToInt(soapbodynode.Value);
                     tcs.SetResult(rv);
                 }
@@ -1825,33 +1320,18 @@ namespace WarehouseControlSystem.Helpers.NAV
         }
         public static Task<List<BinTemplate>> GetBinTemplateList(int position, int count, CancellationTokenSource cts)
         {
-            //<element minOccurs="1" maxOccurs="1" name="entriesPosition" type="int"/>
-            //<element minOccurs="1" maxOccurs="1" name="entriesCount" type="int"/>
-            //<element minOccurs="1" maxOccurs="1" name="responseDocument" type="string"/>
             var tcs = new TaskCompletionSource<List<BinTemplate>>();
             Task.Run(async () =>
             {
                 try
                 {
                     string functionname = "GetBinList";
-                    XDocument requestdoc = new XDocument(
-                        new XElement(ns + "Envelope",
-                            new XAttribute(XNamespace.Xmlns + "soapenv", ns),
-                            new XAttribute(XNamespace.Xmlns + "ns1", myns),
-                            new XElement(ns + "Body",
-                                new XElement(myns + functionname,
+                    XElement body = 
+                        new XElement(myns + functionname,
                                     new XElement(myns + "entriesPosition", position),
                                     new XElement(myns + "entriesCount", count),
-                                    new XElement(myns + "responseDocument", "")
-                        ))));
-                    requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
-                    string request = "";
-                    using (StringWriter writer = new Utf8StringWriter())
-                    {
-                        requestdoc.Save(writer);
-                        request = writer.ToString();
-                    }
-                    XElement soapbodynode = await Process(functionname, request, false, cts);
+                                    new XElement(myns + "responseDocument", ""));
+                    XElement soapbodynode = await Process(functionname, body, false, cts);
                     string response = soapbodynode.Value;
                     XDocument document = GetDoc(response);
                     List<BinTemplate> rv = new List<BinTemplate>();
@@ -1950,21 +1430,8 @@ namespace WarehouseControlSystem.Helpers.NAV
                 try
                 {
                     string functionname = "GetBinTypeCount";
-                    XDocument requestdoc = new XDocument(
-                        new XElement(ns + "Envelope",
-                            new XAttribute(XNamespace.Xmlns + "soapenv", ns),
-                            new XAttribute(XNamespace.Xmlns + "ns1", myns),
-                            new XElement(ns + "Body",
-                                new XElement(myns + functionname)
-                    )));
-                    requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
-                    string request = "";
-                    using (StringWriter writer = new Utf8StringWriter())
-                    {
-                        requestdoc.Save(writer);
-                        request = writer.ToString();
-                    }
-                    XElement soapbodynode = await Process(functionname, request, false, cts);
+                    XElement body = new XElement(myns + functionname);
+                    XElement soapbodynode = await Process(functionname, body, false, cts);
                     int rv = StringToInt(soapbodynode.Value);
                     tcs.SetResult(rv);
                 }
@@ -1977,33 +1444,18 @@ namespace WarehouseControlSystem.Helpers.NAV
         }
         public static Task<List<BinType>> GetBinTypeList(int position, int count, CancellationTokenSource cts)
         {
-            //<element minOccurs="1" maxOccurs="1" name="entriesPosition" type="int"/>
-            //<element minOccurs="1" maxOccurs="1" name="entriesCount" type="int"/>
-            //<element minOccurs="1" maxOccurs="1" name="responseDocument" type="string"/>
             var tcs = new TaskCompletionSource<List<BinType>>();
             Task.Run(async () =>
             {
                 try
                 {
                     string functionname = "GetBinTypeList";
-                    XDocument requestdoc = new XDocument(
-                        new XElement(ns + "Envelope",
-                            new XAttribute(XNamespace.Xmlns + "soapenv", ns),
-                            new XAttribute(XNamespace.Xmlns + "ns1", myns),
-                            new XElement(ns + "Body",
-                                new XElement(myns + functionname,
+                    XElement body = 
+                        new XElement(myns + functionname,
                                     new XElement(myns + "entriesPosition", position),
                                     new XElement(myns + "entriesCount", count),
-                                    new XElement(myns + "responseDocument", "")
-                        ))));
-                    requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
-                    string request = "";
-                    using (StringWriter writer = new Utf8StringWriter())
-                    {
-                        requestdoc.Save(writer);
-                        request = writer.ToString();
-                    }
-                    XElement soapbodynode = await Process(functionname, request, false, cts);
+                                    new XElement(myns + "responseDocument", ""));
+                    XElement soapbodynode = await Process(functionname, body, false, cts);
                     string response = soapbodynode.Value;
                     XDocument document = GetDoc(response);
                     List<BinType> rv = new List<BinType>();
@@ -2061,40 +1513,20 @@ namespace WarehouseControlSystem.Helpers.NAV
         #region BinContent
         public static Task<int> GetBinContentCount(string locationCodeFilter, string zoneCodeFilter, string binCodeFiler, string itemNoFilter, string variantCodeFilter, CancellationTokenSource cts)
         {
-            //<element minOccurs="1" maxOccurs="1" name="locationCodeFilter" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="zoneCodeFilter" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="binCodeFilter" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="itemNoFilter" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="variantCodeFilter" type="string"/>
-
             var tcs = new TaskCompletionSource<int>();
             Task.Run(async () =>
             {
                 try
                 {
                     string functionname = "GetBinContentCount";
-                    XDocument requestdoc = new XDocument(
-                        new XElement(ns + "Envelope",
-                            new XAttribute(XNamespace.Xmlns + "soapenv", ns),
-                            new XAttribute(XNamespace.Xmlns + "ns1", myns),
-                            new XElement(ns + "Body",
-                                new XElement(myns + functionname),
+                    XElement body = 
+                        new XElement(myns + functionname,
                                     new XElement(myns + "locationCodeFilter", locationCodeFilter),
                                     new XElement(myns + "zoneCodeFilter", zoneCodeFilter),
                                     new XElement(myns + "binCodeFilter", binCodeFiler),
                                     new XElement(myns + "itemNoFilter", itemNoFilter),
-                                    new XElement(myns + "variantCodeFilter", variantCodeFilter)
-
-                    )));
-
-                    requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
-                    string request = "";
-                    using (StringWriter writer = new Utf8StringWriter())
-                    {
-                        requestdoc.Save(writer);
-                        request = writer.ToString();
-                    }
-                    XElement soapbodynode = await Process(functionname, request, false, cts);
+                                    new XElement(myns + "variantCodeFilter", variantCodeFilter));
+                    XElement soapbodynode = await Process(functionname, body, false, cts);
                     int rv = StringToInt(soapbodynode.Value);
                     tcs.SetResult(rv);
                 }
@@ -2107,27 +1539,14 @@ namespace WarehouseControlSystem.Helpers.NAV
         }
         public static Task<List<BinContent>> GetBinContentList(string locationCodeFilter, string zoneCodeFilter, string binCodeFiler, string itemNoFilter, string variantCodeFilter, int position, int count, CancellationTokenSource cts)
         {
-            //<element minOccurs="1" maxOccurs="1" name="locationCodeFilter" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="zoneCodeFilter" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="binCodeFilter" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="itemNoFilter" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="variantCodeFilter" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="entriesPosition" type="int"/>
-            //<element minOccurs="1" maxOccurs="1" name="entriesCount" type="int"/>
-            //<element minOccurs="1" maxOccurs="1" name="responseDocument" type="string"/>
-
             var tcs = new TaskCompletionSource<List<BinContent>>();
             Task.Run(async () =>
             {
                 try
                 {
                     string functionname = "GetBinContentList";
-                    XDocument requestdoc = new XDocument(
-                        new XElement(ns + "Envelope",
-                            new XAttribute(XNamespace.Xmlns + "soapenv", ns),
-                            new XAttribute(XNamespace.Xmlns + "ns1", myns),
-                            new XElement(ns + "Body",
-                                new XElement(myns + functionname,
+                    XElement body = 
+                        new XElement(myns + functionname,
                                     new XElement(myns + "locationCodeFilter", locationCodeFilter),
                                     new XElement(myns + "zoneCodeFilter", zoneCodeFilter),
                                     new XElement(myns + "binCodeFilter", binCodeFiler),
@@ -2135,16 +1554,8 @@ namespace WarehouseControlSystem.Helpers.NAV
                                     new XElement(myns + "variantCodeFilter", variantCodeFilter),
                                     new XElement(myns + "entriesPosition", position),
                                     new XElement(myns + "entriesCount", count),
-                                    new XElement(myns + "responseDocument", "")
-                        ))));
-                    requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
-                    string request = "";
-                    using (StringWriter writer = new Utf8StringWriter())
-                    {
-                        requestdoc.Save(writer);
-                        request = writer.ToString();
-                    }
-                    XElement soapbodynode = await Process(functionname, request, false, cts);
+                                    new XElement(myns + "responseDocument", ""));
+                    XElement soapbodynode = await Process(functionname, body, false, cts);
                     string response = soapbodynode.Value;
                     XDocument document = GetDoc(response);
                     List<BinContent> rv = new List<BinContent>();
@@ -2244,40 +1655,22 @@ namespace WarehouseControlSystem.Helpers.NAV
             return tcs.Task;
         }
         #endregion
-        
+
         #region ItemIdentifiers
         public static Task<int> GetItemIdentifierCount(string barCodeCodeFilter, string itemNoFilter, string variantCodeFilter, CancellationTokenSource cts)
         {
-            //<element minOccurs="1" maxOccurs="1" name="barCodeFilter" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="itemNoFilter" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="variantCodeFilter" type="string"/>
-
             var tcs = new TaskCompletionSource<int>();
             Task.Run(async () =>
             {
                 try
                 {
                     string functionname = "GetItemIdentifierCount";
-                    XDocument requestdoc = new XDocument(
-                        new XElement(ns + "Envelope",
-                            new XAttribute(XNamespace.Xmlns + "soapenv", ns),
-                            new XAttribute(XNamespace.Xmlns + "ns1", myns),
-                            new XElement(ns + "Body",
-                                new XElement(myns + functionname),
+                    XElement body = 
+                        new XElement(myns + functionname,
                                     new XElement(myns + "barCodeFilter", barCodeCodeFilter),
                                     new XElement(myns + "itemNoFilter", itemNoFilter),
-                                    new XElement(myns + "variantCodeFilter", variantCodeFilter)
-
-                    )));
-
-                    requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
-                    string request = "";
-                    using (StringWriter writer = new Utf8StringWriter())
-                    {
-                        requestdoc.Save(writer);
-                        request = writer.ToString();
-                    }
-                    XElement soapbodynode = await Process(functionname, request, false, cts);
+                                    new XElement(myns + "variantCodeFilter", variantCodeFilter));
+                    XElement soapbodynode = await Process(functionname, body, false, cts);
                     int rv = StringToInt(soapbodynode.Value);
                     tcs.SetResult(rv);
                 }
@@ -2290,40 +1683,21 @@ namespace WarehouseControlSystem.Helpers.NAV
         }
         public static Task<List<ItemIdentifier>> GetItemIdentifierList(string barCodeCodeFilter, string itemNoFilter, string variantCodeFilter, int position, int count, CancellationTokenSource cts)
         {
-            //<element minOccurs="1" maxOccurs="1" name="barCodeFilter" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="itemNoFilter" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="variantCodeFilter" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="entriesPosition" type="int"/>
-            //<element minOccurs="1" maxOccurs="1" name="entriesCount" type="int"/>
-            //<element minOccurs="1" maxOccurs="1" name="responseDocument" type="string"/>
-
             var tcs = new TaskCompletionSource<List<ItemIdentifier>>();
             Task.Run(async () =>
             {
                 try
                 {
                     string functionname = "GetItemIdentifierList";
-                    XDocument requestdoc = new XDocument(
-                        new XElement(ns + "Envelope",
-                            new XAttribute(XNamespace.Xmlns + "soapenv", ns),
-                            new XAttribute(XNamespace.Xmlns + "ns1", myns),
-                            new XElement(ns + "Body",
-                                new XElement(myns + functionname,
+                    XElement body = 
+                        new XElement(myns + functionname,
                                     new XElement(myns + "barCodeFilter", barCodeCodeFilter),
                                     new XElement(myns + "itemNoFilter", itemNoFilter),
                                     new XElement(myns + "variantCodeFilter", variantCodeFilter),
                                     new XElement(myns + "entriesPosition", position),
                                     new XElement(myns + "entriesCount", count),
-                                    new XElement(myns + "responseDocument", "")
-                        ))));
-                    requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
-                    string request = "";
-                    using (StringWriter writer = new Utf8StringWriter())
-                    {
-                        requestdoc.Save(writer);
-                        request = writer.ToString();
-                    }
-                    XElement soapbodynode = await Process(functionname, request, false, cts);
+                                    new XElement(myns + "responseDocument", ""));
+                    XElement soapbodynode = await Process(functionname, body, false, cts);
                     string response = soapbodynode.Value;
                     XDocument document = GetDoc(response);
                     List<ItemIdentifier> rv = new List<ItemIdentifier>();
@@ -2377,23 +1751,8 @@ namespace WarehouseControlSystem.Helpers.NAV
                 try
                 {
                     string functionname = "GetWarehouseClassCount";
-                    XDocument requestdoc = new XDocument(
-                        new XElement(ns + "Envelope",
-                            new XAttribute(XNamespace.Xmlns + "soapenv", ns),
-                            new XAttribute(XNamespace.Xmlns + "ns1", myns),
-                            new XElement(ns + "Body",
-                                new XElement(myns + functionname)
-
-                    )));
-
-                    requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
-                    string request = "";
-                    using (StringWriter writer = new Utf8StringWriter())
-                    {
-                        requestdoc.Save(writer);
-                        request = writer.ToString();
-                    }
-                    XElement soapbodynode = await Process(functionname, request, false, cts);
+                    XElement body = new XElement(myns + functionname);
+                    XElement soapbodynode = await Process(functionname, body, false, cts);
                     int rv = StringToInt(soapbodynode.Value);
                     tcs.SetResult(rv);
                 }
@@ -2406,34 +1765,18 @@ namespace WarehouseControlSystem.Helpers.NAV
         }
         public static Task<List<WarehouseClass>> GetWarehouseClassList(int position, int count, CancellationTokenSource cts)
         {
-            //<element minOccurs="1" maxOccurs="1" name="entriesPosition" type="int"/>
-            //<element minOccurs="1" maxOccurs="1" name="entriesCount" type="int"/>
-            //<element minOccurs="1" maxOccurs="1" name="responseDocument" type="string"/>
-
             var tcs = new TaskCompletionSource<List<WarehouseClass>>();
             Task.Run(async () =>
             {
                 try
                 {
                     string functionname = "GetWarehouseClassList";
-                    XDocument requestdoc = new XDocument(
-                        new XElement(ns + "Envelope",
-                            new XAttribute(XNamespace.Xmlns + "soapenv", ns),
-                            new XAttribute(XNamespace.Xmlns + "ns1", myns),
-                            new XElement(ns + "Body",
-                                new XElement(myns + functionname,
+                    XElement body = 
+                        new XElement(myns + functionname,
                                     new XElement(myns + "entriesPosition", position),
                                     new XElement(myns + "entriesCount", count),
-                                    new XElement(myns + "responseDocument", "")
-                        ))));
-                    requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
-                    string request = "";
-                    using (StringWriter writer = new Utf8StringWriter())
-                    {
-                        requestdoc.Save(writer);
-                        request = writer.ToString();
-                    }
-                    XElement soapbodynode = await Process(functionname, request, false, cts);
+                                    new XElement(myns + "responseDocument", ""));
+                    XElement soapbodynode = await Process(functionname, body, false, cts);
                     string response = soapbodynode.Value;
                     XDocument document = GetDoc(response);
                     List<WarehouseClass> rv = new List<WarehouseClass>();
@@ -2478,23 +1821,8 @@ namespace WarehouseControlSystem.Helpers.NAV
                 try
                 {
                     string functionname = "GetSpecialEquipmentCount";
-                    XDocument requestdoc = new XDocument(
-                        new XElement(ns + "Envelope",
-                            new XAttribute(XNamespace.Xmlns + "soapenv", ns),
-                            new XAttribute(XNamespace.Xmlns + "ns1", myns),
-                            new XElement(ns + "Body",
-                                new XElement(myns + functionname)
-
-                    )));
-
-                    requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
-                    string request = "";
-                    using (StringWriter writer = new Utf8StringWriter())
-                    {
-                        requestdoc.Save(writer);
-                        request = writer.ToString();
-                    }
-                    XElement soapbodynode = await Process(functionname, request, false, cts);
+                    XElement body = new XElement(myns + functionname);
+                    XElement soapbodynode = await Process(functionname, body, false, cts);
                     int rv = StringToInt(soapbodynode.Value);
                     tcs.SetResult(rv);
                 }
@@ -2507,34 +1835,18 @@ namespace WarehouseControlSystem.Helpers.NAV
         }
         public static Task<List<SpecialEquipment>> GetSpecialEquipmentList(int position, int count, CancellationTokenSource cts)
         {
-            //<element minOccurs="1" maxOccurs="1" name="entriesPosition" type="int"/>
-            //<element minOccurs="1" maxOccurs="1" name="entriesCount" type="int"/>
-            //<element minOccurs="1" maxOccurs="1" name="responseDocument" type="string"/>
-
             var tcs = new TaskCompletionSource<List<SpecialEquipment>>();
             Task.Run(async () =>
             {
                 try
                 {
                     string functionname = "GetSpecialEquipmentList";
-                    XDocument requestdoc = new XDocument(
-                        new XElement(ns + "Envelope",
-                            new XAttribute(XNamespace.Xmlns + "soapenv", ns),
-                            new XAttribute(XNamespace.Xmlns + "ns1", myns),
-                            new XElement(ns + "Body",
-                                new XElement(myns + functionname,
+                    XElement body = 
+                        new XElement(myns + functionname,
                                     new XElement(myns + "entriesPosition", position),
                                     new XElement(myns + "entriesCount", count),
-                                    new XElement(myns + "responseDocument", "")
-                        ))));
-                    requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
-                    string request = "";
-                    using (StringWriter writer = new Utf8StringWriter())
-                    {
-                        requestdoc.Save(writer);
-                        request = writer.ToString();
-                    }
-                    XElement soapbodynode = await Process(functionname, request, false, cts);
+                                    new XElement(myns + "responseDocument", ""));
+                    XElement soapbodynode = await Process(functionname, body, false, cts);
                     string response = soapbodynode.Value;
                     XDocument document = GetDoc(response);
                     List<SpecialEquipment> rv = new List<SpecialEquipment>();
@@ -2573,38 +1885,20 @@ namespace WarehouseControlSystem.Helpers.NAV
         #region WarehouseEntry
         public static Task<int> GetWarehouseEntryCount(string locationCodeFilter, string zoneCodeFilter, string binCodeFilter, string itemNoFilter, string variantCodeFilter, CancellationTokenSource cts)
         {
-            //<element minOccurs="1" maxOccurs="1" name="locationCodeFilter" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="zoneCodeFilter" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="binCodeFilter" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="itemNoFilter" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="variantCodeFilter" type="string"/>
-
             var tcs = new TaskCompletionSource<int>();
             Task.Run(async () =>
             {
                 try
                 {
                     string functionname = "GetWarehouseEntryCount";
-                    XDocument requestdoc = new XDocument(
-                        new XElement(ns + "Envelope",
-                            new XAttribute(XNamespace.Xmlns + "soapenv", ns),
-                            new XAttribute(XNamespace.Xmlns + "ns1", myns),
-                            new XElement(ns + "Body",
-                                new XElement(myns + functionname,
+                    XElement body = 
+                        new XElement(myns + functionname,
                                     new XElement(myns + "locationCodeFilter", locationCodeFilter),
                                     new XElement(myns + "zoneCodeFilter", zoneCodeFilter),
                                     new XElement(myns + "binCodeFilter", binCodeFilter),
                                     new XElement(myns + "itemNoFilter", itemNoFilter),
-                                    new XElement(myns + "variantCodeFilter", variantCodeFilter)
-                    ))));
-                    requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
-                    string request = "";
-                    using (StringWriter writer = new Utf8StringWriter())
-                    {
-                        requestdoc.Save(writer);
-                        request = writer.ToString();
-                    }
-                    XElement soapbodynode = await Process(functionname, request, false, cts);
+                                    new XElement(myns + "variantCodeFilter", variantCodeFilter));              
+                    XElement soapbodynode = await Process(functionname, body, false, cts);
                     int rv = StringToInt(soapbodynode.Value);
                     tcs.SetResult(rv);
                 }
@@ -2617,26 +1911,15 @@ namespace WarehouseControlSystem.Helpers.NAV
         }
         public static Task<List<WarehouseEntry>> GetWarehouseEntryList(string locationCodeFilter, string zoneCodeFilter, string binCodeFilter, string itemNoFilter, string variantCodeFilter, int position, int count, CancellationTokenSource cts)
         {
-            //<element minOccurs="1" maxOccurs="1" name="locationCodeFilter" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="zoneCodeFilter" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="binCodeFilter" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="itemNoFilter" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="variantCodeFilter" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="entriesPosition" type="int"/>
-            //<element minOccurs="1" maxOccurs="1" name="entriesCount" type="int"/>
-            //<element minOccurs="1" maxOccurs="1" name="responseDocument" type="string"/>
             var tcs = new TaskCompletionSource<List<WarehouseEntry>>();
             Task.Run(async () =>
             {
                 try
                 {
                     string functionname = "GetWarehouseEntryList";
-                    XDocument requestdoc = new XDocument(
-                        new XElement(ns + "Envelope",
-                            new XAttribute(XNamespace.Xmlns + "soapenv", ns),
-                            new XAttribute(XNamespace.Xmlns + "ns1", myns),
-                            new XElement(ns + "Body",
-                                new XElement(myns + functionname,
+
+                    XElement body = 
+                        new XElement(myns + functionname,
                                     new XElement(myns + "locationCodeFilter", locationCodeFilter),
                                     new XElement(myns + "zoneCodeFilter", zoneCodeFilter),
                                     new XElement(myns + "binCodeFilter", binCodeFilter),
@@ -2644,16 +1927,8 @@ namespace WarehouseControlSystem.Helpers.NAV
                                     new XElement(myns + "variantCodeFilter", variantCodeFilter),
                                     new XElement(myns + "variantCodeFilter", position),
                                     new XElement(myns + "variantCodeFilter", count),
-                                    new XElement(myns + "responseDocument", "")
-                        ))));
-                    requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
-                    string request = "";
-                    using (StringWriter writer = new Utf8StringWriter())
-                    {
-                        requestdoc.Save(writer);
-                        request = writer.ToString();
-                    }
-                    XElement soapbodynode = await Process(functionname, request, false, cts);
+                                    new XElement(myns + "responseDocument", ""));
+                    XElement soapbodynode = await Process(functionname, body, false, cts);
                     string response = soapbodynode.Value;
                     XDocument document = GetDoc(response);
                     List<WarehouseEntry> rv = new List<WarehouseEntry>();
@@ -2742,33 +2017,18 @@ namespace WarehouseControlSystem.Helpers.NAV
         #region UserDefinedSelection
         public static Task<List<UserDefinedSelection>> LoadUDS(string locationCode, string zoneCode, CancellationTokenSource cts)
         {
-            //<element minOccurs="1" maxOccurs="1" name="locationCode" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="zoneCode" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="responseDocument" type="string"/>
             var tcs = new TaskCompletionSource<List<UserDefinedSelection>>();
             Task.Run(async () =>
             {
                 try
                 {
                     string functionname = "LoadUserDefinedSelectionList";
-                    XDocument requestdoc = new XDocument(
-                        new XElement(ns + "Envelope",
-                            new XAttribute(XNamespace.Xmlns + "soapenv", ns),
-                            new XAttribute(XNamespace.Xmlns + "ns1", myns),
-                            new XElement(ns + "Body",
-                                new XElement(myns + functionname,
+                    XElement body = 
+                        new XElement(myns + functionname,
                                     new XElement(myns + "locationCode", locationCode),
                                     new XElement(myns + "zoneCode", zoneCode),
-                                    new XElement(myns + "responseDocument", "")
-                        ))));
-                    requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
-                    string request = "";
-                    using (StringWriter writer = new Utf8StringWriter())
-                    {
-                        requestdoc.Save(writer);
-                        request = writer.ToString();
-                    }
-                    XElement soapbodynode = await Process(functionname, request, false, cts);
+                                    new XElement(myns + "responseDocument", ""));
+                    XElement soapbodynode = await Process(functionname, body, false, cts);
                     string response = soapbodynode.Value;
                     XDocument document = GetDoc(response);
                     List<UserDefinedSelection> rv = new List<UserDefinedSelection>();
@@ -2819,35 +2079,19 @@ namespace WarehouseControlSystem.Helpers.NAV
         }
         public static Task<List<UserDefinedSelectionResult>> RunUDS(string locationCode, string zoneCode, int i, CancellationTokenSource cts)
         {
-            //<element minOccurs="1" maxOccurs="1" name="locationCode" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="zoneCode" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="functionIndex" type="int"/>
-            //<element minOccurs="1" maxOccurs="1" name="responseDocument" type="string"/>
             var tcs = new TaskCompletionSource<List<UserDefinedSelectionResult>>();
             Task.Run(async () =>
             {
                 try
                 {
                     string functionname = "RunUDS";
-                    XDocument requestdoc = new XDocument(
-                        new XElement(ns + "Envelope",
-                            new XAttribute(XNamespace.Xmlns + "soapenv", ns),
-                            new XAttribute(XNamespace.Xmlns + "ns1", myns),
-                            new XElement(ns + "Body",
-                                new XElement(myns + functionname,
+                    XElement body = 
+                        new XElement(myns + functionname,
                                     new XElement(myns + "locationCode", locationCode),
                                     new XElement(myns + "zoneCode", zoneCode),
                                     new XElement(myns + "functionIndex", i),
-                                    new XElement(myns + "responseDocument", "")
-                        ))));
-                    requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
-                    string request = "";
-                    using (StringWriter writer = new Utf8StringWriter())
-                    {
-                        requestdoc.Save(writer);
-                        request = writer.ToString();
-                    }
-                    XElement soapbodynode = await Process(functionname, request, false, cts);
+                                    new XElement(myns + "responseDocument", ""));
+                    XElement soapbodynode = await Process(functionname, body, false, cts);
                     string response = soapbodynode.Value;
                     XDocument document = GetDoc(response);
                     List<UserDefinedSelectionResult> rv = new List<UserDefinedSelectionResult>();
@@ -2910,36 +2154,19 @@ namespace WarehouseControlSystem.Helpers.NAV
         #region UserDefinedFunctions
         public static Task<List<UserDefinedFunction>> LoadUserDefinedFunctionList(string locationCode, string zoneCode, string rackno, CancellationTokenSource cts)
         {
-            //<element minOccurs="1" maxOccurs="1" name="locationCode" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="zoneCode" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="rackNo" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="responseDocument" type="string"/>
-
             var tcs = new TaskCompletionSource<List<UserDefinedFunction>>();
             Task.Run(async () =>
             {
                 try
                 {
                     string functionname = "LoadUserDefinedFunctionList";
-                    XDocument requestdoc = new XDocument(
-                        new XElement(ns + "Envelope",
-                            new XAttribute(XNamespace.Xmlns + "soapenv", ns),
-                            new XAttribute(XNamespace.Xmlns + "ns1", myns),
-                            new XElement(ns + "Body",
-                                new XElement(myns + functionname,
+                    XElement body = 
+                        new XElement(myns + functionname,
                                     new XElement(myns + "locationCode", locationCode),
                                     new XElement(myns + "zoneCode", zoneCode),
                                     new XElement(myns + "rackNo", rackno),
-                                    new XElement(myns + "responseDocument", "")
-                        ))));
-                    requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
-                    string request = "";
-                    using (StringWriter writer = new Utf8StringWriter())
-                    {
-                        requestdoc.Save(writer);
-                        request = writer.ToString();
-                    }
-                    XElement soapbodynode = await Process(functionname, request, false, cts);
+                                    new XElement(myns + "responseDocument", ""));
+                    XElement soapbodynode = await Process(functionname, body, false, cts);
                     string response = soapbodynode.Value;
                     XDocument document = GetDoc(response);
                     List<UserDefinedFunction> rv = new List<UserDefinedFunction>();
@@ -2985,27 +2212,14 @@ namespace WarehouseControlSystem.Helpers.NAV
         }
         public static Task<string> RunFunction(int i, string locationCode, string zoneCode, string rackno, string bincode, string itemno, string variantcode, decimal quantity, CancellationTokenSource cts)
         {
-            //<element minOccurs="1" maxOccurs="1" name="functionindex" type="int"/>
-            //<element minOccurs="1" maxOccurs="1" name="locationCode" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="zoneCode" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="rackNo" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="binCode" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="itemNo" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="variantCode" type="string"/>
-            //<element minOccurs="1" maxOccurs="1" name="quantity" type="decimal"/>
-
             var tcs = new TaskCompletionSource<string>();
             Task.Run(async () =>
             {
                 try
                 {
                     string functionname = "RunFunction";
-                    XDocument requestdoc = new XDocument(
-                        new XElement(ns + "Envelope",
-                            new XAttribute(XNamespace.Xmlns + "soapenv", ns),
-                            new XAttribute(XNamespace.Xmlns + "ns1", myns),
-                            new XElement(ns + "Body",
-                                new XElement(myns + functionname,
+                    XElement body = 
+                        new XElement(myns + functionname,
                                     new XElement(myns + "functionindex", i),
                                     new XElement(myns + "locationCode", locationCode),
                                     new XElement(myns + "zoneCode", zoneCode),
@@ -3013,16 +2227,8 @@ namespace WarehouseControlSystem.Helpers.NAV
                                     new XElement(myns + "binCode", bincode),
                                     new XElement(myns + "itemNo", itemno),
                                     new XElement(myns + "variantCode", variantcode),
-                                    new XElement(myns + "quantity", quantity)
-                        ))));
-                    requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
-                    string request = "";
-                    using (StringWriter writer = new Utf8StringWriter())
-                    {
-                        requestdoc.Save(writer);
-                        request = writer.ToString();
-                    }
-                    XElement soapbodynode = await Process(functionname, request, false, cts);
+                                    new XElement(myns + "quantity", quantity));
+                    XElement soapbodynode = await Process(functionname, body, false, cts);
                     string rv = soapbodynode.Value;
                     tcs.SetResult(rv);
                 }
@@ -3038,34 +2244,18 @@ namespace WarehouseControlSystem.Helpers.NAV
         #region Search
         public static Task<List<SearchResponse>> Search(string locationcode, string searchrequest, CancellationTokenSource cts)
         {
-             //<element minOccurs="1" maxOccurs="1" name="locationCode" type="string"/>
-             //<element minOccurs="1" maxOccurs="1" name="request" type="string"/>
-             //<element minOccurs="1" maxOccurs="1" name="responseDocument" type="string"/>
-
             var tcs = new TaskCompletionSource<List<SearchResponse>>();
             Task.Run(async () =>
             {
                 try
                 {
                     string functionname = "Search";
-                    XDocument requestdoc = new XDocument(
-                        new XElement(ns + "Envelope",
-                            new XAttribute(XNamespace.Xmlns + "soapenv", ns),
-                            new XAttribute(XNamespace.Xmlns + "ns1", myns),
-                            new XElement(ns + "Body",
-                                new XElement(myns + functionname,
+                    XElement body = 
+                        new XElement(myns + functionname,
                                     new XElement(myns + "locationCode", locationcode),
                                     new XElement(myns + "request", searchrequest),
-                                    new XElement(myns + "responseDocument", "")
-                        ))));
-                    requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
-                    string request = "";
-                    using (StringWriter writer = new Utf8StringWriter())
-                    {
-                        requestdoc.Save(writer);
-                        request = writer.ToString();
-                    }
-                    XElement soapbodynode = await Process(functionname, request, false, cts);
+                                    new XElement(myns + "responseDocument", ""));
+                    XElement soapbodynode = await Process(functionname, body, false, cts);
                     string response = soapbodynode.Value;
                     XDocument document = GetDoc(response);
                     List<SearchResponse> rv = new List<SearchResponse>();
@@ -3133,21 +2323,8 @@ namespace WarehouseControlSystem.Helpers.NAV
                 try
                 {
                     string functionname = "APIVersion";
-                    XDocument requestdoc = new XDocument(
-                        new XElement(ns + "Envelope",
-                            new XAttribute(XNamespace.Xmlns + "soapenv", ns),
-                            new XAttribute(XNamespace.Xmlns + "ns1", myns),
-                            new XElement(ns + "Body",
-                                new XElement(myns + functionname
-                    ))));
-                    requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
-                    string request = "";
-                    using (StringWriter writer = new Utf8StringWriter())
-                    {
-                        requestdoc.Save(writer);
-                        request = writer.ToString();
-                    }
-                    XElement soapbodynode = await Process(functionname, request, true, cts);
+                    XElement body = new XElement(myns + functionname);
+                    XElement soapbodynode = await Process(functionname, body, true, cts);
                     int rv = StringToInt(soapbodynode.Value);
                     tcs.SetResult(rv);
                 }
@@ -3159,7 +2336,7 @@ namespace WarehouseControlSystem.Helpers.NAV
             return tcs.Task;
         }
 
-        public static async Task<XElement> Process(string functionname, string requestbody, bool testconnection, CancellationTokenSource cts)
+        public static async Task<XElement> Process(string functionname, XElement body, bool testconnection, CancellationTokenSource cts)
         {
             Connection connection;
             if (testconnection)
@@ -3178,6 +2355,8 @@ namespace WarehouseControlSystem.Helpers.NAV
             }
 
             XElement rv = null;
+
+            string requestbody = GetRequestText(CreateSOAPRequest(body));
 
             //Uri u1 = connection.GetUri();
             //var handler = new HttpClientHandler()
@@ -3212,7 +2391,7 @@ namespace WarehouseControlSystem.Helpers.NAV
             {
                 case ClientCredentialTypeEnum.Windows:
                     {
-                        handler.Credentials = new NetworkCredential(connection.Domen+"\\"+connection.User, connection.Password, "");                        
+                        handler.Credentials = new NetworkCredential(connection.Domen + "\\" + connection.User, connection.Password, "");
                         break;
                     }
                 case ClientCredentialTypeEnum.Basic:
@@ -3229,11 +2408,11 @@ namespace WarehouseControlSystem.Helpers.NAV
                     RequestUri = connection.GetUri(),
                     Method = HttpMethod.Post
                 };
-                request.Content = new StringContent(requestbody, Encoding.UTF8, "text/xml");                
+                request.Content = new StringContent(requestbody, Encoding.UTF8, "text/xml");
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
                 client.DefaultRequestHeaders.Add("SOAPAction", connection.GetSoapActionTxt() + "/" + functionname);
 
-                using (var response = await client.SendAsync(request,cts.Token))
+                using (var response = await client.SendAsync(request, cts.Token))
                 {
                     if (response.IsSuccessStatusCode)
                     {
@@ -3241,7 +2420,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         Stream stream = streamTask.Result;
                         var sr = new StreamReader(stream);
                         XDocument xmldoc = XDocument.Load(sr);
-                        XElement bodysopeenvelopenode = xmldoc.Root.Element(ns+"Body");
+                        XElement bodysopeenvelopenode = xmldoc.Root.Element(ns + "Body");
                         if (bodysopeenvelopenode is XElement)
                         {
                             return bodysopeenvelopenode;
@@ -3291,12 +2470,35 @@ namespace WarehouseControlSystem.Helpers.NAV
             return rv;
         }
 
+        private static XDocument CreateSOAPRequest(XElement body)
+        {
+            XDocument requestdoc = new XDocument(
+                            new XElement(ns + "Envelope",
+                                new XAttribute(XNamespace.Xmlns + "soapenv", ns),
+                                new XAttribute(XNamespace.Xmlns + "ns1", myns),
+                                new XElement(ns + "Body",
+                                    body)));
+            requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
+            return requestdoc;
+        }
+
         private static System.Xml.Linq.XDocument GetDoc(string input)
         {
             byte[] byteArray = Encoding.UTF8.GetBytes(input);
             MemoryStream stream = new MemoryStream(byteArray);
             System.Xml.Linq.XDocument doc = XDocument.Load(stream);
             return doc;
+        }
+
+        public static string GetRequestText(XDocument doc)
+        {
+            string rv = "";
+            using (StringWriter writer = new Utf8StringWriter())
+            {
+                doc.Save(writer);
+                rv = writer.ToString();
+            }
+            return rv;
         }
 
         private class Utf8StringWriter : StringWriter
