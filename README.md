@@ -17,7 +17,6 @@
 <img src='https://bettercodehub.com/edge/badge/OlegLobakov/WarehouseControlSystem?branch=master'>
 </p>
 
-
 ## About
 The Warehouse Control System Solution makes the Microsoft Dynamics NAV WMS easier.
 
