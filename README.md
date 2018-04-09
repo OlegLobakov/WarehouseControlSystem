@@ -12,6 +12,12 @@
   for Microsoft Dynamics NAV
 </p>
 
+
+<a href="https://www.codefactor.io/repository/github/oleglobakov/warehousecontrolsystem"><img src="https://www.codefactor.io/repository/github/oleglobakov/warehousecontrolsystem/badge" /></a>
+
+
+
+
 ## About
 The Warehouse Control System Solution makes the Microsoft Dynamics NAV WMS easier.
 
