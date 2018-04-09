@@ -158,7 +158,7 @@ namespace WarehouseControlSystem.ViewModel
             foreach (RackViewModel lvm in RackViewModels)
             {
                 lvm.Dispose();
-            };
+            }
             RackViewModels.Clear();
             SelectedViewModels.Clear();
             SelectedRackViewModel = null;
@@ -177,7 +177,6 @@ namespace WarehouseControlSystem.ViewModel
 
             if (Zone.PlanWidth == 0)
                 Zone.PlanWidth = Settings.DefaultZonePlanWidth;
-
 
             State = State.Loading;
             try
@@ -286,7 +285,6 @@ namespace WarehouseControlSystem.ViewModel
 
         private async void Rvm_OnTap(RackViewModel rvm)
         {
-
             if (RunMode == RunModeEnum.View)
             {
                 await Navigation.PushAsync(new RackCardPage(rvm));
@@ -310,7 +308,6 @@ namespace WarehouseControlSystem.ViewModel
         {
             udsvm.State = State.Loading;
             LoadAnimation = true;
-
             try
             {
                 List<UserDefinedSelectionResult> list =  await NAV.RunUDS(Zone.LocationCode, Zone.Code, udsvm.ID, ACD.Default);
@@ -396,12 +393,10 @@ namespace WarehouseControlSystem.ViewModel
 
         public void EditRack(object obj)
         {
-
         }
 
         public void DeleteRack(object obj)
         {
-
         }
 
         public async void Params()
@@ -424,7 +419,9 @@ namespace WarehouseControlSystem.ViewModel
                 {
                     await NAV.ModifyRack(rvm.Rack, ACD.Default);
                 }
-                catch { }
+                catch
+                {
+                }
             }
         }
 

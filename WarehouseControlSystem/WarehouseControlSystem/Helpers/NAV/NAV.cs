@@ -22,8 +22,6 @@ using System.Net;
 using System.IO;
 using WarehouseControlSystem.Model.NAV;
 using WarehouseControlSystem.Model;
-using ModernHttpClient;
-using WarehouseControlSystem.DependenciesServices;
 using Xamarin.Forms;
 
 namespace WarehouseControlSystem.Helpers.NAV
@@ -2489,50 +2487,24 @@ namespace WarehouseControlSystem.Helpers.NAV
 
                 using (var response = await client.SendAsync(request, cts.Token))
                 {
+                    Task<Stream> streamTask = response.Content.ReadAsStreamAsync();
+                    Stream stream = streamTask.Result;
+                    var sr = new StreamReader(stream);
+                    XDocument xmldoc = XDocument.Load(sr);
+
                     if (response.IsSuccessStatusCode)
                     {
-                        Task<Stream> streamTask = response.Content.ReadAsStreamAsync();
-                        Stream stream = streamTask.Result;
-                        var sr = new StreamReader(stream);
-                        XDocument xmldoc = XDocument.Load(sr);
                         XElement bodysopeenvelopenode = xmldoc.Root.Element(ns + "Body");
                         if (bodysopeenvelopenode is XElement)
                         {
                             return bodysopeenvelopenode;
                         }
-                        else
-                        {
-                            return null;
-                        }
                     }
                     else
                     {
-                        //SOAP ERROR (NAV ERROR)
                         if (response.ReasonPhrase == "Internal Server Error")
                         {
-                            Task<Stream> streamTask = response.Content.ReadAsStreamAsync();
-                            Stream stream = streamTask.Result;
-                            var sr = new StreamReader(stream);
-                            XDocument xmldoc = XDocument.Load(sr);
-                            XElement bodysopeenvelopenode = xmldoc.Root.Element(ns + "Body");
-                            if (bodysopeenvelopenode is XElement)
-                            {
-                                XElement faultnode = bodysopeenvelopenode.Element(ns + "Fault");
-                                if (faultnode is XElement)
-                                {
-                                    string faultcodetxt = "";
-                                    string faultstringtxt = "";
-                                    string detailstringtxt = "";
-                                    XElement faultcodenode = faultnode.Element("faultcode");
-                                    faultcodetxt = faultcodenode?.Value;
-                                    XElement faultstringnode = faultnode.Element("faultstring");
-                                    faultstringtxt = faultstringnode?.Value;
-                                    XElement detailnode = faultnode.Element("detail");
-                                    detailstringtxt = detailnode?.Value;
-                                    NAVErrorException ne = new NAVErrorException(faultcodetxt, faultstringtxt, detailstringtxt);
-                                    throw ne;
-                                }
-                            }
+                            throw CreateNAVException(xmldoc);
                         }
                         else
                         {
@@ -2540,6 +2512,35 @@ namespace WarehouseControlSystem.Helpers.NAV
                             throw unknown;
                         }
                     }
+                }
+            }
+            return rv;
+        }
+
+        /// <summary>
+        /// SOAP ERROR (NAV ERROR)
+        /// </summary>
+        /// <param name="xmldoc"></param>
+        /// <returns></returns>
+        private static NAVErrorException CreateNAVException(XDocument xmldoc)
+        {
+            NAVErrorException rv = null;
+            XElement bodysopeenvelopenode = xmldoc.Root.Element(ns + "Body");
+            if (bodysopeenvelopenode is XElement)
+            {
+                XElement faultnode = bodysopeenvelopenode.Element(ns + "Fault");
+                if (faultnode is XElement)
+                {
+                    string faultcodetxt = "";
+                    string faultstringtxt = "";
+                    string detailstringtxt = "";
+                    XElement faultcodenode = faultnode.Element("faultcode");
+                    faultcodetxt = faultcodenode?.Value;
+                    XElement faultstringnode = faultnode.Element("faultstring");
+                    faultstringtxt = faultstringnode?.Value;
+                    XElement detailnode = faultnode.Element("detail");
+                    detailstringtxt = detailnode?.Value;
+                    rv = new NAVErrorException(faultcodetxt, faultstringtxt, detailstringtxt);
                 }
             }
             return rv;

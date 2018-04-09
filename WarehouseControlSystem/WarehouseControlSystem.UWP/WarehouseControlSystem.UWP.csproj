@@ -105,7 +105,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="DependenciesServices\WSNAV.cs" />
     <Compile Include="Localize.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -369,9 +368,6 @@
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.0.8</Version>
     </PackageReference>
-    <PackageReference Include="modernhttpclient">
-      <Version>2.4.2</Version>
-    </PackageReference>
     <PackageReference Include="PCLStorage">
       <Version>1.0.2</Version>
     </PackageReference>
@@ -417,6 +413,9 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Connected Services\NAV\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DependenciesServices\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

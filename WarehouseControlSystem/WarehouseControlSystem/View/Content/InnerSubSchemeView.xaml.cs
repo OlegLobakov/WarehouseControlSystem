@@ -33,21 +33,33 @@ namespace WarehouseControlSystem.View.Content
         public int PlanHeight
         {
             get { return (int)GetValue(PlanHeightProperty); }
-            set { SetValue(PlanHeightProperty, value); Update(); }
+            set
+            {
+                SetValue(PlanHeightProperty, value);
+                Update();
+            }
         }
 
         public static readonly BindableProperty PlanWidthProperty = BindableProperty.Create("PlanWidth", typeof(int), typeof(InnerSubSchemeView),0);
         public int PlanWidth
         {
             get { return (int)GetValue(PlanWidthProperty); }
-            set { SetValue(PlanWidthProperty, value); Update(); }
+            set
+            {
+                SetValue(PlanWidthProperty, value);
+                Update();
+            }
         }
 
         public static readonly BindableProperty SubSchemeElementsProperty = BindableProperty.Create("SubSchemeElements", typeof(List<SubSchemeElement>), typeof(InnerSubSchemeView), null);
         public List<SubSchemeElement> SubSchemeElements
         {
             get { return (List<SubSchemeElement>)GetValue(SubSchemeElementsProperty); }
-            set { SetValue(SubSchemeElementsProperty, value); Update(); }
+            set
+            {
+                SetValue(SubSchemeElementsProperty, value);
+                Update();
+            }
         }
 
         SKCanvasView canvasView;
@@ -92,12 +104,12 @@ namespace WarehouseControlSystem.View.Content
             {
                 blocksize = (float)info.Height / PlanHeight;
                 top = 0;
-                left = (float)info.Width - blocksize * PlanWidth;
+                left = (float)info.Width - (blocksize * PlanWidth);
             }
             else
             {
                 blocksize = (float)info.Width / PlanWidth;
-                top = (float)info.Height - blocksize * PlanHeight;
+                top = (float)info.Height - (blocksize * PlanHeight);
                 left = 0;
             }
 
@@ -117,7 +129,7 @@ namespace WarehouseControlSystem.View.Content
                         StrokeWidth = 1
                     };
 
-                    SKRect rect = new SKRect(left+2, top, left + PlanWidth * blocksize - 5, top + PlanHeight * blocksize - 5);
+                    SKRect rect = new SKRect(left+2, top, left + (PlanWidth * blocksize) - 5, top + (PlanHeight * blocksize) - 5);
                     canvas.DrawRect(rect, thinLinePaint2);
 
                     foreach (SubSchemeElement element in SubSchemeElements)
@@ -143,10 +155,10 @@ namespace WarehouseControlSystem.View.Content
 
                         SKRect rectelement = new SKRect
                         {
-                            Left = element.Left * blocksize + left,
-                            Top = element.Top * blocksize + top,
-                            Right = (element.Left + element.Width) * blocksize + left,
-                            Bottom = (element.Top + element.Height) * blocksize + top
+                            Left = (element.Left * blocksize) + left,
+                            Top = (element.Top * blocksize) + top,
+                            Right = ((element.Left + element.Width) * blocksize) + left,
+                            Bottom = ((element.Top + element.Height) * blocksize) + top
                         };
                         canvas.DrawRect(rectelement, rectPaint);
 
@@ -166,9 +178,9 @@ namespace WarehouseControlSystem.View.Content
                                     {
                                         case RackOrientationEnum.HorizontalLeft:
                                             {
-                                                selectionleft += sss.Section * blocksize;
+                                                selectionleft += (sss.Section * blocksize);
                                                 selectiontop += 0;
-                                                selectionright += sss.Section * blocksize + blocksize;
+                                                selectionright += (sss.Section * blocksize) + blocksize;
                                                 selectionbottom += blocksize;
                                                 break;
                                             }
@@ -176,7 +188,7 @@ namespace WarehouseControlSystem.View.Content
                                             {
                                                 selectionleft += sss.Section * blocksize;
                                                 selectiontop += 0;
-                                                selectionright += sss.Section * blocksize + blocksize;
+                                                selectionright += (sss.Section * blocksize) + blocksize;
                                                 selectionbottom += blocksize;
                                                 break;
                                             }
@@ -185,7 +197,7 @@ namespace WarehouseControlSystem.View.Content
                                                 selectionleft += 0;
                                                 selectiontop += (element.Height - sss.Section) * blocksize;
                                                 selectionright += blocksize;
-                                                selectionbottom += (element.Height - sss.Section) * blocksize + blocksize;
+                                                selectionbottom += ((element.Height - sss.Section) * blocksize) + blocksize;
                                                 break;
                                             }
                                         case RackOrientationEnum.VerticalUp:
@@ -193,7 +205,7 @@ namespace WarehouseControlSystem.View.Content
                                                 selectionleft += 0;
                                                 selectiontop += sss.Section * blocksize;
                                                 selectionright += blocksize;
-                                                selectionbottom += sss.Section * blocksize + blocksize;
+                                                selectionbottom += (sss.Section * blocksize) + blocksize;
                                                 break;
                                             }
                                     }
