@@ -54,7 +54,6 @@ namespace WarehouseControlSystem.Helpers.NAV
             });
             return tcs.Task;
         }
-
         public static Task<int> GetPlanHeight(CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<int>();
@@ -304,114 +303,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                     XDocument document = GetDoc(response);
                     foreach (XElement currentnode in document.Root.Elements())
                     {
-                        Location location = new Location();
-                        foreach (XAttribute currentatribute in currentnode.Attributes())
-                        {
-                            switch (currentatribute.Name.LocalName)
-                            {
-                                case "Code":
-                                    {
-                                        location.Code = currentatribute.Value;
-                                        location.PrevCode = location.Code;
-                                        break;
-                                    }
-                                case "Name":
-                                    {
-                                        location.Name = currentatribute.Value;
-                                        break;
-                                    }
-                                case "Address":
-                                    {
-                                        location.Address = currentatribute.Value;
-                                        break;
-                                    }
-                                case "PhoneNo":
-                                    {
-                                        location.PhoneNo = currentatribute.Value;
-                                        break;
-                                    }
-                                case "HexColor":
-                                    {
-                                        location.HexColor = currentatribute.Value;
-                                        break;
-                                    }
-                                case "Left":
-                                    {
-                                        location.Left = StringToInt(currentatribute.Value);
-                                        break;
-                                    }
-                                case "Top":
-                                    {
-                                        location.Top = StringToInt(currentatribute.Value);
-                                        break;
-                                    }
-                                case "Width":
-                                    {
-                                        location.Width = StringToInt(currentatribute.Value);
-                                        break;
-                                    }
-                                case "Height":
-                                    {
-                                        location.Height = StringToInt(currentatribute.Value);
-                                        break;
-                                    }
-                                case "PlanWidth":
-                                    {
-                                        location.PlanWidth = StringToInt(currentatribute.Value);
-                                        break;
-                                    }
-                                case "PlanHeight":
-                                    {
-                                        location.PlanHeight = StringToInt(currentatribute.Value);
-                                        break;
-                                    }
-                                case "BinMandatory":
-                                    {
-                                        location.BinMandatory = StringToBool(currentatribute.Value);
-                                        break;
-                                    }
-                                case "RequireReceive":
-                                    {
-                                        location.RequireReceive = StringToBool(currentatribute.Value);
-                                        break;
-                                    }
-                                case "RequireShipment":
-                                    {
-                                        location.RequireShipment = StringToBool(currentatribute.Value);
-                                        break;
-                                    }
-                                case "RequirePick":
-                                    {
-                                        location.RequirePick = StringToBool(currentatribute.Value);
-                                        break;
-                                    }
-                                case "RequirePutaway":
-                                    {
-                                        location.RequirePutaway = StringToBool(currentatribute.Value);
-                                        break;
-                                    }
-                                case "Transit":
-                                    {
-                                        location.Transit = StringToBool(currentatribute.Value);
-                                        break;
-                                    }
-                                case "ZoneQuantity":
-                                    {
-                                        location.ZoneQuantity = StringToInt(currentatribute.Value);
-                                        break;
-                                    }
-                                case "BinQuantity":
-                                    {
-                                        location.BinQuantity = StringToInt(currentatribute.Value);
-                                        break;
-                                    }
-                                case "SchemeVisible":
-                                    {
-                                        location.SchemeVisible = StringToBool(currentatribute.Value);
-                                        break;
-                                    }
-                            }
-                        }
+                        Location location = GetLocationFromXML(currentnode);
                         rv.Add(location);
                     }
                     tcs.SetResult(rv);
@@ -422,6 +314,118 @@ namespace WarehouseControlSystem.Helpers.NAV
                 }
             });
             return tcs.Task;
+        }
+        private static Location GetLocationFromXML(XElement currentnode)
+        {
+            Location location = new Location();
+            foreach (XAttribute currentatribute in currentnode.Attributes())
+            {
+                switch (currentatribute.Name.LocalName)
+                {
+                    case "Code":
+                        {
+                            location.Code = currentatribute.Value;
+                            location.PrevCode = location.Code;
+                            break;
+                        }
+                    case "Name":
+                        {
+                            location.Name = currentatribute.Value;
+                            break;
+                        }
+                    case "Address":
+                        {
+                            location.Address = currentatribute.Value;
+                            break;
+                        }
+                    case "PhoneNo":
+                        {
+                            location.PhoneNo = currentatribute.Value;
+                            break;
+                        }
+                    case "HexColor":
+                        {
+                            location.HexColor = currentatribute.Value;
+                            break;
+                        }
+                    case "Left":
+                        {
+                            location.Left = StringToInt(currentatribute.Value);
+                            break;
+                        }
+                    case "Top":
+                        {
+                            location.Top = StringToInt(currentatribute.Value);
+                            break;
+                        }
+                    case "Width":
+                        {
+                            location.Width = StringToInt(currentatribute.Value);
+                            break;
+                        }
+                    case "Height":
+                        {
+                            location.Height = StringToInt(currentatribute.Value);
+                            break;
+                        }
+                    case "PlanWidth":
+                        {
+                            location.PlanWidth = StringToInt(currentatribute.Value);
+                            break;
+                        }
+                    case "PlanHeight":
+                        {
+                            location.PlanHeight = StringToInt(currentatribute.Value);
+                            break;
+                        }
+                    case "BinMandatory":
+                        {
+                            location.BinMandatory = StringToBool(currentatribute.Value);
+                            break;
+                        }
+                    case "RequireReceive":
+                        {
+                            location.RequireReceive = StringToBool(currentatribute.Value);
+                            break;
+                        }
+                    case "RequireShipment":
+                        {
+                            location.RequireShipment = StringToBool(currentatribute.Value);
+                            break;
+                        }
+                    case "RequirePick":
+                        {
+                            location.RequirePick = StringToBool(currentatribute.Value);
+                            break;
+                        }
+                    case "RequirePutaway":
+                        {
+                            location.RequirePutaway = StringToBool(currentatribute.Value);
+                            break;
+                        }
+                    case "Transit":
+                        {
+                            location.Transit = StringToBool(currentatribute.Value);
+                            break;
+                        }
+                    case "ZoneQuantity":
+                        {
+                            location.ZoneQuantity = StringToInt(currentatribute.Value);
+                            break;
+                        }
+                    case "BinQuantity":
+                        {
+                            location.BinQuantity = StringToInt(currentatribute.Value);
+                            break;
+                        }
+                    case "SchemeVisible":
+                        {
+                            location.SchemeVisible = StringToBool(currentatribute.Value);
+                            break;
+                        }
+                }
+            }
+            return location;
         }
         #endregion
 
@@ -592,99 +596,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                     List<Zone> rv = new List<Zone>();
                     foreach (XElement currentnode in document.Root.Elements())
                     {
-                        Zone zone = new Zone();
-                        foreach (XAttribute currentatribute in currentnode.Attributes())
-                        {
-                            switch (currentatribute.Name.LocalName)
-                            {
-                                case "LocationCode":
-                                    {
-                                        zone.LocationCode = currentatribute.Value;
-                                        break;
-                                    }
-                                case "Code":
-                                    {
-                                        zone.Code = currentatribute.Value;
-                                        zone.PrevCode = zone.Code;
-                                        break;
-                                    }
-                                case "Description":
-                                    {
-                                        zone.Description = currentatribute.Value;
-                                        break;
-                                    }
-                                case "BinTypeCode":
-                                    {
-                                        zone.BinTypeCode = currentatribute.Value;
-                                        break;
-                                    }
-                                case "CrossDockBinZone":
-                                    {
-                                        zone.CrossDockBinZone = StringToBool(currentatribute.Value);
-                                        break;
-                                    }
-                                case "HexColor":
-                                    {
-                                        zone.HexColor = currentatribute.Value;
-                                        break;
-                                    }
-                                case "Left":
-                                    {
-                                        zone.Left = StringToInt(currentatribute.Value);
-                                        break;
-                                    }
-                                case "Top":
-                                    {
-                                        zone.Top = StringToInt(currentatribute.Value);
-                                        break;
-                                    }
-                                case "Width":
-                                    {
-                                        zone.Width = StringToInt(currentatribute.Value);
-                                        break;
-                                    }
-                                case "Height":
-                                    {
-                                        zone.Height = StringToInt(currentatribute.Value);
-                                        break;
-                                    }
-                                case "PlanWidth":
-                                    {
-                                        zone.PlanWidth = StringToInt(currentatribute.Value);
-                                        break;
-                                    }
-                                case "PlanHeight":
-                                    {
-                                        zone.PlanHeight = StringToInt(currentatribute.Value);
-                                        break;
-                                    }
-                                case "SpecialEquipmentCode":
-                                    {
-                                        zone.SpecialEquipmentCode = currentatribute.Value;
-                                        break;
-                                    }
-                                case "WarehouseClassCode":
-                                    {
-                                        zone.WarehouseClassCode = currentatribute.Value;
-                                        break;
-                                    }
-                                case "BinQuantity":
-                                    {
-                                        zone.BinQuantity = StringToInt(currentatribute.Value);
-                                        break;
-                                    }
-                                case "RackQuantity":
-                                    {
-                                        zone.RackQuantity = StringToInt(currentatribute.Value);
-                                        break;
-                                    }
-                                case "SchemeVisible":
-                                    {
-                                        zone.SchemeVisible = StringToBool(currentatribute.Value);
-                                        break;
-                                    }
-                            }
-                        }
+                        Zone zone = GetZoneFromXML(currentnode);
                         rv.Add(zone);
                     }
                     tcs.SetResult(rv);
@@ -695,6 +607,103 @@ namespace WarehouseControlSystem.Helpers.NAV
                 }
             });
             return tcs.Task;
+        }
+        private static Zone GetZoneFromXML(XElement currentnode)
+        {
+            Zone zone = new Zone();
+            foreach (XAttribute currentatribute in currentnode.Attributes())
+            {
+                switch (currentatribute.Name.LocalName)
+                {
+                    case "LocationCode":
+                        {
+                            zone.LocationCode = currentatribute.Value;
+                            break;
+                        }
+                    case "Code":
+                        {
+                            zone.Code = currentatribute.Value;
+                            zone.PrevCode = zone.Code;
+                            break;
+                        }
+                    case "Description":
+                        {
+                            zone.Description = currentatribute.Value;
+                            break;
+                        }
+                    case "BinTypeCode":
+                        {
+                            zone.BinTypeCode = currentatribute.Value;
+                            break;
+                        }
+                    case "CrossDockBinZone":
+                        {
+                            zone.CrossDockBinZone = StringToBool(currentatribute.Value);
+                            break;
+                        }
+                    case "HexColor":
+                        {
+                            zone.HexColor = currentatribute.Value;
+                            break;
+                        }
+                    case "Left":
+                        {
+                            zone.Left = StringToInt(currentatribute.Value);
+                            break;
+                        }
+                    case "Top":
+                        {
+                            zone.Top = StringToInt(currentatribute.Value);
+                            break;
+                        }
+                    case "Width":
+                        {
+                            zone.Width = StringToInt(currentatribute.Value);
+                            break;
+                        }
+                    case "Height":
+                        {
+                            zone.Height = StringToInt(currentatribute.Value);
+                            break;
+                        }
+                    case "PlanWidth":
+                        {
+                            zone.PlanWidth = StringToInt(currentatribute.Value);
+                            break;
+                        }
+                    case "PlanHeight":
+                        {
+                            zone.PlanHeight = StringToInt(currentatribute.Value);
+                            break;
+                        }
+                    case "SpecialEquipmentCode":
+                        {
+                            zone.SpecialEquipmentCode = currentatribute.Value;
+                            break;
+                        }
+                    case "WarehouseClassCode":
+                        {
+                            zone.WarehouseClassCode = currentatribute.Value;
+                            break;
+                        }
+                    case "BinQuantity":
+                        {
+                            zone.BinQuantity = StringToInt(currentatribute.Value);
+                            break;
+                        }
+                    case "RackQuantity":
+                        {
+                            zone.RackQuantity = StringToInt(currentatribute.Value);
+                            break;
+                        }
+                    case "SchemeVisible":
+                        {
+                            zone.SchemeVisible = StringToBool(currentatribute.Value);
+                            break;
+                        }
+                }
+            }
+            return zone;
         }
         #endregion
 
@@ -858,87 +867,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                     List<Rack> rv = new List<Rack>();
                     foreach (XElement currentnode in document.Root.Elements())
                     {
-                        Rack rack = new Rack();
-                        foreach (XAttribute currentatribute in currentnode.Attributes())
-                        {
-                            switch (currentatribute.Name.LocalName)
-                            {
-                                case "LocationCode":
-                                    {
-                                        rack.LocationCode = currentatribute.Value;
-                                        break;
-                                    }
-                                case "ZoneCode":
-                                    {
-                                        rack.ZoneCode = currentatribute.Value;
-                                        break;
-                                    }
-                                case "No":
-                                    {
-                                        rack.No = currentatribute.Value;
-                                        rack.PrevNo = rack.No;
-                                        break;
-                                    }
-                                case "Sections":
-                                    {
-                                        rack.Sections = StringToInt(currentatribute.Value);
-                                        break;
-                                    }
-                                case "Levels":
-                                    {
-                                        rack.Levels = StringToInt(currentatribute.Value);
-                                        break;
-                                    }
-                                case "Depth":
-                                    {
-                                        rack.Depth = StringToInt(currentatribute.Value);
-                                        break;
-                                    }
-                                case "Left":
-                                    {
-                                        rack.Left = StringToInt(currentatribute.Value);
-                                        break;
-                                    }
-                                case "Top":
-                                    {
-                                        rack.Top = StringToInt(currentatribute.Value);
-                                        break;
-                                    }
-                                case "SchemeVisible":
-                                    {
-                                        rack.SchemeVisible = StringToBool(currentatribute.Value);
-                                        break;
-                                    }
-                                case "RackOrientation":
-                                    {
-                                        int i = StringToInt(currentatribute.Value);
-                                        switch (i)
-                                        {
-                                            case 0:
-                                                {
-                                                    rack.RackOrientation = RackOrientationEnum.HorizontalLeft;
-                                                    break;
-                                                }
-                                            case 1:
-                                                {
-                                                    rack.RackOrientation = RackOrientationEnum.HorizontalRight;
-                                                    break;
-                                                }
-                                            case 2:
-                                                {
-                                                    rack.RackOrientation = RackOrientationEnum.VerticalUp;
-                                                    break;
-                                                }
-                                            case 3:
-                                                {
-                                                    rack.RackOrientation = RackOrientationEnum.VerticalDown;
-                                                    break;
-                                                }
-                                        }
-                                        break;
-                                    }
-                            }
-                        }
+                        Rack rack = GetRackFromXML(currentnode);
                         rv.Add(rack);
                     }
                     tcs.SetResult(rv);
@@ -950,6 +879,91 @@ namespace WarehouseControlSystem.Helpers.NAV
             });
             return tcs.Task;
 
+        }
+        private static Rack GetRackFromXML(XElement currentnode)
+        {
+            Rack rack = new Rack();
+            foreach (XAttribute currentatribute in currentnode.Attributes())
+            {
+                switch (currentatribute.Name.LocalName)
+                {
+                    case "LocationCode":
+                        {
+                            rack.LocationCode = currentatribute.Value;
+                            break;
+                        }
+                    case "ZoneCode":
+                        {
+                            rack.ZoneCode = currentatribute.Value;
+                            break;
+                        }
+                    case "No":
+                        {
+                            rack.No = currentatribute.Value;
+                            rack.PrevNo = rack.No;
+                            break;
+                        }
+                    case "Sections":
+                        {
+                            rack.Sections = StringToInt(currentatribute.Value);
+                            break;
+                        }
+                    case "Levels":
+                        {
+                            rack.Levels = StringToInt(currentatribute.Value);
+                            break;
+                        }
+                    case "Depth":
+                        {
+                            rack.Depth = StringToInt(currentatribute.Value);
+                            break;
+                        }
+                    case "Left":
+                        {
+                            rack.Left = StringToInt(currentatribute.Value);
+                            break;
+                        }
+                    case "Top":
+                        {
+                            rack.Top = StringToInt(currentatribute.Value);
+                            break;
+                        }
+                    case "SchemeVisible":
+                        {
+                            rack.SchemeVisible = StringToBool(currentatribute.Value);
+                            break;
+                        }
+                    case "RackOrientation":
+                        {
+                            int i = StringToInt(currentatribute.Value);
+                            switch (i)
+                            {
+                                case 0:
+                                    {
+                                        rack.RackOrientation = RackOrientationEnum.HorizontalLeft;
+                                        break;
+                                    }
+                                case 1:
+                                    {
+                                        rack.RackOrientation = RackOrientationEnum.HorizontalRight;
+                                        break;
+                                    }
+                                case 2:
+                                    {
+                                        rack.RackOrientation = RackOrientationEnum.VerticalUp;
+                                        break;
+                                    }
+                                case 3:
+                                    {
+                                        rack.RackOrientation = RackOrientationEnum.VerticalDown;
+                                        break;
+                                    }
+                            }
+                            break;
+                        }
+                }
+            }
+            return rack;
         }
         #endregion
 
@@ -1091,113 +1105,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                     List<Bin> rv = new List<Bin>();
                     foreach (XElement currentnode in document.Root.Elements())
                     {
-                        Bin bin = new Bin();
-                        foreach (XAttribute currentatribute in currentnode.Attributes())
-                        {
-                            switch (currentatribute.Name.LocalName)
-                            {
-                                case "LocationCode":
-                                    {
-                                        bin.LocationCode = currentatribute.Value;
-                                        break;
-                                    }
-                                case "ZoneCode":
-                                    {
-                                        bin.ZoneCode = currentatribute.Value;
-                                        break;
-                                    }
-                                case "Code":
-                                    {
-                                        bin.Code = currentatribute.Value;
-                                        break;
-                                    }
-                                case "Description":
-                                    {
-                                        bin.Description = currentatribute.Value;
-                                        break;
-                                    }
-                                case "BinType":
-                                    {
-                                        bin.BinType = currentatribute.Value;
-                                        break;
-                                    }
-                                case "Empty":
-                                    {
-                                        bin.Empty = StringToBool(currentatribute.Value);
-                                        break;
-                                    }
-                                case "BlockMovement":
-                                    {
-                                        bin.BlockMovement = StringToInt(currentatribute.Value);
-                                        break;
-                                    }
-                                case "RackNo":
-                                    {
-                                        bin.RackNo = currentatribute.Value;
-                                        break;
-                                    }
-                                case "Section":
-                                    {
-                                        bin.Section = StringToInt(currentatribute.Value);
-                                        break;
-                                    }
-                                case "Level":
-                                    {
-                                        bin.Level = StringToInt(currentatribute.Value);
-                                        break;
-                                    }
-                                case "Depth":
-                                    {
-                                        bin.Depth = StringToInt(currentatribute.Value);
-                                        break;
-                                    }
-                                case "LevelSpan":
-                                    {
-                                        bin.LevelSpan = StringToInt(currentatribute.Value);
-                                        break;
-                                    }
-                                case "SectionSpan":
-                                    {
-                                        bin.SectionSpan = StringToInt(currentatribute.Value);
-                                        break;
-                                    }
-                                case "DepthSpan":
-                                    {
-                                        bin.DepthSpan = StringToInt(currentatribute.Value);
-                                        break;
-                                    }
-                                case "BinRanking":
-                                    {
-                                        bin.BinRanking = StringToInt(currentatribute.Value);
-                                        break;
-                                    }
-                                case "MaximumCubage":
-                                    {
-                                        bin.MaximumCubage = StringToDec(currentatribute.Value);
-                                        break;
-                                    }
-                                case "MaximumWeight":
-                                    {
-                                        bin.MaximumWeight = StringToDec(currentatribute.Value);
-                                        break;
-                                    }
-                                case "AdjustmentBin":
-                                    {
-                                        bin.AdjustmentBin = StringToBool(currentatribute.Value);
-                                        break;
-                                    }
-                                case "SpecialEquipmentCode":
-                                    {
-                                        bin.SpecialEquipmentCode = currentatribute.Value;
-                                        break;
-                                    }
-                                case "WarehouseClassCode":
-                                    {
-                                        bin.WarehouseClassCode = currentatribute.Value;
-                                        break;
-                                    }
-                            }
-                        }
+                        Bin bin = GetBinFromXML(currentnode);
                         rv.Add(bin);
                     }
                     tcs.SetResult(rv);
@@ -1208,6 +1116,117 @@ namespace WarehouseControlSystem.Helpers.NAV
                 }
             });
             return tcs.Task;
+        }
+        private static Bin GetBinFromXML(XElement currentnode)
+        {
+            Bin bin = new Bin();
+            foreach (XAttribute currentatribute in currentnode.Attributes())
+            {
+                switch (currentatribute.Name.LocalName)
+                {
+                    case "LocationCode":
+                        {
+                            bin.LocationCode = currentatribute.Value;
+                            break;
+                        }
+                    case "ZoneCode":
+                        {
+                            bin.ZoneCode = currentatribute.Value;
+                            break;
+                        }
+                    case "Code":
+                        {
+                            bin.Code = currentatribute.Value;
+                            break;
+                        }
+                    case "Description":
+                        {
+                            bin.Description = currentatribute.Value;
+                            break;
+                        }
+                    case "BinType":
+                        {
+                            bin.BinType = currentatribute.Value;
+                            break;
+                        }
+                    case "Empty":
+                        {
+                            bin.Empty = StringToBool(currentatribute.Value);
+                            break;
+                        }
+                    case "BlockMovement":
+                        {
+                            bin.BlockMovement = StringToInt(currentatribute.Value);
+                            break;
+                        }
+                    case "RackNo":
+                        {
+                            bin.RackNo = currentatribute.Value;
+                            break;
+                        }
+                    case "Section":
+                        {
+                            bin.Section = StringToInt(currentatribute.Value);
+                            break;
+                        }
+                    case "Level":
+                        {
+                            bin.Level = StringToInt(currentatribute.Value);
+                            break;
+                        }
+                    case "Depth":
+                        {
+                            bin.Depth = StringToInt(currentatribute.Value);
+                            break;
+                        }
+                    case "LevelSpan":
+                        {
+                            bin.LevelSpan = StringToInt(currentatribute.Value);
+                            break;
+                        }
+                    case "SectionSpan":
+                        {
+                            bin.SectionSpan = StringToInt(currentatribute.Value);
+                            break;
+                        }
+                    case "DepthSpan":
+                        {
+                            bin.DepthSpan = StringToInt(currentatribute.Value);
+                            break;
+                        }
+                    case "BinRanking":
+                        {
+                            bin.BinRanking = StringToInt(currentatribute.Value);
+                            break;
+                        }
+                    case "MaximumCubage":
+                        {
+                            bin.MaximumCubage = StringToDec(currentatribute.Value);
+                            break;
+                        }
+                    case "MaximumWeight":
+                        {
+                            bin.MaximumWeight = StringToDec(currentatribute.Value);
+                            break;
+                        }
+                    case "AdjustmentBin":
+                        {
+                            bin.AdjustmentBin = StringToBool(currentatribute.Value);
+                            break;
+                        }
+                    case "SpecialEquipmentCode":
+                        {
+                            bin.SpecialEquipmentCode = currentatribute.Value;
+                            break;
+                        }
+                    case "WarehouseClassCode":
+                        {
+                            bin.WarehouseClassCode = currentatribute.Value;
+                            break;
+                        }
+                }
+            }
+            return bin;
         }
         #endregion
         #region BinTemplate
@@ -1325,7 +1344,7 @@ namespace WarehouseControlSystem.Helpers.NAV
             {
                 try
                 {
-                    string functionname = "GetBinList";
+                    string functionname = "GetBinTemplateList";
                     XElement body = 
                         new XElement(myns + functionname,
                                     new XElement(myns + "entriesPosition", position),
@@ -1337,78 +1356,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                     List<BinTemplate> rv = new List<BinTemplate>();
                     foreach (XElement currentnode in document.Root.Elements())
                     {
-                        BinTemplate bintemplate = new BinTemplate();
-                        foreach (XAttribute currentatribute in currentnode.Attributes())
-                        {
-                            switch (currentatribute.Name.LocalName)
-                            {
-                                case "Code":
-                                    {
-                                        bintemplate.Code = currentatribute.Value;
-                                        break;
-                                    }
-                                case "Description":
-                                    {
-                                        bintemplate.Description = currentatribute.Value;
-                                        break;
-                                    }
-                                case "LocationCode":
-                                    {
-                                        bintemplate.LocationCode = currentatribute.Value;
-                                        break;
-                                    }
-                                case "ZoneCode":
-                                    {
-                                        bintemplate.ZoneCode = currentatribute.Value;
-                                        break;
-                                    }
-                                case "BinTypeCode":
-                                    {
-                                        bintemplate.BinTypeCode = currentatribute.Value;
-                                        break;
-                                    }
-                                case "BlockMovement":
-                                    {
-                                        bintemplate.BlockMovement = StringToInt(currentatribute.Value);
-                                        break;
-                                    }
-                                case "BinDescription":
-                                    {
-                                        bintemplate.BinDescription = currentatribute.Value;
-                                        break;
-                                    }
-                                case "MaximumCubage":
-                                    {
-                                        bintemplate.MaximumCubage = StringToDec(currentatribute.Value);
-                                        break;
-                                    }
-                                case "MaximumWeight":
-                                    {
-                                        bintemplate.MaximumWeight = StringToDec(currentatribute.Value);
-                                        break;
-                                    }
-                                case "SpecialEquipmentCode":
-                                    {
-                                        bintemplate.SpecialEquipmentCode = currentatribute.Value;
-                                        break;
-                                    }
-                                case "WarehouseClassCode":
-                                    {
-                                        bintemplate.WarehouseClassCode = currentatribute.Value;
-                                        break;
-                                    }
-                                case "BinRanking":
-                                    {
-                                        bintemplate.BinRanking = StringToInt(currentatribute.Value);
-                                        break;
-                                    }
-                                case "Dedicated":
-                                    {
-                                        bintemplate.Dedicated = StringToBool(currentatribute.Value);
-                                        break;
-                                    }
-                            }
-                        }
+                        BinTemplate bintemplate = GetBinTemplateFromXML(currentnode);
                         rv.Add(bintemplate);
                     }
                     tcs.SetResult(rv);
@@ -1419,6 +1367,82 @@ namespace WarehouseControlSystem.Helpers.NAV
                 }
             });
             return tcs.Task;
+        }
+        private static BinTemplate GetBinTemplateFromXML(XElement currentnode)
+        {
+            BinTemplate bintemplate = new BinTemplate();
+            foreach (XAttribute currentatribute in currentnode.Attributes())
+            {
+                switch (currentatribute.Name.LocalName)
+                {
+                    case "Code":
+                        {
+                            bintemplate.Code = currentatribute.Value;
+                            break;
+                        }
+                    case "Description":
+                        {
+                            bintemplate.Description = currentatribute.Value;
+                            break;
+                        }
+                    case "LocationCode":
+                        {
+                            bintemplate.LocationCode = currentatribute.Value;
+                            break;
+                        }
+                    case "ZoneCode":
+                        {
+                            bintemplate.ZoneCode = currentatribute.Value;
+                            break;
+                        }
+                    case "BinTypeCode":
+                        {
+                            bintemplate.BinTypeCode = currentatribute.Value;
+                            break;
+                        }
+                    case "BlockMovement":
+                        {
+                            bintemplate.BlockMovement = StringToInt(currentatribute.Value);
+                            break;
+                        }
+                    case "BinDescription":
+                        {
+                            bintemplate.BinDescription = currentatribute.Value;
+                            break;
+                        }
+                    case "MaximumCubage":
+                        {
+                            bintemplate.MaximumCubage = StringToDec(currentatribute.Value);
+                            break;
+                        }
+                    case "MaximumWeight":
+                        {
+                            bintemplate.MaximumWeight = StringToDec(currentatribute.Value);
+                            break;
+                        }
+                    case "SpecialEquipmentCode":
+                        {
+                            bintemplate.SpecialEquipmentCode = currentatribute.Value;
+                            break;
+                        }
+                    case "WarehouseClassCode":
+                        {
+                            bintemplate.WarehouseClassCode = currentatribute.Value;
+                            break;
+                        }
+                    case "BinRanking":
+                        {
+                            bintemplate.BinRanking = StringToInt(currentatribute.Value);
+                            break;
+                        }
+                    case "Dedicated":
+                        {
+                            bintemplate.Dedicated = StringToBool(currentatribute.Value);
+                            break;
+                        }
+                }
+            }
+            return bintemplate;
         }
         #endregion
         #region BinType
@@ -1461,43 +1485,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                     List<BinType> rv = new List<BinType>();
                     foreach (XElement currentnode in document.Root.Elements())
                     {
-                        BinType bintype = new BinType();
-                        foreach (XAttribute currentatribute in currentnode.Attributes())
-                        {
-                            switch (currentatribute.Name.LocalName)
-                            {
-                                case "Code":
-                                    {
-                                        bintype.Code = currentatribute.Value;
-                                        break;
-                                    }
-                                case "Description":
-                                    {
-                                        bintype.Description = currentatribute.Value;
-                                        break;
-                                    }
-                                case "Pick":
-                                    {
-                                        bintype.Pick = StringToBool(currentatribute.Value);
-                                        break;
-                                    }
-                                case "PutAway":
-                                    {
-                                        bintype.PutAway = StringToBool(currentatribute.Value);
-                                        break;
-                                    }
-                                case "Receive":
-                                    {
-                                        bintype.Receive = StringToBool(currentatribute.Value);
-                                        break;
-                                    }
-                                case "Ship":
-                                    {
-                                        bintype.Ship = StringToBool(currentatribute.Value);
-                                        break;
-                                    }
-                            }
-                        }
+                        BinType bintype = GetBinTypeFromXML(currentnode);
                         rv.Add(bintype);
                     }
                     tcs.SetResult(rv);
@@ -1508,6 +1496,47 @@ namespace WarehouseControlSystem.Helpers.NAV
                 }
             });
             return tcs.Task;
+        }
+        private static BinType GetBinTypeFromXML(XElement currentnode)
+        {
+            BinType bintype = new BinType();
+            foreach (XAttribute currentatribute in currentnode.Attributes())
+            {
+                switch (currentatribute.Name.LocalName)
+                {
+                    case "Code":
+                        {
+                            bintype.Code = currentatribute.Value;
+                            break;
+                        }
+                    case "Description":
+                        {
+                            bintype.Description = currentatribute.Value;
+                            break;
+                        }
+                    case "Pick":
+                        {
+                            bintype.Pick = StringToBool(currentatribute.Value);
+                            break;
+                        }
+                    case "PutAway":
+                        {
+                            bintype.PutAway = StringToBool(currentatribute.Value);
+                            break;
+                        }
+                    case "Receive":
+                        {
+                            bintype.Receive = StringToBool(currentatribute.Value);
+                            break;
+                        }
+                    case "Ship":
+                        {
+                            bintype.Ship = StringToBool(currentatribute.Value);
+                            break;
+                        }
+                }
+            }
+            return bintype;
         }
         #endregion
         #region BinContent
@@ -1561,88 +1590,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                     List<BinContent> rv = new List<BinContent>();
                     foreach (XElement currentnode in document.Root.Elements())
                     {
-                        BinContent bincontent = new BinContent();
-                        foreach (XAttribute currentatribute in currentnode.Attributes())
-                        {
-                            switch (currentatribute.Name.LocalName)
-                            {
-                                case "LocationCode":
-                                    {
-                                        bincontent.LocationCode = currentatribute.Value;
-                                        break;
-                                    }
-                                case "ZoneCode":
-                                    {
-                                        bincontent.ZoneCode = currentatribute.Value;
-                                        break;
-                                    }
-                                case "BinCode":
-                                    {
-                                        bincontent.BinCode = currentatribute.Value;
-                                        break;
-                                    }
-                                case "BinType":
-                                    {
-                                        bincontent.BinType = currentatribute.Value;
-                                        break;
-                                    }
-                                case "BlockMovement":
-                                    {
-                                        bincontent.BlockMovement = StringToInt(currentatribute.Value);
-                                        break;
-                                    }
-                                case "ItemNo":
-                                    {
-                                        bincontent.ItemNo = currentatribute.Value;
-                                        break;
-                                    }
-                                case "VariantCode":
-                                    {
-                                        bincontent.VariantCode = currentatribute.Value;
-                                        break;
-                                    }
-                                case "Description":
-                                    {
-                                        bincontent.Description = currentatribute.Value;
-                                        break;
-                                    }
-                                case "NegAdjmtQty":
-                                    {
-                                        bincontent.NegAdjmtQty = StringToDec(currentatribute.Value);
-                                        break;
-                                    }
-                                case "PickQty":
-                                    {
-                                        bincontent.PickQty = StringToDec(currentatribute.Value);
-                                        break;
-                                    }
-                                case "PosAdjmtQty":
-                                    {
-                                        bincontent.PosAdjmtQty = StringToDec(currentatribute.Value);
-                                        break;
-                                    }
-                                case "PutawayQty":
-                                    {
-                                        bincontent.PutawayQty = StringToDec(currentatribute.Value);
-                                        break;
-                                    }
-                                case "Quantity":
-                                    {
-                                        bincontent.Quantity = StringToDec(currentatribute.Value);
-                                        break;
-                                    }
-                                case "QuantityBase":
-                                    {
-                                        bincontent.QuantityBase = StringToDec(currentatribute.Value);
-                                        break;
-                                    }
-                                case "UnitofMeasureCode":
-                                    {
-                                        bincontent.UnitofMeasureCode = currentatribute.Value;
-                                        break;
-                                    }
-                            }
-                        }
+                        BinContent bincontent = GetBinContentFromXML(currentnode);
                         rv.Add(bincontent);
                     }
                     tcs.SetResult(rv);
@@ -1653,6 +1601,92 @@ namespace WarehouseControlSystem.Helpers.NAV
                 }
             });
             return tcs.Task;
+        }
+        private static BinContent GetBinContentFromXML(XElement currentnode)
+        {
+            BinContent bincontent = new BinContent();
+            foreach (XAttribute currentatribute in currentnode.Attributes())
+            {
+                switch (currentatribute.Name.LocalName)
+                {
+                    case "LocationCode":
+                        {
+                            bincontent.LocationCode = currentatribute.Value;
+                            break;
+                        }
+                    case "ZoneCode":
+                        {
+                            bincontent.ZoneCode = currentatribute.Value;
+                            break;
+                        }
+                    case "BinCode":
+                        {
+                            bincontent.BinCode = currentatribute.Value;
+                            break;
+                        }
+                    case "BinType":
+                        {
+                            bincontent.BinType = currentatribute.Value;
+                            break;
+                        }
+                    case "BlockMovement":
+                        {
+                            bincontent.BlockMovement = StringToInt(currentatribute.Value);
+                            break;
+                        }
+                    case "ItemNo":
+                        {
+                            bincontent.ItemNo = currentatribute.Value;
+                            break;
+                        }
+                    case "VariantCode":
+                        {
+                            bincontent.VariantCode = currentatribute.Value;
+                            break;
+                        }
+                    case "Description":
+                        {
+                            bincontent.Description = currentatribute.Value;
+                            break;
+                        }
+                    case "NegAdjmtQty":
+                        {
+                            bincontent.NegAdjmtQty = StringToDec(currentatribute.Value);
+                            break;
+                        }
+                    case "PickQty":
+                        {
+                            bincontent.PickQty = StringToDec(currentatribute.Value);
+                            break;
+                        }
+                    case "PosAdjmtQty":
+                        {
+                            bincontent.PosAdjmtQty = StringToDec(currentatribute.Value);
+                            break;
+                        }
+                    case "PutawayQty":
+                        {
+                            bincontent.PutawayQty = StringToDec(currentatribute.Value);
+                            break;
+                        }
+                    case "Quantity":
+                        {
+                            bincontent.Quantity = StringToDec(currentatribute.Value);
+                            break;
+                        }
+                    case "QuantityBase":
+                        {
+                            bincontent.QuantityBase = StringToDec(currentatribute.Value);
+                            break;
+                        }
+                    case "UnitofMeasureCode":
+                        {
+                            bincontent.UnitofMeasureCode = currentatribute.Value;
+                            break;
+                        }
+                }
+            }
+            return bincontent;
         }
         #endregion
 
@@ -1703,33 +1737,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                     List<ItemIdentifier> rv = new List<ItemIdentifier>();
                     foreach (XElement currentnode in document.Root.Elements())
                     {
-                        ItemIdentifier itemidentifier = new ItemIdentifier();
-                        foreach (XAttribute currentatribute in currentnode.Attributes())
-                        {
-                            switch (currentatribute.Name.LocalName)
-                            {
-                                case "BarCode":
-                                    {
-                                        itemidentifier.BarCode = currentatribute.Value;
-                                        break;
-                                    }
-                                case "ItemNo":
-                                    {
-                                        itemidentifier.ItemNo = currentatribute.Value;
-                                        break;
-                                    }
-                                case "VariantCode":
-                                    {
-                                        itemidentifier.VariantCode = currentatribute.Value;
-                                        break;
-                                    }
-                                case "UoM":
-                                    {
-                                        itemidentifier.UoM = currentatribute.Value;
-                                        break;
-                                    }
-                            }
-                        }
+                        ItemIdentifier itemidentifier = GetItemIdentifierFromXML(currentnode);
                         rv.Add(itemidentifier);
                     }
                     tcs.SetResult(rv);
@@ -1741,6 +1749,38 @@ namespace WarehouseControlSystem.Helpers.NAV
             });
             return tcs.Task;
         }
+        private static ItemIdentifier GetItemIdentifierFromXML(XElement currentnode)
+        {
+            ItemIdentifier itemidentifier = new ItemIdentifier();
+            foreach (XAttribute currentatribute in currentnode.Attributes())
+            {
+                switch (currentatribute.Name.LocalName)
+                {
+                    case "BarCode":
+                        {
+                            itemidentifier.BarCode = currentatribute.Value;
+                            break;
+                        }
+                    case "ItemNo":
+                        {
+                            itemidentifier.ItemNo = currentatribute.Value;
+                            break;
+                        }
+                    case "VariantCode":
+                        {
+                            itemidentifier.VariantCode = currentatribute.Value;
+                            break;
+                        }
+                    case "UoM":
+                        {
+                            itemidentifier.UoM = currentatribute.Value;
+                            break;
+                        }
+                }
+            }
+            return itemidentifier;
+        }
+
         #endregion
         #region WarehouseClass
         public static Task<int> GetWarehouseClassCount(CancellationTokenSource cts)
@@ -1782,23 +1822,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                     List<WarehouseClass> rv = new List<WarehouseClass>();
                     foreach (XElement currentnode in document.Root.Elements())
                     {
-                        WarehouseClass warehouseclass = new WarehouseClass();
-                        foreach (XAttribute currentatribute in currentnode.Attributes())
-                        {
-                            switch (currentatribute.Name.LocalName)
-                            {
-                                case "Code":
-                                    {
-                                        warehouseclass.Code = currentatribute.Value;
-                                        break;
-                                    }
-                                case "Description":
-                                    {
-                                        warehouseclass.Description = currentatribute.Value;
-                                        break;
-                                    }
-                            }
-                        }
+                        WarehouseClass warehouseclass = GetWarehouseClassFromXML(currentnode);
                         rv.Add(warehouseclass);
                     }
                     tcs.SetResult(rv);
@@ -1809,6 +1833,27 @@ namespace WarehouseControlSystem.Helpers.NAV
                 }
             });
             return tcs.Task;
+        }
+        private static WarehouseClass GetWarehouseClassFromXML(XElement currentnode)
+        {
+            WarehouseClass warehouseclass = new WarehouseClass();
+            foreach (XAttribute currentatribute in currentnode.Attributes())
+            {
+                switch (currentatribute.Name.LocalName)
+                {
+                    case "Code":
+                        {
+                            warehouseclass.Code = currentatribute.Value;
+                            break;
+                        }
+                    case "Description":
+                        {
+                            warehouseclass.Description = currentatribute.Value;
+                            break;
+                        }
+                }
+            }
+            return warehouseclass;
         }
         #endregion
 
@@ -1852,23 +1897,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                     List<SpecialEquipment> rv = new List<SpecialEquipment>();
                     foreach (XElement currentnode in document.Root.Elements())
                     {
-                        SpecialEquipment specialequipment = new SpecialEquipment();
-                        foreach (XAttribute currentatribute in currentnode.Attributes())
-                        {
-                            switch (currentatribute.Name.LocalName)
-                            {
-                                case "Code":
-                                    {
-                                        specialequipment.Code = currentatribute.Value;
-                                        break;
-                                    }
-                                case "Description":
-                                    {
-                                        specialequipment.Description = currentatribute.Value;
-                                        break;
-                                    }
-                            }
-                        }
+                        SpecialEquipment specialequipment = GetSpecialEquipmentFromXML(currentnode);
                         rv.Add(specialequipment);
                     }
                     tcs.SetResult(rv);
@@ -1879,6 +1908,27 @@ namespace WarehouseControlSystem.Helpers.NAV
                 }
             });
             return tcs.Task;
+        }
+        private static SpecialEquipment GetSpecialEquipmentFromXML(XElement currentnode)
+        {
+            SpecialEquipment specialequipment = new SpecialEquipment();
+            foreach (XAttribute currentatribute in currentnode.Attributes())
+            {
+                switch (currentatribute.Name.LocalName)
+                {
+                    case "Code":
+                        {
+                            specialequipment.Code = currentatribute.Value;
+                            break;
+                        }
+                    case "Description":
+                        {
+                            specialequipment.Description = currentatribute.Value;
+                            break;
+                        }
+                }
+            }
+            return specialequipment;
         }
         #endregion
 
@@ -1934,73 +1984,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                     List<WarehouseEntry> rv = new List<WarehouseEntry>();
                     foreach (XElement currentnode in document.Root.Elements())
                     {
-                        WarehouseEntry we = new WarehouseEntry();
-                        foreach (XAttribute currentatribute in currentnode.Attributes())
-                        {
-                            switch (currentatribute.Name.LocalName)
-                            {
-                                case "LocationCode":
-                                    {
-                                        we.LocationCode = currentatribute.Value;
-                                        break;
-                                    }
-                                case "ZoneCode":
-                                    {
-                                        we.ZoneCode = currentatribute.Value;
-                                        break;
-                                    }
-                                case "BinCode":
-                                    {
-                                        we.BinCode = currentatribute.Value;
-                                        break;
-                                    }
-                                case "ItemNo":
-                                    {
-                                        we.ItemNo = currentatribute.Value;
-                                        break;
-                                    }
-                                case "VariantCode":
-                                    {
-                                        we.VariantCode = currentatribute.Value;
-                                        break;
-                                    }
-                                case "Description":
-                                    {
-                                        we.Description = currentatribute.Value;
-                                        break;
-                                    }
-                                case "EntryType":
-                                    {
-                                        we.EntryType = StringToInt(currentatribute.Value);
-                                        break;
-                                    }
-                                case "RegisteringDate":
-                                    {
-                                        we.RegisteringDate = currentatribute.Value;
-                                        break;
-                                    }
-                                case "SourceNo":
-                                    {
-                                        we.SourceNo = currentatribute.Value;
-                                        break;
-                                    }
-                                case "Quantity":
-                                    {
-                                        we.Quantity = StringToDec(currentatribute.Value);
-                                        break;
-                                    }
-                                case "QuantityBase":
-                                    {
-                                        we.QuantityBase = StringToDec(currentatribute.Value);
-                                        break;
-                                    }
-                                case "UnitofMeasureCode":
-                                    {
-                                        we.UnitofMeasureCode = currentatribute.Value;
-                                        break;
-                                    }
-                            }
-                        }
+                        WarehouseEntry we = GetWarehouseEntryFromXML(currentnode);
                         rv.Add(we);
                     }
                     tcs.SetResult(rv);
@@ -2011,7 +1995,77 @@ namespace WarehouseControlSystem.Helpers.NAV
                 }
             });
             return tcs.Task;
-
+        }
+        private static WarehouseEntry GetWarehouseEntryFromXML(XElement currentnode)
+        {
+            WarehouseEntry we = new WarehouseEntry();
+            foreach (XAttribute currentatribute in currentnode.Attributes())
+            {
+                switch (currentatribute.Name.LocalName)
+                {
+                    case "LocationCode":
+                        {
+                            we.LocationCode = currentatribute.Value;
+                            break;
+                        }
+                    case "ZoneCode":
+                        {
+                            we.ZoneCode = currentatribute.Value;
+                            break;
+                        }
+                    case "BinCode":
+                        {
+                            we.BinCode = currentatribute.Value;
+                            break;
+                        }
+                    case "ItemNo":
+                        {
+                            we.ItemNo = currentatribute.Value;
+                            break;
+                        }
+                    case "VariantCode":
+                        {
+                            we.VariantCode = currentatribute.Value;
+                            break;
+                        }
+                    case "Description":
+                        {
+                            we.Description = currentatribute.Value;
+                            break;
+                        }
+                    case "EntryType":
+                        {
+                            we.EntryType = StringToInt(currentatribute.Value);
+                            break;
+                        }
+                    case "RegisteringDate":
+                        {
+                            we.RegisteringDate = currentatribute.Value;
+                            break;
+                        }
+                    case "SourceNo":
+                        {
+                            we.SourceNo = currentatribute.Value;
+                            break;
+                        }
+                    case "Quantity":
+                        {
+                            we.Quantity = StringToDec(currentatribute.Value);
+                            break;
+                        }
+                    case "QuantityBase":
+                        {
+                            we.QuantityBase = StringToDec(currentatribute.Value);
+                            break;
+                        }
+                    case "UnitofMeasureCode":
+                        {
+                            we.UnitofMeasureCode = currentatribute.Value;
+                            break;
+                        }
+                }
+            }
+            return we;
         }
         #endregion
         #region UserDefinedSelection
@@ -2034,38 +2088,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                     List<UserDefinedSelection> rv = new List<UserDefinedSelection>();
                     foreach (XElement currentnode in document.Root.Elements())
                     {
-                        UserDefinedSelection uds = new UserDefinedSelection();
-                        foreach (XAttribute currentatribute in currentnode.Attributes())
-                        {
-                            switch (currentatribute.Name.LocalName)
-                            {
-                                case "ID":
-                                    {
-                                        uds.ID = StringToInt(currentatribute.Value);
-                                        break;
-                                    }
-                                case "Name":
-                                    {
-                                        uds.Name = currentatribute.Value;
-                                        break;
-                                    }
-                                case "Detail":
-                                    {
-                                        uds.Detail = currentatribute.Value;
-                                        break;
-                                    }
-                                case "HexColor":
-                                    {
-                                        uds.HexColor = currentatribute.Value;
-                                        break;
-                                    }
-                                case "Value":
-                                    {
-                                        uds.Value = StringToInt(currentatribute.Value);
-                                        break;
-                                    }
-                            }
-                        }
+                        UserDefinedSelection uds = GetUserDefinedSelectionFromXML(currentnode);
                         rv.Add(uds);
                     }
                     tcs.SetResult(rv);
@@ -2076,6 +2099,42 @@ namespace WarehouseControlSystem.Helpers.NAV
                 }
             });
             return tcs.Task;
+        }
+        private static UserDefinedSelection GetUserDefinedSelectionFromXML(XElement currentnode)
+        {
+            UserDefinedSelection uds = new UserDefinedSelection();
+            foreach (XAttribute currentatribute in currentnode.Attributes())
+            {
+                switch (currentatribute.Name.LocalName)
+                {
+                    case "ID":
+                        {
+                            uds.ID = StringToInt(currentatribute.Value);
+                            break;
+                        }
+                    case "Name":
+                        {
+                            uds.Name = currentatribute.Value;
+                            break;
+                        }
+                    case "Detail":
+                        {
+                            uds.Detail = currentatribute.Value;
+                            break;
+                        }
+                    case "HexColor":
+                        {
+                            uds.HexColor = currentatribute.Value;
+                            break;
+                        }
+                    case "Value":
+                        {
+                            uds.Value = StringToInt(currentatribute.Value);
+                            break;
+                        }
+                }
+            }
+            return uds;
         }
         public static Task<List<UserDefinedSelectionResult>> RunUDS(string locationCode, string zoneCode, int i, CancellationTokenSource cts)
         {
@@ -2097,48 +2156,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                     List<UserDefinedSelectionResult> rv = new List<UserDefinedSelectionResult>();
                     foreach (XElement currentnode in document.Root.Elements())
                     {
-                        UserDefinedSelectionResult uds = new UserDefinedSelectionResult();
-                        foreach (XAttribute currentatribute in currentnode.Attributes())
-                        {
-                            switch (currentatribute.Name.LocalName)
-                            {
-                                case "F":
-                                    {
-                                        uds.FunctionID = StringToInt(currentatribute.Value);
-                                        break;
-                                    }
-                                case "R":
-                                    {
-                                        uds.RackNo = currentatribute.Value;
-                                        break;
-                                    }
-                                case "S":
-                                    {
-                                        uds.Section = StringToInt(currentatribute.Value);
-                                        break;
-                                    }
-                                case "L":
-                                    {
-                                        uds.Level = StringToInt(currentatribute.Value);
-                                        break;
-                                    }
-                                case "D":
-                                    {
-                                        uds.Depth = StringToInt(currentatribute.Value);
-                                        break;
-                                    }
-                                case "Q":
-                                    {
-                                        uds.Value = (int)Math.Round(StringToDec(currentatribute.Value));
-                                        break;
-                                    }
-                                case "C":
-                                    {
-                                        uds.HexColor = currentatribute.Value;
-                                        break;
-                                    }
-                            }
-                        }
+                        UserDefinedSelectionResult uds = GetUserDefinedSelectionResultnFromXML(currentnode);
                         rv.Add(uds);
                     }
                     tcs.SetResult(rv);
@@ -2149,6 +2167,52 @@ namespace WarehouseControlSystem.Helpers.NAV
                 }
             });
             return tcs.Task;
+        }
+        private static UserDefinedSelectionResult GetUserDefinedSelectionResultnFromXML(XElement currentnode)
+        {
+            UserDefinedSelectionResult uds = new UserDefinedSelectionResult();
+            foreach (XAttribute currentatribute in currentnode.Attributes())
+            {
+                switch (currentatribute.Name.LocalName)
+                {
+                    case "F":
+                        {
+                            uds.FunctionID = StringToInt(currentatribute.Value);
+                            break;
+                        }
+                    case "R":
+                        {
+                            uds.RackNo = currentatribute.Value;
+                            break;
+                        }
+                    case "S":
+                        {
+                            uds.Section = StringToInt(currentatribute.Value);
+                            break;
+                        }
+                    case "L":
+                        {
+                            uds.Level = StringToInt(currentatribute.Value);
+                            break;
+                        }
+                    case "D":
+                        {
+                            uds.Depth = StringToInt(currentatribute.Value);
+                            break;
+                        }
+                    case "Q":
+                        {
+                            uds.Value = (int)Math.Round(StringToDec(currentatribute.Value));
+                            break;
+                        }
+                    case "C":
+                        {
+                            uds.HexColor = currentatribute.Value;
+                            break;
+                        }
+                }
+            }
+            return uds;
         }
         #endregion
         #region UserDefinedFunctions
@@ -2172,33 +2236,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                     List<UserDefinedFunction> rv = new List<UserDefinedFunction>();
                     foreach (XElement currentnode in document.Root.Elements())
                     {
-                        UserDefinedFunction udf = new UserDefinedFunction();
-                        foreach (XAttribute currentatribute in currentnode.Attributes())
-                        {
-                            switch (currentatribute.Name.LocalName)
-                            {
-                                case "ID":
-                                    {
-                                        udf.ID = StringToInt(currentatribute.Value);
-                                        break;
-                                    }
-                                case "Name":
-                                    {
-                                        udf.Name = currentatribute.Value;
-                                        break;
-                                    }
-                                case "Detail":
-                                    {
-                                        udf.Detail = currentatribute.Value;
-                                        break;
-                                    }
-                                case "Confirm":
-                                    {
-                                        udf.Confirm = currentatribute.Value;
-                                        break;
-                                    }
-                            }
-                        }
+                        UserDefinedFunction udf = GetUserDefinedFunctionFromXML(currentnode);
                         rv.Add(udf);
                     }
                     tcs.SetResult(rv);
@@ -2210,6 +2248,38 @@ namespace WarehouseControlSystem.Helpers.NAV
             });
             return tcs.Task;
         }
+        private static UserDefinedFunction GetUserDefinedFunctionFromXML(XElement currentnode)
+        {
+            UserDefinedFunction udf = new UserDefinedFunction();
+            foreach (XAttribute currentatribute in currentnode.Attributes())
+            {
+                switch (currentatribute.Name.LocalName)
+                {
+                    case "ID":
+                        {
+                            udf.ID = StringToInt(currentatribute.Value);
+                            break;
+                        }
+                    case "Name":
+                        {
+                            udf.Name = currentatribute.Value;
+                            break;
+                        }
+                    case "Detail":
+                        {
+                            udf.Detail = currentatribute.Value;
+                            break;
+                        }
+                    case "Confirm":
+                        {
+                            udf.Confirm = currentatribute.Value;
+                            break;
+                        }
+                }
+            }
+            return udf;
+        }
+
         public static Task<string> RunFunction(int i, string locationCode, string zoneCode, string rackno, string bincode, string itemno, string variantcode, decimal quantity, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<string>();
@@ -2261,48 +2331,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                     List<SearchResponse> rv = new List<SearchResponse>();
                     foreach (XElement currentnode in document.Root.Elements())
                     {
-                        SearchResponse searchresponse = new SearchResponse();
-                        foreach (XAttribute currentatribute in currentnode.Attributes())
-                        {
-                            switch (currentatribute.Name.LocalName)
-                            {
-                                case "Z":
-                                    {
-                                        searchresponse.ZoneCode = currentatribute.Value;
-                                        break;
-                                    }
-                                case "B":
-                                    {
-                                        searchresponse.BinCode = currentatribute.Value;
-                                        break;
-                                    }
-                                case "R":
-                                    {
-                                        searchresponse.RackNo = currentatribute.Value;
-                                        break;
-                                    }
-                                case "S":
-                                    {
-                                        searchresponse.Section = StringToInt(currentatribute.Value);
-                                        break;
-                                    }
-                                case "L":
-                                    {
-                                        searchresponse.Level = StringToInt(currentatribute.Value);
-                                        break;
-                                    }
-                                case "D":
-                                    {
-                                        searchresponse.Depth = StringToInt(currentatribute.Value);
-                                        break;
-                                    }
-                                case "Q":
-                                    {
-                                        searchresponse.QuantityBase = (int)Math.Round(StringToDec(currentatribute.Value));
-                                        break;
-                                    }
-                            }
-                        }
+                        SearchResponse searchresponse = GetSearchResponseFromXML(currentnode);
                         rv.Add(searchresponse);
                     }
                     tcs.SetResult(rv);
@@ -2313,6 +2342,52 @@ namespace WarehouseControlSystem.Helpers.NAV
                 }
             });
             return tcs.Task;
+        }
+        private static SearchResponse GetSearchResponseFromXML(XElement currentnode)
+        {
+            SearchResponse searchresponse = new SearchResponse();
+            foreach (XAttribute currentatribute in currentnode.Attributes())
+            {
+                switch (currentatribute.Name.LocalName)
+                {
+                    case "Z":
+                        {
+                            searchresponse.ZoneCode = currentatribute.Value;
+                            break;
+                        }
+                    case "B":
+                        {
+                            searchresponse.BinCode = currentatribute.Value;
+                            break;
+                        }
+                    case "R":
+                        {
+                            searchresponse.RackNo = currentatribute.Value;
+                            break;
+                        }
+                    case "S":
+                        {
+                            searchresponse.Section = StringToInt(currentatribute.Value);
+                            break;
+                        }
+                    case "L":
+                        {
+                            searchresponse.Level = StringToInt(currentatribute.Value);
+                            break;
+                        }
+                    case "D":
+                        {
+                            searchresponse.Depth = StringToInt(currentatribute.Value);
+                            break;
+                        }
+                    case "Q":
+                        {
+                            searchresponse.QuantityBase = (int)Math.Round(StringToDec(currentatribute.Value));
+                            break;
+                        }
+                }
+            }
+            return searchresponse;
         }
         #endregion
         public static Task<int> TestConnection(CancellationTokenSource cts)
