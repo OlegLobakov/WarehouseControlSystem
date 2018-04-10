@@ -15,6 +15,7 @@
 <p align="left">
 <img src="https://www.codefactor.io/repository/github/oleglobakov/warehousecontrolsystem/badge" />
 <img src='https://bettercodehub.com/edge/badge/OlegLobakov/WarehouseControlSystem?branch=master'>
+  <a class="badge-align" href="https://www.codacy.com/app/OlegLobakov/WarehouseControlSystem?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=OlegLobakov/WarehouseControlSystem&amp;utm_campaign=Badge_Grade"><img src="https://api.codacy.com/project/badge/Grade/5a2e4b96023944f7bcb4615d49081186"/></a>
 </p>
 
 ## About
