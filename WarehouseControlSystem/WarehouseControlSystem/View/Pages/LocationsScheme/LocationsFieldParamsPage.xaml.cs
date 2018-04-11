@@ -21,7 +21,7 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class LocationsFieldParamsPage : ContentPage
     {
-        LocationsViewModel model;
+        public readonly LocationsViewModel model;
         public LocationsFieldParamsPage(LocationsViewModel lvm)
         {
             model = lvm;

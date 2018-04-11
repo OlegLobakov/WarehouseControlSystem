@@ -20,7 +20,7 @@ namespace WarehouseControlSystem.Pages
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class WarehouseEntriesPage : ContentPage
     {
-        WarehouseEntriesViewModel model;
+        public readonly WarehouseEntriesViewModel model;
         public WarehouseEntriesPage(WarehouseEntriesViewModel warehouseentriesviewmodel)
         {
             model = warehouseentriesviewmodel;

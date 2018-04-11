@@ -28,8 +28,7 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class RackCardPage : ContentPage
     {
-
-        RackViewModel model;
+        public readonly RackViewModel model;
         public RackCardPage(RackViewModel rvm)
         {
             model = rvm;
@@ -85,7 +84,7 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
 
         public void BinInfopanelItemTap(BinContentShortViewModel bcsvm)
         {
-            
+            Global.CompliantPlug = bcsvm.ToString();
         }
 
         public void UserDefinedFunctionTap(UserDefinedFunctionViewModel udfvm)

@@ -22,7 +22,7 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
     public partial class ZoneListPage : ContentPage
     {
         Location Location;
-        ZonesViewModel model;
+        public readonly ZonesViewModel model;
 
         public ZoneListPage(Location location)
         {

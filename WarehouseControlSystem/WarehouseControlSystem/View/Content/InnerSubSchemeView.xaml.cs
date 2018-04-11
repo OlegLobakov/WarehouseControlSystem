@@ -219,7 +219,7 @@ namespace WarehouseControlSystem.View.Content
                                         selectionPaint.Style = SKPaintStyle.StrokeAndFill;
                                         selectionPaint.Color = colorred;
                                         selectionPaint.StrokeWidth = 1;
-                                        SKRect selectionTect = new SKRect()
+                                        SKRect selectionTect = new SKRect
                                         {
                                             Left = selectionleft,
                                             Top = selectiontop,

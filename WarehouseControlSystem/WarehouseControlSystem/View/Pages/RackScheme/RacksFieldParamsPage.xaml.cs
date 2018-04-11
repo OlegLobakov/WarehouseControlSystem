@@ -21,7 +21,7 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class RacksFieldParamsPage : ContentPage
     {
-        RacksViewModel model;
+        public readonly RacksViewModel model;
 
         public RacksFieldParamsPage(RacksViewModel rvm)
         {

@@ -25,7 +25,7 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class RackSchemeView : ContentView
     {
-        public RackViewModel model;
+        public readonly RackViewModel model;
 
         public List<Label> udslabels = new List<Label>();
 
@@ -51,7 +51,7 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
                 }
             }
 
-            Label lb = new Label()
+            Label lb = new Label
             {
                 BackgroundColor = Color.FromHex("#3d567c"),
                 HorizontalOptions = LayoutOptions.FillAndExpand,
@@ -81,7 +81,7 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
 
             for (int i = 1; i <= model.Sections; i++)
             {
-                Label label1 = new Label()
+                Label label1 = new Label
                 {
                     BackgroundColor = Color.FromHex("#dbe1eb"),
                     HorizontalOptions = LayoutOptions.FillAndExpand,
@@ -152,7 +152,7 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
 
             for (int i = 1; i <= model.Sections; i++)
             {
-                Label label1 = new Label()
+                Label label1 = new Label
                 {
                     BackgroundColor = Color.FromHex("#dbe1eb"),
                     HorizontalOptions = LayoutOptions.FillAndExpand,

@@ -24,7 +24,7 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class NewZonePage : ContentPage
     {
-        ZoneViewModel model;
+        public readonly ZoneViewModel model;
         public NewZonePage(ZoneViewModel zvm)
         {
             model = zvm;

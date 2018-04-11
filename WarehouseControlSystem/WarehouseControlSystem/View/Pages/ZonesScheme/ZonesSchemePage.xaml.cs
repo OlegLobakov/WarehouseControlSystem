@@ -33,7 +33,7 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
         TapGestureRecognizer TapGesture;
         PanGestureRecognizer PanGesture;
 
-        ZonesViewModel model;
+        public readonly ZonesViewModel model;
         public ZonesSchemePage(Location location)
         {
             model = new ZonesViewModel(Navigation, location);

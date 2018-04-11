@@ -25,7 +25,7 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class RackNewPage : ContentPage
     {
-        RackViewModel model;
+        public readonly RackViewModel model;
         public RackNewPage(RackViewModel rvm)
         {
             model = rvm;

@@ -38,7 +38,9 @@ namespace WarehouseControlSystem
         public PlatformCulture(string platformCultureString)
         {
             if (String.IsNullOrEmpty(platformCultureString))
+            {
                 throw new ArgumentException("Expected culture identifier", "platformCultureString"); // in C# 6 use nameof(platformCultureString)
+            }
 
             PlatformString = platformCultureString.Replace("_", "-"); // .NET expects dash, not underscore
             var dashIndex = PlatformString.IndexOf("-", StringComparison.Ordinal);

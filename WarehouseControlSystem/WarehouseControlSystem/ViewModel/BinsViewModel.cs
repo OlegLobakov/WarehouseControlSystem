@@ -666,6 +666,7 @@ namespace WarehouseControlSystem.ViewModel
 
         public void ShowBinOperations()
         {
+            Global.CompliantPlug = "";
         }
 
         public async void CheckBins(AsyncCancelationDispatcher acd)
@@ -1019,7 +1020,9 @@ namespace WarehouseControlSystem.ViewModel
             {
                 Delegate[] clientList = OnBinClick.GetInvocationList();
                 foreach (var d in clientList)
+                {
                     OnBinClick -= (d as Action<BinsViewModel>);
+                }
             }
 
             BinViewModelsDispose();

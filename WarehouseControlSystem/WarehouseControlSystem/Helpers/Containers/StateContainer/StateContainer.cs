@@ -26,7 +26,6 @@ namespace WarehouseControlSystem.Helpers.Containers.StateContainer
         private static void StateChanged(BindableObject bindable, object oldValue, object newValue)
         {
             var parent = bindable as StateContainer;
-            //if ((parent != null) && (newValue != null))
             if (parent != null)
             {
                 parent.ChooseStateProperty(newValue);

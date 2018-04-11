@@ -22,7 +22,7 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class LocationNewPage : ContentPage
 	{
-        LocationViewModel model;
+        public readonly LocationViewModel model;
 
         public LocationNewPage(LocationViewModel lvm)
         {

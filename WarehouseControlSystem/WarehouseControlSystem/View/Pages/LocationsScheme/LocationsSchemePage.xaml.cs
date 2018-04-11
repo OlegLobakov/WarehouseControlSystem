@@ -30,7 +30,7 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
         TapGestureRecognizer TapGesture;
         PanGestureRecognizer PanGesture;
 
-        LocationsViewModel model;
+        public readonly LocationsViewModel model;
         public LocationsSchemePage()
         {
             model = new LocationsViewModel(Navigation);
@@ -180,13 +180,25 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
                         oldeTotalX = e.TotalX;
                         oldeTotalY = e.TotalY;
                         if (dx + leftborder < 0)
+                        {
                             dx = -leftborder;
+                        }
+
                         if (dx + rightborder > abslayout.Width)
+                        {
                             dx = abslayout.Width - rightborder;
+                        }
+
                         if (dy + topborder < 0)
+                        {
                             dy = -topborder;
+                        }
+
                         if (dy + bottomborder > abslayout.Height)
+                        {
                             dy = abslayout.Height - bottomborder;
+                        }
+
                         foreach (LocationView lv in SelectedViews)
                         {
                             if (lv.model.EditMode == SchemeElementEditMode.Move)

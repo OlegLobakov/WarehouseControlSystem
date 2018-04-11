@@ -52,56 +52,56 @@ namespace WarehouseControlSystem
         public static void Init()
         {
             LoadParameters();
-            Colors.Add(new ColorPick()
+            Colors.Add(new ColorPick
             {
                 HexColor = "#4775a3",
                 Name = AppResources.NewZonePage_Color_Blue,
                 Color = Color.FromHex("#4775a3")
             });
-            Colors.Add(new ColorPick()
+            Colors.Add(new ColorPick
             {
                 HexColor = "#84a3c1",
                 Name = AppResources.NewZonePage_Color_BlueLight,
                 Color = Color.FromHex("#84a3c1")
             });
-            Colors.Add(new ColorPick()
+            Colors.Add(new ColorPick
             {
                 HexColor = "#4d7326",
                 Name = AppResources.NewZonePage_Color_Green,
                 Color = Color.FromHex("#4d7326")
             });
-            Colors.Add(new ColorPick()
+            Colors.Add(new ColorPick
             {
                 HexColor = "#73ac39",
                 Name = AppResources.NewZonePage_Color_Green_Light,
                 Color = Color.FromHex("#73ac39")
             });
-            Colors.Add(new ColorPick()
+            Colors.Add(new ColorPick
             {
                 HexColor = "#b41848",
                 Name = AppResources.NewZonePage_Color_Red,
                 Color = Color.FromHex("#b41848")
             });
-            Colors.Add(new ColorPick()
+            Colors.Add(new ColorPick
             {
                 HexColor = "#c3466c",
                 Name = AppResources.NewZonePage_Color_RedLight,
                 Color = Color.FromHex("#c3466c")
             });
 
-            Colors.Add(new ColorPick()
+            Colors.Add(new ColorPick
             {
                 HexColor = "#808080",
                 Name = AppResources.Colors_Gray1,
                 Color = Color.FromHex("#808080")
             });
-            Colors.Add(new ColorPick()
+            Colors.Add(new ColorPick
             {
                 HexColor = "#737373",
                 Name = AppResources.Colors_Gray2,
                 Color = Color.FromHex("#737373")
             });
-            Colors.Add(new ColorPick()
+            Colors.Add(new ColorPick
             {
                 HexColor = "#666666",
                 Name = AppResources.Colors_Gray3,
@@ -111,31 +111,31 @@ namespace WarehouseControlSystem
             //======================================================================
             //
             //======================================================================
-            OrientationList.Add(new RackOrientationPick()
+            OrientationList.Add(new RackOrientationPick
             {
                 RackOrientation = RackOrientationEnum.Undefined,
                 Name = AppResources.RackNewPage_OrientationUndefined
             });
 
-            OrientationList.Add(new RackOrientationPick()
+            OrientationList.Add(new RackOrientationPick
             {
                 RackOrientation = RackOrientationEnum.HorizontalLeft,
                 Name = AppResources.RackNewPage_OrientationRackHL
             });
 
-            OrientationList.Add(new RackOrientationPick()
+            OrientationList.Add(new RackOrientationPick
             {
                 RackOrientation = RackOrientationEnum.HorizontalRight,
                 Name = AppResources.RackNewPage_OrientationRackHR,
             });
 
-            OrientationList.Add(new RackOrientationPick()
+            OrientationList.Add(new RackOrientationPick
             {
                 RackOrientation = RackOrientationEnum.VerticalUp,
                 Name = AppResources.RackNewPage_OrientationRackVU
             });
 
-            OrientationList.Add(new RackOrientationPick()
+            OrientationList.Add(new RackOrientationPick
             {
                 RackOrientation = RackOrientationEnum.VerticalDown,
                 Name = AppResources.RackNewPage_OrientationRackVD

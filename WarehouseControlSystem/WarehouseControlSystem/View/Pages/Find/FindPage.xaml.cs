@@ -65,10 +65,6 @@ namespace WarehouseControlSystem.View.Pages.Find
             await Navigation.PushAsync(scanPage);
         }
 
-        public void AfterScanning()
-        {
-
-        }
 
         public void ButtonFindClick(object sender, EventArgs e)
         {

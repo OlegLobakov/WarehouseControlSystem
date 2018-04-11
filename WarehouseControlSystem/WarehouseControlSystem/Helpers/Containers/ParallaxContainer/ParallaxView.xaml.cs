@@ -101,7 +101,9 @@ namespace WarehouseControlSystem.Helpers.Containers.ParallaxContainer
         private void ParentScroll_Scrolled(object sender, ScrolledEventArgs e)
         {
             if (lastScroll == 0)
+            {
                 lastScroll = e.ScrollY;
+            }
             else
             {
                 CalculateHeaderTranslation(e);
@@ -114,13 +116,13 @@ namespace WarehouseControlSystem.Helpers.Containers.ParallaxContainer
 
             if (lastScroll < e.ScrollY)
             {
-                translation = 0 - ((e.ScrollY / HeaderScrollSpeed));
+                translation = 0 - (e.ScrollY / HeaderScrollSpeed);
                 if (translation > 0)
                     translation = 0;
             }
             else
             {
-                translation = 0 + ((e.ScrollY / HeaderScrollSpeed));
+                translation = 0 + (e.ScrollY / HeaderScrollSpeed);
                 if (translation > 0)
                     translation = 0;
             }

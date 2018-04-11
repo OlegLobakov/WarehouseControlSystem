@@ -113,7 +113,9 @@ namespace WarehouseControlSystem.Helpers.Containers.HorizontalListView
             }
 
             foreach (var item in ItemsSource)
+            {
                 ItemsStackLayout.Children.Add(GetItemView(item));
+            }
 
             SelectedItem = ItemsSource.OfType<ISelectable>().FirstOrDefault(x => x.IsSelected);
         }
@@ -165,7 +167,9 @@ namespace WarehouseControlSystem.Helpers.Containers.HorizontalListView
             var items = ItemsSource;
 
             foreach (var item in items.OfType<ISelectable>())
+            {
                 item.IsSelected = selectedItem != null && item == selectedItem && selectedItem.IsSelected;
+            }
 
             var handler = SelectedItemChanged;
             if (handler != null)

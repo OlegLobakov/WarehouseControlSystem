@@ -34,7 +34,7 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
         TapGestureRecognizer TapGesture;
         PanGestureRecognizer PanGesture;
 
-        RacksViewModel model;
+        public readonly RacksViewModel model;
         public RacksSchemePage(Zone zone)
         {
             model = new RacksViewModel(Navigation, zone);
@@ -218,13 +218,24 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
                         oldeTotalY = e.TotalY;
 
                         if (dx + leftborder < 0)
+                        {
                             dx = -leftborder;
+                        }
+
                         if (dx + rightborder > abslayout.Width)
+                        {
                             dx = abslayout.Width - rightborder;
+                        }
+
                         if (dy + topborder < 0)
+                        {
                             dy = -topborder;
+                        }
+
                         if (dy + bottomborder > abslayout.Height)
+                        {
                             dy = abslayout.Height - bottomborder;
+                        }
 
                         foreach (RackSchemeView lv in SelectedViews)
                         {

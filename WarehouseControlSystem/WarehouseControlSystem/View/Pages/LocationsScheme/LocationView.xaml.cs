@@ -19,7 +19,7 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class LocationView : ContentView
     {
-        public LocationViewModel model;
+        public readonly LocationViewModel model;
         public LocationView(LocationViewModel lvm)
         {
             model = lvm;

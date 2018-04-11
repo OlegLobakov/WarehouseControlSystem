@@ -33,11 +33,6 @@ namespace WarehouseControlSystem
     public class Parameters
     {
         public string WarehouseControlSystem { get; set; } = "Warehouse Control System Parameters/Settings File";
-
         public List<Connection> Connections { get; set; } = new List<Connection>();
-
-        public Parameters()
-        {
-        }
     }
 }

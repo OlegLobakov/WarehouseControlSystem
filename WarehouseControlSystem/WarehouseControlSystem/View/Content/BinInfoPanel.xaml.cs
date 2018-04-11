@@ -40,7 +40,7 @@ namespace WarehouseControlSystem.View.Content
             int selectedIndex = picker.SelectedIndex;
             if (selectedIndex >= 0)
             {
-                BinType selected = (BinType)picker.SelectedItem;
+                //BinType selected = (BinType)picker.SelectedItem;
                 //BinType = selected.Code;
             }
         }
@@ -65,11 +65,6 @@ namespace WarehouseControlSystem.View.Content
                 SpecialEquipment selected = (SpecialEquipment)picker.SelectedItem;
                 //SpecialEquipmentCode = selected.Code;
             }
-        }
-
-        private void Button_Clicked(object sender, EventArgs e)
-        {
-
         }
     }
 }

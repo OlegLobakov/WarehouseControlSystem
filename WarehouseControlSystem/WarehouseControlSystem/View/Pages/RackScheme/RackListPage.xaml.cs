@@ -22,7 +22,7 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
     public partial class RackListPage : ContentPage
     {
         Zone Zone;
-        RacksViewModel model;
+        public readonly RacksViewModel model;
         public RackListPage(Zone zone)
         {
             Zone = zone;
