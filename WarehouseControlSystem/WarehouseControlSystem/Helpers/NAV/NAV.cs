@@ -2430,34 +2430,11 @@ namespace WarehouseControlSystem.Helpers.NAV
 
             string requestbody = GetRequestText(CreateSOAPRequest(body));
 
-            //Uri u1 = connection.GetUri();
-            //var handler = new HttpClientHandler()
-            //{
-            //    AllowAutoRedirect = false,
-            //    UseProxy = true,
-            //    UseDefaultCredentials = true,
-            //    PreAuthenticate = true,
-            //    AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip
-            //};
-
-            //Use ModernHttpClient
-            //var handler = new NativeMessageHandler()
-            //{
-            //    UseDefaultCredentials = false,
-            //    AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip
-            //};
-
             var handler = new HttpClientHandler()
             {
                 UseDefaultCredentials = false,
                 AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip
             };
-
-            // Note: The NTLM domain is important here, otherwise basic auth will be used:
-            //var credentials = new NetworkCredential("username", "password", "domain");
-            //var handler = new HttpClientHandler { Credentials = credentials, UseDefaultCredentials = false }
-            //var client = new HttpClient(handler);
-
 
             switch (connection.ClientCredentialType)
             {

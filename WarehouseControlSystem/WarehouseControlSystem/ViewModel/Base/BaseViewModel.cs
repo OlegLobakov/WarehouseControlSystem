@@ -144,7 +144,7 @@ namespace WarehouseControlSystem.ViewModel.Base
 
         public bool IsDisposed = false;
 
-        public AsyncCancelationDispatcher ACD;
+        public AsyncCancelationDispatcher ACD { get; set; }
 
         public BaseViewModel(INavigation navigation)
         {
@@ -188,7 +188,7 @@ namespace WarehouseControlSystem.ViewModel.Base
             IsDisposed = true;
         }
 
-        public string ColorToHex(Color color)
+        public static string ColorToHex(Color color)
         {
             int red = (int)(color.R * 255);
             int green = (int)(color.G * 255);
@@ -196,7 +196,7 @@ namespace WarehouseControlSystem.ViewModel.Base
             return String.Format("#{0:X2}{1:X2}{2:X2}", red, green, blue);
         }
 
-        public string ColorToHexAlfa(Color color)
+        public static string ColorToHexAlfa(Color color)
         {
             int red = (int)(color.R * 255);
             int green = (int)(color.G * 255);

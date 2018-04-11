@@ -26,10 +26,7 @@ namespace WarehouseControlSystem.View.Content
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class BinView : ContentView
     {
-        //public event Action<BinView> Taped;
-        //public event Action<BinElementView, PanUpdatedEventArgs> Paned;
-
-        BinViewModel model;
+        public readonly BinViewModel model;
         public BinView(BinViewModel bvm)
         {
             model = bvm;

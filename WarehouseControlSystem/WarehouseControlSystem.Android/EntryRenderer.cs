@@ -38,13 +38,11 @@ namespace WarehouseControlSystem.Droid
         protected override void OnElementChanged(ElementChangedEventArgs<Entry> e)
         {
             base.OnElementChanged(e);
-            //Control?.SetBackgroundColor(Android.Graphics.Color.Transparent);
-            Control?.SetBackgroundColor(Android.Graphics.Color.ParseColor("#e3e3e3"));
+             Control?.SetBackgroundColor(Android.Graphics.Color.ParseColor("#e3e3e3"));
             Control?.SetTextColor(Android.Graphics.Color.Black);
 
             if (Control != null)
             {
-                //Control.SetPadding(0, Control.PaddingTop, 0, Control.PaddingBottom);
                 Control.SetPadding(0, 0, 0, 0);
                 Control.Gravity = GravityFlags.CenterVertical;
             }

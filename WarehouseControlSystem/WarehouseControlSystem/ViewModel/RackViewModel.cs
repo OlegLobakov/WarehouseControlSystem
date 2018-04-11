@@ -524,12 +524,8 @@ namespace WarehouseControlSystem.ViewModel
             }
         } string searchresult;
 
-        //public ICommand SearchCommand { protected set; get; }
-
         public List<SubSchemeSelect> SubSchemeSelects { get; set; } = new List<SubSchemeSelect>();
         public List<SubSchemeSelect> UDSSelects { get; set; } = new List<SubSchemeSelect>();
-
-
         public List<UserDefinedFunction> UserDefinedFunctions = new List<UserDefinedFunction>();
 
 
@@ -1065,7 +1061,6 @@ namespace WarehouseControlSystem.ViewModel
             Locations.Clear();
             Zones.Clear();
             BinTemplates.Clear();
-            //SearchCommand = null;
             TapCommand = null;
             Rack = null;
             if (OnTap is Action<RackViewModel>)

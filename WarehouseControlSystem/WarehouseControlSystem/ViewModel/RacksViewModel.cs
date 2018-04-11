@@ -442,7 +442,7 @@ namespace WarehouseControlSystem.ViewModel
                     {
                         Rack rack = new Rack();
                         rvm.SaveFields(rack);
-                        int i = await NAV.SetRackVisible(rack, ACD.Default).ConfigureAwait(false);
+                        await NAV.SetRackVisible(rack, ACD.Default).ConfigureAwait(false);
                     }
                     tcs.SetResult(rv);
                 }

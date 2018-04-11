@@ -64,14 +64,13 @@ namespace WarehouseControlSystem.View.Content
             set { SetValue(RacksProperty, value); }
         }
 
-        SKCanvasView canvasView;
+        private SKCanvasView canvasView;
 
         public SchemeView()
         {
             InitializeComponent();
 
             canvasView = new SKCanvasView();
-            //canvasView.IgnorePixelScaling = true;
             canvasView.PaintSurface += OnCanvasViewPaintSurface;
             Content = canvasView;
         }

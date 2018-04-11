@@ -23,7 +23,7 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
     public partial class RackView : ContentView
     {
         Label HeaderLabel;
-        public RackViewModel model;
+        private RackViewModel model;
 
         public RackView()
         {

@@ -310,7 +310,12 @@ namespace WarehouseControlSystem.ViewModel
                 SaveFields(location);
                 int rv = await NAV.SetLocationVisible(location, ACD.Default);
             }
-            catch { }
+            catch(Exception ex)
+            {
+                State = State.Error;
+                ErrorText = ex.Message;
+            }
+            
         }
 
         public async void CheckLocationCode()

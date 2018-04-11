@@ -352,7 +352,11 @@ namespace WarehouseControlSystem.ViewModel
             {
                 ErrorText = ex.Message;
             }
-            catch { }
+            catch (Exception ex)
+            {
+                State = State.Error;
+                ErrorText = ex.Message;
+            }
             finally
             {
                 BinTypesIsBeingLoaded = false;

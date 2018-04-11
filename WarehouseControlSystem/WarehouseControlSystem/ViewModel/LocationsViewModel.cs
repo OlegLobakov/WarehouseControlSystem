@@ -140,7 +140,7 @@ namespace WarehouseControlSystem.ViewModel
             foreach (LocationViewModel lvm in LocationViewModels)
             {
                 lvm.Dispose();
-            };
+            }
             LocationViewModels.Clear();
         }
 
@@ -233,17 +233,13 @@ namespace WarehouseControlSystem.ViewModel
             }
             catch (NAVErrorException ex)
             {
-                string error1 = ex.Message;
-                string fer = ex.InnerException.ToString();
                 State = State.Error;
-                ErrorText = AppResources.Error_LoadLocation;
+                ErrorText = AppResources.Error_LoadLocation + Environment.NewLine + ex.Message;
             }
             catch (Exception ex)
             {
-                string error1 = ex.Message;
-                string fer = ex.InnerException.ToString();
                 State = State.Error;
-                ErrorText = AppResources.Error_LoadLocation;
+                ErrorText = AppResources.Error_LoadLocation + Environment.NewLine + ex.Message;
             }
         }
 

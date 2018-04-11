@@ -39,17 +39,17 @@ namespace WarehouseControlSystem
                 try
                 {
                     var page = (Page)Activator.CreateInstance(item.TargetType);
-                    //page.Title = item.Title;
-
 
                     Detail = new NavigationPage(page)
                     {
                         BarBackgroundColor = (Color)Application.Current.Resources["PageHeaderBarBackgoundColor"],
                         BarTextColor = Color.White
                     };
-
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    Global.CompliantPlug = ex.Message;
+                }
                 IsPresented = false;
             }
             MasterPage.ListView.SelectedItem = null;

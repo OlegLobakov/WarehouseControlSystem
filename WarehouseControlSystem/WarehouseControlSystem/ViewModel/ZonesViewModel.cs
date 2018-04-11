@@ -144,7 +144,7 @@ namespace WarehouseControlSystem.ViewModel
             foreach (ZoneViewModel zvm in ZoneViewModels)
             {
                 zvm.Dispose();
-            };
+            }
             ZoneViewModels.Clear();
         }
 
@@ -389,7 +389,7 @@ namespace WarehouseControlSystem.ViewModel
                     {
                         Zone zone = new Zone();
                         zvm.SaveFields(zone);
-                        int i = await NAV.SetZoneVisible(zone, ACD.Default);
+                        await NAV.SetZoneVisible(zone, ACD.Default);
                     }
                     tcs.SetResult(rv);
                 }
@@ -415,7 +415,11 @@ namespace WarehouseControlSystem.ViewModel
                 {
                     await NAV.ModifyZone(zvm.Zone, ACD.Default);
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    State = State.Error;
+                    ErrorText = ex.Message;
+                }
             }
         }
 

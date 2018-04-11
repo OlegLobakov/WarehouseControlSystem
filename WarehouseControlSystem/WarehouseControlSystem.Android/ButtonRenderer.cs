@@ -47,13 +47,8 @@ namespace WarehouseControlSystem.Droid
 
             if (Control != null)
             { 
-                //Control.SetPadding(0, Control.PaddingTop, 0, Control.PaddingBottom);
                 Control.SetPadding(0, 0, 0, 0);
             }
-
-        //    var view = (Button)this.Element;
-        //    var nativeButton = (global::Android.Widget.Button)this.Control;
-        //    nativeButton.SetPadding((int)view.Padding.Left, (int)view.Padding.Top, (int)view.Padding.Right, (int)view.Padding.Bottom);
-        }
+       }
     }
 }

@@ -91,7 +91,6 @@ namespace WarehouseControlSystem.Droid
                 try
                 {
                     var fallback = ToDotnetFallbackLanguage(new PlatformCulture(netLanguage));
-                    //Log.Message(netLanguage + " failed, trying " + fallback + " (" + e1.Message + ")");
                     ci = new System.Globalization.CultureInfo(fallback);
                 }
                 catch
@@ -99,7 +98,6 @@ namespace WarehouseControlSystem.Droid
                 //catch (CultureNotFoundException e2)
                 //{
                     // iOS language not valid .NET culture, falling back to English
-                    //Log.Message(netLanguage + " couldn't be set, using 'en' (" + e2.Message + ")");
                     ci = new System.Globalization.CultureInfo("en");
                 }
             }
@@ -109,7 +107,6 @@ namespace WarehouseControlSystem.Droid
 
         string AndroidToDotnetLanguage(string androidLanguage)
         {
-            //Log.Message("Android Language:" + androidLanguage);
             var netLanguage = androidLanguage;
 
             //certain languages need to be converted to CultureInfo equivalent
@@ -130,12 +127,10 @@ namespace WarehouseControlSystem.Droid
                     // ONLY use cultures that have been tested and known to work
             }
 
-            //Log.Message(".NET Language/Locale:" + netLanguage);
             return netLanguage;
         }
         string ToDotnetFallbackLanguage(PlatformCulture platCulture)
         {
-            //Log.Message(".NET Fallback Language:" + platCulture.LanguageCode);
             var netLanguage = platCulture.LanguageCode; // use the first part of the identifier (two chars, usually);
 
             switch (platCulture.LanguageCode)
@@ -147,7 +142,6 @@ namespace WarehouseControlSystem.Droid
                     // ONLY use cultures that have been tested and known to work
             }
 
-            //Log.Message(".NET Fallback Language/Locale:" + netLanguage + " (application-specific)");
             return netLanguage;
         }
 
