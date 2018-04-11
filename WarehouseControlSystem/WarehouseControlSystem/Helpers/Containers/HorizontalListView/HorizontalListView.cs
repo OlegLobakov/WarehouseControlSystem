@@ -23,8 +23,9 @@ namespace WarehouseControlSystem.Helpers.Containers.HorizontalListView
             {
                 var selectable = item as ISelectable;
                 if (selectable == null)
+                {
                     return;
-
+                }
                 SetSelected(selectable);
                 SelectedItem = selectable.IsSelected ? selectable : null;
             });
@@ -48,7 +49,11 @@ namespace WarehouseControlSystem.Helpers.Containers.HorizontalListView
 
         public static void Execute(ICommand command)
         {
-            if (command == null) return;
+            if (command == null)
+            {
+                return;
+            }
+
             if (command.CanExecute(null))
             {
                 command.Execute(null);
@@ -82,7 +87,9 @@ namespace WarehouseControlSystem.Helpers.Containers.HorizontalListView
         {
             var itemsView = (HorizontalListView)bindable;
             if (newValue == oldValue)
+            {
                 return;
+            }
 
             var selectable = newValue as ISelectable;
             itemsView.SetSelectedItem(selectable ?? oldValue as ISelectable);
@@ -101,7 +108,9 @@ namespace WarehouseControlSystem.Helpers.Containers.HorizontalListView
             ItemsStackLayout.Children.Clear();
 
             if (ItemsSource == null)
+            {
                 return;
+            }
 
             foreach (var item in ItemsSource)
                 ItemsStackLayout.Children.Add(GetItemView(item));
@@ -114,7 +123,9 @@ namespace WarehouseControlSystem.Helpers.Containers.HorizontalListView
             var content = ItemTemplate.CreateContent();
             var view = content as Xamarin.Forms.View;
             if (view == null)
+            {
                 return null;
+            }
 
             view.BindingContext = item;
 
@@ -136,7 +147,9 @@ namespace WarehouseControlSystem.Helpers.Containers.HorizontalListView
             var layout = view as Layout<Xamarin.Forms.View>;
 
             if (layout == null)
+            {
                 return;
+            }
 
             foreach (var child in layout.Children)
                 AddGesture(child, gesture);

@@ -137,13 +137,19 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
         private async void OnPaned(object sender, PanUpdatedEventArgs e)
         {
             if (model.RunMode == RunModeEnum.View)
+            {
                 return;
+            }
 
             if ((MovingAction != MovingActionTypeEnum.None) && (MovingAction != MovingActionTypeEnum.Pan))
+            {
                 return;
+            }
 
             if (!model.IsSelectedList)
+            {
                 return;
+            }
 
             switch (e.StatusType)
             {
@@ -183,13 +189,24 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
                         oldeTotalY = e.TotalY;
 
                         if (dx + leftborder < 0)
+                        {
                             dx = -leftborder;
+                        }
+
                         if (dx + rightborder > abslayout.Width)
+                        {
                             dx = abslayout.Width - rightborder;
+                        }
+
                         if (dy + topborder < 0)
+                        {
                             dy = -topborder;
+                        }
+
                         if (dy + bottomborder > abslayout.Height)
+                        {
                             dy = abslayout.Height - bottomborder;
+                        }
 
                         foreach (ZoneView zv in SelectedViews)
                         {

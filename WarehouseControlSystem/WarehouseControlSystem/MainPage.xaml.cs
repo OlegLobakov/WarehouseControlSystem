@@ -30,7 +30,9 @@ namespace WarehouseControlSystem
             var item = e.SelectedItem as MainPageMenuItem;
 
             if (item == null)
+            {
                 return;
+            }
 
             if (item.TargetType != null)
             {

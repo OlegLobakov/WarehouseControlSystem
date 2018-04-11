@@ -18,11 +18,11 @@ namespace WarehouseControlSystem.Model
 {
     public class SubSchemeSelect
     {
-        public int FunctionID;
-        public int Section;
-        public int Level;
-        public int Depth;
-        public string HexColor;
-        public int Value;
+        public int FunctionID { get; set; }
+        public int Section { get; set; }
+        public int Level { get; set; }
+        public int Depth { get; set; }
+        public string HexColor { get; set; }
+        public int Value { get; set; }
     }
 }

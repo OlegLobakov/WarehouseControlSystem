@@ -22,11 +22,6 @@ namespace WarehouseControlSystem
         public App()
         {
             InitializeComponent();
-            //var assembly = typeof(App).GetTypeInfo().Assembly;
-            //foreach (var res in assembly.GetManifestResourceNames())
-            //{
-            //    Log.Message("Found resource: " + res);
-            //}
 
             if (Device.RuntimePlatform == Device.iOS || Device.RuntimePlatform == Device.Android)
             {
@@ -44,8 +39,7 @@ namespace WarehouseControlSystem
 
         protected override void OnStart()
         {
-            //Parameters.LoadAsync();
-           // Parameters.LoadConnections(); на первые разы отключаем
+            Global.CompliantPlug = "OnStart";
         }
 
         protected override void OnSleep()
@@ -55,6 +49,7 @@ namespace WarehouseControlSystem
 
         protected override void OnResume()
         {
+            Global.CompliantPlug = "OnResume";
         }
     }
 }

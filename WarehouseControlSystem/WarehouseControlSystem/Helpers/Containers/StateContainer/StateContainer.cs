@@ -48,7 +48,11 @@ namespace WarehouseControlSystem.Helpers.Containers.StateContainer
         {
             try
             {
-                if (Conditions == null && Conditions?.Count == 0) return;
+                if (Conditions == null && Conditions?.Count == 0)
+                {
+                    return;
+                }
+
                 foreach (var stateCondition in Conditions.Where(stateCondition => stateCondition.State != null && stateCondition.State.ToString().Equals(newValue.ToString())))
                 {
                     if (Content != null)

@@ -25,7 +25,11 @@ namespace WarehouseControl.UWP
 {
     public class Localize : ILocalize
     {
-        public void SetLocale(CultureInfo ci) { }
+        public void SetLocale(CultureInfo ci)
+        {
+            //Not work in UWP
+        }
+
         public System.Globalization.CultureInfo GetCurrentCultureInfo()
         {
             //return System.Threading.Thread.CurrentThread.CurrentUICulture;

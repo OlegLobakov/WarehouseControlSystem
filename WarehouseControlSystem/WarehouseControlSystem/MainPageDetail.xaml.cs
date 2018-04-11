@@ -105,23 +105,5 @@ namespace WarehouseControlSystem
             rvm.CanChangeLocationAndZone = true;
             await Navigation.PushAsync(new RackNewPage(rvm));
         }
-
-
-        private async void TestClicked(object sender, EventArgs e)
-        {
-            List<Location> list = null;
-            CancellationTokenSource cts = new CancellationTokenSource();
-            try
-            {
-
-                int i = await NAV.TestConnection(cts);
-                //list = await NAV.GetLocationList("", false, 1, 200, cts);
-            }
-            catch (Exception ex)
-            {
-                Title = ex.Message;
-            }
-            cts = null;
-        }
     }
 }

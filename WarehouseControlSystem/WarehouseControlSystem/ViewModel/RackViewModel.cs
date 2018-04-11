@@ -1072,7 +1072,9 @@ namespace WarehouseControlSystem.ViewModel
             {
                 Delegate[] clientList = OnTap.GetInvocationList();
                 foreach (var d in clientList)
+                {
                     OnTap -= (d as Action<RackViewModel>);
+                }
             }
             BinsViewModel.Dispose();
             base.Dispose();

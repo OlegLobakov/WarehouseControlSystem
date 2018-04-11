@@ -19,12 +19,12 @@ namespace WarehouseControlSystem.Model
 {
     public class SubSchemeElement
     {
-        public int Left;
-        public int Top;
-        public int Height;
-        public int Width;
-        public string HexColor = "";
-        public RackOrientationEnum RackOrientation = RackOrientationEnum.Undefined;
-        public List<SubSchemeSelect> Selection;
+        public int Left { get; set; }
+        public int Top { get; set; }
+        public int Height { get; set; }
+        public int Width { get; set; }
+        public string HexColor { get; set; } = "";
+        public RackOrientationEnum RackOrientation { get; set; } = RackOrientationEnum.Undefined;
+        public List<SubSchemeSelect> Selection { get; set; }
     }
 }

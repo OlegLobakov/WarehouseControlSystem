@@ -36,7 +36,6 @@ namespace WarehouseControlSystem.View.Content
             BindingContext = model;
             InitializeComponent();
 
-            //tap
             TapGestureRecognizer tc = new TapGestureRecognizer()
             {
                 Command = model.TapCommand
@@ -45,32 +44,6 @@ namespace WarehouseControlSystem.View.Content
             GestureRecognizers.Add(tc);
             codelabel.GestureRecognizers.Add(tc);
             grid.GestureRecognizers.Add(tc);
-
-            ////pan
-            //PanGestureRecognizer panGesture = new PanGestureRecognizer();
-            //panGesture.PanUpdated += (s, e) =>
-            //{
-            //    OnPaned(s, e);
-            //};
-            //GestureRecognizers.Add(panGesture);
-            //codelabel.GestureRecognizers.Add(panGesture);
-            //grid.GestureRecognizers.Add(panGesture);
         }
-
-        //private void OnTapped()
-        //{
-        //    if (Taped is Action<BinView>)
-        //    {
-        //        Taped(this);
-        //    }
-        //}
-
-        //private void OnPaned(object sender, PanUpdatedEventArgs e)
-        //{
-        //    if (Paned is Action<BinElementView, PanUpdatedEventArgs>)
-        //    {
-        //        Paned(this, e);
-        //    }
-        //}
     }
 }

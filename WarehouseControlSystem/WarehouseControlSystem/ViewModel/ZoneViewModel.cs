@@ -423,8 +423,11 @@ namespace WarehouseControlSystem.ViewModel
             {
                 Delegate[] clientList = OnTap.GetInvocationList();
                 foreach (var d in clientList)
+                {
                     OnTap -= (d as Action<ZoneViewModel>);
+                }
             }
+
             Zone = null;
             base.Dispose();
         }

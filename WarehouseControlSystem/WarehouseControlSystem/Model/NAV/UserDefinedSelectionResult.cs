@@ -18,13 +18,13 @@ namespace WarehouseControlSystem.Model
 {
     public class UserDefinedSelectionResult
     {
-        public int FunctionID;
-        public string RackNo;
-        public int Section;
-        public int Level;
-        public int Depth;
-        public int Value;
-        public string Text;
-        public string HexColor;
+        public int FunctionID { get; set; }
+        public string RackNo { get; set; }
+        public int Section { get; set; }
+        public int Level { get; set; }
+        public int Depth { get; set; }
+        public int Value { get; set; }
+        public string Text { get; set; }
+        public string HexColor { get; set; }
     }
 }

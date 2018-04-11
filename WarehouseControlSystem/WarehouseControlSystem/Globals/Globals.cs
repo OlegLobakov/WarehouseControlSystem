@@ -47,6 +47,8 @@ namespace WarehouseControlSystem
         public static string SearchLocationCode ="";
         public static string SearchRequest;
 
+        public static string CompliantPlug { get; set; }
+
         public static void Init()
         {
             LoadParameters();
@@ -168,7 +170,7 @@ namespace WarehouseControlSystem
         /// Current Connection
         /// </summary>
         public static Connection CurrentConnection;
-        public static Connection TestConnection = new Connection();
+        public static Connection TestConnection { get; set; } = new Connection();
 
         /// <summary>
         /// Sync version 

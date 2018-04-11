@@ -48,10 +48,12 @@ namespace WarehouseControlSystem.Droid
 
         public void OnActivityDestroyed(Activity activity)
         {
+            Global.CompliantPlug = "OnActivityDestroyed";
         }
 
         public void OnActivityPaused(Activity activity)
         {
+            Global.CompliantPlug = "OnActivityPaused";
         }
 
         public void OnActivityResumed(Activity activity)
@@ -61,6 +63,7 @@ namespace WarehouseControlSystem.Droid
 
         public void OnActivitySaveInstanceState(Activity activity, Bundle outState)
         {
+            Global.CompliantPlug = "OnActivitySaveInstanceState";
         }
 
         public void OnActivityStarted(Activity activity)
@@ -70,6 +73,7 @@ namespace WarehouseControlSystem.Droid
 
         public void OnActivityStopped(Activity activity)
         {
+            Global.CompliantPlug = "OnActivityStopped";
         }
     }
 }

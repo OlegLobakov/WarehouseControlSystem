@@ -36,7 +36,9 @@ namespace WarehouseControlSystem
         public object ProvideValue(IServiceProvider serviceProvider)
         {
             if (Text == null)
+            {
                 return "";
+            }
 
             ResourceManager temp = new ResourceManager(ResourceId, typeof(TranslateExtension).GetTypeInfo().Assembly);
 

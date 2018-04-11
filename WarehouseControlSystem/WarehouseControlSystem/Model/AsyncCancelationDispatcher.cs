@@ -19,7 +19,7 @@ namespace WarehouseControlSystem.Model
 {
     public class AsyncCancelationDispatcher
     {
-        public CancellationTokenSource Default;
+        public CancellationTokenSource Default { get; set; }
 
         public AsyncCancelationDispatcher()
         {

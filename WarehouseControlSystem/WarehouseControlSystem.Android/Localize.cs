@@ -34,8 +34,6 @@ namespace WarehouseControlSystem.Droid
         {
             Thread.CurrentThread.CurrentCulture = ci;
             Thread.CurrentThread.CurrentUICulture = ci;
-
-            //Log.Message("CurrentCulture set: " + ci.Name);
         }
 
         public CultureInfo GetCurrentCultureInfo()

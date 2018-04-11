@@ -173,10 +173,14 @@ namespace WarehouseControlSystem.ViewModel
             }
 
             if (Zone.PlanHeight == 0)
+            {
                 Zone.PlanHeight = Settings.DefaultZonePlanHeight;
+            }
 
             if (Zone.PlanWidth == 0)
+            {
                 Zone.PlanWidth = Settings.DefaultZonePlanWidth;
+            }
 
             State = State.Loading;
             try

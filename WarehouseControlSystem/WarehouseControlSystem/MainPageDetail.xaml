@@ -6,7 +6,7 @@
              xmlns:vc="clr-namespace:WarehouseControlSystem.View.Content"
              xmlns:i18n="clr-namespace:WarehouseControlSystem;assembly=WarehouseControlSystem"
              Title="Warehouse Control System">
-    <ContentPage.ToolbarItems>
+    <!--<ContentPage.ToolbarItems>
         <ToolbarItem  Order="Primary" Priority="10" Text="{i18n:Translate LocationsSchemePage_Toolbar_List}" Clicked="TestClicked">
             <ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
@@ -19,7 +19,7 @@
                 </OnPlatform>
             </ToolbarItem.Icon>
         </ToolbarItem>
-    </ContentPage.ToolbarItems>
+    </ContentPage.ToolbarItems>-->
 
     <ContentPage.Content>
         <sc:StateContainer State="{Binding State}">

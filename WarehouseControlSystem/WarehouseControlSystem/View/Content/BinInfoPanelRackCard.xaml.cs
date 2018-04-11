@@ -38,7 +38,6 @@ namespace WarehouseControlSystem.View.Content
 
         private void ListView_ItemTapped(object sender, ItemTappedEventArgs e)
         {
-            //object temp = e.Item;
             BinContentShortViewModel bcsvm = (BinContentShortViewModel)e.Item;
             BinsViewModel bvm = (BinsViewModel)BindingContext;
             if (BinContentTap is Action<BinContentShortViewModel>)

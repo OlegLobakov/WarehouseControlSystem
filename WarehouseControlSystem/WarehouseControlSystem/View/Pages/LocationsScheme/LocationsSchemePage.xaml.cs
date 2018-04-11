@@ -133,13 +133,19 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
         private async void OnPaned(object sender, PanUpdatedEventArgs e)
         {
             if (model.RunMode == RunModeEnum.View)
+            {
                 return;
+            }
 
             if ((MovingAction != MovingActionTypeEnum.None) && (MovingAction != MovingActionTypeEnum.Pan))
+            {
                 return;
+            }
 
             if (!model.IsSelectedList)
+            {
                 return;
+            }
 
             switch (e.StatusType)
             {
