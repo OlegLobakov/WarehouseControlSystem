@@ -308,7 +308,7 @@ namespace WarehouseControlSystem.ViewModel
             {
                 Location location = new Location();
                 SaveFields(location);
-                int rv = await NAV.SetLocationVisible(location, ACD.Default);
+                await NAV.SetLocationVisible(location, ACD.Default);
             }
             catch(Exception ex)
             {

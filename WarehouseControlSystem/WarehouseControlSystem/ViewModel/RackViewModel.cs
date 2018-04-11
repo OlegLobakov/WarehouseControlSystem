@@ -542,7 +542,6 @@ namespace WarehouseControlSystem.ViewModel
             TapCommand = new Command<object>(Tap);
             FillFields(Rack);
             CreateRackCommand = new Command(CreateRackInNAV);
-            //SearchCommand = new Command(Search);
             State = State.Normal;
             Changed = false;
             GetSearchSelection();
@@ -602,7 +601,7 @@ namespace WarehouseControlSystem.ViewModel
 
                 for (int k = 1; k <= Depth; k++)
                 {
-                    int levelnumber = NumberingLevelBegin + Levels - 1; ;
+                    int levelnumber = NumberingLevelBegin + Levels - 1;
 
                     if (ReversLevelNumbering)
                     {

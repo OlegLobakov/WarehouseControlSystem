@@ -760,57 +760,6 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
-        //public async void LoadContent(AsyncCancelationDispatcher acd)
-        //{
-        //    int cancelationindex = acd.CreateNew();
-        //    CancellationTokenSource cts = acd.Get(cancelationindex);
-
-        //    try
-        //    {
-        //        List<BinViewModel> list = BinViewModels.ToList();
-        //        foreach (BinViewModel bvm in list)
-        //        {
-        //            if (!bvm.Empty)
-        //            {
-        //                bvm.LoadAnimation = true;
-        //            }
-        //        }
-
-        //        foreach (BinViewModel bvm in list)
-        //        {
-        //            if ((!IsDisposed) && (!bvm.IsContent) && (!bvm.Empty) && (!cts.IsCancellationRequested))
-        //            {
-
-        //                List<BinContent> bincontent = await NAV.GetBinContentList(LocationCode, ZoneCode, bvm.Code, "", "", 1, int.MaxValue, cts);
-        //                if ((!IsDisposed) && (bincontent.Count > 0))
-        //                {
-        //                    bvm.IsContent = true;
-        //                    bvm.BinContent.Clear();
-        //                    foreach (BinContent bc in bincontent)
-        //                    {
-        //                        BinContentShortViewModel bsvm = new BinContentShortViewModel(Navigation, bc);
-        //                        bvm.BinContent.Add(bsvm);
-        //                    }
-        //                }
-
-        //            }
-        //            bvm.LoadAnimation = false;
-        //        }
-        //    }
-        //    catch (OperationCanceledException e)
-        //    {
-        //        Console.WriteLine("Cancel LoadContent", e.Message);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        State = Helpers.Containers.StateContainer.State.Error;
-        //        ErrorText = ex.ToString();
-        //    }
-
-        //    cts = null;
-        //    acd.SetNull(cancelationindex);
-        //}
-
         public async void LoadUDF(AsyncCancelationDispatcher acd)
         {
             try
@@ -837,11 +786,6 @@ namespace WarehouseControlSystem.ViewModel
                 ErrorText = ex.ToString();
             }
         }
-
-        //public void ShowBinOperations()
-        //{
-
-        //}
 
         public void UnSelect()
         {
@@ -972,42 +916,6 @@ namespace WarehouseControlSystem.ViewModel
             }
             BinViewModels.Clear();
         }
-
-        //public void SearchByContentItemNo(string filter)
-        //{
-        //    if (!string.IsNullOrEmpty(filter))
-        //    {
-        //        foreach (BinViewModel bvm in BinViewModels)
-        //        {
-        //            bool contain = false;
-        //            foreach (BinContentShortViewModel bcsvm in bvm.BinContent)
-        //            {
-        //                if (bcsvm.ItemNo.Length > 0)
-        //                {
-        //                    if (bcsvm.ItemNo.Contains(filter))
-        //                    {
-        //                        contain = true;
-        //                    }
-        //                }
-        //                if (bcsvm.Description.Length > 0)
-        //                {
-        //                    if (bcsvm.Description.ToUpper().Contains(filter.ToUpper()))
-        //                    {
-        //                        contain = true;
-        //                    }
-        //                }
-        //            }
-        //            bvm.ExcludeFromSearch = !contain;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        foreach (BinViewModel bvm in BinViewModels)
-        //        {
-        //            bvm.ExcludeFromSearch = false;
-        //        }
-        //    }
-        //}
 
         public override void Dispose()
         {

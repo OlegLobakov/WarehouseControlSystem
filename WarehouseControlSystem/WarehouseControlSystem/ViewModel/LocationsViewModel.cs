@@ -443,7 +443,7 @@ namespace WarehouseControlSystem.ViewModel
                     {
                         Location location = new Location();
                         lvm.SaveFields(location);
-                        int i = await NAV.SetLocationVisible(location, cts).ConfigureAwait(false);
+                        await NAV.SetLocationVisible(location, cts).ConfigureAwait(false);
                     }
                     tcs.SetResult(rv);
                 }

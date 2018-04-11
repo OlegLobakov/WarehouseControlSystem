@@ -111,12 +111,8 @@ namespace WarehouseControlSystem.View.Content
 
             if ((PlanWidth != 0) && (PlanHeight != 0))
             {
-                //SKRect rect2 = new SKRect(0, 0, info.Width,info.Height);
-                //canvas.DrawRect(rect2, thinLinePaint);
-
                 float heightsize = (float)info.Height / PlanHeight;
                 float widthsize = (float)info.Width / PlanWidth;
-
 
                 for (int i = 1; i <= PlanHeight; i++)
                 {

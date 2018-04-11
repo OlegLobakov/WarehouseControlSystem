@@ -90,8 +90,6 @@ namespace WarehouseControlSystem.ViewModel
                 LoadingText = AppResources.FindPage_Search;
                 Global.SearchRequest = request;
                 Global.SearchResponses = await NAV.Search(Global.SearchLocationCode, request, ACD.Default);
-                string slc = Global.SearchLocationCode;
-                List<SearchResponse> list = Global.SearchResponses;
                 MessagingCenter.Send(this, "Search");
                 LoadAnimation = true;
                 await Navigation.PopAsync();

@@ -29,13 +29,8 @@ namespace WarehouseControlSystem.Droid
         {
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
-
             base.OnCreate(bundle);
-
             global::Xamarin.Forms.Forms.Init(this, bundle);
-
-            //Core.NAV = new NAVANDROID();
-
             LoadApplication(new App());
         }
     }

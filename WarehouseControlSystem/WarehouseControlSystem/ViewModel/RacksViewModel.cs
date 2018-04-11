@@ -196,7 +196,7 @@ namespace WarehouseControlSystem.ViewModel
                         foreach (Rack rack in Racks)
                         {
                             RackViewModel rvm = new RackViewModel(Navigation, rack, false);
-                            rvm.OnTap += Rvm_OnTap; ;
+                            rvm.OnTap += Rvm_OnTap;
                             RackViewModels.Add(rvm);
                         }
                         ReDesign();
@@ -280,11 +280,6 @@ namespace WarehouseControlSystem.ViewModel
                 State = Helpers.Containers.StateContainer.State.Error;
                 ErrorText = ex.ToString();
             }
-        }
-
-        private void Rvm_OnDblTap(RackViewModel obj)
-        {
-            //throw new NotImplementedException();
         }
 
         private async void Rvm_OnTap(RackViewModel rvm)

@@ -48,22 +48,18 @@ namespace WarehouseControlSystem.Droid
             {
                 ci = new System.Globalization.CultureInfo(netLanguage);
             }
-            catch { 
-            //catch (CultureNotFoundException e1)
-            //{
+            catch
+            {
                 // iOS locale not valid .NET culture (eg. "en-ES" : English in Spain)
                 // fallback to first characters, in this case "en"
                 try
                 {
                     var fallback = ToDotnetFallbackLanguage(new PlatformCulture(netLanguage));
-                    //Log.Message(netLanguage + " failed, trying " + fallback + " (" + e1.Message + ")");
                     ci = new System.Globalization.CultureInfo(fallback);
                 }
-                catch { 
-                //catch (CultureNotFoundException e2)
-                //{
+                catch
+                {
                     // iOS language not valid .NET culture, falling back to English
-                    //Log.Message(netLanguage + " couldn't be set, using 'en' (" + e2.Message + ")");
                     ci = new System.Globalization.CultureInfo("en");
                 }
             }
@@ -83,9 +79,8 @@ namespace WarehouseControlSystem.Droid
             {
                 ci = new System.Globalization.CultureInfo(netLanguage);
             }
-            catch { 
-            //catch (CultureNotFoundException e1)
-            //{
+            catch
+            {
                 // iOS locale not valid .NET culture (eg. "en-ES" : English in Spain)
                 // fallback to first characters, in this case "en"
                 try
@@ -94,9 +89,7 @@ namespace WarehouseControlSystem.Droid
                     ci = new System.Globalization.CultureInfo(fallback);
                 }
                 catch
-                { 
-                //catch (CultureNotFoundException e2)
-                //{
+                {
                     // iOS language not valid .NET culture, falling back to English
                     ci = new System.Globalization.CultureInfo("en");
                 }
