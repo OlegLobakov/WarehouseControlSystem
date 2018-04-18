@@ -41,7 +41,7 @@ namespace WarehouseControlSystem
         public static List<ClientCredentialTypeEnum> CreditialList = new List<ClientCredentialTypeEnum>();
 
         static string parametersfilename = "Parameters.xml";
-        public static Parameters Parameters = null;
+        public static Parameters Parameters;
 
         public static List<SearchResponse> SearchResponses = new List<SearchResponse>();
         public static string SearchLocationCode ="";

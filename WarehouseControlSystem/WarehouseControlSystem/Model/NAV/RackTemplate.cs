@@ -42,7 +42,5 @@ namespace WarehouseControlSystem.Model.NAV
         public int NumberingLevelBegin { get; set; }
 
         public int BinsQuanity { get; set; }
-
-        public List<Bin> Bins = new List<Bin>();
     }
 }

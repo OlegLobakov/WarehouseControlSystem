@@ -21,8 +21,8 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ZoneListPage : ContentPage
     {
-        Location Location;
-        public readonly ZonesViewModel model;
+        private Location Location;
+        private readonly ZonesViewModel model;
 
         public ZoneListPage(Location location)
         {

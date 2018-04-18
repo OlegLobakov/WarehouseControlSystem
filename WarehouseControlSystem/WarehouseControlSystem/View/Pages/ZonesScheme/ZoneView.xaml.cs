@@ -19,7 +19,15 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ZoneView : ContentView
     {
-        public readonly ZoneViewModel model;
+        public ZoneViewModel Model
+        {
+            get
+            {
+                return model;
+            }
+        }
+        private readonly ZoneViewModel model;
+
         public ZoneView(ZoneViewModel zvm)
         {
             model = zvm;

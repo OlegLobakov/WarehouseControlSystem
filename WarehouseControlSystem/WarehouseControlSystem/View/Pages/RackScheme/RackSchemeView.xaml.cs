@@ -25,9 +25,15 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class RackSchemeView : ContentView
     {
-        public readonly RackViewModel model;
-
-        public List<Label> udslabels = new List<Label>();
+        public RackViewModel Model
+        {
+            get
+            {
+                return model;
+            }
+        }
+        private readonly RackViewModel model;
+        private List<Label> udslabels = new List<Label>();
 
         public RackSchemeView(RackViewModel rvm)
         {

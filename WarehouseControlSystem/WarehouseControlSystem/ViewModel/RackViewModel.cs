@@ -29,7 +29,6 @@ namespace WarehouseControlSystem.ViewModel
     public class RackViewModel : BaseViewModel
     {
         public Rack Rack { get; set; }
-
         public string No
         {
             get { return no; }
@@ -46,7 +45,6 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } string no;
-
         public string NoWarningText
         {
             get { return nowarningtext; }
@@ -59,7 +57,6 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } string nowarningtext;
-
         public string LocationCode
         {
             get { return locationcode; }
@@ -74,7 +71,6 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } string locationcode;
-
         public string ZoneCode
         {
             get { return zonecode; }
@@ -89,7 +85,6 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } string zonecode;
-
         public bool CanChangeLocationAndZone
         {
             get { return canchangelocationAndzone; }
@@ -101,9 +96,7 @@ namespace WarehouseControlSystem.ViewModel
                     OnPropertyChanged(nameof(CanChangeLocationAndZone));
                 }
             }
-        }
-
-        bool canchangelocationAndzone;
+        } bool canchangelocationAndzone;
         public int Sections
         {
             get { return sections; }
@@ -142,7 +135,6 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } int levels;
-
         public int Depth
         {
             get { return depth; }
@@ -390,7 +382,7 @@ namespace WarehouseControlSystem.ViewModel
         public ICommand TapCommand { protected set; get; }
         public event Action<RackViewModel> OnTap;
 
-        public BinsViewModel BinsViewModel;
+        public BinsViewModel BinsViewModel { get; set; }
       
         public ICommand CreateRackCommand { protected set; get; }
 

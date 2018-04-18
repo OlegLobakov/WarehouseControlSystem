@@ -142,7 +142,7 @@ namespace WarehouseControlSystem.ViewModel.Base
         public ICommand CancelCommand { protected set; get; }
         public ICommand CancelChangesCommand { protected set; get; }
 
-        public bool IsDisposed = false;
+        protected bool IsDisposed = false;
 
         public AsyncCancelationDispatcher ACD { get; set; }
 
