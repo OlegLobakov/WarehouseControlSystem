@@ -29,7 +29,7 @@ namespace WarehouseControlSystem
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MainPageMaster : ContentPage
     {
-        public ListView ListView;
+        public ListView ListView { get; set; }
 
         public MainPageMaster()
         {

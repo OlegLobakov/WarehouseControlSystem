@@ -28,7 +28,7 @@ namespace WarehouseControlSystem.ViewModel
 {
     public class BinsViewModel : BaseViewModel
     {
-        public List<BinViewModel> BinViewModels = new List<BinViewModel>();
+        public List<BinViewModel> BinViewModels { get; set; } = new List<BinViewModel>();
 
         public bool IsSelectedBins
         {

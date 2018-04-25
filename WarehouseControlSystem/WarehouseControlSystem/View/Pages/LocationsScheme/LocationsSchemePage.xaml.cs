@@ -30,7 +30,7 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
         TapGestureRecognizer TapGesture;
         PanGestureRecognizer PanGesture;
 
-        public readonly LocationsViewModel model;
+        private readonly LocationsViewModel model;
         public LocationsSchemePage()
         {
             model = new LocationsViewModel(Navigation);

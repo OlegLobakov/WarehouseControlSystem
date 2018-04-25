@@ -20,7 +20,7 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class LocationListPage : ContentPage
     {
-        public readonly LocationsViewModel model;
+        private readonly LocationsViewModel model;
 
         public LocationListPage()
         {

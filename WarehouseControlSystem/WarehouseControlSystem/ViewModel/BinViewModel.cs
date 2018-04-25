@@ -27,7 +27,8 @@ namespace WarehouseControlSystem.ViewModel
 {
     public class BinViewModel : NAVBaseViewModel
     {
-        public Bin Bin;
+        public Bin Bin { get; set; }
+
         public string LocationCode
         {
             get { return locationcode; }

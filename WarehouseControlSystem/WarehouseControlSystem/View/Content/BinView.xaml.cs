@@ -26,7 +26,7 @@ namespace WarehouseControlSystem.View.Content
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class BinView : ContentView
     {
-        public readonly BinViewModel model;
+        private readonly BinViewModel model;
         public BinView(BinViewModel bvm)
         {
             model = bvm;

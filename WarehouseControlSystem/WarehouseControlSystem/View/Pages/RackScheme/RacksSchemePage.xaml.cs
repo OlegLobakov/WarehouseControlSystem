@@ -34,7 +34,7 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
         TapGestureRecognizer TapGesture;
         PanGestureRecognizer PanGesture;
 
-        public readonly RacksViewModel model;
+        private readonly RacksViewModel model;
         public RacksSchemePage(Zone zone)
         {
             model = new RacksViewModel(Navigation, zone);
@@ -185,7 +185,7 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             {
                 case GestureStatus.Started:
                     {
-                        SelectedViews = Views.FindAll(x => x.model.Selected == true);
+                        SelectedViews = Views.FindAll(x => x.Model.Selected == true);
                         MovingAction = MovingActionTypeEnum.Pan;
 
                         widthstep = (abslayout.Width / model.PlanWidth);
@@ -255,12 +255,12 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
                             double newX = rv.X + rv.TranslationX;
                             double newY = rv.Y + rv.TranslationY;
 
-                            rv.model.Rack.Left = (int)Math.Round(newX / widthstep);
-                            rv.model.Rack.Top = (int)Math.Round(newY / heightstep);
+                            rv.Model.Rack.Left = (int)Math.Round(newX / widthstep);
+                            rv.Model.Rack.Top = (int)Math.Round(newY / heightstep);
 
                             //выравнивание по сетке
-                            double dX = rv.model.Rack.Left * widthstep - rv.X;
-                            double dY = rv.model.Rack.Top * heightstep - rv.Y;
+                            double dX = rv.Model.Rack.Left * widthstep - rv.X;
+                            double dY = rv.Model.Rack.Top * heightstep - rv.Y;
 
                             await rv.TranslateTo(dX, dY, 500, easingParcking);
                             rv.Opacity = 1;

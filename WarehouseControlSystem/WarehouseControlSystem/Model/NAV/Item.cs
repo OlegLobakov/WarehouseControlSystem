@@ -28,7 +28,5 @@ namespace WarehouseControlSystem.Model.NAV
         public string BaseUoM { get; set; } = "";
         public decimal Quantity { get; set; }
         public decimal QuantityBase { get; set; }
-
-        public List<string> BarCodes = new List<string>();
     }
 }

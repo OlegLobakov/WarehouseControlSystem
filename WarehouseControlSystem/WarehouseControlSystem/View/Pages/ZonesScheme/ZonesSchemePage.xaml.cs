@@ -33,7 +33,8 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
         TapGestureRecognizer TapGesture;
         PanGestureRecognizer PanGesture;
 
-        public readonly ZonesViewModel model;
+        private readonly ZonesViewModel model;
+
         public ZonesSchemePage(Location location)
         {
             model = new ZonesViewModel(Navigation, location);
@@ -155,7 +156,7 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
             {
                 case GestureStatus.Started:
                     {
-                        SelectedViews = Views.FindAll(x => x.model.Selected == true);
+                        SelectedViews = Views.FindAll(x => x.Model.Selected == true);
                         MovingAction = MovingActionTypeEnum.Pan;
 
                         widthstep = (abslayout.Width / model.Location.PlanWidth);
@@ -173,7 +174,7 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
                             rightborder = Math.Max(zv.X + zv.Width, rightborder);
                             bottomborder = Math.Max(zv.Y + zv.Height, bottomborder);
                             zv.Opacity = 0.5;
-                            zv.model.SavePrevSize(zv.Width, zv.Height);
+                            zv.Model.SavePrevSize(zv.Width, zv.Height);
                         }
 
                         x += oldeTotalX;
@@ -210,13 +211,13 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
 
                         foreach (ZoneView zv in SelectedViews)
                         {
-                            if (zv.model.EditMode == SchemeElementEditMode.Move)
+                            if (zv.Model.EditMode == SchemeElementEditMode.Move)
                             {
                                 await zv.TranslateTo(dx, dy, 250, easing1);
                             }
-                            if (zv.model.EditMode == SchemeElementEditMode.Resize)
+                            if (zv.Model.EditMode == SchemeElementEditMode.Resize)
                             {
-                                AbsoluteLayout.SetLayoutBounds(zv, new Rectangle(zv.X, zv.Y, zv.model.PrevWidth + dx, zv.model.PrevHeight + dy));
+                                AbsoluteLayout.SetLayoutBounds(zv, new Rectangle(zv.X, zv.Y, zv.Model.PrevWidth + dx, zv.Model.PrevHeight + dy));
                             }
                         }
                         break;
@@ -230,17 +231,17 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
                         oldeTotalY = 0;
                         foreach (ZoneView zv in SelectedViews)
                         {
-                            if (zv.model.EditMode == SchemeElementEditMode.Move)
+                            if (zv.Model.EditMode == SchemeElementEditMode.Move)
                             {
                                 double newX = zv.X + zv.TranslationX;
                                 double newY = zv.Y + zv.TranslationY;
 
-                                zv.model.Zone.Left = (int)Math.Round(newX / widthstep);
-                                zv.model.Zone.Top = (int)Math.Round(newY / heightstep);
+                                zv.Model.Zone.Left = (int)Math.Round(newX / widthstep);
+                                zv.Model.Zone.Top = (int)Math.Round(newY / heightstep);
 
                                 //выравнивание по сетке
-                                double dX = zv.model.Zone.Left * widthstep - zv.X;
-                                double dY = zv.model.Zone.Top * heightstep - zv.Y;
+                                double dX = zv.Model.Zone.Left * widthstep - zv.X;
+                                double dY = zv.Model.Zone.Top * heightstep - zv.Y;
 
                                 await zv.TranslateTo(dX, dY, 500, easingParcking);
                                 //lv.Layout(new Rectangle(lv.X + dX, lv.Y + dY, lv.Width, lv.Height)); //в таком варианте почемуто есть глюк при переключении режима редактирования
@@ -248,12 +249,12 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
                                 zv.TranslationX = 0;
                                 zv.TranslationY = 0;
                             }
-                            if (zv.model.EditMode == SchemeElementEditMode.Resize)
+                            if (zv.Model.EditMode == SchemeElementEditMode.Resize)
                             {
-                                zv.model.Zone.Width = (int)Math.Round(zv.Width / widthstep);
-                                zv.model.Zone.Height = (int)Math.Round(zv.Height / heightstep);
-                                double newWidth = zv.model.Zone.Width * widthstep;
-                                double newheight = zv.model.Zone.Height * heightstep;
+                                zv.Model.Zone.Width = (int)Math.Round(zv.Width / widthstep);
+                                zv.Model.Zone.Height = (int)Math.Round(zv.Height / heightstep);
+                                double newWidth = zv.Model.Zone.Width * widthstep;
+                                double newheight = zv.Model.Zone.Height * heightstep;
                                 AbsoluteLayout.SetLayoutBounds(zv, new Rectangle(zv.X, zv.Y, newWidth, newheight));
                             }
                             zv.Opacity = 1;
