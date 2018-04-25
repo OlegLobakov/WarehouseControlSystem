@@ -39,6 +39,7 @@ namespace WarehouseControlSystem.View.Pages.Contacts
         {
             await Navigation.PushAsync(new ContactPage());
         }
+
         private void Button_ProjectSiteClicked(object sender, EventArgs e)
         {
             Device.OpenUri(new Uri("https://github.com/OlegLobakov/WarehouseControlSystem"));

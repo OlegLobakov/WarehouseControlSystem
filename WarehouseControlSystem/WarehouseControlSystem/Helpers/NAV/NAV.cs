@@ -2430,7 +2430,7 @@ namespace WarehouseControlSystem.Helpers.NAV
 
             string requestbody = GetRequestText(CreateSOAPRequest(body));
 
-            var handler = new HttpClientHandler()
+            var handler = new HttpClientHandler
             {
                 UseDefaultCredentials = false,
                 AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip
@@ -2452,7 +2452,7 @@ namespace WarehouseControlSystem.Helpers.NAV
 
             using (var client = new HttpClient(handler))
             {
-                var request = new HttpRequestMessage()
+                var request = new HttpRequestMessage
                 {
                     RequestUri = connection.GetUri(),
                     Method = HttpMethod.Post

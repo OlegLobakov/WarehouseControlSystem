@@ -23,7 +23,8 @@ namespace WarehouseControlSystem
     [ContentProperty("Text")]
     public class TranslateExtension : IMarkupExtension
     {
-        readonly CultureInfo ci = null;
+        readonly CultureInfo ci;
+
         const string ResourceId = "WarehouseControlSystem.Resx.AppResources";
 
         public TranslateExtension()

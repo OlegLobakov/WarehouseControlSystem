@@ -337,7 +337,7 @@ namespace WarehouseControlSystem.ViewModel
             }
             catch (OperationCanceledException e)
             {
-                Console.WriteLine("Cancel RunUDS", e.Message);
+                LoadAnimation = false;
             }
             catch
             {

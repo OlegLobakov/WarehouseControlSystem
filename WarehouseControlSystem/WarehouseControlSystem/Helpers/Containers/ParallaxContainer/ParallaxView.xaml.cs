@@ -118,13 +118,17 @@ namespace WarehouseControlSystem.Helpers.Containers.ParallaxContainer
             {
                 translation = 0 - (e.ScrollY / HeaderScrollSpeed);
                 if (translation > 0)
+                {
                     translation = 0;
+                }
             }
             else
             {
                 translation = 0 + (e.ScrollY / HeaderScrollSpeed);
                 if (translation > 0)
+                {
                     translation = 0;
+                }
             }
             Header.TranslateTo(Header.TranslationX, translation);
             lastScroll = e.ScrollY;

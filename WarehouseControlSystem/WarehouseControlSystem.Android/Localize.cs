@@ -129,10 +129,17 @@ namespace WarehouseControlSystem.Droid
             switch (platCulture.LanguageCode)
             {
                 case "gsw":
-                    netLanguage = "de-CH"; // equivalent to German (Switzerland) for this app
-                    break;
-                    // add more application-specific cases here (if required)
-                    // ONLY use cultures that have been tested and known to work
+                    {
+                        netLanguage = "de-CH"; // equivalent to German (Switzerland) for this app
+                        break;
+                        // add more application-specific cases here (if required)
+                        // ONLY use cultures that have been tested and known to work
+                    }
+                default:
+                    {
+                        netLanguage = "en-EN";
+                        break;
+                    }
             }
 
             return netLanguage;
