@@ -108,9 +108,6 @@ namespace WarehouseControlSystem
                 Color = Color.FromHex("#666666")
             });
 
-            //======================================================================
-            //
-            //======================================================================
             OrientationList.Add(new RackOrientationPick
             {
                 RackOrientation = RackOrientationEnum.Undefined,

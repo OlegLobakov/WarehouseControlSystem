@@ -66,11 +66,31 @@
 
             </sc:StateCondition>
             <sc:StateCondition State="Error">
-                <StackLayout Orientation="Vertical" HorizontalOptions="Center" VerticalOptions="Center">
-                    <Label Text="{i18n:Translate StateContainer_StateError_Header}" FontSize="Large"/>
-                    <Label Text="" x:Name="errortextlabel"/>
-                    <Button Text="{i18n:Translate GlobalButtonOK}" />
-                </StackLayout>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="4*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" Text="{i18n:Translate StateContainer_Error}" 
+                           FontSize="Large" HorizontalOptions="Center"
+                           TextColor="Black"
+                           VerticalOptions="Center"/>
+                    <ScrollView Orientation="Vertical" Grid.Row="1" >
+                        <StackLayout>
+                            <Label Text="{Binding ErrorText}" FontSize="Large" 
+                                   TextColor="Black"
+                                   HorizontalOptions="FillAndExpand" 
+                                   VerticalOptions="FillAndExpand" 
+                                   HorizontalTextAlignment="Center"
+                                   VerticalTextAlignment="Center"/>
+                        </StackLayout>
+                    </ScrollView>
+                    <Button Grid.Row="2" Text="OK" FontSize="Large" 
+                            Command="{Binding ErrorOKCommand}" 
+                            TextColor="Black"
+                            BackgroundColor="White"/>
+                </Grid>
             </sc:StateCondition>
             <sc:StateCondition State="Warning">
                 <StackLayout HorizontalOptions="Center" VerticalOptions="Center" Orientation="Vertical">

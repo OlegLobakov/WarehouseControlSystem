@@ -74,17 +74,24 @@
                         <RowDefinition Height="4*"/>
                         <RowDefinition Height="1*"/>
                     </Grid.RowDefinitions>
-                    <Label Grid.Row="0" Text="{i18n:Translate StateContainer_Error}" FontSize="Large" HorizontalOptions="Center" VerticalOptions="Center"/>
+                    <Label Grid.Row="0" Text="{i18n:Translate StateContainer_Error}" 
+                           FontSize="Large" HorizontalOptions="Center"
+                           TextColor="Black"
+                           VerticalOptions="Center"/>
                     <ScrollView Orientation="Vertical" Grid.Row="1" >
                         <StackLayout>
                             <Label Text="{Binding ErrorText}" FontSize="Large" 
+                                   TextColor="Black"
                                    HorizontalOptions="FillAndExpand" 
                                    VerticalOptions="FillAndExpand" 
                                    HorizontalTextAlignment="Center"
                                    VerticalTextAlignment="Center"/>
                         </StackLayout>
                     </ScrollView>
-                    <Button Grid.Row="2" Text="OK" FontSize="Large" Command="{Binding ErrorOKCommand}" BackgroundColor="White"/>
+                    <Button Grid.Row="2" Text="OK" FontSize="Large" 
+                            Command="{Binding ErrorOKCommand}" 
+                            TextColor="Black"
+                            BackgroundColor="White"/>
                 </Grid>
             </sc:StateCondition>
 
