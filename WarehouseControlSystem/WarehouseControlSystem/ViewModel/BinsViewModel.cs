@@ -933,20 +933,14 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
 
-            BinViewModelsDispose();
-            BinViewModels = null;
-
             SelectedBinContent.Clear();
             UserDefinedFunctions.Clear();
             BinTypes.Clear();
             SpecialEquipments.Clear();
             WarehouseClasses.Clear();
 
-            SelectedBinContent = null;
-            UserDefinedFunctions = null;
-            BinTypes = null;
-            SpecialEquipments = null;
-            WarehouseClasses = null;
+            BinViewModelsDispose();
+
             base.Dispose();
         }
     }

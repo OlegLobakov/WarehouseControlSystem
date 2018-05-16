@@ -26,6 +26,7 @@ using WarehouseControlSystem.Model.NAV;
 using PCLStorage;
 using System.Xml.Linq;
 using System.Xml.Serialization;
+using System.Globalization;
 
 namespace WarehouseControlSystem
 {
@@ -46,6 +47,8 @@ namespace WarehouseControlSystem
         public static List<SearchResponse> SearchResponses = new List<SearchResponse>();
         public static string SearchLocationCode ="";
         public static string SearchRequest;
+
+        public static CultureInfo Culture;
 
         public static string CompliantPlug { get; set; }
 

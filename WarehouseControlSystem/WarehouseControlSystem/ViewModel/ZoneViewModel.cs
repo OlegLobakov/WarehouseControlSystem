@@ -251,8 +251,7 @@ namespace WarehouseControlSystem.ViewModel
             zone.PlanWidth = PlanWidth;
             zone.PlanHeight = PlanHeight;
         }
-
-        
+       
         public void SavePrevSize(double width, double height)
         {
             PrevWidth = width;
@@ -370,7 +369,7 @@ namespace WarehouseControlSystem.ViewModel
             RacksIsBeingLoaded = true;
             try
             {
-                List<Rack> racks = await NAV.GetRackList(LocationCode,Code, true, 1, int.MaxValue, ACD.Default);
+                List<Rack> racks = await NAV.GetRackList(LocationCode, Code, true, 1, int.MaxValue, ACD.Default);
                 if (!IsDisposed)
                 {
                     SubSchemeElements.Clear();
@@ -404,6 +403,10 @@ namespace WarehouseControlSystem.ViewModel
                         SubSchemeElements.Add(sse);
                     }
                 }
+            }
+            catch
+            {
+
             }
             finally
             {

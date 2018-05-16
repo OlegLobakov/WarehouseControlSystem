@@ -29,7 +29,8 @@ namespace WarehouseControlSystem
 
         public TranslateExtension()
         {
-            ci = DependencyService.Get<ILocalize>().GetCurrentCultureInfo();
+            //ci = DependencyService.Get<ILocalize>().GetCurrentCultureInfo();
+            ci = Global.Culture;
         }
 
         public string Text { get; set; }

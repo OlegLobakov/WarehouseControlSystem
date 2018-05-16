@@ -23,12 +23,13 @@ namespace WarehouseControlSystem
         {
             InitializeComponent();
 
+            System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo(Settings.CurrentLocalization);
+            Resx.AppResources.Culture = ci;
+            Global.Culture = ci;
+
             if (Device.RuntimePlatform == Device.iOS || Device.RuntimePlatform == Device.Android)
             {
-                // determine the correct, supported .NET culture
-                System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo(Settings.CurrentLocalization);
-                Resx.AppResources.Culture = ci; // set the RESX for resource localization
-                DependencyService.Get<ILocalize>().SetLocale(ci); // set the Thread for locale-aware methods
+                DependencyService.Get<ILocalize>().SetLocale(ci); 
             }
 
             Global.Init();
