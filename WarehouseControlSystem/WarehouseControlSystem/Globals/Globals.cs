@@ -155,7 +155,6 @@ namespace WarehouseControlSystem
             string rv = "";
             switch (Device.RuntimePlatform)
             {
-                case Device.WinPhone:
                 case Device.UWP:
                     rv = "Assets/Images/" + source;
                     break;
