@@ -2,10 +2,10 @@ OBJECT Codeunit 50076 WarehouseControlSystem
 {
   OBJECT-PROPERTIES
   {
-    Date=21.03.18;
-    Time=17:44:27;
+    Date=03/22/18;
+    Time=11:18:30 AM;
     Modified=Yes;
-    Version List=WCS;
+    Version List=WCS.01.00.02;
   }
   PROPERTIES
   {
@@ -561,9 +561,6 @@ OBJECT Codeunit 50076 WarehouseControlSystem
       BinCreateWkshLine."Bin Code" := BinCode;
       IF Bin.GET(BinCreateWkshLine."Location Code",BinCreateWkshLine."Bin Code") THEN
         ERROR(Text008,BinCreateWkshLine."Bin Code");
-      //BinCreateWkshLine.INSERT;
-      //BinCreateWkshLine.SETRANGE("Line No.",LineNo);
-      //BinCreateWkshLine.FINDFIRST;
 
       //COPY FROM CU(7318 Bin Create)
       Bin.INIT;
@@ -583,6 +580,14 @@ OBJECT Codeunit 50076 WarehouseControlSystem
         Bin."Maximum Weight" := BinCreateWkshLine."Maximum Weight";
         Bin."Cross-Dock Bin" := BinCreateWkshLine."Cross-Dock Bin";
       END;
+
+      Bin."WMSCC Rack" := RackNo;
+      Bin."WMSCC Section" := Section;
+      Bin."WMSCC Level" := Level;
+      Bin."WMSCC Depth" := Depth;
+      Bin."WMSCC SectionSpan" := SectionSpan;
+      Bin."WMSCC LevelSpan" := LevelSpan;
+      Bin."WMSCC DepthSpan" := DepthSpan;
       Bin.INSERT(TRUE);
     END;
 
@@ -1707,9 +1712,18 @@ OBJECT Codeunit 50076 WarehouseControlSystem
 
     BEGIN
     {
-      Warehouse Control
-      Copyright, Lobakov Oleg 2018
-      03/16/2018
+      // ----------------------------------------------------------------------------------
+      // Copyright Ö 2018, Oleg Lobakov, Contacts: <oleg.lobakov@gmail.com>
+      // Licensed under the GNU GENERAL PUBLIC LICENSE, Version 3.0 (the "License");
+      // you may not use this file except in compliance with the License.
+      // You may obtain a copy of the License at
+      // https://github.com/OlegLobakov/WarehouseControlSystem/blob/master/LICENSE
+      // Unless required by applicable law or agreed to in writing, software
+      // distributed under the License is distributed on an "AS IS" BASIS,
+      // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+      // See the License for the specific language governing permissions and
+      // limitations under the License.
+      // ----------------------------------------------------------------------------------
     }
     END.
   }

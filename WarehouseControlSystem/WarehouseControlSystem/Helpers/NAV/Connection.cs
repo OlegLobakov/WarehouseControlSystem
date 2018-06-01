@@ -36,7 +36,7 @@ namespace WarehouseControlSystem.Helpers.NAV
         public string Domen { get; set; }
         public bool Verified { get; set; }
         public bool Connected { get; set; }
-        public string Codeunit { get; set; } = "Codeunit/WarehouseControlManagement";
+        public string Codeunit { get; set; } = "WarehouseControlManagement";
         public ClientCredentialTypeEnum ClientCredentialType { get; set; }
 
         public NetworkCredential GetCreditials()
@@ -56,7 +56,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                 uriBuilder.Scheme = "http";
             }
             uriBuilder.Host = Server;
-            uriBuilder.Path = string.Format("{0}/WS/{1}/{2}", Instance, Company, Codeunit);
+            uriBuilder.Path = string.Format("{0}/WS/{1}/Codeunit/{2}", Instance, Company, Codeunit);
             uriBuilder.Port = Port;
             return uriBuilder.Uri;
         }
@@ -73,7 +73,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                 uriBuilder.Scheme = "http";
             }
             uriBuilder.Host = Server;
-            uriBuilder.Path = string.Format("{0}/WS/{1}/{2}", Instance, SOAPActionConverter(Company), Codeunit);
+            uriBuilder.Path = string.Format("{0}/WS/{1}/Codeunit/{2}", Instance, SOAPActionConverter(Company), Codeunit);
             uriBuilder.Port = Port;
             return uriBuilder.Uri.ToString();
         }
