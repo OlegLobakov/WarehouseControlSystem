@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,7 +15,7 @@ namespace WarehouseControlSystem.Helpers.Containers.StateContainer
     {
         public event Action<StateContainer> OnAfterStateSet;
 
-        public List<StateCondition> Conditions { get; set; } = new List<StateCondition>();
+        public ObservableCollection<StateCondition> Conditions { get; set; } = new ObservableCollection<StateCondition>();
 
         public static readonly BindableProperty StateProperty = BindableProperty.Create(nameof(State), typeof(object), typeof(StateContainer), null, BindingMode.Default, null, StateChanged);
 
@@ -28,11 +29,14 @@ namespace WarehouseControlSystem.Helpers.Containers.StateContainer
             var parent = bindable as StateContainer;
             if (parent != null)
             {
-                parent.ChooseStateProperty(newValue);
-
-                if (parent.OnAfterStateSet is Action<StateContainer>)
+                if (oldValue != newValue)
                 {
-                    parent.OnAfterStateSet(parent);
+                    parent.ChooseStateProperty(newValue);
+
+                    if (parent.OnAfterStateSet is Action<StateContainer>)
+                    {
+                        parent.OnAfterStateSet(parent);
+                    }
                 }
             }
         }

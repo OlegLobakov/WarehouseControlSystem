@@ -4,7 +4,6 @@
              xmlns:sc="clr-namespace:WarehouseControlSystem.Helpers.Containers.StateContainer"
              xmlns:rv="clr-namespace:WarehouseControlSystem.View.Pages.RackScheme"
              xmlns:vc="clr-namespace:WarehouseControlSystem.View.Content"
-             xmlns:convertors="clr-namespace:WarehouseControlSystem.Helpers.Converters"
              x:Class="WarehouseControlSystem.View.Pages.RackScheme.RackCardPage"
              xmlns:i18n="clr-namespace:WarehouseControlSystem;assembly=WarehouseControlSystem">
     <ContentPage.ToolbarItems>

@@ -129,6 +129,12 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
         double rightborder = double.MinValue;
         double bottomborder = double.MinValue;
 
+        private async void ToolbarItem_Clicked_1(object sender, EventArgs e)
+        {
+            LocationListPage llp = new LocationListPage();
+            await Navigation.PushAsync(llp);
+        }
+
         double oldeTotalX,oldeTotalY = 0;
         private async void OnPaned(object sender, PanUpdatedEventArgs e)
         {

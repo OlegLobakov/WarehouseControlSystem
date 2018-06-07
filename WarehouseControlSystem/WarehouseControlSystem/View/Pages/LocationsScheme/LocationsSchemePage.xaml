@@ -7,7 +7,20 @@
              xmlns:i18n="clr-namespace:WarehouseControlSystem;assembly=WarehouseControlSystem"
              Title="{Binding Title}">
     <ContentPage.ToolbarItems>
-        <ToolbarItem  Order="Primary" Priority="10" Text="{i18n:Translate LocationsSchemePage_Toolbar_List}" Command="{Binding ListLocationsCommand}">
+        <!--<ToolbarItem  Order="Primary" Priority="10" Text="{i18n:Translate LocationsSchemePage_Toolbar_List}" Command="{Binding ListLocationsCommand}">
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="UWP,WinPhone">
+                        <FileImageSource File="Assets/Images/ic_action_dehaze.png"/>
+                    </On>
+                    <On Platform="iOS,Android">
+                        <FileImageSource File="ic_action_dehaze.png"/>
+                    </On>
+                </OnPlatform>
+            </ToolbarItem.Icon>
+        </ToolbarItem>-->
+        
+        <ToolbarItem  Order="Primary" Priority="10" Text="{i18n:Translate LocationsSchemePage_Toolbar_List}" Clicked="ToolbarItem_Clicked_1">
             <ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
                     <On Platform="UWP,WinPhone">
@@ -19,6 +32,7 @@
                 </OnPlatform>
             </ToolbarItem.Icon>
         </ToolbarItem>
+        
         <ToolbarItem  Order="Primary" Priority="20" Text="{i18n:Translate LocationsSchemePage_Toolbar_New}" Command="{Binding NewLocationCommand}">
             <ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
