@@ -44,11 +44,7 @@ namespace WarehouseControlSystem.Droid
         protected override void OnElementPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             base.OnElementPropertyChanged(sender, e);
-
-            if (Control != null)
-            { 
-                Control.SetPadding(0, 0, 0, 0);
-            }
+            Control?.SetPadding(0, 0, 0, 0);
        }
     }
 }

@@ -38,13 +38,12 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             Title = AppResources.RackCardPage_Title + " " + model.No;
 
             infopanel.BindingContext = model.BinsViewModel;
-
-            MessagingCenter.Subscribe<BinsViewModel>(this, "BinsIsLoaded", BinsIsLoaded);
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
+            MessagingCenter.Subscribe<BinsViewModel>(this, "BinsIsLoaded", BinsIsLoaded);
             model.State = Helpers.Containers.StateContainer.State.Loading;
             model.LoadAnimation = true;
             model.LoadingText = AppResources.RackCardPage_LoadingText;
@@ -53,14 +52,13 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
 
         protected override void OnDisappearing()
         {
+            MessagingCenter.Unsubscribe<BinsViewModel>(this, "BinsIsLoaded");
             base.OnDisappearing();
         }
 
         protected override bool OnBackButtonPressed()
         {
             model.CancelAsync();
-            MessagingCenter.Unsubscribe<BinsViewModel>(this, "BinsIsLoaded");
-            BindingContext = null;
             base.OnBackButtonPressed();
             return false;
         }

@@ -78,11 +78,6 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
 
             PanGesture.PanUpdated -= OnPaned;
             TapGesture.Tapped -= GridTapped;
-            BindingContext = null;
-            foreach (ZoneView lv in Views)
-            {
-                lv.BindingContext = null;
-            }
             Views.Clear();
             model.Dispose();
             base.OnBackButtonPressed();

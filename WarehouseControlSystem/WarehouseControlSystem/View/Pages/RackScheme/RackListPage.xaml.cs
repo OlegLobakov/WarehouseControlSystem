@@ -47,8 +47,6 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
 
         protected override bool OnBackButtonPressed()
         {
-            BindingContext = null;
-            //model.Dispose();
             base.OnBackButtonPressed();
             return false;
         }

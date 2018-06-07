@@ -192,6 +192,8 @@ namespace WarehouseControlSystem.ViewModel
 
         public async void LoadAll()
         {
+            //List<Location> list = await NAV.GetLocationList("", false, 1, int.MaxValue, ACD.Default);
+
             State = State.Loading;
             try
             {
@@ -218,8 +220,9 @@ namespace WarehouseControlSystem.ViewModel
             {
                 ErrorText = ex.Message;
             }
-            catch
+            catch (Exception ex)
             {
+                ErrorText = ex.Message;
                 State = State.Error;
                 ErrorText = AppResources.Error_LoadLocationList;
             }

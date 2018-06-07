@@ -63,7 +63,6 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
         {
             MessagingCenter.Unsubscribe<RackViewModel>(this, "ZonesIsLoaded");
             MessagingCenter.Unsubscribe<RackViewModel>(this, "LocationsIsLoaded");            
-            BindingContext = null;
             model.Dispose();
             base.OnBackButtonPressed();
             return false;

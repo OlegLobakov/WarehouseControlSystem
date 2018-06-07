@@ -50,14 +50,13 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
         }
         protected override void OnDisappearing()
         {
-            MessagingCenter.Unsubscribe<ZoneViewModel>(this, "LocationsIsLoaded");
-            MessagingCenter.Unsubscribe<ZoneViewModel>(this, "BinTypesIsLoaded");
             base.OnDisappearing();
         }
 
         protected override bool OnBackButtonPressed()
         {
-            BindingContext = null;
+            MessagingCenter.Unsubscribe<ZoneViewModel>(this, "LocationsIsLoaded");
+            MessagingCenter.Unsubscribe<ZoneViewModel>(this, "BinTypesIsLoaded");
             model.Dispose();
             base.OnBackButtonPressed();
             return false;

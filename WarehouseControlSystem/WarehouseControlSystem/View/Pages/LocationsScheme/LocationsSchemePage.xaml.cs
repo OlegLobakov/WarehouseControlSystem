@@ -69,12 +69,7 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
             MessagingCenter.Unsubscribe<LocationsViewModel>(this, "ReLoad");
             PanGesture.PanUpdated -= OnPaned;
             TapGesture.Tapped -= GridTapped;
-            BindingContext = null;
             SelectedViews.Clear();
-            foreach (LocationView lv in Views)
-            {
-                lv.BindingContext = null;
-            }
             Views.Clear();
             model.Dispose();
             base.OnBackButtonPressed();

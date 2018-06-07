@@ -132,18 +132,11 @@ namespace WarehouseControlSystem.ViewModel
 
         public override void Dispose()
         {
-            SelectedConnection = null;
             foreach (ConnectionViewModel cvm in ConnectionViewModels)
             {
                 cvm.Dispose();
             }
             ConnectionViewModels.Clear();
-            ConnectionViewModels = null;
-
-            NewConnectionCommand = null;
-            DeleteConnectionCommand = null;
-            EditConnectionCommand = null;
-            CopyConnectionCommand = null;
             base.Dispose();
         }
     }

@@ -51,12 +51,12 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             abslayout.GestureRecognizers.Add(PanGesture);
 
             Title = AppResources.ZoneSchemePage_Title +" "+ Global.SearchLocationCode + " | " + AppResources.RackSchemePage_Title + " - " + zone.Description;
-
             MessagingCenter.Subscribe<RacksViewModel>(this, "Rebuild", Rebuild);
             MessagingCenter.Subscribe<SearchViewModel>(this, "Search", OnSearch);
             MessagingCenter.Subscribe<RacksViewModel>(this, "ReLoad", Reload);
             MessagingCenter.Subscribe<RacksViewModel>(this, "UDSRunIsDone", UDSRunIsDone);
             MessagingCenter.Subscribe<RacksViewModel>(this, "UDSListIsLoaded", UDSListIsLoaded);
+
             PanGesture.PanUpdated += OnPaned;
             TapGesture.Tapped += GridTapped;
         }
@@ -86,10 +86,6 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             PanGesture.PanUpdated -= OnPaned;
             TapGesture.Tapped -= GridTapped;
             SelectedViews.Clear();
-            foreach (RackSchemeView lv in Views)
-            {
-                lv.BindingContext = null;
-            }
             Views.Clear();
             model.Dispose();
             base.OnBackButtonPressed();

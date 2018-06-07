@@ -19,7 +19,7 @@
                 </OnPlatform>
             </ToolbarItem.Icon>
         </ToolbarItem>-->
-        
+
         <ToolbarItem  Order="Primary" Priority="10" Text="{i18n:Translate LocationsSchemePage_Toolbar_List}" Clicked="ToolbarItem_Clicked_1">
             <ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
@@ -32,7 +32,7 @@
                 </OnPlatform>
             </ToolbarItem.Icon>
         </ToolbarItem>
-        
+
         <ToolbarItem  Order="Primary" Priority="20" Text="{i18n:Translate LocationsSchemePage_Toolbar_New}" Command="{Binding NewLocationCommand}">
             <ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
@@ -96,53 +96,55 @@
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <sc:StateContainer State="{Binding State}" Padding="5">
-            <sc:StateCondition State="Loading">
-                <StackLayout Orientation="Horizontal" HorizontalOptions="Center" VerticalOptions="Center">
-                    <ActivityIndicator IsRunning="{Binding LoadAnimation}" HeightRequest="50" WidthRequest="50" VerticalOptions="Center" HorizontalOptions="Center"/>
-                    <Label Text="{Binding LoadText}"/>
-                </StackLayout>
-            </sc:StateCondition>
-            <sc:StateCondition State="Normal">
-                <AbsoluteLayout x:Name="abslayout">
-                    <vc:SchemeView x:Name="schemegrid" 
+            <sc:StateContainer.Conditions>
+                <sc:StateCondition State="Loading">
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="Center" VerticalOptions="Center">
+                        <ActivityIndicator IsRunning="{Binding LoadAnimation}" HeightRequest="50" WidthRequest="50" VerticalOptions="Center" HorizontalOptions="Center"/>
+                        <Label Text="{Binding LoadText}"/>
+                    </StackLayout>
+                </sc:StateCondition>
+                <sc:StateCondition State="Normal">
+                    <AbsoluteLayout x:Name="abslayout">
+                        <vc:SchemeView x:Name="schemegrid" 
                                    AbsoluteLayout.LayoutBounds="0,0, 1, 1" 
                                    AbsoluteLayout.LayoutFlags="All" 
                                    PlanWidth="{Binding PlanWidth}"
                                    PlanHeight="{Binding PlanHeight}"
                                    IsVisible="False">
-                    </vc:SchemeView>
-                </AbsoluteLayout>
-            </sc:StateCondition>
-            <sc:StateCondition State="Error">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="1*"/>
-                        <RowDefinition Height="4*"/>
-                        <RowDefinition Height="1*"/>
-                    </Grid.RowDefinitions>
-                    <Label Grid.Row="0" Text="{i18n:Translate StateContainer_Error}" 
+                        </vc:SchemeView>
+                    </AbsoluteLayout>
+                </sc:StateCondition>
+                <sc:StateCondition State="Error">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="4*"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Row="0" Text="{i18n:Translate StateContainer_Error}" 
                            FontSize="Large" HorizontalOptions="Center"
                            TextColor="Black"
                            VerticalOptions="Center"/>
-                    <ScrollView Orientation="Vertical" Grid.Row="1" >
-                        <StackLayout>
-                            <Label Text="{Binding ErrorText}" FontSize="Large" 
+                        <ScrollView Orientation="Vertical" Grid.Row="1" >
+                            <StackLayout>
+                                <Label Text="{Binding ErrorText}" FontSize="Large" 
                                    TextColor="Black"
                                    HorizontalOptions="FillAndExpand" 
                                    VerticalOptions="FillAndExpand" 
                                    HorizontalTextAlignment="Center"
                                    VerticalTextAlignment="Center"/>
-                        </StackLayout>
-                    </ScrollView>
-                    <Button Grid.Row="2" Text="OK" FontSize="Large" 
+                            </StackLayout>
+                        </ScrollView>
+                        <Button Grid.Row="2" Text="OK" FontSize="Large" 
                             Command="{Binding ErrorOKCommand}" 
                             TextColor="Black"
                             BackgroundColor="White"/>
-                </Grid>
-            </sc:StateCondition>
-            <sc:StateCondition State="NoData">
-                <Label Text="{i18n:Translate LocationsSchemePage_StateMessageNoData}" FontSize="Large" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
-            </sc:StateCondition>
+                    </Grid>
+                </sc:StateCondition>
+                <sc:StateCondition State="NoData">
+                    <Label Text="{i18n:Translate LocationsSchemePage_StateMessageNoData}" FontSize="Large" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+                </sc:StateCondition>
+            </sc:StateContainer.Conditions>
         </sc:StateContainer>
     </ContentPage.Content>
 </ContentPage>

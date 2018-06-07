@@ -43,13 +43,11 @@ namespace WarehouseControlSystem.View.Pages.Connections
 
         protected override void OnDisappearing()
         {
-            model.SaveChanges();
             base.OnDisappearing();
         }
 
         protected override bool OnBackButtonPressed()
         {
-            BindingContext = null;
             base.OnBackButtonPressed();
             return false;
         }

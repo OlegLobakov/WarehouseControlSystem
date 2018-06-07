@@ -45,7 +45,6 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
 
         protected override bool OnBackButtonPressed()
         {
-            BindingContext = null;
             base.OnBackButtonPressed();
             return false;
         }

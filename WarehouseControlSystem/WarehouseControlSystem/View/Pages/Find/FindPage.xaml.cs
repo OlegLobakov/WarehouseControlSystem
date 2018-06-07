@@ -41,7 +41,6 @@ namespace WarehouseControlSystem.View.Pages.Find
 
         protected override bool OnBackButtonPressed()
         {
-            BindingContext = null;
             model.Dispose();
             base.OnBackButtonPressed();
             return false;

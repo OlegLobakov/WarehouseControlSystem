@@ -42,6 +42,13 @@ namespace WarehouseControl.UWP
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+
+            UnhandledException += App_UnhandledException;
+        }
+
+        private void App_UnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
+        {
+            e.Handled = true;
         }
 
         /// <summary>
@@ -115,5 +122,7 @@ namespace WarehouseControl.UWP
             //TODO: Save application state and stop any background activity
             deferral.Complete();
         }
+
+        
     }
 }

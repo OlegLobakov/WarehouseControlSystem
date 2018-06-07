@@ -82,7 +82,7 @@
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
     <UseDotNetNativeToolchain>false</UseDotNetNativeToolchain>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
@@ -101,11 +101,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Connected Services\NAV\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Compile Include="Localize.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -116,160 +111,6 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <None Include="Connected Services\NAV\WarehouseControlManagement.wsdl" />
-    <None Include="Connected Services\NAV\WarehouseControlSystem.UWP.NAV.APIVersion_Result.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\NAV\WarehouseControlSystem.UWP.NAV.CreateBinTemplate_Result.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\NAV\WarehouseControlSystem.UWP.NAV.CreateBin_Result.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\NAV\WarehouseControlSystem.UWP.NAV.CreateLocation_Result.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\NAV\WarehouseControlSystem.UWP.NAV.CreateRack_Result.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\NAV\WarehouseControlSystem.UWP.NAV.CreateZone_Result.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\NAV\WarehouseControlSystem.UWP.NAV.DeleteBinTemplate_Result.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\NAV\WarehouseControlSystem.UWP.NAV.DeleteBin_Result.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\NAV\WarehouseControlSystem.UWP.NAV.DeleteLocation_Result.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\NAV\WarehouseControlSystem.UWP.NAV.DeleteRack_Result.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\NAV\WarehouseControlSystem.UWP.NAV.DeleteZone_Result.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\NAV\WarehouseControlSystem.UWP.NAV.GetBinContentCount_Result.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\NAV\WarehouseControlSystem.UWP.NAV.GetBinContentList_Result.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\NAV\WarehouseControlSystem.UWP.NAV.GetBinCount_Result.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\NAV\WarehouseControlSystem.UWP.NAV.GetBinList_Result.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\NAV\WarehouseControlSystem.UWP.NAV.GetBinTemplateCount_Result.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\NAV\WarehouseControlSystem.UWP.NAV.GetBinTemplateList_Result.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\NAV\WarehouseControlSystem.UWP.NAV.GetBinTypeCount_Result.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\NAV\WarehouseControlSystem.UWP.NAV.GetBinTypeList_Result.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\NAV\WarehouseControlSystem.UWP.NAV.GetItemIdentifierCount_Result.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\NAV\WarehouseControlSystem.UWP.NAV.GetItemIdentifierList_Result.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\NAV\WarehouseControlSystem.UWP.NAV.GetLocationCount_Result.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\NAV\WarehouseControlSystem.UWP.NAV.GetLocationList_Result.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\NAV\WarehouseControlSystem.UWP.NAV.GetPlanHeight_Result.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\NAV\WarehouseControlSystem.UWP.NAV.GetPlanWidth_Result.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\NAV\WarehouseControlSystem.UWP.NAV.GetRackCount_Result.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\NAV\WarehouseControlSystem.UWP.NAV.GetRackList_Result.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\NAV\WarehouseControlSystem.UWP.NAV.GetSpecialEquipmentCount_Result.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\NAV\WarehouseControlSystem.UWP.NAV.GetSpecialEquipmentList_Result.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\NAV\WarehouseControlSystem.UWP.NAV.GetWarehouseClassCount_Result.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\NAV\WarehouseControlSystem.UWP.NAV.GetWarehouseClassList_Result.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\NAV\WarehouseControlSystem.UWP.NAV.GetWarehouseEntryCount_Result.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\NAV\WarehouseControlSystem.UWP.NAV.GetWarehouseEntryList_Result.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\NAV\WarehouseControlSystem.UWP.NAV.GetZoneCount_Result.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\NAV\WarehouseControlSystem.UWP.NAV.GetZoneList_Result.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\NAV\WarehouseControlSystem.UWP.NAV.get_IsSingleInstance_Result.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\NAV\WarehouseControlSystem.UWP.NAV.LoadUserDefinedFunctionList_Result.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\NAV\WarehouseControlSystem.UWP.NAV.LoadUserDefinedSelectionList_Result.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\NAV\WarehouseControlSystem.UWP.NAV.ModifyBinTemplate_Result.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\NAV\WarehouseControlSystem.UWP.NAV.ModifyBin_Result.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\NAV\WarehouseControlSystem.UWP.NAV.ModifyLocation_Result.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\NAV\WarehouseControlSystem.UWP.NAV.ModifyRack_Result.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\NAV\WarehouseControlSystem.UWP.NAV.ModifyZone_Result.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\NAV\WarehouseControlSystem.UWP.NAV.RunFunction_Result.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\NAV\WarehouseControlSystem.UWP.NAV.RunUDS_Result.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\NAV\WarehouseControlSystem.UWP.NAV.Search_Result.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\NAV\WarehouseControlSystem.UWP.NAV.SetLocationVisible_Result.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\NAV\WarehouseControlSystem.UWP.NAV.SetPlanHeight_Result.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\NAV\WarehouseControlSystem.UWP.NAV.SetPlanWidth_Result.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\NAV\WarehouseControlSystem.UWP.NAV.SetRackVisible_Result.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\NAV\WarehouseControlSystem.UWP.NAV.SetZoneVisible_Result.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
     <None Include="Properties\ServiceReferences.Designer.ClientConfig" />
     <None Include="WarehouseControlSystem.UWP_TemporaryKey.pfx" />
   </ItemGroup>
@@ -308,12 +149,6 @@
     <Content Include="Assets\StoreLogo.scale-150.png" />
     <Content Include="Assets\StoreLogo.scale-200.png" />
     <Content Include="Assets\StoreLogo.scale-400.png" />
-    <None Include="Connected Services\NAV\configuration91.svcinfo" />
-    <None Include="Connected Services\NAV\configuration.svcinfo" />
-    <None Include="Connected Services\NAV\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-100.png" />
     <Content Include="Assets\LockScreenLogo.scale-125.png" />
@@ -414,9 +249,6 @@
     <PackageReference Include="ZXing.Net.Mobile.Forms">
       <Version>2.4.1</Version>
     </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadataStorage Include="Connected Services\NAV\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DependenciesServices\" />

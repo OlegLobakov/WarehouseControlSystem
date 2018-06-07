@@ -28,6 +28,7 @@ namespace WarehouseControlSystem.Droid
 		{
 			global::PCLStorage.Resource.String.ApplicationName = global::WarehouseControlSystem.Droid.Resource.String.ApplicationName;
 			global::PCLStorage.Resource.String.Hello = global::WarehouseControlSystem.Droid.Resource.String.Hello;
+			global::Xamarin.Forms.Platform.Android.Resource.Attribute.actionBarSize = global::WarehouseControlSystem.Droid.Resource.Attribute.actionBarSize;
 			global::ZXing.Net.Mobile.Forms.Android.Resource.Layout.zxingscanneractivitylayout = global::WarehouseControlSystem.Droid.Resource.Layout.zxingscanneractivitylayout;
 			global::ZXing.Net.Mobile.Forms.Android.Resource.Layout.zxingscannerfragmentlayout = global::WarehouseControlSystem.Droid.Resource.Layout.zxingscannerfragmentlayout;
 			global::ZXing.Net.Mobile.Forms.Android.Resource.String.library_name = global::WarehouseControlSystem.Droid.Resource.String.library_name;

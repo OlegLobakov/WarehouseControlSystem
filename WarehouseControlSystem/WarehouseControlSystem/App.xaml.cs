@@ -36,7 +36,9 @@ namespace WarehouseControlSystem
             Global.SetCurrentConnection();
             Global.MainPage = new MainPage();
             MainPage = Global.MainPage;
+            
         }
+
 
         protected override void OnStart()
         {

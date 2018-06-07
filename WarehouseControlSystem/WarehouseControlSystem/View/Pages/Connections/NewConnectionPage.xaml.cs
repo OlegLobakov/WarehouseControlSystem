@@ -49,8 +49,7 @@ namespace WarehouseControlSystem.View.Pages.Connections
         }
 
         protected override bool OnBackButtonPressed()
-        {
-            BindingContext = null;   
+        {  
             base.OnBackButtonPressed();
             return false;
         }

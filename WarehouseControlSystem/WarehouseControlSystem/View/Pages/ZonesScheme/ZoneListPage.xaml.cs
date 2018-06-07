@@ -48,8 +48,7 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
         }
 
         protected override bool OnBackButtonPressed()
-        {
-            BindingContext = null;          
+        {       
             base.OnBackButtonPressed();
             return false;
         }

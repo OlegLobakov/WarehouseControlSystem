@@ -71,6 +71,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } bool schemevisible;
+
         public int ZoneQuantity
         {
             get { return zonequantity; }
@@ -84,6 +85,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } int zonequantity;
+
         public int BinQuantity
         {
             get { return binquantity; }
@@ -97,6 +99,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } int binquantity;
+
         public bool BinMandatory
         {
             get { return binmandatory; }
@@ -110,6 +113,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } bool binmandatory;
+
         public bool RequireReceive
         {
             get { return requirereceive; }
@@ -123,6 +127,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } bool requirereceive;
+
         public bool RequireShipment
         {
             get { return requireshipment; }
@@ -136,6 +141,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } bool requireshipment;
+
         public bool RequirePick
         {
             get { return requirepick; }
@@ -149,6 +155,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } bool requirepick;
+
         public bool RequirePutaway
         {
             get { return requireputaway; }
