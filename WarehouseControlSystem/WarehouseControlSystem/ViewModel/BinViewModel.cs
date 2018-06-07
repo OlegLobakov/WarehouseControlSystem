@@ -22,37 +22,12 @@ using Xamarin.Forms;
 using System.Windows.Input;
 using System.Collections.ObjectModel;
 
-
 namespace WarehouseControlSystem.ViewModel
 {
     public class BinViewModel : NAVBaseViewModel
     {
         public Bin Bin { get; set; }
 
-        public string LocationCode
-        {
-            get { return locationcode; }
-            set
-            {
-                if (locationcode != value)
-                {
-                    locationcode = value;
-                    OnPropertyChanged(nameof(LocationCode));
-                }
-            }
-        } string locationcode;
-        public string ZoneCode
-        {
-            get { return zonecode; }
-            set
-            {
-                if (zonecode != value)
-                {
-                    zonecode = value;
-                    OnPropertyChanged(nameof(ZoneCode));
-                }
-            }
-        } string zonecode;
         public string RackNo
         {
             get { return rackno; }
@@ -279,7 +254,6 @@ namespace WarehouseControlSystem.ViewModel
             }
         } bool excludefromsearch;
 
-
         public string Description
         {
             get { return description; }
@@ -442,7 +416,6 @@ namespace WarehouseControlSystem.ViewModel
 
         public ObservableCollection<BinContentShortViewModel> BinContent { get; set; } = new ObservableCollection<BinContentShortViewModel>();
 
-
         public BinViewModel(INavigation navigation, Bin bin) : base(navigation)
         {
             Bin = bin;
@@ -505,8 +478,7 @@ namespace WarehouseControlSystem.ViewModel
             bin.SchemeVisible = SchemeVisible;
             bin.Default = Default;
             bin.Dedicated = Dedicated;
-
-            bin.Empty = Empty; ;
+            bin.Empty = Empty;
         }
 
         public void SaveFields()

@@ -27,22 +27,10 @@ using System.Threading;
 
 namespace WarehouseControlSystem.ViewModel
 {
-    public class BinTemplateViewModel : BaseViewModel
+    public class BinTemplateViewModel : NAVBaseViewModel
     {
         public BinTemplate BinTemplate { get; set; }
 
-        public string Code
-        {
-            get { return code; }
-            set
-            {
-                if (code != value)
-                {
-                    code = value;
-                    OnPropertyChanged(nameof(Code));
-                }
-            }
-        } string code;
         public string Description
         {
             get { return description; }
@@ -55,30 +43,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } string description;
-        public string LocationCode
-        {
-            get { return locationcode; }
-            set
-            {
-                if (locationcode != value)
-                {
-                    locationcode = value;
-                    OnPropertyChanged(nameof(LocationCode));
-                }
-            }
-        } string locationcode;
-        public string ZoneCode
-        {
-            get { return zonecode; }
-            set
-            {
-                if (zonecode != value)
-                {
-                    zonecode = value;
-                    OnPropertyChanged(nameof(ZoneCode));
-                }
-            }
-        } string zonecode;
+
         public string BinTypeCode
         {
             get { return bintypecode; }
@@ -91,6 +56,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } string bintypecode;
+
         public string BinDescription
         {
             get { return bindescription; }
@@ -103,6 +69,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } string bindescription;
+
         public string WarehouseClassCode
         {
             get { return warehouseclasscode; }
@@ -115,6 +82,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } string warehouseclasscode;
+
         public string SpecialEquipmentCode
         {
             get { return specialequipmentcode; }
@@ -127,6 +95,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } string specialequipmentcode;
+
         public int BinRanking
         {
             get { return binranking; }
@@ -139,6 +108,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } int binranking;
+
         public decimal MaximumCubage
         {
             get { return maximumcubage; }
@@ -163,6 +133,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } decimal maximumweight;
+
         public bool Dedicated
         {
             get { return dedicated; }
@@ -175,20 +146,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } bool dedicated;
-
-       
-        public bool CreateMode
-        {
-            get { return createmode; }
-            set
-            {
-                if (createmode != value)
-                {
-                    createmode = value;
-                    OnPropertyChanged("CreateMode");
-                }
-            }
-        } bool createmode;
+      
         public List<BinType> BinTypes { get; set; }
         public List<Location> Locations { get; set; }
         public List<Zone> Zones { get; set; }

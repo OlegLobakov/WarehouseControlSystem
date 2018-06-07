@@ -100,12 +100,12 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
             foreach (LocationViewModel lvm1 in model.LocationViewModels)
             {
                 LocationView lv = new LocationView(lvm1);
-                AbsoluteLayout.SetLayoutBounds(lv,
-                    new Rectangle(lvm1.Left, lvm1.Top, lvm1.Width, lvm1.Height));
+                AbsoluteLayout.SetLayoutBounds(lv, new Rectangle(lvm1.Left, lvm1.Top, lvm1.Width, lvm1.Height));
                 abslayout.Children.Add(lv);
                 Views.Add(lv);
                 lvm1.LoadZones();
             }
+
         }
 
         private void Reload(LocationsViewModel lmv)

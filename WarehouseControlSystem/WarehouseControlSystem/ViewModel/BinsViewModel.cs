@@ -67,7 +67,6 @@ namespace WarehouseControlSystem.ViewModel
         public ObservableCollection<BinContentShortViewModel> SelectedBinContent { get; set; } = new ObservableCollection<BinContentShortViewModel>();
         public ObservableCollection<UserDefinedFunctionViewModel> UserDefinedFunctions { get; set; } = new ObservableCollection<UserDefinedFunctionViewModel>();
 
-
         public ObservableCollection<string> BinTypes { get; set; } = new ObservableCollection<string>();
         public ObservableCollection<string> SpecialEquipments { get; set; } = new ObservableCollection<string>();
         public ObservableCollection<string> WarehouseClasses { get; set; } = new ObservableCollection<string>();
@@ -464,6 +463,13 @@ namespace WarehouseControlSystem.ViewModel
 
         public void RecreateBins(int prevdepth, int newdepth, int prevlevels, int newlevels, int prevsections, int newsections)
         {
+            RecreateBinsDepth(prevdepth, newdepth, newlevels, newsections);
+            RecreateBinsLevels(prevlevels, newlevels, newdepth, newsections);
+            RecreateBinsSections(prevsections, newsections, newdepth, newlevels);
+        }
+
+        private void RecreateBinsDepth(int prevdepth, int newdepth, int newlevels, int newsections)
+        {
             if (prevdepth < newdepth)
             {
                 for (int k = prevdepth + 1; k <= newdepth; k++)
@@ -487,9 +493,10 @@ namespace WarehouseControlSystem.ViewModel
                         DeleteBin(bvm);
                     }
                 }
-                
             }
-
+        }
+        private void RecreateBinsLevels(int prevlevels, int newlevels, int newdepth, int newsections)
+        {
             if (prevlevels < newlevels)
             {
                 for (int i = prevlevels + 1; i <= newlevels; i++)
@@ -514,7 +521,9 @@ namespace WarehouseControlSystem.ViewModel
                     }
                 }
             }
-
+        }
+        private void RecreateBinsSections(int prevsections, int newsections, int newdepth, int newlevels)
+        {
             if (prevsections < newsections)
             {
                 for (int j = prevsections + 1; j <= newsections; j++)
@@ -629,7 +638,6 @@ namespace WarehouseControlSystem.ViewModel
 
                 foreach (BinViewModel bvm2 in deleted)
                 {
-
                     DeleteBin(bvm2);
                 }
 
@@ -774,7 +782,6 @@ namespace WarehouseControlSystem.ViewModel
                         UserDefinedFunctions.Add(udfvm);
                     }
                 }
-
             }
             catch (OperationCanceledException e)
             {
@@ -812,8 +819,7 @@ namespace WarehouseControlSystem.ViewModel
         }
 
         public void ChangeBinTemplate()
-        {
-         
+        {         
             foreach (BinViewModel bvm in BinViewModels)
             {
                 if (!bvm.IsExist)
@@ -900,7 +906,6 @@ namespace WarehouseControlSystem.ViewModel
             WarehouseClassCode = WarehouseClassCode;
             SpecialEquipmentCode = SpecialEquipmentCode;
             Default = Default;
-
 
             if (OnBinClick is Action<BinsViewModel>)
             {

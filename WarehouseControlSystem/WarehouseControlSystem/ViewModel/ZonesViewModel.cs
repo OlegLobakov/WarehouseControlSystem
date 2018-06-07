@@ -31,7 +31,7 @@ using System.Threading;
 
 namespace WarehouseControlSystem.ViewModel
 {
-    public class ZonesViewModel : BaseViewModel
+    public class ZonesViewModel : PlanBaseViewModel
     {
         public Location Location { get; set; }
 
@@ -58,66 +58,7 @@ namespace WarehouseControlSystem.ViewModel
         public ICommand DeleteZoneCommand { protected set; get; }
         public ICommand ParamsCommand { protected set; get; }
 
-        public int PlanHeight
-        {
-            get
-            {
-                return Location.PlanHeight;
-            }
-            set
-            {
-                if (Location.PlanHeight != value)
-                {
-                    Location.PlanHeight = value;
-                    OnPropertyChanged("PlanHeight");
-                }
-            }
-        }
-        public int PlanWidth
-        {
-            get
-            {
-                return Location.PlanWidth;
-            }
-            set
-            {
-                if (Location.PlanWidth != value)
-                {
-                    Location.PlanWidth = value;
-                    OnPropertyChanged("PlanWidth");
-                }
-            }
-        }
-
-        public int MinPlanHeight
-        {
-            get { return minheight; }
-            set
-            {
-                if (minheight != value)
-                {
-                    minheight = value;
-                    OnPropertyChanged(nameof(MinPlanHeight));
-                }
-            }
-        } int minheight;
-        public int MinPlanWidth
-        {
-            get { return minwidth; }
-            set
-            {
-                if (minwidth != value)
-                {
-                    minwidth = value;
-                    OnPropertyChanged(nameof(MinPlanWidth));
-                }
-            }
-        } int minwidth;
-
         public bool IsSelectedList { get { return SelectedViewModels.Count > 0; } }
-
-        public double ScreenWidth { get; set; }
-        public double ScreenHeight { get; set; }
 
         public ZonesViewModel(INavigation navigation, Location location) : base(navigation)
         {
@@ -125,7 +66,6 @@ namespace WarehouseControlSystem.ViewModel
             State = State.Normal;
             ZoneViewModels = new ObservableCollection<ZoneViewModel>();
             SelectedViewModels = new ObservableCollection<ZoneViewModel>();
-
 
             ListZonesCommand = new Command(ListZones);
             NewZoneCommand = new Command(NewZone);
@@ -327,10 +267,14 @@ namespace WarehouseControlSystem.ViewModel
 
         public async void NewZone()
         {
-            Zone zone = new Zone();
-            zone.LocationCode = Location.Code;
-            ZoneViewModel zvm = new ZoneViewModel(Navigation, zone);
-            zvm.CreateMode = true;
+            Zone zone = new Zone()
+            {
+                LocationCode = Location.Code
+            };
+            ZoneViewModel zvm = new ZoneViewModel(Navigation, zone)
+            {
+                CreateMode = true
+            };
             zvm.CanChangeLocationCode = false;
             NewZonePage nzp = new NewZonePage(zvm);
             await Navigation.PushAsync(nzp);
@@ -343,7 +287,7 @@ namespace WarehouseControlSystem.ViewModel
             {
                 zvm.CreateMode = false;
                 NewZonePage nzp = new NewZonePage(zvm);
-                await Navigation.PushAsync(nzp);   
+                await Navigation.PushAsync(nzp);
             }
         }
 

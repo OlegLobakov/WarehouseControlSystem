@@ -30,7 +30,7 @@ using System.Threading;
 
 namespace WarehouseControlSystem.ViewModel
 {
-    public class RacksViewModel : BaseViewModel
+    public class RacksViewModel : PlanBaseViewModel
     {
         public Zone Zone { get; set; }
 
@@ -57,60 +57,7 @@ namespace WarehouseControlSystem.ViewModel
         public ICommand DeleteRackCommand { protected set; get; }
         public ICommand ParamsCommand { protected set; get; }
 
-        public int PlanHeight
-        {
-            get { return Zone.PlanHeight; }
-            set
-            {
-                if (Zone.PlanHeight != value)
-                {
-                    Zone.PlanHeight = value;
-                    OnPropertyChanged(nameof(PlanHeight));
-                }
-            }
-        }
-        public int PlanWidth
-        {
-            get { return Zone.PlanWidth; }
-            set
-            {
-                if (Zone.PlanWidth != value)
-                {
-                    Zone.PlanWidth = value;
-                    OnPropertyChanged(nameof(PlanWidth));
-                }
-            }
-        }
-
-        public int MinPlanHeight
-        {
-            get { return minheight; }
-            set
-            {
-                if (minheight != value)
-                {
-                    minheight = value;
-                    OnPropertyChanged(nameof(MinPlanHeight));
-                }
-            }
-        } int minheight;
-        public int MinPlanWidth
-        {
-            get { return minwidth; }
-            set
-            {
-                if (minwidth != value)
-                {
-                    minwidth = value;
-                    OnPropertyChanged(nameof(MinPlanWidth));
-                }
-            }
-        } int minwidth;
-
         public bool IsSelectedList { get { return SelectedViewModels.Count > 0; } }
-
-        public double ScreenWidth { get; set; }
-        public double ScreenHeight { get; set; }
 
         public ObservableCollection<UserDefinedSelectionViewModel> UserDefinedSelectionViewModels { get; set; }
         public bool IsVisibleUDS
@@ -337,6 +284,7 @@ namespace WarehouseControlSystem.ViewModel
             }
             catch (OperationCanceledException e)
             {
+                ErrorText = e.Message;
                 LoadAnimation = false;
             }
             catch

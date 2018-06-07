@@ -739,7 +739,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                     XElement body = 
                         new XElement(myns + functionname,
                                     new XElement(myns + "locationCode", rack.LocationCode),
-                                    new XElement(myns + "code", rack.ZoneCode),
+                                    new XElement(myns + "zoneCode", rack.ZoneCode),
                                     new XElement(myns + "no", rack.No),
                                     new XElement(myns + "sections", rack.Sections),
                                     new XElement(myns + "levels", rack.Levels),

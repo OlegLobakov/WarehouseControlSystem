@@ -25,7 +25,7 @@ using System.Collections.ObjectModel;
 
 namespace WarehouseControlSystem.ViewModel
 {
-    public class WarehouseEntryViewModel : BaseViewModel
+    public class WarehouseEntryViewModel : NAVBaseViewModel
     {
         public int EntryNo
         {
@@ -40,30 +40,6 @@ namespace WarehouseControlSystem.ViewModel
             }
         } int entryno;
 
-        public string LocationCode
-        {
-            get { return locationcode; }
-            set
-            {
-                if (locationcode != value)
-                {
-                    locationcode = value;
-                    OnPropertyChanged(nameof(LocationCode));
-                }
-            }
-        } string locationcode;
-        public string ZoneCode
-        {
-            get { return zonecode; }
-            set
-            {
-                if (zonecode != value)
-                {
-                    zonecode = value;
-                    OnPropertyChanged(nameof(ZoneCode));
-                }
-            }
-        } string zonecode;
         public string  BinCode
         {
             get { return bincode; }
@@ -89,6 +65,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } string itemno;
+
         public string VariantCode
         {
             get { return variantcode; }
@@ -101,6 +78,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } string variantcode;
+
         public string Description
         {
             get { return description; }
@@ -113,6 +91,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } string description;
+
         public string UnitofMeasureCode
         {
             get { return unitofmeasurecode; }
@@ -125,6 +104,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } string unitofmeasurecode;
+
         public string RegisteringDate
         {
             get { return registeringdate; }
@@ -137,6 +117,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } string registeringdate;
+
         public decimal Quantity
         {
             get { return quantity; }
@@ -161,6 +142,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } decimal quantitybase;
+
         public int EntryType
         {
             get { return entrytype; }
@@ -173,6 +155,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } int entrytype;
+
         public string WarrantyDate
         {
             get { return warrantydate; }
@@ -185,6 +168,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } string warrantydate;
+
         public string SourceNo
         {
             get { return sourceno; }

@@ -53,8 +53,7 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
 
             Title = AppResources.ZoneSchemePage_Title + " - " + location.Name;
 
-            MessagingCenter.Subscribe<ZonesViewModel>(this, "Rebuild", Rebuild);
-            MessagingCenter.Subscribe<ZonesViewModel>(this, "ReLoad", Reload);
+
             PanGesture.PanUpdated += OnPaned;
             TapGesture.Tapped += GridTapped;
         }
@@ -62,18 +61,21 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
         protected override void OnAppearing()
         {
             base.OnAppearing();
+            MessagingCenter.Subscribe<ZonesViewModel>(this, "Rebuild", Rebuild);
+            MessagingCenter.Subscribe<ZonesViewModel>(this, "ReLoad", Reload);
             model.Load();
         }
 
         protected override void OnDisappearing()
         {
+            MessagingCenter.Unsubscribe<ZonesViewModel>(this, "Rebuild");
+            MessagingCenter.Unsubscribe<ZonesViewModel>(this, "ReLoad");
             base.OnDisappearing();
         }
 
         protected override bool OnBackButtonPressed()
         {
-            MessagingCenter.Unsubscribe<ZonesViewModel>(this, "Rebuild");
-            MessagingCenter.Unsubscribe<ZonesViewModel>(this, "ReLoad");
+
             PanGesture.PanUpdated -= OnPaned;
             TapGesture.Tapped -= GridTapped;
             BindingContext = null;
@@ -106,12 +108,13 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
             foreach (ZoneViewModel zvm in model.ZoneViewModels)
             {
                 ZoneView zv = new ZoneView(zvm);
-                AbsoluteLayout.SetLayoutBounds(zv,
-                    new Rectangle(zvm.Left, zvm.Top, zvm.Width, zvm.Height));
+                AbsoluteLayout.SetLayoutBounds(zv, new Rectangle(zvm.Left, zvm.Top, zvm.Width, zvm.Height));
                 abslayout.Children.Add(zv);
                 Views.Add(zv);
                 zvm.LoadRacks();
             }
+
+            string ff = Views.ToString();
         }
 
         private void Reload(ZonesViewModel zmv)
@@ -244,7 +247,6 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
                                 double dY = zv.Model.Zone.Top * heightstep - zv.Y;
 
                                 await zv.TranslateTo(dX, dY, 500, easingParcking);
-                                //lv.Layout(new Rectangle(lv.X + dX, lv.Y + dY, lv.Width, lv.Height)); //в таком варианте почемуто есть глюк при переключении режима редактирования
                                 AbsoluteLayout.SetLayoutBounds(zv, new Rectangle(zv.X + dX, zv.Y + dY, zv.Width, zv.Height));
                                 zv.TranslationX = 0;
                                 zv.TranslationY = 0;

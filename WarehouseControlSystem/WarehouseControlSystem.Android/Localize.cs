@@ -39,7 +39,6 @@ namespace WarehouseControlSystem.Droid
         public CultureInfo GetCurrentCultureInfo()
         {
             var netLanguage = "en";
-            var androidLocale = Java.Util.Locale.Default;
             netLanguage = Settings.CurrentLocalization;
 
             // this gets called a lot - try/catch can be expensive so consider caching or something

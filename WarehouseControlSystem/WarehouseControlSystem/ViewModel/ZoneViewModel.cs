@@ -34,20 +34,6 @@ namespace WarehouseControlSystem.ViewModel
         public Location Location { get; set; }
         public Zone Zone { get; set; }
 
-        public string LocationCode
-        {
-            get { return locationcode; }
-            set
-            {
-                if (locationcode != value)
-                {
-                    locationcode = value;
-                    Changed = true;
-                    OnPropertyChanged(nameof(LocationCode));
-                }
-            }
-        } string locationcode;
-
         public string Description
         {
             get { return description; }
