@@ -113,11 +113,8 @@ namespace WarehouseControlSystem.ViewModel
 
         public async void Load()
         {
-            if ((!CrossConnectivity.Current.IsConnected) || (Global.CurrentConnection == null))
-            {
-                State = State.NoInternet;
+            if (!CheckNetAndConnection())
                 return;
-            }
 
             if (Zone.PlanHeight == 0)
             {
@@ -157,18 +154,23 @@ namespace WarehouseControlSystem.ViewModel
             }
             catch (OperationCanceledException e)
             {
-                Console.WriteLine("Cancel Load", e.Message);
+                System.Diagnostics.Debug.WriteLine(e.Message);
             }
-            catch
+            catch (Exception e)
             {
+                System.Diagnostics.Debug.WriteLine(e.Message);
                 State = State.Error;
                 ErrorText = AppResources.Error_LoadRacks;
             }
+
         }
 
         public async void LoadAll()
         {
             State = State.Loading;
+            if (!CheckNetAndConnection())
+                return;
+
             try
             {
                 List<Rack> racks = await NAV.GetRackList(Zone.LocationCode, Zone.Code, false, 1, int.MaxValue, ACD.Default);
@@ -191,17 +193,22 @@ namespace WarehouseControlSystem.ViewModel
             }
             catch (OperationCanceledException e)
             {
-                Console.WriteLine("Cancel LoadAll", e.Message);
+                System.Diagnostics.Debug.WriteLine(e.Message);
             }
-            catch
+            catch (Exception e)
             {
+                System.Diagnostics.Debug.WriteLine(e.Message);
                 State = State.Error;
                 ErrorText = AppResources.Error_LoadRacksList;
             }
+
         }
 
         public async void LoadUDS()
         {
+            if (!CheckNetAndConnection())
+                return;
+
             try
             {
                 UserDefinedSelectionViewModels.Clear();
@@ -210,9 +217,12 @@ namespace WarehouseControlSystem.ViewModel
                 {
                     foreach (UserDefinedSelection uds in list)
                     {
-                        UserDefinedSelectionViewModel udsvm = new UserDefinedSelectionViewModel(Navigation, uds);
-                        udsvm.UDSWidth = UDSPanelHeight;
+                        UserDefinedSelectionViewModel udsvm = new UserDefinedSelectionViewModel(Navigation, uds)
+                        {
+                            UDSWidth = UDSPanelHeight,
+                        };
                         udsvm.OnTap += RunUDS;
+
                         UserDefinedSelectionViewModels.Add(udsvm);
                     }
                 }
@@ -220,13 +230,15 @@ namespace WarehouseControlSystem.ViewModel
             }
             catch (OperationCanceledException e)
             {
-                Console.WriteLine("Cancel LoadUDS", e.Message);
+                System.Diagnostics.Debug.WriteLine(e.Message);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
+                System.Diagnostics.Debug.WriteLine(e.Message);
                 State = Helpers.Containers.StateContainer.State.Error;
-                ErrorText = ex.ToString();
+                ErrorText = e.ToString();
             }
+
         }
 
         private async void Rvm_OnTap(RackViewModel rvm)
@@ -252,11 +264,14 @@ namespace WarehouseControlSystem.ViewModel
 
         private async void RunUDS(UserDefinedSelectionViewModel udsvm)
         {
+            if (!CheckNetAndConnection())
+                return;
+
             udsvm.State = State.Loading;
             LoadAnimation = true;
             try
             {
-                List<UserDefinedSelectionResult> list =  await NAV.RunUDS(Zone.LocationCode, Zone.Code, udsvm.ID, ACD.Default);
+                List<UserDefinedSelectionResult> list = await NAV.RunUDS(Zone.LocationCode, Zone.Code, udsvm.ID, ACD.Default);
                 if (list is List<UserDefinedSelectionResult>)
                 {
                     foreach (RackViewModel rvm in RackViewModels)
@@ -266,16 +281,18 @@ namespace WarehouseControlSystem.ViewModel
 
                     foreach (UserDefinedSelectionResult udsr in list)
                     {
-                        RackViewModel rvm =  RackViewModels.ToList().Find(x => x.No == udsr.RackNo);
+                        RackViewModel rvm = RackViewModels.ToList().Find(x => x.No == udsr.RackNo);
                         if (rvm is RackViewModel)
                         {
-                            SubSchemeSelect sss = new SubSchemeSelect();
-                            sss.FunctionID = udsr.FunctionID;
-                            sss.Section = udsr.Section;
-                            sss.Level = udsr.Level;
-                            sss.Depth = udsr.Depth;
-                            sss.Value = udsr.Value;
-                            sss.HexColor = udsr.HexColor;
+                            SubSchemeSelect sss = new SubSchemeSelect()
+                            {
+                                FunctionID = udsr.FunctionID,
+                                Section = udsr.Section,
+                                Level = udsr.Level,
+                                Depth = udsr.Depth,
+                                Value = udsr.Value,
+                                HexColor = udsr.HexColor
+                            };
                             rvm.UDSSelects.Add(sss);
                         }
                     }
@@ -284,13 +301,16 @@ namespace WarehouseControlSystem.ViewModel
             }
             catch (OperationCanceledException e)
             {
+                System.Diagnostics.Debug.WriteLine(e.Message);
                 ErrorText = e.Message;
                 LoadAnimation = false;
             }
-            catch
+            catch (Exception e)
             {
+                System.Diagnostics.Debug.WriteLine(e.Message);
             }
             udsvm.State = State.Normal;
+
             LoadAnimation = false;
         }
 
@@ -325,25 +345,31 @@ namespace WarehouseControlSystem.ViewModel
 
         public async void NewRack()
         {
-            Rack newrack = new Rack();
-            newrack.Sections = Settings.DefaultRackSections;
-            newrack.Levels = Settings.DefaultRackLevels;
-            newrack.Depth = Settings.DefaultRackDepth;
-            newrack.SchemeVisible = true;
-            RackViewModel rvm = new RackViewModel(Navigation, newrack, true);
-            rvm.LocationCode = Zone.LocationCode;
-            rvm.ZoneCode = Zone.Code;
-            rvm.CanChangeLocationAndZone = false;
+            Rack newrack = new Rack()
+            {
+                Sections = Settings.DefaultRackSections,
+                Levels = Settings.DefaultRackLevels,
+                Depth = Settings.DefaultRackDepth,
+                SchemeVisible = true,
+            };
+            RackViewModel rvm = new RackViewModel(Navigation, newrack, true)
+            {
+                LocationCode = Zone.LocationCode,
+                ZoneCode = Zone.Code,
+                CanChangeLocationAndZone = false
+            };
             RackNewPage rnp = new RackNewPage(rvm);
             await Navigation.PushAsync(rnp);
         }
 
         public void EditRack(object obj)
         {
+            System.Diagnostics.Debug.WriteLine(obj.ToString());
         }
 
         public void DeleteRack(object obj)
         {
+            System.Diagnostics.Debug.WriteLine(obj.ToString());
         }
 
         public async void Params()
@@ -359,6 +385,9 @@ namespace WarehouseControlSystem.ViewModel
 
         public async void SaveRacksChangesAsync()
         {
+            if (!CheckNetAndConnection())
+                return;
+
             List<RackViewModel> list = RackViewModels.ToList().FindAll(x => x.Selected == true);
             foreach (RackViewModel rvm in list)
             {
@@ -370,6 +399,7 @@ namespace WarehouseControlSystem.ViewModel
                 {
                 }
             }
+
         }
 
         public Task<string> SaveRacksVisible()

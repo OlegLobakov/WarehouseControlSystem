@@ -204,5 +204,29 @@ namespace WarehouseControlSystem.ViewModel.Base
             int alpha = (int)(color.A * 255);
             return String.Format("#{0:X2}{1:X2}{2:X2}{3:X2}", red, green, blue, alpha);
         }
+
+        public bool CheckNetAndConnection()
+        {
+            bool rv = false;
+            if (!Plugin.Connectivity.CrossConnectivity.Current.IsConnected)
+            {
+                rv = false;
+                State = State.Error;
+                ErrorText = "Internet not available";
+            }
+            else
+            {
+                if (Global.CurrentConnection is Helpers.NAV.Connection)
+                {
+                }
+                else
+                {
+                    rv = false;
+                    State = State.Error;
+                    ErrorText = "Сonnection not created";
+                }
+            }
+            return rv;
+        }
     }
 }

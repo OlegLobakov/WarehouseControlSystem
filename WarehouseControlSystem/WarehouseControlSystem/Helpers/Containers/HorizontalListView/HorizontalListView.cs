@@ -154,7 +154,9 @@ namespace WarehouseControlSystem.Helpers.Containers.HorizontalListView
             }
 
             foreach (var child in layout.Children)
+            {
                 AddGesture(child, gesture);
+            }
         }
 
         protected virtual void SetSelected(ISelectable selectable)
@@ -171,9 +173,10 @@ namespace WarehouseControlSystem.Helpers.Containers.HorizontalListView
                 item.IsSelected = selectedItem != null && item == selectedItem && selectedItem.IsSelected;
             }
 
-            var handler = SelectedItemChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            if (SelectedItemChanged is EventHandler)
+            {
+                SelectedItemChanged(this, EventArgs.Empty);
+            }
         }
 
     }

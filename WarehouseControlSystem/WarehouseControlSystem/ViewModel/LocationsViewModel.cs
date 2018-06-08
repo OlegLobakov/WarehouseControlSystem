@@ -93,138 +93,142 @@ namespace WarehouseControlSystem.ViewModel
 
         public async void Load()
         {
-            if ((!CrossConnectivity.Current.IsConnected) || (Global.CurrentConnection == null))
+            if (CheckNetAndConnection())
             {
-                State = State.NoInternet;
-                return;
-            }
-            State = State.Loading;
-            try
-            {
-                PlanWidth = await NAV.GetPlanWidth(ACD.Default);
-                PlanHeight = await NAV.GetPlanHeight(ACD.Default);
-                if (PlanWidth == 0)
+                State = State.Loading;
+                try
                 {
-                    PlanWidth = 20;
-                }
-                if (PlanHeight == 0)
-                {
-                    PlanHeight = 10;
-                }
-                List<Location> list = await NAV.GetLocationList("", true, 1, int.MaxValue, ACD.Default);
-                if ((list is List<Location>) && (!IsDisposed))
-                {
-                    if (list.Count > 0)
+                    PlanWidth = await NAV.GetPlanWidth(ACD.Default);
+                    PlanHeight = await NAV.GetPlanHeight(ACD.Default);
+                    if (PlanWidth == 0)
                     {
-                        ClearAll();
-                        int deftop = 1;
-                        int defleft = 1;
-                        int defwidth = Math.Max(1, (PlanWidth - 6) / 5);
-                        int defheight = Math.Max(1, (PlanHeight - 5) / 4);
-
-                        foreach (Location location in list)
+                        PlanWidth = 20;
+                    }
+                    if (PlanHeight == 0)
+                    {
+                        PlanHeight = 10;
+                    }
+                    List<Location> list = await NAV.GetLocationList("", true, 1, int.MaxValue, ACD.Default);
+                    if ((list is List<Location>) && (!IsDisposed))
+                    {
+                        if (list.Count > 0)
                         {
-                            if (location.Width == 0)
+                            ClearAll();
+                            int deftop = 1;
+                            int defleft = 1;
+                            int defwidth = Math.Max(1, (PlanWidth - 6) / 5);
+                            int defheight = Math.Max(1, (PlanHeight - 5) / 4);
+
+                            foreach (Location location in list)
                             {
-                                location.Left = defleft;
-                                location.Width = defwidth;
-                                location.Height = defheight;
-                                location.Top = deftop;
+                                if (location.Width == 0)
+                                {
+                                    location.Left = defleft;
+                                    location.Width = defwidth;
+                                    location.Height = defheight;
+                                    location.Top = deftop;
 
-                                defleft = defleft + defwidth + 1;
-                                if (defleft > (PlanWidth - defwidth))
-                                {
-                                    defleft = 1;
-                                    deftop = deftop + defheight + 1;
-                                }
+                                    defleft = defleft + defwidth + 1;
+                                    if (defleft > (PlanWidth - defwidth))
+                                    {
+                                        defleft = 1;
+                                        deftop = deftop + defheight + 1;
+                                    }
 
-                                if (deftop > (PlanHeight - defheight))
-                                {
-                                    deftop = 1;
-                                }
+                                    if (deftop > (PlanHeight - defheight))
+                                    {
+                                        deftop = 1;
+                                    }
 
-                                if (location.Left + location.Width > PlanWidth)
-                                {
-                                    PlanWidth += location.Left + location.Width - PlanWidth;
+                                    if (location.Left + location.Width > PlanWidth)
+                                    {
+                                        PlanWidth += location.Left + location.Width - PlanWidth;
+                                    }
+                                    if (location.Top + location.Height > PlanHeight)
+                                    {
+                                        PlanHeight += location.Top + location.Height - PlanHeight;
+                                    }
                                 }
-                                if (location.Top + location.Height > PlanHeight)
+                                LocationViewModel lvm = new LocationViewModel(Navigation, location);
+                                lvm.OnTap += Lvm_OnTap;
+                                LocationViewModels.Add(lvm);
+
+                                if (location.Left + location.Width > MinPlanWidth)
                                 {
-                                    PlanHeight += location.Top + location.Height - PlanHeight;
+                                    MinPlanWidth = location.Left + location.Width;
+                                }
+                                if (location.Top + location.Height > MinPlanHeight)
+                                {
+                                    MinPlanHeight = location.Top + location.Height;
                                 }
                             }
-                            LocationViewModel lvm = new LocationViewModel(Navigation, location);
-                            lvm.OnTap += Lvm_OnTap;
-                            LocationViewModels.Add(lvm);
-
-                            if (location.Left + location.Width > MinPlanWidth)
-                            {
-                                MinPlanWidth = location.Left + location.Width;
-                            }
-                            if (location.Top + location.Height > MinPlanHeight)
-                            {
-                                MinPlanHeight = location.Top + location.Height;
-                            }
+                            State = State.Normal;
+                            ReDesign();
                         }
-                        State = State.Normal;
-                        ReDesign();
-                    }
-                    else
-                    {
-                        State = State.NoData;
+                        else
+                        {
+                            State = State.NoData;
+                        }
                     }
                 }
-            }
-            catch (OperationCanceledException ex)
-            {
-                ErrorText = ex.Message;
-            }
-            catch (NAVErrorException ex)
-            {
-                State = State.Error;
-                ErrorText = AppResources.Error_LoadLocation + Environment.NewLine + ex.Message;
-            }
-            catch (Exception ex)
-            {
-                State = State.Error;
-                ErrorText = AppResources.Error_LoadLocation + Environment.NewLine + ex.Message;
+                catch (OperationCanceledException e)
+                {
+                    System.Diagnostics.Debug.WriteLine(e.Message);
+                    ErrorText = e.Message;
+                }
+                catch (NAVErrorException e)
+                {
+                    System.Diagnostics.Debug.WriteLine(e.Message);
+                    State = State.Error;
+                    ErrorText = AppResources.Error_LoadLocation + Environment.NewLine + e.Message;
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine(e.Message);
+                    State = State.Error;
+                    ErrorText = AppResources.Error_LoadLocation + Environment.NewLine + e.Message;
+                }
             }
         }
 
         public async void LoadAll()
         {
-            //List<Location> list = await NAV.GetLocationList("", false, 1, int.MaxValue, ACD.Default);
-
             State = State.Loading;
-            try
+            if (CheckNetAndConnection())
             {
-                List<Location> list = await NAV.GetLocationList("", false, 1, int.MaxValue, ACD.Default);
-                if ((!IsDisposed) && (list is List<Location>))
+                try
                 {
-                    if (list.Count > 0)
+                    List<Location> list = await NAV.GetLocationList("", false, 1, int.MaxValue, ACD.Default);
+                    if ((!IsDisposed) && (list is List<Location>))
                     {
-                        ClearAll();
-                        foreach (Location location in list)
+                        if (list.Count > 0)
                         {
-                            LocationViewModel lvm = new LocationViewModel(Navigation, location);
-                            LocationViewModels.Add(lvm);
+                            ClearAll();
+                            foreach (Location location in list)
+                            {
+                                LocationViewModel lvm = new LocationViewModel(Navigation, location);
+                                LocationViewModels.Add(lvm);
+                            }
+                            State = State.Normal;
                         }
-                        State = State.Normal;
-                    }
-                    else
-                    {
-                        State = State.NoData;
+                        else
+                        {
+                            State = State.NoData;
+                        }
                     }
                 }
-            }
-            catch (OperationCanceledException ex)
-            {
-                ErrorText = ex.Message;
-            }
-            catch (Exception ex)
-            {
-                ErrorText = ex.Message;
-                State = State.Error;
-                ErrorText = AppResources.Error_LoadLocationList;
+                catch (OperationCanceledException e)
+                {
+                    System.Diagnostics.Debug.WriteLine(e.Message);
+                    ErrorText = e.Message;
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine(e.Message);
+                    ErrorText = e.Message;
+                    State = State.Error;
+                    ErrorText = AppResources.Error_LoadLocationList;
+                }
             }
         }
 
@@ -252,9 +256,9 @@ namespace WarehouseControlSystem.ViewModel
                     ZonesSchemePage zsp = new ZonesSchemePage(tappedlvm.Location);
                     await Navigation.PushAsync(zsp);
                 }
-                catch (Exception ex)
+                catch (Exception e)
                 {
-                    string rr = ex.Message;
+                    System.Diagnostics.Debug.WriteLine(e.Message);
                 }
             }
             else
@@ -334,23 +338,27 @@ namespace WarehouseControlSystem.ViewModel
 
         public async void DeleteLocation(object obj)
         {
-            LocationViewModel lvm = (LocationViewModel)obj;
-            State = State.Loading;
-            LoadAnimation = true;
-            try
+            if (CheckNetAndConnection())
             {
-                await NAV.DeleteLocation(lvm.Location.Code, ACD.Default);
-                LocationViewModels.Remove(lvm);
-            }
-            catch(Exception ex)
-            {
-                ErrorText = ex.Message;
-                State = State.Error;
-            }
-            finally
-            {
-                State = State.Normal;
-                LoadAnimation = false;
+                LocationViewModel lvm = (LocationViewModel)obj;
+                State = State.Loading;
+                LoadAnimation = true;
+                try
+                {
+                    await NAV.DeleteLocation(lvm.Location.Code, ACD.Default);
+                    LocationViewModels.Remove(lvm);
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine(e.Message);
+                    ErrorText = e.Message;
+                    State = State.Error;
+                }
+                finally
+                {
+                    State = State.Normal;
+                    LoadAnimation = false;
+                }
             }
         }
 
@@ -363,30 +371,38 @@ namespace WarehouseControlSystem.ViewModel
 
         public async void SaveLocationChangesAsync()
         {
-            List<LocationViewModel> list = LocationViewModels.ToList().FindAll(x => x.Selected == true);
-            foreach (LocationViewModel lvm in list)
+            if (CheckNetAndConnection())
             {
-                try
+                List<LocationViewModel> list = LocationViewModels.ToList().FindAll(x => x.Selected == true);
+                foreach (LocationViewModel lvm in list)
                 {
-                    await NAV.ModifyLocation(lvm.Location, ACD.Default);
-                }
-                catch (Exception ex)
-                {
-                    ErrorText = ex.Message;
+                    try
+                    {
+                        await NAV.ModifyLocation(lvm.Location, ACD.Default);
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                        ErrorText = e.Message;
+                    }
                 }
             }
         }
 
         public async void SaveSchemeParams()
         {
-            try
+            if (CheckNetAndConnection())
             {
-                await NAV.SetPlanWidth(PlanWidth, ACD.Default);
-                await NAV.SetPlanHeight(PlanHeight, ACD.Default);
-            }
-            catch (Exception ex)
-            {
-                ErrorText = ex.Message;
+                try
+                {
+                    await NAV.SetPlanWidth(PlanWidth, ACD.Default);
+                    await NAV.SetPlanHeight(PlanHeight, ACD.Default);
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine(e.Message);
+                    ErrorText = e.Message;
+                }
             }
         }
 

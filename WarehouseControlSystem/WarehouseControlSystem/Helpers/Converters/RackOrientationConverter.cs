@@ -54,6 +54,8 @@ namespace WarehouseControlSystem.Helpers.Converters
                         name1 = AppResources.RackNewPage_OrientationRackVD;
                         break;
                     }
+                default:
+                    break;
             }
 
             RackOrientationPick rop = new RackOrientationPick()

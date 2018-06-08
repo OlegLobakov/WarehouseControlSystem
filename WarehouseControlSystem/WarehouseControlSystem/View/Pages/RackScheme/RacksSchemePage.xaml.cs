@@ -140,7 +140,7 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
 
         private void OnSearch(SearchViewModel svm)
         {
-
+            System.Diagnostics.Debug.WriteLine(svm.ToString());
         }
 
         private void GridTapped(object sender, EventArgs e)

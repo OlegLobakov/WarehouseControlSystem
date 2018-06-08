@@ -74,7 +74,10 @@ namespace WarehouseControlSystem.Helpers.Containers.StateContainer
 
         private async Task ChooseStateProperty2(object newValue)
         {
-            if (Conditions == null && Conditions?.Count == 0) return;
+            if (Conditions == null && Conditions?.Count == 0)
+            {
+                return;
+            }
 
             try
             {

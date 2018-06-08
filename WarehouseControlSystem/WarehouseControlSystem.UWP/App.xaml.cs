@@ -49,6 +49,8 @@ namespace WarehouseControl.UWP
         private void App_UnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
         {
             e.Handled = true;
+            System.Diagnostics.Debug.WriteLine("<UnhandledException> (" + sender.ToString() + ") Message:" +
+                e.Message + " Exception.Source: " + e.Exception.Source.ToString());
         }
 
         /// <summary>
@@ -58,14 +60,6 @@ namespace WarehouseControl.UWP
         /// <param name="e">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
-
-#if DEBUG
-            //if (System.Diagnostics.Debugger.IsAttached)
-            //{
-            //    this.DebugSettings.EnableFrameRateCounter = true;
-            //}
-#endif
-
             Frame rootFrame = Window.Current.Content as Frame;
 
             // Do not repeat app initialization when the Window already has content,

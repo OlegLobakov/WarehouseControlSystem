@@ -28,7 +28,7 @@ namespace WarehouseControlSystem.Helpers.NAV
 {
     public class NAV
     {
-         static XNamespace ns = "http://schemas.xmlsoap.org/soap/envelope/";
+        static XNamespace ns = "http://schemas.xmlsoap.org/soap/envelope/";
 
         private static XNamespace GetNameSpace()
         {
@@ -39,108 +39,148 @@ namespace WarehouseControlSystem.Helpers.NAV
         public static Task<int> GetPlanWidth(CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<int>();
-            Task.Run(async () =>
+            if (Global.CurrentConnection is Connection)
             {
-                try
+                Task.Run(async () =>
                 {
-                    XNamespace myns = GetNameSpace();
-                    string functionname = "GetPlanWidth";
-                    XElement body = new XElement(myns + functionname);
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts);
-                    int rv = StringToInt(soapbodynode.Value);
-                    tcs.SetResult(rv);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            });
+                    try
+                    {
+                        XNamespace myns = GetNameSpace();
+                        string functionname = "GetPlanWidth";
+                        XElement body = new XElement(myns + functionname);
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        int rv = StringToInt(soapbodynode.Value);
+                        tcs.SetResult(rv);
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                        tcs.SetException(e);
+                    }
+                });
+            }
+            else
+            {
+                tcs.SetResult(0);
+            }
             return tcs.Task;
         }
         public static Task<int> GetPlanHeight(CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<int>();
-            Task.Run(async () =>
+            if (Global.CurrentConnection is Connection)
             {
-                try
+                Task.Run(async () =>
                 {
-                    XNamespace myns = GetNameSpace();
-                    string functionname = "GetPlanHeight";
-                    XElement body = new XElement(myns + functionname);
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts);
-                    int rv = StringToInt(soapbodynode.Value);
-                    tcs.SetResult(rv);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            });
+                    try
+                    {
+                        XNamespace myns = GetNameSpace();
+                        string functionname = "GetPlanHeight";
+                        XElement body = new XElement(myns + functionname);
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        int rv = StringToInt(soapbodynode.Value);
+                        tcs.SetResult(rv);
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                        tcs.SetException(e);
+                    }
+                });
+            }
+            else
+            {
+                tcs.SetResult(0);
+            }
             return tcs.Task;
         }
         public static Task<int> SetPlanWidth(int value, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<int>();
-            Task.Run(async () =>
+            if (Global.CurrentConnection is Connection)
             {
-                try
+                Task.Run(async () =>
                 {
-                    XNamespace myns = GetNameSpace();
-                    string functionname = "SetPlanWidth";
-                    XElement body = new XElement(myns + functionname,
-                        new XElement(myns + "value", value));
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts);
-                    int rv = StringToInt(soapbodynode.Value);
-                    tcs.SetResult(rv);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            });
+                    try
+                    {
+                        XNamespace myns = GetNameSpace();
+                        string functionname = "SetPlanWidth";
+                        XElement body = new XElement(myns + functionname,
+                            new XElement(myns + "value", value));
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        int rv = StringToInt(soapbodynode.Value);
+                        tcs.SetResult(rv);
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                        tcs.SetException(e);
+                    }
+                });
+            }
+            else
+            {
+                tcs.SetResult(0);
+            }
             return tcs.Task;
         }
         public static Task<int> SetPlanHeight(int value, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<int>();
-            Task.Run(async () =>
+            if (Global.CurrentConnection is Connection)
             {
-                try
+                Task.Run(async () =>
                 {
-                    XNamespace myns = GetNameSpace();
-                    string functionname = "SetPlanHeight";
-                    XElement body = new XElement(myns + functionname,
-                        new XElement(myns + "value", value));
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts);
-                    int rv = StringToInt(soapbodynode.Value);
-                    tcs.SetResult(rv);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            });
+                    try
+                    {
+                        XNamespace myns = GetNameSpace();
+                        string functionname = "SetPlanHeight";
+                        XElement body = new XElement(myns + functionname,
+                            new XElement(myns + "value", value));
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        int rv = StringToInt(soapbodynode.Value);
+                        tcs.SetResult(rv);
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                        tcs.SetException(e);
+                    }
+                });
+            }
+            else
+            {
+                tcs.SetResult(0);
+            }
             return tcs.Task;
         }
         public static Task<int> APIVersion(CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<int>();
-            Task.Run(async () =>
+            if (Global.CurrentConnection is Connection)
             {
-                try
+                Task.Run(async () =>
                 {
-                    XNamespace myns = GetNameSpace();
-                    string functionname = "APIVersion";
-                    XElement body = new XElement(myns + functionname);
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts);
-                    int rv = StringToInt(soapbodynode.Value);
-                    tcs.SetResult(rv);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            });
+                    try
+                    {
+                        XNamespace myns = GetNameSpace();
+                        string functionname = "APIVersion";
+                        XElement body = new XElement(myns + functionname);
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        int rv = StringToInt(soapbodynode.Value);
+                        tcs.SetResult(rv);
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                        tcs.SetException(e);
+                    }
+                });
+            }
+            else
+            {
+                tcs.SetResult(0);
+            }
             return tcs.Task;
         }
 
@@ -148,184 +188,232 @@ namespace WarehouseControlSystem.Helpers.NAV
         public static Task<int> CreateLocation(Location location, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<int>();
-            Task.Run(async () =>
+            if (Global.CurrentConnection is Connection)
             {
-                try
-                {
-                    XNamespace myns = GetNameSpace();
-                    string functionname = "CreateLocation";
-                    XElement body = 
-                        new XElement(myns + functionname,
-                                    new XElement(myns + "code", location.Code),
-                                    new XElement(myns + "name", location.Name),
-                                    new XElement(myns + "address", location.Address),
-                                    new XElement(myns + "phoneNo", location.PhoneNo),
-                                    new XElement(myns + "hexColor", location.HexColor),
-                                    new XElement(myns + "planWidth", location.PlanWidth),
-                                    new XElement(myns + "planHeight", location.PlanHeight),
-                                    new XElement(myns + "left", location.Left),
-                                    new XElement(myns + "top", location.Top),
-                                    new XElement(myns + "width", location.Width),
-                                    new XElement(myns + "height", location.Height),
-                                    new XElement(myns + "schemeVisible", location.SchemeVisible),
-                                    new XElement(myns + "binMandatory", location.BinMandatory),
-                                    new XElement(myns + "requireReceive", location.RequireReceive),
-                                    new XElement(myns + "requireShipment", location.RequireShipment),
-                                    new XElement(myns + "requirePick", location.RequirePick),
-                                    new XElement(myns + "requirePutaway", location.RequirePutaway));
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts);
-                    tcs.SetResult(0);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            });
+                Task.Run(async () =>
+                    {
+                        try
+                        {
+                            XNamespace myns = GetNameSpace();
+                            string functionname = "CreateLocation";
+                            XElement body =
+                                new XElement(myns + functionname,
+                                            new XElement(myns + "code", location.Code),
+                                            new XElement(myns + "name", location.Name),
+                                            new XElement(myns + "address", location.Address),
+                                            new XElement(myns + "phoneNo", location.PhoneNo),
+                                            new XElement(myns + "hexColor", location.HexColor),
+                                            new XElement(myns + "planWidth", location.PlanWidth),
+                                            new XElement(myns + "planHeight", location.PlanHeight),
+                                            new XElement(myns + "left", location.Left),
+                                            new XElement(myns + "top", location.Top),
+                                            new XElement(myns + "width", location.Width),
+                                            new XElement(myns + "height", location.Height),
+                                            new XElement(myns + "schemeVisible", location.SchemeVisible),
+                                            new XElement(myns + "binMandatory", location.BinMandatory),
+                                            new XElement(myns + "requireReceive", location.RequireReceive),
+                                            new XElement(myns + "requireShipment", location.RequireShipment),
+                                            new XElement(myns + "requirePick", location.RequirePick),
+                                            new XElement(myns + "requirePutaway", location.RequirePutaway));
+                            XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                            tcs.SetResult(0);
+                        }
+                        catch (Exception e)
+                        {
+                            System.Diagnostics.Debug.WriteLine(e.Message);
+                            tcs.SetException(e);
+                        }
+                    });
+            }
+            else
+            {
+                tcs.SetResult(0);
+            }
             return tcs.Task;
         }
         public static Task<int> ModifyLocation(Location location, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<int>();
-            Task.Run(async () =>
+            if (Global.CurrentConnection is Connection)
             {
-                try
+                Task.Run(async () =>
                 {
-                    XNamespace myns = GetNameSpace();
-                    string functionname = "ModifyLocation";
-                    XElement body = 
-                        new XElement(myns + functionname,
-                                    new XElement(myns + "code", location.Code),
-                                    new XElement(myns + "prevCode", location.PrevCode),
-                                    new XElement(myns + "name", location.Name),
-                                    new XElement(myns + "address", location.Address),
-                                    new XElement(myns + "phoneNo", location.PhoneNo),
-                                    new XElement(myns + "hexColor", location.HexColor),
-                                    new XElement(myns + "planWidth", location.PlanWidth),
-                                    new XElement(myns + "planHeight", location.PlanHeight),
-                                    new XElement(myns + "left", location.Left),
-                                    new XElement(myns + "top", location.Top),
-                                    new XElement(myns + "width", location.Width),
-                                    new XElement(myns + "height", location.Height),
-                                    new XElement(myns + "schemeVisible", location.SchemeVisible),
-                                    new XElement(myns + "binMandatory", location.BinMandatory),
-                                    new XElement(myns + "requireReceive", location.RequireReceive),
-                                    new XElement(myns + "requireShipment", location.RequireShipment),
-                                    new XElement(myns + "requirePick", location.RequirePick),
-                                    new XElement(myns + "requirePutaway", location.RequirePutaway));
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts);
-                    tcs.SetResult(0);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            });
+                    try
+                    {
+                        XNamespace myns = GetNameSpace();
+                        string functionname = "ModifyLocation";
+                        XElement body =
+                            new XElement(myns + functionname,
+                                        new XElement(myns + "code", location.Code),
+                                        new XElement(myns + "prevCode", location.PrevCode),
+                                        new XElement(myns + "name", location.Name),
+                                        new XElement(myns + "address", location.Address),
+                                        new XElement(myns + "phoneNo", location.PhoneNo),
+                                        new XElement(myns + "hexColor", location.HexColor),
+                                        new XElement(myns + "planWidth", location.PlanWidth),
+                                        new XElement(myns + "planHeight", location.PlanHeight),
+                                        new XElement(myns + "left", location.Left),
+                                        new XElement(myns + "top", location.Top),
+                                        new XElement(myns + "width", location.Width),
+                                        new XElement(myns + "height", location.Height),
+                                        new XElement(myns + "schemeVisible", location.SchemeVisible),
+                                        new XElement(myns + "binMandatory", location.BinMandatory),
+                                        new XElement(myns + "requireReceive", location.RequireReceive),
+                                        new XElement(myns + "requireShipment", location.RequireShipment),
+                                        new XElement(myns + "requirePick", location.RequirePick),
+                                        new XElement(myns + "requirePutaway", location.RequirePutaway));
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        tcs.SetResult(0);
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                        tcs.SetException(e);
+                    }
+                });
+            }
+            else
+            {
+                tcs.SetResult(0);
+            }
             return tcs.Task;
         }
         public static Task<int> SetLocationVisible(Location location, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<int>();
-            Task.Run(async () =>
+            if (Global.CurrentConnection is Connection)
             {
-                try
+                Task.Run(async () =>
                 {
-                    XNamespace myns = GetNameSpace();
-                    string functionname = "SetLocationVisible";
-                    XElement body = 
+                    try
+                    {
+                        XNamespace myns = GetNameSpace();
+                        string functionname = "SetLocationVisible";
+                        XElement body =
                         new XElement(myns + functionname,
                                     new XElement(myns + "code", location.Code),
                                     new XElement(myns + "visible", location.SchemeVisible.ToString()));
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts);
-                    tcs.SetResult(0);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            });
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        tcs.SetResult(0);
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                        tcs.SetException(e);
+                    }
+                });
+            }
+            else
+            {
+                tcs.SetResult(0);
+            }
             return tcs.Task;
         }
         public static Task<int> DeleteLocation(string locationcode, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<int>();
-            int rv = 0;
-            Task.Run(async () =>
+            if (Global.CurrentConnection is Connection)
             {
-                try
+                int rv = 0;
+                Task.Run(async () =>
                 {
-                    XNamespace myns = GetNameSpace();
-                    string functionname = "DeleteLocation";
-                    XElement body = 
-                        new XElement(myns + functionname,
-                                    new XElement(myns + "name", locationcode));
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts);
-                    rv = StringToInt(soapbodynode.Value);
-                    tcs.SetResult(0);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            });
+                    try
+                    {
+                        XNamespace myns = GetNameSpace();
+                        string functionname = "DeleteLocation";
+                        XElement body =
+                            new XElement(myns + functionname,
+                                        new XElement(myns + "name", locationcode));
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        rv = StringToInt(soapbodynode.Value);
+                        tcs.SetResult(0);
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                        tcs.SetException(e);
+                    }
+                });
+            }
+            else
+            {
+                tcs.SetResult(0);
+            }
             return tcs.Task;
         }
         public static Task<int> GetLocationCount(string codefilter, bool onlyvisibled, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<int>();
-            int rv = 0;
-            Task.Run(async () =>
+            if (Global.CurrentConnection is Connection)
             {
-                try
+                int rv = 0;
+                Task.Run(async () =>
                 {
-                    XNamespace myns = GetNameSpace();
-                    string functionname = "GetLocationCount";
-                    XElement body = 
-                        new XElement(myns + functionname,
-                                    new XElement(myns + "codeFilter", codefilter),
-                                    new XElement(myns + "onlyVisibled", onlyvisibled.ToString()));
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts);
-                    rv = StringToInt(soapbodynode.Value);
-                    tcs.SetResult(rv);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            });
+                    try
+                    {
+                        XNamespace myns = GetNameSpace();
+                        string functionname = "GetLocationCount";
+                        XElement body =
+                            new XElement(myns + functionname,
+                                        new XElement(myns + "codeFilter", codefilter),
+                                        new XElement(myns + "onlyVisibled", onlyvisibled.ToString()));
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        rv = StringToInt(soapbodynode.Value);
+                        tcs.SetResult(rv);
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                        tcs.SetException(e);
+                    }
+                });
+            }
+            else
+            {
+                tcs.SetResult(0);
+            }
             return tcs.Task;
         }
         public static Task<List<Location>> GetLocationList(string codefilter, bool onlyvisibled, int position, int count, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<List<Location>>();
-            Task.Run(async () =>
+            if (Global.CurrentConnection is Connection)
             {
-                try
+                Task.Run(async () =>
                 {
-                    XNamespace myns = GetNameSpace();
-                    string functionname = "GetLocationList";
-                    XElement body = 
-                        new XElement(myns + functionname,
-                                    new XElement(myns + "codeFilter", codefilter),
-                                    new XElement(myns + "onlyVisibled", onlyvisibled.ToString()),
-                                    new XElement(myns + "entriesPosition", position),
-                                    new XElement(myns + "entriesCount", count),
-                                    new XElement(myns + "responseDocument", ""));
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts);
-                    List<Location> rv = new List<Location>();
-                    string response = soapbodynode.Value;
-                    XDocument document = GetDoc(response);
-                    foreach (XElement currentnode in document.Root.Elements())
+                    try
                     {
-                        Location location = GetLocationFromXML(currentnode);
-                        rv.Add(location);
+                        XNamespace myns = GetNameSpace();
+                        string functionname = "GetLocationList";
+                        XElement body =
+                        new XElement(myns + functionname,
+                        new XElement(myns + "codeFilter", codefilter),
+                        new XElement(myns + "onlyVisibled", onlyvisibled.ToString()),
+                        new XElement(myns + "entriesPosition", position),
+                        new XElement(myns + "entriesCount", count),
+                        new XElement(myns + "responseDocument", ""));
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        List<Location> rv = new List<Location>();
+                        string response = soapbodynode.Value;
+                        XDocument document = GetDoc(response);
+                        foreach (XElement currentnode in document.Root.Elements())
+                        {
+                            Location location = GetLocationFromXML(currentnode);
+                            rv.Add(location);
+                        }
+                        tcs.SetResult(rv);
                     }
-                    tcs.SetResult(rv);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            });
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                        tcs.SetException(e);
+                    }
+                });
+            }
+            else
+            {
+                tcs.SetResult(null);
+            }
             return tcs.Task;
         }
         private static Location GetLocationFromXML(XElement currentnode)
@@ -436,6 +524,8 @@ namespace WarehouseControlSystem.Helpers.NAV
                             location.SchemeVisible = StringToBool(currentatribute.Value);
                             break;
                         }
+                    default:
+                        break;
                 }
             }
             return location;
@@ -446,185 +536,232 @@ namespace WarehouseControlSystem.Helpers.NAV
         public static Task<int> CreateZone(Zone zone, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<int>();
-            Task.Run(async () =>
+            if (Global.CurrentConnection is Connection)
             {
-                try
+                Task.Run(async () =>
                 {
-                    XNamespace myns = GetNameSpace();
-                    string functionname = "CreateZone";
-                    XElement body = 
+                    try
+                    {
+                        XNamespace myns = GetNameSpace();
+                        string functionname = "CreateZone";
+                        XElement body =
                         new XElement(myns + functionname,
-                                    new XElement(myns + "locationCode", zone.LocationCode),
-                                    new XElement(myns + "code", zone.Code),
-                                    new XElement(myns + "description", zone.Description),
-                                    new XElement(myns + "binTypeCode", zone.BinTypeCode),
-                                    new XElement(myns + "zoneRanking", zone.ZoneRanking),
-                                    new XElement(myns + "crossDockBinZone", zone.CrossDockBinZone),
-                                    new XElement(myns + "specialEquipmentCode", zone.SpecialEquipmentCode),
-                                    new XElement(myns + "warehouseClassCode", zone.WarehouseClassCode),
-                                    new XElement(myns + "hexColor", zone.HexColor),
-                                    new XElement(myns + "planWidth", zone.PlanWidth),
-                                    new XElement(myns + "planHeight", zone.PlanHeight),
-                                    new XElement(myns + "left", zone.Left),
-                                    new XElement(myns + "top", zone.Top),
-                                    new XElement(myns + "width", zone.Width),
-                                    new XElement(myns + "height", zone.Height),
-                                    new XElement(myns + "schemeVisible", zone.SchemeVisible));
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts);
-                    tcs.SetResult(0);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            });
+                        new XElement(myns + "locationCode", zone.LocationCode),
+                        new XElement(myns + "code", zone.Code),
+                        new XElement(myns + "description", zone.Description),
+                        new XElement(myns + "binTypeCode", zone.BinTypeCode),
+                        new XElement(myns + "zoneRanking", zone.ZoneRanking),
+                        new XElement(myns + "crossDockBinZone", zone.CrossDockBinZone),
+                        new XElement(myns + "specialEquipmentCode", zone.SpecialEquipmentCode),
+                        new XElement(myns + "warehouseClassCode", zone.WarehouseClassCode),
+                        new XElement(myns + "hexColor", zone.HexColor),
+                        new XElement(myns + "planWidth", zone.PlanWidth),
+                        new XElement(myns + "planHeight", zone.PlanHeight),
+                        new XElement(myns + "left", zone.Left),
+                        new XElement(myns + "top", zone.Top),
+                        new XElement(myns + "width", zone.Width),
+                        new XElement(myns + "height", zone.Height),
+                        new XElement(myns + "schemeVisible", zone.SchemeVisible));
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
+                        tcs.SetResult(0);
+                    }
+                    catch (Exception e)
+                    {
+                        tcs.SetException(e);
+                    }
+                });
+            }
+            else
+            {
+                tcs.SetResult(0);
+            }
             return tcs.Task;
         }
         public static Task<int> ModifyZone(Zone zone, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<int>();
-            Task.Run(async () =>
+            if (Global.CurrentConnection is Connection)
             {
-                try
+                Task.Run(async () =>
                 {
-                    XNamespace myns = GetNameSpace();
-                    string functionname = "ModifyZone";
-                    XElement body = 
+                    try
+                    {
+                        XNamespace myns = GetNameSpace();
+                        string functionname = "ModifyZone";
+                        XElement body =
                         new XElement(myns + functionname,
-                                    new XElement(myns + "locationCode", zone.LocationCode),
-                                    new XElement(myns + "code", zone.Code),
-                                    new XElement(myns + "prevCode", zone.PrevCode),
-                                    new XElement(myns + "description", zone.Description),
-                                    new XElement(myns + "binTypeCode", zone.BinTypeCode),
-                                    new XElement(myns + "zoneRanking", zone.ZoneRanking),
-                                    new XElement(myns + "crossDockBinZone", zone.CrossDockBinZone),
-                                    new XElement(myns + "specialEquipmentCode", zone.SpecialEquipmentCode),
-                                    new XElement(myns + "warehouseClassCode", zone.WarehouseClassCode),
-                                    new XElement(myns + "hexColor", zone.HexColor),
-                                    new XElement(myns + "planWidth", zone.PlanWidth),
-                                    new XElement(myns + "planHeight", zone.PlanHeight),
-                                    new XElement(myns + "left", zone.Left),
-                                    new XElement(myns + "top", zone.Top),
-                                    new XElement(myns + "width", zone.Width),
-                                    new XElement(myns + "height", zone.Height),
-                                    new XElement(myns + "schemeVisible", zone.SchemeVisible));
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts);
-                    tcs.SetResult(0);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            });
+                        new XElement(myns + "locationCode", zone.LocationCode),
+                        new XElement(myns + "code", zone.Code),
+                        new XElement(myns + "prevCode", zone.PrevCode),
+                        new XElement(myns + "description", zone.Description),
+                        new XElement(myns + "binTypeCode", zone.BinTypeCode),
+                        new XElement(myns + "zoneRanking", zone.ZoneRanking),
+                        new XElement(myns + "crossDockBinZone", zone.CrossDockBinZone),
+                        new XElement(myns + "specialEquipmentCode", zone.SpecialEquipmentCode),
+                        new XElement(myns + "warehouseClassCode", zone.WarehouseClassCode),
+                        new XElement(myns + "hexColor", zone.HexColor),
+                        new XElement(myns + "planWidth", zone.PlanWidth),
+                        new XElement(myns + "planHeight", zone.PlanHeight),
+                        new XElement(myns + "left", zone.Left),
+                        new XElement(myns + "top", zone.Top),
+                        new XElement(myns + "width", zone.Width),
+                        new XElement(myns + "height", zone.Height),
+                        new XElement(myns + "schemeVisible", zone.SchemeVisible));
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        tcs.SetResult(0);
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                        tcs.SetException(e);
+                    }
+                });
+            }
+            else
+            {
+                tcs.SetResult(0);
+            }
             return tcs.Task;
         }
         public static Task<int> SetZoneVisible(Zone zone, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<int>();
-            Task.Run(async () =>
+            if (Global.CurrentConnection is Connection)
             {
-                try
+                Task.Run(async () =>
                 {
-                    XNamespace myns = GetNameSpace();
-                    string functionname = "SetZoneVisible";
-                    XElement body = 
+                    try
+                    {
+                        XNamespace myns = GetNameSpace();
+                        string functionname = "SetZoneVisible";
+                        XElement body =
                         new XElement(myns + functionname,
-                                    new XElement(myns + "locationCode", zone.LocationCode),
-                                    new XElement(myns + "code", zone.Code),
-                                    new XElement(myns + "visible", zone.SchemeVisible));
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts);
-                    tcs.SetResult(0);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            });
+                        new XElement(myns + "locationCode", zone.LocationCode),
+                        new XElement(myns + "code", zone.Code),
+                        new XElement(myns + "visible", zone.SchemeVisible));
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        tcs.SetResult(0);
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                        tcs.SetException(e);
+                    }
+                });
+            }
+            else
+            {
+                tcs.SetResult(0);
+            }
             return tcs.Task;
         }
         public static Task<int> DeleteZone(Zone zone, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<int>();
-            Task.Run(async () =>
+            if (Global.CurrentConnection is Connection)
             {
-                try
+                Task.Run(async () =>
                 {
-                    XNamespace myns = GetNameSpace();
-                    string functionname = "DeleteZone";
-                    XElement body = 
+                    try
+                    {
+                        XNamespace myns = GetNameSpace();
+                        string functionname = "DeleteZone";
+                        XElement body =
                         new XElement(myns + functionname,
-                                    new XElement(myns + "locationCode", zone.LocationCode),
-                                    new XElement(myns + "code", zone.Code));
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts);
-                    tcs.SetResult(0);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            });
+                        new XElement(myns + "locationCode", zone.LocationCode),
+                        new XElement(myns + "code", zone.Code));
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        tcs.SetResult(0);
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                        tcs.SetException(e);
+                    }
+                });
+            }
+            else
+            {
+                tcs.SetResult(0);
+            }
             return tcs.Task;
         }
         public static Task<int> GetZoneCount(string locationfilter, string codefilter, bool onlyvisibled, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<int>();
-            int rv = 0;
-            Task.Run(async () =>
+            if (Global.CurrentConnection is Connection)
             {
-                try
+                int rv = 0;
+                Task.Run(async () =>
                 {
-                    XNamespace myns = GetNameSpace();
-                    string functionname = "GetZoneCount";
-                    XElement body = 
-                        new XElement(myns + functionname,
-                                    new XElement(myns + "locationFilter", locationfilter),
-                                    new XElement(myns + "codeFilter", codefilter),
-                                    new XElement(myns + "onlyVisibled", onlyvisibled));
+                    try
+                    {
+                        XNamespace myns = GetNameSpace();
+                        string functionname = "GetZoneCount";
+                        XElement body =
+                            new XElement(myns + functionname,
+                                        new XElement(myns + "locationFilter", locationfilter),
+                                        new XElement(myns + "codeFilter", codefilter),
+                                        new XElement(myns + "onlyVisibled", onlyvisibled));
 
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts);
-                    rv = StringToInt(soapbodynode.Value);
-                    tcs.SetResult(rv);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            });
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        rv = StringToInt(soapbodynode.Value);
+                        tcs.SetResult(rv);
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                        tcs.SetException(e);
+                    }
+                });
+            }
+            else
+            {
+                tcs.SetResult(0);
+            }
             return tcs.Task;
         }
         public static Task<List<Zone>> GetZoneList(string locationfilter, string codefilter, bool onlyvisibled, int position, int count, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<List<Zone>>();
-            Task.Run(async () =>
+            if (Global.CurrentConnection is Connection)
             {
-                try
+                Task.Run(async () =>
                 {
-                    XNamespace myns = GetNameSpace();
-                    string functionname = "GetZoneList";
-                    XElement body = 
-                        new XElement(myns + functionname,
-                                    new XElement(myns + "locationFilter", locationfilter),
-                                    new XElement(myns + "codeFilter", codefilter),
-                                    new XElement(myns + "onlyVisibled", onlyvisibled),
-                                    new XElement(myns + "entriesPosition", position),
-                                    new XElement(myns + "entriesCount", count),
-                                    new XElement(myns + "responseDocument", ""));
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts);
-                    string response = soapbodynode.Value;
-                    XDocument document = GetDoc(response);
-                    List<Zone> rv = new List<Zone>();
-                    foreach (XElement currentnode in document.Root.Elements())
+                    try
                     {
-                        Zone zone = GetZoneFromXML(currentnode);
-                        rv.Add(zone);
+                        XNamespace myns = GetNameSpace();
+                        string functionname = "GetZoneList";
+                        XElement body =
+                        new XElement(myns + functionname,
+                        new XElement(myns + "locationFilter", locationfilter),
+                        new XElement(myns + "codeFilter", codefilter),
+                        new XElement(myns + "onlyVisibled", onlyvisibled),
+                        new XElement(myns + "entriesPosition", position),
+                        new XElement(myns + "entriesCount", count),
+                        new XElement(myns + "responseDocument", ""));
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        string response = soapbodynode.Value;
+                        XDocument document = GetDoc(response);
+                        List<Zone> rv = new List<Zone>();
+                        foreach (XElement currentnode in document.Root.Elements())
+                        {
+                            Zone zone = GetZoneFromXML(currentnode);
+                            rv.Add(zone);
+                        }
+                        tcs.SetResult(rv);
                     }
-                    tcs.SetResult(rv);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            });
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                        tcs.SetException(e);
+                    }
+                });
+            }
+            else
+            {
+                tcs.SetResult(null);
+            }
             return tcs.Task;
         }
         private static Zone GetZoneFromXML(XElement currentnode)
@@ -730,180 +867,227 @@ namespace WarehouseControlSystem.Helpers.NAV
         public static Task<int> CreateRack(Rack rack, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<int>();
-            Task.Run(async () =>
+            if (Global.CurrentConnection is Connection)
             {
-                try
+                Task.Run(async () =>
                 {
-                    XNamespace myns = GetNameSpace();
-                    string functionname = "CreateRack";
-                    XElement body = 
+                    try
+                    {
+                        XNamespace myns = GetNameSpace();
+                        string functionname = "CreateRack";
+                        XElement body =
                         new XElement(myns + functionname,
-                                    new XElement(myns + "locationCode", rack.LocationCode),
-                                    new XElement(myns + "zoneCode", rack.ZoneCode),
-                                    new XElement(myns + "no", rack.No),
-                                    new XElement(myns + "sections", rack.Sections),
-                                    new XElement(myns + "levels", rack.Levels),
-                                    new XElement(myns + "depth", rack.Depth),
-                                    new XElement(myns + "left", rack.Left),
-                                    new XElement(myns + "top", rack.Top),
-                                    new XElement(myns + "width", rack.Width),
-                                    new XElement(myns + "height", rack.Height),
-                                    new XElement(myns + "rackOrientation", (int)rack.RackOrientation),
-                                    new XElement(myns + "schemeVisible", rack.SchemeVisible));
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts);
-                    tcs.SetResult(0);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            });
+                        new XElement(myns + "locationCode", rack.LocationCode),
+                        new XElement(myns + "zoneCode", rack.ZoneCode),
+                        new XElement(myns + "no", rack.No),
+                        new XElement(myns + "sections", rack.Sections),
+                        new XElement(myns + "levels", rack.Levels),
+                        new XElement(myns + "depth", rack.Depth),
+                        new XElement(myns + "left", rack.Left),
+                        new XElement(myns + "top", rack.Top),
+                        new XElement(myns + "width", rack.Width),
+                        new XElement(myns + "height", rack.Height),
+                        new XElement(myns + "rackOrientation", (int)rack.RackOrientation),
+                        new XElement(myns + "schemeVisible", rack.SchemeVisible));
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        tcs.SetResult(0);
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                        tcs.SetException(e);
+                    }
+                });
+            }
+            else
+            {
+                tcs.SetResult(0);
+            }
             return tcs.Task;
         }
         public static Task<int> ModifyRack(Rack rack, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<int>();
-            Task.Run(async () =>
+            if (Global.CurrentConnection is Connection)
             {
-                try
+                Task.Run(async () =>
                 {
-                    XNamespace myns = GetNameSpace();
-                    string functionname = "ModifyRack";
-                    XElement body = 
+                    try
+                    {
+                        XNamespace myns = GetNameSpace();
+                        string functionname = "ModifyRack";
+                        XElement body =
                         new XElement(myns + functionname,
-                                    new XElement(myns + "locationCode", rack.LocationCode),
-                                    new XElement(myns + "zoneCode", rack.ZoneCode),
-                                    new XElement(myns + "no", rack.No),
-                                    new XElement(myns + "prevNo", rack.PrevNo),
-                                    new XElement(myns + "sections", rack.Sections),
-                                    new XElement(myns + "levels", rack.Levels),
-                                    new XElement(myns + "depth", rack.Depth),
-                                    new XElement(myns + "left", rack.Left),
-                                    new XElement(myns + "top", rack.Top),
-                                    new XElement(myns + "width", rack.Width),
-                                    new XElement(myns + "height", rack.Height),
-                                    new XElement(myns + "rackOrientation", (int)rack.RackOrientation),
-                                    new XElement(myns + "schemeVisible", rack.SchemeVisible));
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts);
-                    tcs.SetResult(0);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            });
+                        new XElement(myns + "locationCode", rack.LocationCode),
+                        new XElement(myns + "zoneCode", rack.ZoneCode),
+                        new XElement(myns + "no", rack.No),
+                        new XElement(myns + "prevNo", rack.PrevNo),
+                        new XElement(myns + "sections", rack.Sections),
+                        new XElement(myns + "levels", rack.Levels),
+                        new XElement(myns + "depth", rack.Depth),
+                        new XElement(myns + "left", rack.Left),
+                        new XElement(myns + "top", rack.Top),
+                        new XElement(myns + "width", rack.Width),
+                        new XElement(myns + "height", rack.Height),
+                        new XElement(myns + "rackOrientation", (int)rack.RackOrientation),
+                        new XElement(myns + "schemeVisible", rack.SchemeVisible));
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        tcs.SetResult(0);
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                        tcs.SetException(e);
+                    }
+                });
+            }
+            else
+            {
+                tcs.SetResult(0);
+            }
             return tcs.Task;
         }
         public static Task<int> DeleteRack(Rack rack, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<int>();
-            Task.Run(async () =>
+            if (Global.CurrentConnection is Connection)
             {
-                try
+                Task.Run(async () =>
                 {
-                    XNamespace myns = GetNameSpace();
-                    string functionname = "DeleteRack";
-                    XElement body = 
+                    try
+                    {
+                        XNamespace myns = GetNameSpace();
+                        string functionname = "DeleteRack";
+                        XElement body =
                         new XElement(myns + functionname,
-                                    new XElement(myns + "locationCode", rack.LocationCode),
-                                    new XElement(myns + "zoneCode", rack.ZoneCode),
-                                    new XElement(myns + "no", rack.No));
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts);
-                    tcs.SetResult(0);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            });
+                        new XElement(myns + "locationCode", rack.LocationCode),
+                        new XElement(myns + "zoneCode", rack.ZoneCode),
+                        new XElement(myns + "no", rack.No));
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        tcs.SetResult(0);
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                        tcs.SetException(e);
+                    }
+                });
+            }
+            else
+            {
+                tcs.SetResult(0);
+            }
             return tcs.Task;
         }
         public static Task<int> SetRackVisible(Rack rack, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<int>();
-            Task.Run(async () =>
+            if (Global.CurrentConnection is Connection)
             {
-                try
+                Task.Run(async () =>
                 {
-                    XNamespace myns = GetNameSpace();
-                    string functionname = "SetRackVisible";
-                    XElement body = 
+                    try
+                    {
+                        XNamespace myns = GetNameSpace();
+                        string functionname = "SetRackVisible";
+                        XElement body =
                         new XElement(myns + functionname,
-                                    new XElement(myns + "locationCode", rack.LocationCode),
-                                    new XElement(myns + "zoneCode", rack.ZoneCode),
-                                    new XElement(myns + "no", rack.No),
-                                    new XElement(myns + "visible", rack.SchemeVisible));
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts);
-                    tcs.SetResult(0);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            });
+                        new XElement(myns + "locationCode", rack.LocationCode),
+                        new XElement(myns + "zoneCode", rack.ZoneCode),
+                        new XElement(myns + "no", rack.No),
+                        new XElement(myns + "visible", rack.SchemeVisible));
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        tcs.SetResult(0);
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                        tcs.SetException(e);
+                    }
+                });
+            }
+            else
+            {
+                tcs.SetResult(0);
+            }
             return tcs.Task;
         }
         public static Task<int> GetRackCount(string locationfilter, string codefilter, string nofilter, bool onlyvisibled, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<int>();
-            Task.Run(async () =>
+            if (Global.CurrentConnection is Connection)
             {
-                try
+                Task.Run(async () =>
                 {
-                    XNamespace myns = GetNameSpace();
-                    string functionname = "GetRackCount";
-                    XElement body = 
+                    try
+                    {
+                        XNamespace myns = GetNameSpace();
+                        string functionname = "GetRackCount";
+                        XElement body =
                         new XElement(myns + functionname,
-                                    new XElement(myns + "locationCodeFilter", locationfilter),
-                                    new XElement(myns + "zoneCodeFilter", codefilter),
-                                    new XElement(myns + "nOFilter", nofilter),
-                                    new XElement(myns + "onlyVisibled", onlyvisibled));
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts);
-                    int rv = StringToInt(soapbodynode.Value);
-                    tcs.SetResult(rv);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            });
+                        new XElement(myns + "locationCodeFilter", locationfilter),
+                        new XElement(myns + "zoneCodeFilter", codefilter),
+                        new XElement(myns + "nOFilter", nofilter),
+                        new XElement(myns + "onlyVisibled", onlyvisibled));
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        int rv = StringToInt(soapbodynode.Value);
+                        tcs.SetResult(rv);
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                        tcs.SetException(e);
+                    }
+                });
+            }
+            else
+            {
+                tcs.SetResult(0);
+            }
             return tcs.Task;
         }
         public static Task<List<Rack>> GetRackList(string locationfilter, string zonefilter, bool onlyvisibled, int position, int count, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<List<Rack>>();
-            Task.Run(async () =>
+            if (Global.CurrentConnection is Connection)
             {
-                try
+                Task.Run(async () =>
                 {
-                    XNamespace myns = GetNameSpace();
-                    string functionname = "GetRackList";
-                    XElement body = 
-                        new XElement(myns + functionname,
-                                    new XElement(myns + "locationCodeFilter", locationfilter),
-                                    new XElement(myns + "zoneCodeFilter", zonefilter),
-                                    new XElement(myns + "onlyVisibled", onlyvisibled),
-                                    new XElement(myns + "entriesPosition", position),
-                                    new XElement(myns + "entriesCount", count),
-                                    new XElement(myns + "responseDocument", ""));
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts);
-                    string response = soapbodynode.Value;
-                    XDocument document = GetDoc(response);
-                    List<Rack> rv = new List<Rack>();
-                    foreach (XElement currentnode in document.Root.Elements())
+                    try
                     {
-                        Rack rack = GetRackFromXML(currentnode);
-                        rv.Add(rack);
+                        XNamespace myns = GetNameSpace();
+                        string functionname = "GetRackList";
+                        XElement body =
+                        new XElement(myns + functionname,
+                        new XElement(myns + "locationCodeFilter", locationfilter),
+                        new XElement(myns + "zoneCodeFilter", zonefilter),
+                        new XElement(myns + "onlyVisibled", onlyvisibled),
+                        new XElement(myns + "entriesPosition", position),
+                        new XElement(myns + "entriesCount", count),
+                        new XElement(myns + "responseDocument", ""));
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        string response = soapbodynode.Value;
+                        XDocument document = GetDoc(response);
+                        List<Rack> rv = new List<Rack>();
+                        foreach (XElement currentnode in document.Root.Elements())
+                        {
+                            Rack rack = GetRackFromXML(currentnode);
+                            rv.Add(rack);
+                        }
+                        tcs.SetResult(rv);
                     }
-                    tcs.SetResult(rv);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            });
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                        tcs.SetException(e);
+                    }
+                });
+            }
+            else
+            {
+                tcs.SetResult(null);
+            }
             return tcs.Task;
-
         }
         private static Rack GetRackFromXML(XElement currentnode)
         {
@@ -964,25 +1148,20 @@ namespace WarehouseControlSystem.Helpers.NAV
                             switch (i)
                             {
                                 case 0:
-                                    {
-                                        rack.RackOrientation = RackOrientationEnum.HorizontalLeft;
-                                        break;
-                                    }
+                                    rack.RackOrientation = RackOrientationEnum.HorizontalLeft;
+                                    break;
                                 case 1:
-                                    {
-                                        rack.RackOrientation = RackOrientationEnum.HorizontalRight;
-                                        break;
-                                    }
+                                    rack.RackOrientation = RackOrientationEnum.HorizontalRight;
+                                    break;
                                 case 2:
-                                    {
-                                        rack.RackOrientation = RackOrientationEnum.VerticalUp;
-                                        break;
-                                    }
+                                    rack.RackOrientation = RackOrientationEnum.VerticalUp;
+                                    break;
                                 case 3:
-                                    {
-                                        rack.RackOrientation = RackOrientationEnum.VerticalDown;
-                                        break;
-                                    }
+                                    rack.RackOrientation = RackOrientationEnum.VerticalDown;
+                                    break;
+                                default:
+                                    rack.RackOrientation = RackOrientationEnum.HorizontalLeft;
+                                    break;
                             }
                             break;
                         }
@@ -996,155 +1175,195 @@ namespace WarehouseControlSystem.Helpers.NAV
         public static Task<int> CreateBin(BinTemplate bintemplate, Bin bin, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<int>();
-            Task.Run(async () =>
+            if (Global.CurrentConnection is Connection)
             {
-                try
+                Task.Run(async () =>
                 {
-                    XNamespace myns = GetNameSpace();
-                    string functionname = "CreateBin";
-                    XElement body = 
+                    try
+                    {
+                        XNamespace myns = GetNameSpace();
+                        string functionname = "CreateBin";
+                        XElement body =
                         new XElement(myns + functionname,
-                                    new XElement(myns + "binTemplateCode", bintemplate.Code),
-                                    new XElement(myns + "binCode", bin.Code),
-                                    new XElement(myns + "rackNo", bin.RackNo),
-                                    new XElement(myns + "section", bin.Section),
-                                    new XElement(myns + "level", bin.Level),
-                                    new XElement(myns + "depth", bin.Depth),
-                                    new XElement(myns + "sectionSpan", bin.SectionSpan),
-                                    new XElement(myns + "levelSpan", bin.LevelSpan),
-                                    new XElement(myns + "depthSpan", bin.DepthSpan));
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts);
-                    tcs.SetResult(0);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            });
+                        new XElement(myns + "binTemplateCode", bintemplate.Code),
+                        new XElement(myns + "binCode", bin.Code),
+                        new XElement(myns + "rackNo", bin.RackNo),
+                        new XElement(myns + "section", bin.Section),
+                        new XElement(myns + "level", bin.Level),
+                        new XElement(myns + "depth", bin.Depth),
+                        new XElement(myns + "sectionSpan", bin.SectionSpan),
+                        new XElement(myns + "levelSpan", bin.LevelSpan),
+                        new XElement(myns + "depthSpan", bin.DepthSpan));
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        tcs.SetResult(0);
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                        tcs.SetException(e);
+                    }
+                });
+            }
+            else
+            {
+                tcs.SetResult(0);
+            }
             return tcs.Task;
         }
         public static Task<int> ModifyBin(Bin bin, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<int>();
-            Task.Run(async () =>
+            if (Global.CurrentConnection is Connection)
             {
-                try
+                Task.Run(async () =>
                 {
-                    XNamespace myns = GetNameSpace();
-                    string functionname = "ModifyBin";
-                    XElement body = 
+                    try
+                    {
+                        XNamespace myns = GetNameSpace();
+                        string functionname = "ModifyBin";
+                        XElement body =
                         new XElement(myns + functionname,
-                                    new XElement(myns + "locationCode", bin.LocationCode),
-                                    new XElement(myns + "binCode", bin.Code),
-                                    new XElement(myns + "prevBinCode", bin.PrevCode),
-                                    new XElement(myns + "rackNo", bin.RackNo),
-                                    new XElement(myns + "section", bin.Section),
-                                    new XElement(myns + "level", bin.Level),
-                                    new XElement(myns + "depth", bin.Depth),
-                                    new XElement(myns + "sectionSpan", bin.SectionSpan),
-                                    new XElement(myns + "depthSpan", bin.LevelSpan),
-                                    new XElement(myns + "binRanking", bin.BinRanking),
-                                    new XElement(myns + "maximumCubage", bin.MaximumCubage),
-                                    new XElement(myns + "maximumWeight", bin.MaximumWeight),
-                                    new XElement(myns + "blockMovement", bin.BlockMovement),
-                                    new XElement(myns + "binTypeCode", bin.BinType),
-                                    new XElement(myns + "warehouseClassCode", bin.WarehouseClassCode),
-                                    new XElement(myns + "specialEquipmentCode", bin.SpecialEquipmentCode));
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts);
-                    tcs.SetResult(0);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            });
+                        new XElement(myns + "locationCode", bin.LocationCode),
+                        new XElement(myns + "binCode", bin.Code),
+                        new XElement(myns + "prevBinCode", bin.PrevCode),
+                        new XElement(myns + "rackNo", bin.RackNo),
+                        new XElement(myns + "section", bin.Section),
+                        new XElement(myns + "level", bin.Level),
+                        new XElement(myns + "depth", bin.Depth),
+                        new XElement(myns + "sectionSpan", bin.SectionSpan),
+                        new XElement(myns + "depthSpan", bin.LevelSpan),
+                        new XElement(myns + "binRanking", bin.BinRanking),
+                        new XElement(myns + "maximumCubage", bin.MaximumCubage),
+                        new XElement(myns + "maximumWeight", bin.MaximumWeight),
+                        new XElement(myns + "blockMovement", bin.BlockMovement),
+                        new XElement(myns + "binTypeCode", bin.BinType),
+                        new XElement(myns + "warehouseClassCode", bin.WarehouseClassCode),
+                        new XElement(myns + "specialEquipmentCode", bin.SpecialEquipmentCode));
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        tcs.SetResult(0);
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                        tcs.SetException(e);
+                    }
+                });
+            }
+            else
+            {
+                tcs.SetResult(0);
+            }
             return tcs.Task;
         }
         public static Task<int> DeleteBin(Bin bin, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<int>();
-            Task.Run(async () =>
+            if (Global.CurrentConnection is Connection)
             {
-                try
+                Task.Run(async () =>
                 {
-                    XNamespace myns = GetNameSpace();
-                    string functionname = "DeleteBin";
-                    XElement body = 
+                    try
+                    {
+                        XNamespace myns = GetNameSpace();
+                        string functionname = "DeleteBin";
+                        XElement body =
                         new XElement(myns + functionname,
-                                    new XElement(myns + "locationCodeFilter", bin.LocationCode),
-                                    new XElement(myns + "zoneCodeFilter", bin.Code),
-                                    new XElement(myns + "rackCodeFilter", bin.PrevCode),
-                                    new XElement(myns + "code", bin.RackNo));
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts);
-                    tcs.SetResult(0);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            });
+                        new XElement(myns + "locationCodeFilter", bin.LocationCode),
+                        new XElement(myns + "zoneCodeFilter", bin.Code),
+                        new XElement(myns + "rackCodeFilter", bin.PrevCode),
+                        new XElement(myns + "code", bin.RackNo));
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        tcs.SetResult(0);
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                        tcs.SetException(e);
+                    }
+                });
+            }
+            else
+            {
+                tcs.SetResult(0);
+            }
             return tcs.Task;
         }
         public static Task<int> GetBinCount(string locationfilter, string codefilter, string rackcodefilter, string bincodefilter, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<int>();
-            Task.Run(async () =>
+            if (Global.CurrentConnection is Connection)
             {
-                try
+                Task.Run(async () =>
                 {
-                    XNamespace myns = GetNameSpace();
-                    string functionname = "GetBinCount";
-                    XElement body = 
+                    try
+                    {
+                        XNamespace myns = GetNameSpace();
+                        string functionname = "GetBinCount";
+                        XElement body =
                         new XElement(myns + functionname,
-                                    new XElement(myns + "locationCodeFilter", locationfilter),
-                                    new XElement(myns + "zoneCodeFilter", codefilter),
-                                    new XElement(myns + "rackCodeFilter", rackcodefilter),
-                                    new XElement(myns + "binCodeFilter", bincodefilter));
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts);
-                    int rv = StringToInt(soapbodynode.Value);
-                    tcs.SetResult(rv);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            });
+                        new XElement(myns + "locationCodeFilter", locationfilter),
+                        new XElement(myns + "zoneCodeFilter", codefilter),
+                        new XElement(myns + "rackCodeFilter", rackcodefilter),
+                        new XElement(myns + "binCodeFilter", bincodefilter));
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        int rv = StringToInt(soapbodynode.Value);
+                        tcs.SetResult(rv);
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                        tcs.SetException(e);
+                    }
+                });
+            }
+            else
+            {
+                tcs.SetResult(0);
+            }
             return tcs.Task;
         }
         public static Task<List<Bin>> GetBinList(string locationfilter, string codefilter, string rackcodefilter, string bincodefilter, int position, int count, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<List<Bin>>();
-            Task.Run(async () =>
+            if (Global.CurrentConnection is Connection)
             {
-                try
+                Task.Run(async () =>
                 {
-                    XNamespace myns = GetNameSpace();
-                    string functionname = "GetBinList";
-                    XElement body = 
-                        new XElement(myns + functionname,
-                                    new XElement(myns + "locationCodeFilter", locationfilter),
-                                    new XElement(myns + "zoneCodeFilter", codefilter),
-                                    new XElement(myns + "rackCodeFilter", rackcodefilter),
-                                    new XElement(myns + "binCodeFilter", bincodefilter),
-                                    new XElement(myns + "entriesPosition", position),
-                                    new XElement(myns + "entriesCount", count),
-                                    new XElement(myns + "responseDocument", ""));
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts);
-                    string response = soapbodynode.Value;
-                    XDocument document = GetDoc(response);
-                    List<Bin> rv = new List<Bin>();
-                    foreach (XElement currentnode in document.Root.Elements())
+                    try
                     {
-                        Bin bin = GetBinFromXML(currentnode);
-                        rv.Add(bin);
+                        XNamespace myns = GetNameSpace();
+                        string functionname = "GetBinList";
+                        XElement body =
+                        new XElement(myns + functionname,
+                        new XElement(myns + "locationCodeFilter", locationfilter),
+                        new XElement(myns + "zoneCodeFilter", codefilter),
+                        new XElement(myns + "rackCodeFilter", rackcodefilter),
+                        new XElement(myns + "binCodeFilter", bincodefilter),
+                        new XElement(myns + "entriesPosition", position),
+                        new XElement(myns + "entriesCount", count),
+                        new XElement(myns + "responseDocument", ""));
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        string response = soapbodynode.Value;
+                        XDocument document = GetDoc(response);
+                        List<Bin> rv = new List<Bin>();
+                        foreach (XElement currentnode in document.Root.Elements())
+                        {
+                            Bin bin = GetBinFromXML(currentnode);
+                            rv.Add(bin);
+                        }
+                        tcs.SetResult(rv);
                     }
-                    tcs.SetResult(rv);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            });
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                        tcs.SetException(e);
+                    }
+                });
+            }
+            else
+            {
+                tcs.SetResult(null);
+            }
             return tcs.Task;
         }
         private static Bin GetBinFromXML(XElement currentnode)
@@ -1263,144 +1482,184 @@ namespace WarehouseControlSystem.Helpers.NAV
         public static Task<int> CreateBinTemplate(BinTemplate bintemplate, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<int>();
-            Task.Run(async () =>
+            if (Global.CurrentConnection is Connection)
             {
-                try
+                Task.Run(async () =>
                 {
-                    XNamespace myns = GetNameSpace();
-                    string functionname = "CreateBinTemplate";
-                    XElement body = 
+                    try
+                    {
+                        XNamespace myns = GetNameSpace();
+                        string functionname = "CreateBinTemplate";
+                        XElement body =
                         new XElement(myns + functionname,
-                                    new XElement(myns + "locationCode", bintemplate.LocationCode),
-                                    new XElement(myns + "zoneCode", bintemplate.ZoneCode),
-                                    new XElement(myns + "code", bintemplate.Code),
-                                    new XElement(myns + "description", bintemplate.Description),
-                                    new XElement(myns + "binTypeCode", bintemplate.BinTypeCode),
-                                    new XElement(myns + "warehouseClassCode", bintemplate.WarehouseClassCode),
-                                    new XElement(myns + "blockMovement", bintemplate.BlockMovement),
-                                    new XElement(myns + "specialEquipmentCode", bintemplate.SpecialEquipmentCode),
-                                    new XElement(myns + "binRanking", bintemplate.BinRanking),
-                                    new XElement(myns + "maximumCubage", bintemplate.MaximumCubage),
-                                    new XElement(myns + "maximumWeight", bintemplate.MaximumWeight),
-                                    new XElement(myns + "dedicated1", bintemplate.Dedicated));
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts);
-                    tcs.SetResult(0);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            });
+                        new XElement(myns + "locationCode", bintemplate.LocationCode),
+                        new XElement(myns + "zoneCode", bintemplate.ZoneCode),
+                        new XElement(myns + "code", bintemplate.Code),
+                        new XElement(myns + "description", bintemplate.Description),
+                        new XElement(myns + "binTypeCode", bintemplate.BinTypeCode),
+                        new XElement(myns + "warehouseClassCode", bintemplate.WarehouseClassCode),
+                        new XElement(myns + "blockMovement", bintemplate.BlockMovement),
+                        new XElement(myns + "specialEquipmentCode", bintemplate.SpecialEquipmentCode),
+                        new XElement(myns + "binRanking", bintemplate.BinRanking),
+                        new XElement(myns + "maximumCubage", bintemplate.MaximumCubage),
+                        new XElement(myns + "maximumWeight", bintemplate.MaximumWeight),
+                        new XElement(myns + "dedicated1", bintemplate.Dedicated));
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        tcs.SetResult(0);
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                        tcs.SetException(e);
+                    }
+                });
+            }
+            else
+            {
+                tcs.SetResult(0);
+            }
             return tcs.Task;
         }
         public static Task<int> ModifyBinTemplate(BinTemplate bintemplate, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<int>();
-            Task.Run(async () =>
+            if (Global.CurrentConnection is Connection)
             {
-                try
+                Task.Run(async () =>
                 {
-                    XNamespace myns = GetNameSpace();
-                    string functionname = "ModifyBinTemplate";
-                
-                    XElement body = 
+                    try
+                    {
+                        XNamespace myns = GetNameSpace();
+                        string functionname = "ModifyBinTemplate";
+
+                        XElement body =
                         new XElement(myns + functionname,
-                                    new XElement(myns + "locationCode", bintemplate.LocationCode),
-                                    new XElement(myns + "zoneCode", bintemplate.ZoneCode),
-                                    new XElement(myns + "code", bintemplate.Code),
-                                    new XElement(myns + "description", bintemplate.Description),
-                                    new XElement(myns + "binTypeCode", bintemplate.BinTypeCode),
-                                    new XElement(myns + "warehouseClassCode", bintemplate.WarehouseClassCode),
-                                    new XElement(myns + "blockMovement", bintemplate.BlockMovement),
-                                    new XElement(myns + "specialEquipmentCode", bintemplate.SpecialEquipmentCode),
-                                    new XElement(myns + "binRanking", bintemplate.BinRanking),
-                                    new XElement(myns + "maximumCubage", bintemplate.MaximumCubage),
-                                    new XElement(myns + "maximumWeight", bintemplate.MaximumWeight),
-                                    new XElement(myns + "dedicated1", bintemplate.Dedicated));
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts);
-                    tcs.SetResult(0);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            });
+                        new XElement(myns + "locationCode", bintemplate.LocationCode),
+                        new XElement(myns + "zoneCode", bintemplate.ZoneCode),
+                        new XElement(myns + "code", bintemplate.Code),
+                        new XElement(myns + "description", bintemplate.Description),
+                        new XElement(myns + "binTypeCode", bintemplate.BinTypeCode),
+                        new XElement(myns + "warehouseClassCode", bintemplate.WarehouseClassCode),
+                        new XElement(myns + "blockMovement", bintemplate.BlockMovement),
+                        new XElement(myns + "specialEquipmentCode", bintemplate.SpecialEquipmentCode),
+                        new XElement(myns + "binRanking", bintemplate.BinRanking),
+                        new XElement(myns + "maximumCubage", bintemplate.MaximumCubage),
+                        new XElement(myns + "maximumWeight", bintemplate.MaximumWeight),
+                        new XElement(myns + "dedicated1", bintemplate.Dedicated));
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        tcs.SetResult(0);
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                        tcs.SetException(e);
+                    }
+                });
+            }
+            else
+            {
+                tcs.SetResult(0);
+            }
             return tcs.Task;
         }
         public static Task<int> DeleteBinTemplate(BinTemplate bintemplate, CancellationTokenSource cts)
         {
             //<element minOccurs="1" maxOccurs="1" name="code" type="string"/>
             var tcs = new TaskCompletionSource<int>();
-            Task.Run(async () =>
+            if (Global.CurrentConnection is Connection)
             {
-                try
+                Task.Run(async () =>
                 {
-                    XNamespace myns = GetNameSpace();
-                    string functionname = "DeleteBinTemplate";
-                    XElement body = 
+                    try
+                    {
+                        XNamespace myns = GetNameSpace();
+                        string functionname = "DeleteBinTemplate";
+                        XElement body =
                         new XElement(myns + functionname,
-                                    new XElement(myns + "code", bintemplate.Code));
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts);
-                    tcs.SetResult(0);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            });
+                        new XElement(myns + "code", bintemplate.Code));
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        tcs.SetResult(0);
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                        tcs.SetException(e);
+                    }
+                });
+            }
+            else
+            {
+                tcs.SetResult(0);
+            }
             return tcs.Task;
         }
         public static Task<int> GetBinTemplateCount(CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<int>();
-            Task.Run(async () =>
+            if (Global.CurrentConnection is Connection)
             {
-                try
+                Task.Run(async () =>
                 {
-                    XNamespace myns = GetNameSpace();
-                    string functionname = "GetBinTemplateCount";
-                    XElement body = new XElement(myns + functionname);
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts);
-                    int rv = StringToInt(soapbodynode.Value);
-                    tcs.SetResult(rv);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            });
+                    try
+                    {
+                        XNamespace myns = GetNameSpace();
+                        string functionname = "GetBinTemplateCount";
+                        XElement body = new XElement(myns + functionname);
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        int rv = StringToInt(soapbodynode.Value);
+                        tcs.SetResult(rv);
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                        tcs.SetException(e);
+                    }
+                });
+            }
+            else
+            {
+                tcs.SetResult(0);
+            }
             return tcs.Task;
         }
         public static Task<List<BinTemplate>> GetBinTemplateList(int position, int count, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<List<BinTemplate>>();
-            Task.Run(async () =>
+            if (Global.CurrentConnection is Connection)
             {
-                try
-                {
-                    XNamespace myns = GetNameSpace();
-                    string functionname = "GetBinTemplateList";
-                    XElement body = 
-                        new XElement(myns + functionname,
-                                    new XElement(myns + "entriesPosition", position),
-                                    new XElement(myns + "entriesCount", count),
-                                    new XElement(myns + "responseDocument", ""));
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts);
-                    string response = soapbodynode.Value;
-                    XDocument document = GetDoc(response);
-                    List<BinTemplate> rv = new List<BinTemplate>();
-                    foreach (XElement currentnode in document.Root.Elements())
+                Task.Run(async () =>
                     {
-                        BinTemplate bintemplate = GetBinTemplateFromXML(currentnode);
-                        rv.Add(bintemplate);
-                    }
-                    tcs.SetResult(rv);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            });
+                        try
+                        {
+                            XNamespace myns = GetNameSpace();
+                            string functionname = "GetBinTemplateList";
+                            XElement body =
+                            new XElement(myns + functionname,
+                            new XElement(myns + "entriesPosition", position),
+                            new XElement(myns + "entriesCount", count),
+                            new XElement(myns + "responseDocument", ""));
+                            XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                            string response = soapbodynode.Value;
+                            XDocument document = GetDoc(response);
+                            List<BinTemplate> rv = new List<BinTemplate>();
+                            foreach (XElement currentnode in document.Root.Elements())
+                            {
+                                BinTemplate bintemplate = GetBinTemplateFromXML(currentnode);
+                                rv.Add(bintemplate);
+                            }
+                            tcs.SetResult(rv);
+                        }
+                        catch (Exception e)
+                        {
+                            System.Diagnostics.Debug.WriteLine(e.Message);
+                            tcs.SetException(e);
+                        }
+                    });
+            }
+            else
+            {
+                tcs.SetResult(null);
+            }
             return tcs.Task;
         }
         private static BinTemplate GetBinTemplateFromXML(XElement currentnode)
@@ -1484,54 +1743,69 @@ namespace WarehouseControlSystem.Helpers.NAV
         public static Task<int> GetBinTypeCount(CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<int>();
-            Task.Run(async () =>
+            if (Global.CurrentConnection is Connection)
             {
-                try
+                Task.Run(async () =>
                 {
-                    XNamespace myns = GetNameSpace();
-                    string functionname = "GetBinTypeCount";
-                    XElement body = new XElement(myns + functionname);
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts);
-                    int rv = StringToInt(soapbodynode.Value);
-                    tcs.SetResult(rv);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            });
+                    try
+                    {
+                        XNamespace myns = GetNameSpace();
+                        string functionname = "GetBinTypeCount";
+                        XElement body = new XElement(myns + functionname);
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        int rv = StringToInt(soapbodynode.Value);
+                        tcs.SetResult(rv);
+                    }
+                    catch (Exception e)
+                    {
+                        tcs.SetException(e);
+                    }
+                });
+            }
+            else
+            {
+                tcs.SetResult(0);
+            }
             return tcs.Task;
         }
         public static Task<List<BinType>> GetBinTypeList(int position, int count, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<List<BinType>>();
-            Task.Run(async () =>
+            if (Global.CurrentConnection is Connection)
             {
-                try
+                Task.Run(async () =>
                 {
-                    XNamespace myns = GetNameSpace();
-                    string functionname = "GetBinTypeList";
-                    XElement body = 
-                        new XElement(myns + functionname,
-                                    new XElement(myns + "entriesPosition", position),
-                                    new XElement(myns + "entriesCount", count),
-                                    new XElement(myns + "responseDocument", ""));
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts);
-                    string response = soapbodynode.Value;
-                    XDocument document = GetDoc(response);
-                    List<BinType> rv = new List<BinType>();
-                    foreach (XElement currentnode in document.Root.Elements())
+                    try
                     {
-                        BinType bintype = GetBinTypeFromXML(currentnode);
-                        rv.Add(bintype);
+                        XNamespace myns = GetNameSpace();
+                        string functionname = "GetBinTypeList";
+                        XElement body =
+                        new XElement(myns + functionname,
+                        new XElement(myns + "entriesPosition", position),
+                        new XElement(myns + "entriesCount", count),
+                        new XElement(myns + "responseDocument", ""));
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        string response = soapbodynode.Value;
+                        XDocument document = GetDoc(response);
+                        List<BinType> rv = new List<BinType>();
+                        foreach (XElement currentnode in document.Root.Elements())
+                        {
+                            BinType bintype = GetBinTypeFromXML(currentnode);
+                            rv.Add(bintype);
+                        }
+                        tcs.SetResult(rv);
                     }
-                    tcs.SetResult(rv);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            });
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                        tcs.SetException(e);
+                    }
+                });
+            }
+            else
+            {
+                tcs.SetResult(null);
+            }
             return tcs.Task;
         }
         private static BinType GetBinTypeFromXML(XElement currentnode)
@@ -1580,65 +1854,81 @@ namespace WarehouseControlSystem.Helpers.NAV
         public static Task<int> GetBinContentCount(string locationCodeFilter, string zoneCodeFilter, string binCodeFiler, string itemNoFilter, string variantCodeFilter, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<int>();
-            Task.Run(async () =>
+            if (Global.CurrentConnection is Connection)
             {
-                try
+                Task.Run(async () =>
                 {
-                    XNamespace myns = GetNameSpace();
-                    string functionname = "GetBinContentCount";
-                    XElement body = 
+                    try
+                    {
+                        XNamespace myns = GetNameSpace();
+                        string functionname = "GetBinContentCount";
+                        XElement body =
                         new XElement(myns + functionname,
-                                    new XElement(myns + "locationCodeFilter", locationCodeFilter),
-                                    new XElement(myns + "zoneCodeFilter", zoneCodeFilter),
-                                    new XElement(myns + "binCodeFilter", binCodeFiler),
-                                    new XElement(myns + "itemNoFilter", itemNoFilter),
-                                    new XElement(myns + "variantCodeFilter", variantCodeFilter));
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts);
-                    int rv = StringToInt(soapbodynode.Value);
-                    tcs.SetResult(rv);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            });
+                        new XElement(myns + "locationCodeFilter", locationCodeFilter),
+                        new XElement(myns + "zoneCodeFilter", zoneCodeFilter),
+                        new XElement(myns + "binCodeFilter", binCodeFiler),
+                        new XElement(myns + "itemNoFilter", itemNoFilter),
+                        new XElement(myns + "variantCodeFilter", variantCodeFilter));
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        int rv = StringToInt(soapbodynode.Value);
+                        tcs.SetResult(rv);
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                        tcs.SetException(e);
+                    }
+                });
+            }
+            else
+            {
+                tcs.SetResult(0);
+            }
             return tcs.Task;
         }
         public static Task<List<BinContent>> GetBinContentList(string locationCodeFilter, string zoneCodeFilter, string binCodeFiler, string itemNoFilter, string variantCodeFilter, int position, int count, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<List<BinContent>>();
-            Task.Run(async () =>
+            if (Global.CurrentConnection is Connection)
             {
-                try
+                Task.Run(async () =>
                 {
-                    XNamespace myns = GetNameSpace();
-                    string functionname = "GetBinContentList";
-                    XElement body = 
-                        new XElement(myns + functionname,
-                                    new XElement(myns + "locationCodeFilter", locationCodeFilter),
-                                    new XElement(myns + "zoneCodeFilter", zoneCodeFilter),
-                                    new XElement(myns + "binCodeFilter", binCodeFiler),
-                                    new XElement(myns + "itemNoFilter", itemNoFilter),
-                                    new XElement(myns + "variantCodeFilter", variantCodeFilter),
-                                    new XElement(myns + "entriesPosition", position),
-                                    new XElement(myns + "entriesCount", count),
-                                    new XElement(myns + "responseDocument", ""));
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts);
-                    string response = soapbodynode.Value;
-                    XDocument document = GetDoc(response);
-                    List<BinContent> rv = new List<BinContent>();
-                    foreach (XElement currentnode in document.Root.Elements())
+                    try
                     {
-                        BinContent bincontent = GetBinContentFromXML(currentnode);
-                        rv.Add(bincontent);
+                        XNamespace myns = GetNameSpace();
+                        string functionname = "GetBinContentList";
+                        XElement body =
+                        new XElement(myns + functionname,
+                        new XElement(myns + "locationCodeFilter", locationCodeFilter),
+                        new XElement(myns + "zoneCodeFilter", zoneCodeFilter),
+                        new XElement(myns + "binCodeFilter", binCodeFiler),
+                        new XElement(myns + "itemNoFilter", itemNoFilter),
+                        new XElement(myns + "variantCodeFilter", variantCodeFilter),
+                        new XElement(myns + "entriesPosition", position),
+                        new XElement(myns + "entriesCount", count),
+                        new XElement(myns + "responseDocument", ""));
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        string response = soapbodynode.Value;
+                        XDocument document = GetDoc(response);
+                        List<BinContent> rv = new List<BinContent>();
+                        foreach (XElement currentnode in document.Root.Elements())
+                        {
+                            BinContent bincontent = GetBinContentFromXML(currentnode);
+                            rv.Add(bincontent);
+                        }
+                        tcs.SetResult(rv);
                     }
-                    tcs.SetResult(rv);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            });
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                        tcs.SetException(e);
+                    }
+                });
+            }
+            else
+            {
+                tcs.SetResult(null);
+            }
             return tcs.Task;
         }
         private static BinContent GetBinContentFromXML(XElement currentnode)
@@ -1733,38 +2023,49 @@ namespace WarehouseControlSystem.Helpers.NAV
         public static Task<int> GetItemIdentifierCount(string barCodeCodeFilter, string itemNoFilter, string variantCodeFilter, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<int>();
-            Task.Run(async () =>
+            if (Global.CurrentConnection is Connection)
             {
-                try
+                Task.Run(async () =>
                 {
-                    XNamespace myns = GetNameSpace();
-                    string functionname = "GetItemIdentifierCount";
-                    XElement body = 
+                    try
+                    {
+                        XNamespace myns = GetNameSpace();
+                        string functionname = "GetItemIdentifierCount";
+                        XElement body =
                         new XElement(myns + functionname,
-                                    new XElement(myns + "barCodeFilter", barCodeCodeFilter),
-                                    new XElement(myns + "itemNoFilter", itemNoFilter),
-                                    new XElement(myns + "variantCodeFilter", variantCodeFilter));
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts);
-                    int rv = StringToInt(soapbodynode.Value);
-                    tcs.SetResult(rv);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            });
+                        new XElement(myns + "barCodeFilter", barCodeCodeFilter),
+                        new XElement(myns + "itemNoFilter", itemNoFilter),
+                        new XElement(myns + "variantCodeFilter", variantCodeFilter));
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        int rv = StringToInt(soapbodynode.Value);
+                        tcs.SetResult(rv);
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                        tcs.SetException(e);
+                    }
+                });
+            }
+            else
+            {
+                tcs.SetResult(0);
+            }
             return tcs.Task;
         }
         public static Task<List<ItemIdentifier>> GetItemIdentifierList(string barCodeCodeFilter, string itemNoFilter, string variantCodeFilter, int position, int count, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<List<ItemIdentifier>>();
-            Task.Run(async () =>
+
+            if (Global.CurrentConnection is Connection)
+            {
+                Task.Run(async () =>
             {
                 try
                 {
                     XNamespace myns = GetNameSpace();
                     string functionname = "GetItemIdentifierList";
-                    XElement body = 
+                    XElement body =
                         new XElement(myns + functionname,
                                     new XElement(myns + "barCodeFilter", barCodeCodeFilter),
                                     new XElement(myns + "itemNoFilter", itemNoFilter),
@@ -1783,11 +2084,17 @@ namespace WarehouseControlSystem.Helpers.NAV
                     }
                     tcs.SetResult(rv);
                 }
-                catch (Exception ex)
+                catch (Exception e)
                 {
-                    tcs.SetException(ex);
+                    System.Diagnostics.Debug.WriteLine(e.Message);
+                    tcs.SetException(e);
                 }
             });
+            }
+            else
+            {
+                tcs.SetResult(null);
+            }
             return tcs.Task;
         }
         private static ItemIdentifier GetItemIdentifierFromXML(XElement currentnode)
@@ -1827,54 +2134,70 @@ namespace WarehouseControlSystem.Helpers.NAV
         public static Task<int> GetWarehouseClassCount(CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<int>();
-            Task.Run(async () =>
+            if (Global.CurrentConnection is Connection)
             {
-                try
+                Task.Run(async () =>
                 {
-                    XNamespace myns = GetNameSpace();
-                    string functionname = "GetWarehouseClassCount";
-                    XElement body = new XElement(myns + functionname);
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts);
-                    int rv = StringToInt(soapbodynode.Value);
-                    tcs.SetResult(rv);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            });
+                    try
+                    {
+                        XNamespace myns = GetNameSpace();
+                        string functionname = "GetWarehouseClassCount";
+                        XElement body = new XElement(myns + functionname);
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        int rv = StringToInt(soapbodynode.Value);
+                        tcs.SetResult(rv);
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                        tcs.SetException(e);
+                    }
+                });
+            }
+            else
+            {
+                tcs.SetResult(0);
+            }
             return tcs.Task;
         }
         public static Task<List<WarehouseClass>> GetWarehouseClassList(int position, int count, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<List<WarehouseClass>>();
-            Task.Run(async () =>
+            if (Global.CurrentConnection is Connection)
             {
-                try
+                Task.Run(async () =>
                 {
-                    XNamespace myns = GetNameSpace();
-                    string functionname = "GetWarehouseClassList";
-                    XElement body = 
-                        new XElement(myns + functionname,
-                                    new XElement(myns + "entriesPosition", position),
-                                    new XElement(myns + "entriesCount", count),
-                                    new XElement(myns + "responseDocument", ""));
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts);
-                    string response = soapbodynode.Value;
-                    XDocument document = GetDoc(response);
-                    List<WarehouseClass> rv = new List<WarehouseClass>();
-                    foreach (XElement currentnode in document.Root.Elements())
+                    try
                     {
-                        WarehouseClass warehouseclass = GetWarehouseClassFromXML(currentnode);
-                        rv.Add(warehouseclass);
+                        XNamespace myns = GetNameSpace();
+                        string functionname = "GetWarehouseClassList";
+                        XElement body =
+                        new XElement(myns + functionname,
+                        new XElement(myns + "entriesPosition", position),
+                        new XElement(myns + "entriesCount", count),
+                        new XElement(myns + "responseDocument", ""));
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        string response = soapbodynode.Value;
+                        XDocument document = GetDoc(response);
+                        List<WarehouseClass> rv = new List<WarehouseClass>();
+                        foreach (XElement currentnode in document.Root.Elements())
+                        {
+                            WarehouseClass warehouseclass = GetWarehouseClassFromXML(currentnode);
+                            rv.Add(warehouseclass);
+                        }
+                        tcs.SetResult(rv);
                     }
-                    tcs.SetResult(rv);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            });
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                        tcs.SetException(e);
+                    }
+                });
+            }
+            else
+            {
+                tcs.SetResult(null);
+            }
             return tcs.Task;
         }
         private static WarehouseClass GetWarehouseClassFromXML(XElement currentnode)
@@ -1904,54 +2227,70 @@ namespace WarehouseControlSystem.Helpers.NAV
         public static Task<int> GetSpecialEquipmentCount(CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<int>();
-            Task.Run(async () =>
+            if (Global.CurrentConnection is Connection)
             {
-                try
+                Task.Run(async () =>
                 {
-                    XNamespace myns = GetNameSpace();
-                    string functionname = "GetSpecialEquipmentCount";
-                    XElement body = new XElement(myns + functionname);
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts);
-                    int rv = StringToInt(soapbodynode.Value);
-                    tcs.SetResult(rv);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            });
+                    try
+                    {
+                        XNamespace myns = GetNameSpace();
+                        string functionname = "GetSpecialEquipmentCount";
+                        XElement body = new XElement(myns + functionname);
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        int rv = StringToInt(soapbodynode.Value);
+                        tcs.SetResult(rv);
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                        tcs.SetException(e);
+                    }
+                });
+            }
+            else
+            {
+                tcs.SetResult(0);
+            }
             return tcs.Task;
         }
         public static Task<List<SpecialEquipment>> GetSpecialEquipmentList(int position, int count, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<List<SpecialEquipment>>();
-            Task.Run(async () =>
+            if (Global.CurrentConnection is Connection)
             {
-                try
+                Task.Run(async () =>
                 {
-                    XNamespace myns = GetNameSpace();
-                    string functionname = "GetSpecialEquipmentList";
-                    XElement body = 
-                        new XElement(myns + functionname,
-                                    new XElement(myns + "entriesPosition", position),
-                                    new XElement(myns + "entriesCount", count),
-                                    new XElement(myns + "responseDocument", ""));
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts);
-                    string response = soapbodynode.Value;
-                    XDocument document = GetDoc(response);
-                    List<SpecialEquipment> rv = new List<SpecialEquipment>();
-                    foreach (XElement currentnode in document.Root.Elements())
+                    try
                     {
-                        SpecialEquipment specialequipment = GetSpecialEquipmentFromXML(currentnode);
-                        rv.Add(specialequipment);
+                        XNamespace myns = GetNameSpace();
+                        string functionname = "GetSpecialEquipmentList";
+                        XElement body =
+                        new XElement(myns + functionname,
+                        new XElement(myns + "entriesPosition", position),
+                        new XElement(myns + "entriesCount", count),
+                        new XElement(myns + "responseDocument", ""));
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        string response = soapbodynode.Value;
+                        XDocument document = GetDoc(response);
+                        List<SpecialEquipment> rv = new List<SpecialEquipment>();
+                        foreach (XElement currentnode in document.Root.Elements())
+                        {
+                            SpecialEquipment specialequipment = GetSpecialEquipmentFromXML(currentnode);
+                            rv.Add(specialequipment);
+                        }
+                        tcs.SetResult(rv);
                     }
-                    tcs.SetResult(rv);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            });
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                        tcs.SetException(e);
+                    }
+                });
+            }
+            else
+            {
+                tcs.SetResult(null);
+            }
             return tcs.Task;
         }
         private static SpecialEquipment GetSpecialEquipmentFromXML(XElement currentnode)
@@ -1981,66 +2320,82 @@ namespace WarehouseControlSystem.Helpers.NAV
         public static Task<int> GetWarehouseEntryCount(string locationCodeFilter, string zoneCodeFilter, string binCodeFilter, string itemNoFilter, string variantCodeFilter, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<int>();
-            Task.Run(async () =>
+            if (Global.CurrentConnection is Connection)
             {
-                try
+                Task.Run(async () =>
                 {
-                    XNamespace myns = GetNameSpace();
-                    string functionname = "GetWarehouseEntryCount";
-                    XElement body = 
+                    try
+                    {
+                        XNamespace myns = GetNameSpace();
+                        string functionname = "GetWarehouseEntryCount";
+                        XElement body =
                         new XElement(myns + functionname,
-                                    new XElement(myns + "locationCodeFilter", locationCodeFilter),
-                                    new XElement(myns + "zoneCodeFilter", zoneCodeFilter),
-                                    new XElement(myns + "binCodeFilter", binCodeFilter),
-                                    new XElement(myns + "itemNoFilter", itemNoFilter),
-                                    new XElement(myns + "variantCodeFilter", variantCodeFilter));              
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts);
-                    int rv = StringToInt(soapbodynode.Value);
-                    tcs.SetResult(rv);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            });
+                        new XElement(myns + "locationCodeFilter", locationCodeFilter),
+                        new XElement(myns + "zoneCodeFilter", zoneCodeFilter),
+                        new XElement(myns + "binCodeFilter", binCodeFilter),
+                        new XElement(myns + "itemNoFilter", itemNoFilter),
+                        new XElement(myns + "variantCodeFilter", variantCodeFilter));
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        int rv = StringToInt(soapbodynode.Value);
+                        tcs.SetResult(rv);
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                        tcs.SetException(e);
+                    }
+                });
+            }
+            else
+            {
+                tcs.SetResult(0);
+            }
             return tcs.Task;
         }
         public static Task<List<WarehouseEntry>> GetWarehouseEntryList(string locationCodeFilter, string zoneCodeFilter, string binCodeFilter, string itemNoFilter, string variantCodeFilter, int position, int count, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<List<WarehouseEntry>>();
-            Task.Run(async () =>
+            if (Global.CurrentConnection is Connection)
             {
-                try
+                Task.Run(async () =>
                 {
-                    XNamespace myns = GetNameSpace();
-                    string functionname = "GetWarehouseEntryList";
-
-                    XElement body = 
-                        new XElement(myns + functionname,
-                                    new XElement(myns + "locationCodeFilter", locationCodeFilter),
-                                    new XElement(myns + "zoneCodeFilter", zoneCodeFilter),
-                                    new XElement(myns + "binCodeFilter", binCodeFilter),
-                                    new XElement(myns + "itemNoFilter", itemNoFilter),
-                                    new XElement(myns + "variantCodeFilter", variantCodeFilter),
-                                    new XElement(myns + "variantCodeFilter", position),
-                                    new XElement(myns + "variantCodeFilter", count),
-                                    new XElement(myns + "responseDocument", ""));
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts);
-                    string response = soapbodynode.Value;
-                    XDocument document = GetDoc(response);
-                    List<WarehouseEntry> rv = new List<WarehouseEntry>();
-                    foreach (XElement currentnode in document.Root.Elements())
+                    try
                     {
-                        WarehouseEntry we = GetWarehouseEntryFromXML(currentnode);
-                        rv.Add(we);
+                        XNamespace myns = GetNameSpace();
+                        string functionname = "GetWarehouseEntryList";
+
+                        XElement body =
+                        new XElement(myns + functionname,
+                        new XElement(myns + "locationCodeFilter", locationCodeFilter),
+                        new XElement(myns + "zoneCodeFilter", zoneCodeFilter),
+                        new XElement(myns + "binCodeFilter", binCodeFilter),
+                        new XElement(myns + "itemNoFilter", itemNoFilter),
+                        new XElement(myns + "variantCodeFilter", variantCodeFilter),
+                        new XElement(myns + "variantCodeFilter", position),
+                        new XElement(myns + "variantCodeFilter", count),
+                        new XElement(myns + "responseDocument", ""));
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        string response = soapbodynode.Value;
+                        XDocument document = GetDoc(response);
+                        List<WarehouseEntry> rv = new List<WarehouseEntry>();
+                        foreach (XElement currentnode in document.Root.Elements())
+                        {
+                            WarehouseEntry we = GetWarehouseEntryFromXML(currentnode);
+                            rv.Add(we);
+                        }
+                        tcs.SetResult(rv);
                     }
-                    tcs.SetResult(rv);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            });
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                        tcs.SetException(e);
+                    }
+                });
+            }
+            else
+            {
+                tcs.SetResult(null);
+            }
             return tcs.Task;
         }
         private static WarehouseEntry GetWarehouseEntryFromXML(XElement currentnode)
@@ -2119,33 +2474,41 @@ namespace WarehouseControlSystem.Helpers.NAV
         public static Task<List<UserDefinedSelection>> LoadUDS(string locationCode, string zoneCode, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<List<UserDefinedSelection>>();
-            Task.Run(async () =>
+            if (Global.CurrentConnection is Connection)
             {
-                try
+                Task.Run(async () =>
                 {
-                    XNamespace myns = GetNameSpace();
-                    string functionname = "LoadUserDefinedSelectionList";
-                    XElement body = 
-                        new XElement(myns + functionname,
-                                    new XElement(myns + "locationCode", locationCode),
-                                    new XElement(myns + "zoneCode", zoneCode),
-                                    new XElement(myns + "responseDocument", ""));
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts);
-                    string response = soapbodynode.Value;
-                    XDocument document = GetDoc(response);
-                    List<UserDefinedSelection> rv = new List<UserDefinedSelection>();
-                    foreach (XElement currentnode in document.Root.Elements())
+                    try
                     {
-                        UserDefinedSelection uds = GetUserDefinedSelectionFromXML(currentnode);
-                        rv.Add(uds);
+                        XNamespace myns = GetNameSpace();
+                        string functionname = "LoadUserDefinedSelectionList";
+                        XElement body =
+                        new XElement(myns + functionname,
+                        new XElement(myns + "locationCode", locationCode),
+                        new XElement(myns + "zoneCode", zoneCode),
+                        new XElement(myns + "responseDocument", ""));
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        string response = soapbodynode.Value;
+                        XDocument document = GetDoc(response);
+                        List<UserDefinedSelection> rv = new List<UserDefinedSelection>();
+                        foreach (XElement currentnode in document.Root.Elements())
+                        {
+                            UserDefinedSelection uds = GetUserDefinedSelectionFromXML(currentnode);
+                            rv.Add(uds);
+                        }
+                        tcs.SetResult(rv);
                     }
-                    tcs.SetResult(rv);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            });
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                        tcs.SetException(e);
+                    }
+                });
+            }
+            else
+            {
+                tcs.SetResult(null);
+            }
             return tcs.Task;
         }
         private static UserDefinedSelection GetUserDefinedSelectionFromXML(XElement currentnode)
@@ -2187,34 +2550,42 @@ namespace WarehouseControlSystem.Helpers.NAV
         public static Task<List<UserDefinedSelectionResult>> RunUDS(string locationCode, string zoneCode, int i, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<List<UserDefinedSelectionResult>>();
-            Task.Run(async () =>
+            if (Global.CurrentConnection is Connection)
             {
-                try
+                Task.Run(async () =>
                 {
-                    XNamespace myns = GetNameSpace();
-                    string functionname = "RunUDS";
-                    XElement body = 
-                        new XElement(myns + functionname,
-                                    new XElement(myns + "locationCode", locationCode),
-                                    new XElement(myns + "zoneCode", zoneCode),
-                                    new XElement(myns + "functionIndex", i),
-                                    new XElement(myns + "responseDocument", ""));
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts);
-                    string response = soapbodynode.Value;
-                    XDocument document = GetDoc(response);
-                    List<UserDefinedSelectionResult> rv = new List<UserDefinedSelectionResult>();
-                    foreach (XElement currentnode in document.Root.Elements())
+                    try
                     {
-                        UserDefinedSelectionResult uds = GetUserDefinedSelectionResultnFromXML(currentnode);
-                        rv.Add(uds);
+                        XNamespace myns = GetNameSpace();
+                        string functionname = "RunUDS";
+                        XElement body =
+                        new XElement(myns + functionname,
+                        new XElement(myns + "locationCode", locationCode),
+                        new XElement(myns + "zoneCode", zoneCode),
+                        new XElement(myns + "functionIndex", i),
+                        new XElement(myns + "responseDocument", ""));
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        string response = soapbodynode.Value;
+                        XDocument document = GetDoc(response);
+                        List<UserDefinedSelectionResult> rv = new List<UserDefinedSelectionResult>();
+                        foreach (XElement currentnode in document.Root.Elements())
+                        {
+                            UserDefinedSelectionResult uds = GetUserDefinedSelectionResultnFromXML(currentnode);
+                            rv.Add(uds);
+                        }
+                        tcs.SetResult(rv);
                     }
-                    tcs.SetResult(rv);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            });
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                        tcs.SetException(e);
+                    }
+                });
+            }
+            else
+            {
+                tcs.SetResult(null);
+            }
             return tcs.Task;
         }
         private static UserDefinedSelectionResult GetUserDefinedSelectionResultnFromXML(XElement currentnode)
@@ -2268,34 +2639,43 @@ namespace WarehouseControlSystem.Helpers.NAV
         public static Task<List<UserDefinedFunction>> LoadUserDefinedFunctionList(string locationCode, string zoneCode, string rackno, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<List<UserDefinedFunction>>();
-            Task.Run(async () =>
+
+            if (Global.CurrentConnection is Connection)
             {
-                try
+                Task.Run(async () =>
                 {
-                    XNamespace myns = GetNameSpace();
-                    string functionname = "LoadUserDefinedFunctionList";
-                    XElement body = 
-                        new XElement(myns + functionname,
-                                    new XElement(myns + "locationCode", locationCode),
-                                    new XElement(myns + "zoneCode", zoneCode),
-                                    new XElement(myns + "rackNo", rackno),
-                                    new XElement(myns + "responseDocument", ""));
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts);
-                    string response = soapbodynode.Value;
-                    XDocument document = GetDoc(response);
-                    List<UserDefinedFunction> rv = new List<UserDefinedFunction>();
-                    foreach (XElement currentnode in document.Root.Elements())
+                    try
                     {
-                        UserDefinedFunction udf = GetUserDefinedFunctionFromXML(currentnode);
-                        rv.Add(udf);
+                        XNamespace myns = GetNameSpace();
+                        string functionname = "LoadUserDefinedFunctionList";
+                        XElement body =
+                        new XElement(myns + functionname,
+                        new XElement(myns + "locationCode", locationCode),
+                        new XElement(myns + "zoneCode", zoneCode),
+                        new XElement(myns + "rackNo", rackno),
+                        new XElement(myns + "responseDocument", ""));
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        string response = soapbodynode.Value;
+                        XDocument document = GetDoc(response);
+                        List<UserDefinedFunction> rv = new List<UserDefinedFunction>();
+                        foreach (XElement currentnode in document.Root.Elements())
+                        {
+                            UserDefinedFunction udf = GetUserDefinedFunctionFromXML(currentnode);
+                            rv.Add(udf);
+                        }
+                        tcs.SetResult(rv);
                     }
-                    tcs.SetResult(rv);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            });
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                        tcs.SetException(e);
+                    }
+                });
+            }
+            else
+            {
+                tcs.SetResult(null);
+            }
             return tcs.Task;
         }
         private static UserDefinedFunction GetUserDefinedFunctionFromXML(XElement currentnode)
@@ -2333,31 +2713,40 @@ namespace WarehouseControlSystem.Helpers.NAV
         public static Task<string> RunFunction(int i, string locationCode, string zoneCode, string rackno, string bincode, string itemno, string variantcode, decimal quantity, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<string>();
-            Task.Run(async () =>
+            if (Global.CurrentConnection is Connection)
             {
-                try
+
+                Task.Run(async () =>
                 {
-                    XNamespace myns = GetNameSpace();
-                    string functionname = "RunFunction";
-                    XElement body = 
+                    try
+                    {
+                        XNamespace myns = GetNameSpace();
+                        string functionname = "RunFunction";
+                        XElement body =
                         new XElement(myns + functionname,
-                                    new XElement(myns + "functionindex", i),
-                                    new XElement(myns + "locationCode", locationCode),
-                                    new XElement(myns + "zoneCode", zoneCode),
-                                    new XElement(myns + "rackNo", rackno),
-                                    new XElement(myns + "binCode", bincode),
-                                    new XElement(myns + "itemNo", itemno),
-                                    new XElement(myns + "variantCode", variantcode),
-                                    new XElement(myns + "quantity", quantity));
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts);
-                    string rv = soapbodynode.Value;
-                    tcs.SetResult(rv);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            });
+                        new XElement(myns + "functionindex", i),
+                        new XElement(myns + "locationCode", locationCode),
+                        new XElement(myns + "zoneCode", zoneCode),
+                        new XElement(myns + "rackNo", rackno),
+                        new XElement(myns + "binCode", bincode),
+                        new XElement(myns + "itemNo", itemno),
+                        new XElement(myns + "variantCode", variantcode),
+                        new XElement(myns + "quantity", quantity));
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        string rv = soapbodynode.Value;
+                        tcs.SetResult(rv);
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                        tcs.SetException(e);
+                    }
+                });
+            }
+            else
+            {
+                tcs.SetResult("");
+            }
             return tcs.Task;
         }
         #endregion
@@ -2366,33 +2755,41 @@ namespace WarehouseControlSystem.Helpers.NAV
         public static Task<List<SearchResponse>> Search(string locationcode, string searchrequest, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<List<SearchResponse>>();
-            Task.Run(async () =>
+            if (Global.CurrentConnection is Connection)
             {
-                try
+                Task.Run(async () =>
                 {
-                    XNamespace myns = GetNameSpace();
-                    string functionname = "Search";
-                    XElement body = 
-                        new XElement(myns + functionname,
-                                    new XElement(myns + "locationCode", locationcode),
-                                    new XElement(myns + "request", searchrequest),
-                                    new XElement(myns + "responseDocument", ""));
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts);
-                    string response = soapbodynode.Value;
-                    XDocument document = GetDoc(response);
-                    List<SearchResponse> rv = new List<SearchResponse>();
-                    foreach (XElement currentnode in document.Root.Elements())
+                    try
                     {
-                        SearchResponse searchresponse = GetSearchResponseFromXML(currentnode);
-                        rv.Add(searchresponse);
+                        XNamespace myns = GetNameSpace();
+                        string functionname = "Search";
+                        XElement body =
+                        new XElement(myns + functionname,
+                        new XElement(myns + "locationCode", locationcode),
+                        new XElement(myns + "request", searchrequest),
+                        new XElement(myns + "responseDocument", ""));
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        string response = soapbodynode.Value;
+                        XDocument document = GetDoc(response);
+                        List<SearchResponse> rv = new List<SearchResponse>();
+                        foreach (XElement currentnode in document.Root.Elements())
+                        {
+                            SearchResponse searchresponse = GetSearchResponseFromXML(currentnode);
+                            rv.Add(searchresponse);
+                        }
+                        tcs.SetResult(rv);
                     }
-                    tcs.SetResult(rv);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            });
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                        tcs.SetException(e);
+                    }
+                });
+            }
+            else
+            {
+                tcs.SetResult(null);
+            }
             return tcs.Task;
         }
         private static SearchResponse GetSearchResponseFromXML(XElement currentnode)
@@ -2445,22 +2842,31 @@ namespace WarehouseControlSystem.Helpers.NAV
         public static Task<int> TestConnection(CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<int>();
-            Task.Run(async () =>
+            if (Global.CurrentConnection is Connection)
             {
-                try
+                Task.Run(async () =>
                 {
-                    XNamespace myns = "urn:microsoft-dynamics-schemas/codeunit/" + Global.TestConnection.Codeunit;
-                    string functionname = "APIVersion";
-                    XElement body = new XElement(myns + functionname);
-                    XElement soapbodynode = await Process(functionname, body, myns, true, cts);
-                    int rv = StringToInt(soapbodynode.Value);
-                    tcs.SetResult(rv);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            });
+                    try
+                    {
+                        XNamespace myns = "urn:microsoft-dynamics-schemas/codeunit/" + Global.TestConnection.Codeunit;
+                        string functionname = "APIVersion";
+                        XElement body = new XElement(myns + functionname);
+                        XElement soapbodynode = await Process(functionname, body, myns, true, cts);
+                        int rv = StringToInt(soapbodynode.Value);
+                        tcs.SetResult(rv);
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                        tcs.SetException(e);
+                    }
+                });
+
+            }
+            else
+            {
+                tcs.SetResult(0);
+            }
             return tcs.Task;
         }
 
@@ -2470,7 +2876,9 @@ namespace WarehouseControlSystem.Helpers.NAV
             if (testconnection)
             {
                 if (!(Global.TestConnection is Connection))
+                {
                     return null;
+                }
 
                 connection = Global.TestConnection;
             }
@@ -2495,15 +2903,13 @@ namespace WarehouseControlSystem.Helpers.NAV
             switch (connection.ClientCredentialType)
             {
                 case ClientCredentialTypeEnum.Windows:
-                    {
-                        handler.Credentials = new NetworkCredential(connection.Domen + "\\" + connection.User, connection.Password, "");
-                        break;
-                    }
+                    handler.Credentials = new NetworkCredential(connection.Domen + "\\" + connection.User, connection.Password, "");
+                    break;
                 case ClientCredentialTypeEnum.Basic:
-                    {
-                        handler.Credentials = connection.GetCreditials();
-                        break;
-                    }
+                    handler.Credentials = connection.GetCreditials();
+                    break;
+                default:
+                    break;
             }
 
             using (var client = new HttpClient(handler))
@@ -2616,8 +3022,7 @@ namespace WarehouseControlSystem.Helpers.NAV
 
         public static int StringToInt(string value)
         {
-            int int1 = 0;
-            int.TryParse(value, out int1);
+            int.TryParse(value, out int int1);
             return int1;
         }
         public static decimal StringToDec(string value)
@@ -2654,8 +3059,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                 return false;
             }
 
-            bool rv = false;
-            if (bool.TryParse(value, out rv))
+            if (bool.TryParse(value, out bool rv))
             {
                 return rv;
             }

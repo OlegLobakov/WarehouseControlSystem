@@ -12,7 +12,7 @@
             </Grid.RowDefinitions>
             <StackLayout Grid.Row="0" Orientation="Horizontal">
                 <Label Text="Код ячейки" Margin="10,0,0,0"  VerticalOptions="Center"/>
-                <Entry Text="{Binding Code, Mode=TwoWay}" Keyboard="Text" 
+                <Entry Text="{Binding TemplateCode, Mode=TwoWay}" Keyboard="Text" 
                        HorizontalOptions="FillAndExpand" VerticalOptions="Center" x:Name="singlebinentry" Margin="10,0,0,0" 
                        IsEnabled="{Binding EditedBinCodeIsEnabled}"/>
             </StackLayout>
@@ -101,22 +101,22 @@
                     <StackLayout Grid.Row="4" Orientation="Vertical">
                         <Label Text="{i18n:Translate BinEditView_FieldBinRanking}" 
                                HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
-                        <Entry Text="{Binding BinRanking, Mode=TwoWay}" Keyboard="Numeric"  HorizontalOptions="Fill" />
+                        <Entry Text="{Binding TemplateBinRanking, Mode=TwoWay}" Keyboard="Numeric"  HorizontalOptions="Fill" />
                     </StackLayout>
                     <StackLayout Grid.Row="5" Orientation="Vertical">
                         <Label Text="{i18n:Translate BinEditView_FieldMaximumCubage}" 
                                HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
-                        <Entry Text="{Binding MaximumCubage, Mode=TwoWay}" Keyboard="Numeric" HorizontalOptions="Fill"/>
+                        <Entry Text="{Binding TemplateMaximumCubage, Mode=TwoWay}" Keyboard="Numeric" HorizontalOptions="Fill"/>
                     </StackLayout>
                     <StackLayout Grid.Row="6" Orientation="Vertical">
                         <Label Text="{i18n:Translate BinEditView_FieldMaximumWeight}" 
                                HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
-                        <Entry Text="{Binding MaximumWeight, Mode=TwoWay}" Keyboard="Numeric" HorizontalOptions="FillAndExpand"/>
+                        <Entry Text="{Binding TemplateMaximumWeight, Mode=TwoWay}" Keyboard="Numeric" HorizontalOptions="FillAndExpand"/>
                     </StackLayout>
                     <StackLayout Grid.Row="7" Orientation="Horizontal">
                         <Label Text="{i18n:Translate BinEditView_FieldAdjustmentBin}" 
                                HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
-                        <Switch IsToggled="{Binding AdjustmentBin, Mode=TwoWay}" HorizontalOptions="EndAndExpand" VerticalOptions="Center"></Switch>
+                        <Switch IsToggled="{Binding TemplateAdjustmentBin, Mode=TwoWay}" HorizontalOptions="EndAndExpand" VerticalOptions="Center"></Switch>
                     </StackLayout>
                     <StackLayout Grid.Row="8" Orientation="Horizontal">
                         <Label Text="{i18n:Translate BinEditView_FieldNoSize}" 
@@ -126,7 +126,7 @@
                     <StackLayout Grid.Row="9" Orientation="Horizontal">
                         <Label Text="{i18n:Translate BinEditView_FieldDefault}" 
                                HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
-                        <Switch IsToggled="{Binding Default, Mode=TwoWay}" HorizontalOptions="EndAndExpand" VerticalOptions="Center"></Switch>
+                        <Switch IsToggled="{Binding TemplateDefault, Mode=TwoWay}" HorizontalOptions="EndAndExpand" VerticalOptions="Center"></Switch>
                     </StackLayout>
                 </Grid>
             </ScrollView>
@@ -136,9 +136,15 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <Button Grid.Row="0" Grid.Column="0" Text="{i18n:Translate RackNewPage_ButtonsBlock}"    BorderRadius="0" FontSize="Medium"  BackgroundColor="#cfcfcf" Command="{Binding BlockBinsCommand}"/>
-                <Button Grid.Row="1" Grid.Column="0" Text="{i18n:Translate RackNewPage_ButtonsCombine}"  BorderRadius="0" FontSize="Medium"  BackgroundColor="#cfcfcf" Command="{Binding CombineBinsCommand}"/>
-                <Button Grid.Row="2" Grid.Column="0" Text="{i18n:Translate RackNewPage_ButtonsDelete}"   BorderRadius="0" FontSize="Medium"  BackgroundColor="#cfcfcf" Command="{Binding DeleteBinsCommand}"/>
+                <Button Grid.Row="0" Grid.Column="0" Text="{i18n:Translate RackNewPage_ButtonsBlock}"    
+                        BorderRadius="0" FontSize="Medium"  
+                        BackgroundColor="#cfcfcf" Command="{Binding BlockBinsCommand}"/>
+                <Button Grid.Row="1" Grid.Column="0" Text="{i18n:Translate RackNewPage_ButtonsCombine}"  
+                        BorderRadius="0" FontSize="Medium"  
+                        BackgroundColor="#cfcfcf" Command="{Binding CombineBinsCommand}"/>
+                <Button Grid.Row="2" Grid.Column="0" Text="{i18n:Translate RackNewPage_ButtonsDelete}"   
+                        BorderRadius="0" FontSize="Medium"  
+                        BackgroundColor="#cfcfcf" Command="{Binding DeleteBinsCommand}"/>
             </Grid>
         </Grid>
     </ContentView.Content>

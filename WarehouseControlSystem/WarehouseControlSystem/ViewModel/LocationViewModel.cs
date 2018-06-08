@@ -277,10 +277,11 @@ namespace WarehouseControlSystem.ViewModel
                     await NAV.CreateLocation(Location, ACD.Default);
                     await Navigation.PopAsync();
                 }
-                catch (Exception ex)
+                catch (Exception e)
                 {
+                    System.Diagnostics.Debug.WriteLine(e.Message);
                     State = State.Error;
-                    ErrorText = ex.Message+" "+ex.StackTrace;
+                    ErrorText = e.Message+" "+e.StackTrace;
                 }
             }
             else
@@ -290,10 +291,11 @@ namespace WarehouseControlSystem.ViewModel
                     await NAV.ModifyLocation(Location, ACD.Default);
                     await Navigation.PopAsync();
                 }
-                catch (Exception ex)
+                catch (Exception e)
                 {
+                    System.Diagnostics.Debug.WriteLine(e.Message);
                     State = State.Error;
-                    ErrorText = ex.Message + " " + ex.StackTrace;
+                    ErrorText = e.Message + " " + e.StackTrace;
                 }
             }
             LoadAnimation = false;
@@ -317,10 +319,11 @@ namespace WarehouseControlSystem.ViewModel
                 SaveFields(location);
                 await NAV.SetLocationVisible(location, ACD.Default);
             }
-            catch(Exception ex)
+            catch(Exception e)
             {
+                System.Diagnostics.Debug.WriteLine(e.Message);
                 State = State.Error;
-                ErrorText = ex.Message;
+                ErrorText = e.Message;
             }
             
         }
@@ -381,12 +384,14 @@ namespace WarehouseControlSystem.ViewModel
                     SubSchemeElements.Clear();
                     foreach (Zone zone in zones)
                     {
-                        SubSchemeElement sse = new SubSchemeElement();
-                        sse.Left = zone.Left;
-                        sse.Top = zone.Top;
-                        sse.Height = zone.Height;
-                        sse.Width = zone.Width;
-                        sse.HexColor = zone.HexColor;
+                        SubSchemeElement sse = new SubSchemeElement
+                        {
+                            Left = zone.Left,
+                            Top = zone.Top,
+                            Height = zone.Height,
+                            Width = zone.Width,
+                            HexColor = zone.HexColor
+                        };
                         SubSchemeElements.Add(sse);
                     }
                 }

@@ -107,10 +107,11 @@ namespace WarehouseControlSystem.ViewModel
                     ErrorText = "Email was sent by default application";
                 }
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
+                System.Diagnostics.Debug.WriteLine(e.Message);
                 State = State.Error;
-                ErrorText = ex.Message;
+                ErrorText = e.Message;
             }
         }
 

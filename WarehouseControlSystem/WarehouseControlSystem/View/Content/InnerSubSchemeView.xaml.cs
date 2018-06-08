@@ -208,8 +208,9 @@ namespace WarehouseControlSystem.View.Content
                                                 selectionbottom += (sss.Section * blocksize) + blocksize;
                                                 break;
                                             }
+                                        default:
+                                            break;
                                     }
-
 
                                     SKColor colorred = SKColors.Red;
                                     color = color.WithAlpha(100);

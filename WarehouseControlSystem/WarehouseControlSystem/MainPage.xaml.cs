@@ -48,6 +48,7 @@ namespace WarehouseControlSystem
                 }
                 catch (Exception ex)
                 {
+                    System.Diagnostics.Debug.WriteLine(ex.Message);
                     Global.CompliantPlug = ex.Message;
                 }
                 IsPresented = false;

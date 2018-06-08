@@ -51,36 +51,43 @@ namespace WarehouseControlSystem.ViewModel
         public async void Load()
         {
             State = State.Loading;
-            try
+            if (CheckNetAndConnection())
             {
-                List<BinTemplate> bintemplates = await NAV.GetBinTemplateList(1, int.MaxValue, ACD.Default);
-                if ((!IsDisposed) && (bintemplates is List<BinTemplate>))
+                try
                 {
-                    BinTemplates.Clear();
-                    foreach (BinTemplate bt in bintemplates)
+                    List<BinTemplate> bintemplates = await NAV.GetBinTemplateList(1, int.MaxValue, ACD.Default);
+                    if ((!IsDisposed) && (bintemplates is List<BinTemplate>))
                     {
-                        BinTemplateViewModel btvm = new BinTemplateViewModel(Navigation, bt);
-                        BinTemplates.Add(btvm);
+                        BinTemplates.Clear();
+                        foreach (BinTemplate bt in bintemplates)
+                        {
+                            BinTemplateViewModel btvm = new BinTemplateViewModel(Navigation, bt);
+                            BinTemplates.Add(btvm);
+                        }
+                        State = State.Normal;
                     }
-                    State = State.Normal;
                 }
-            }
-            catch (OperationCanceledException ex)
-            {
-                ErrorText = ex.Message;
-            }
-            catch 
-            {
-                State = State.Error;
-                ErrorText = AppResources.Error_LoadBinTemplates;
+                catch (OperationCanceledException e)
+                {
+                    System.Diagnostics.Debug.WriteLine(e.Message);
+                    ErrorText = e.Message;
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine(e.Message);
+                    State = State.Error;
+                    ErrorText = AppResources.Error_LoadBinTemplates;
+                }
             }
         }
 
         public async void NewTemplate()
         {
             BinTemplate newbt = new BinTemplate();
-            BinTemplateViewModel btvm = new BinTemplateViewModel(Navigation, newbt);
-            btvm.CreateMode = true;
+            BinTemplateViewModel btvm = new BinTemplateViewModel(Navigation, newbt)
+            {
+                CreateMode = true
+            };
             NewBinTemplatePage nbtp = new NewBinTemplatePage(btvm);
             await Navigation.PushAsync(nbtp);
         }
@@ -88,22 +95,25 @@ namespace WarehouseControlSystem.ViewModel
         public async void DeleteTemplate(object sender)
         {
             BinTemplateViewModel btvm = (BinTemplateViewModel)sender;
-
-            State = State.Loading;
-            try
+            if (CheckNetAndConnection())
             {
-                await NAV.DeleteBinTemplate(btvm.BinTemplate, ACD.Default);
-                if (!IsDisposed)
+                State = State.Loading;
+                try
                 {
-                    BinTemplates.Remove(btvm);
-                    SelectedTemplate = null;
-                    State = State.Normal;
+                    await NAV.DeleteBinTemplate(btvm.BinTemplate, ACD.Default);
+                    if (!IsDisposed)
+                    {
+                        BinTemplates.Remove(btvm);
+                        SelectedTemplate = null;
+                        State = State.Normal;
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                State = State.Error;
-                ErrorText = ex.Message;
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine(e.Message);
+                    State = State.Error;
+                    ErrorText = e.Message;
+                }
             }
         }
 
@@ -116,8 +126,7 @@ namespace WarehouseControlSystem.ViewModel
 
         public void CopyTemplate(object sender)
         {
-
-
+            System.Diagnostics.Debug.WriteLine(sender.ToString());
         }
 
         public override void Dispose()

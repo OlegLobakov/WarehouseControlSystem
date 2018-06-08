@@ -257,6 +257,8 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
                         MovingAction = MovingActionTypeEnum.None;
                         break;
                     }
+                default:
+                    break;
             }
         }
 

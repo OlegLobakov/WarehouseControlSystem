@@ -193,25 +193,19 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
                 switch (model.RackOrientation)
                 {
                     case RackOrientationEnum.HorizontalLeft:
-                        {
-                            grid.Children.Add(label1, i, 0);
-                            break;
-                        }
+                        grid.Children.Add(label1, i, 0);
+                        break;
                     case RackOrientationEnum.HorizontalRight:
-                        {
-                            grid.Children.Add(label1, i - 1, 0);
-                            break;
-                        }
+                        grid.Children.Add(label1, i - 1, 0);
+                        break;
                     case RackOrientationEnum.VerticalUp:
-                        {
-                            grid.Children.Add(label1, 0, i);
-                            break;
-                        }
+                        grid.Children.Add(label1, 0, i);
+                        break;
                     case RackOrientationEnum.VerticalDown:
-                        {
-                            grid.Children.Add(label1, 0, i - 1);
-                            break;
-                        }
+                        grid.Children.Add(label1, 0, i - 1);
+                        break;
+                    default:
+                        break;
                 }
                 udslabels.Add(label1);
             }

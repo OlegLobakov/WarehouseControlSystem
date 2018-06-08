@@ -138,7 +138,7 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             }
         }
 
-        public void Dispose()
+        public void DisposeObject()
         {
             MessagingCenter.Unsubscribe<BinsViewModel>(this, "Update");
             MessagingCenter.Unsubscribe<RackViewModel>(this, "Update");        

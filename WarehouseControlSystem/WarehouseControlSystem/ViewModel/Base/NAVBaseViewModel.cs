@@ -37,8 +37,7 @@ namespace WarehouseControlSystem.ViewModel.Base
                     OnPropertyChanged(nameof(Code));
                 }
             }
-        }
-        string code = "";
+        } string code = "";
 
         public string LocationCode
         {
@@ -51,8 +50,8 @@ namespace WarehouseControlSystem.ViewModel.Base
                     OnPropertyChanged(nameof(LocationCode));
                 }
             }
-        }
-        string locationcode;
+        } string locationcode;
+
         public string ZoneCode
         {
             get { return zonecode; }
@@ -64,8 +63,7 @@ namespace WarehouseControlSystem.ViewModel.Base
                     OnPropertyChanged(nameof(ZoneCode));
                 }
             }
-        }
-        string zonecode;
+        } string zonecode;
 
         public string CodeWarningText
         {
@@ -202,6 +200,8 @@ namespace WarehouseControlSystem.ViewModel.Base
 
                         case SchemeElementEditMode.Resize:
                             EditModeText = AppResources.ZoneView_EditMode2;
+                            break;
+                        default:
                             break;
                     }
                     Changed = true;

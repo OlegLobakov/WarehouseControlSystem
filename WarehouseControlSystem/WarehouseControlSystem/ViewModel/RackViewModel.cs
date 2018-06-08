@@ -518,7 +518,7 @@ namespace WarehouseControlSystem.ViewModel
 
         public List<SubSchemeSelect> SubSchemeSelects { get; set; } = new List<SubSchemeSelect>();
         public List<SubSchemeSelect> UDSSelects { get; set; } = new List<SubSchemeSelect>();
-        public List<UserDefinedFunction> UserDefinedFunctions = new List<UserDefinedFunction>();
+        public List<UserDefinedFunction> UserDefinedFunctions { get; set; } = new List<UserDefinedFunction>();
 
 
         public RackViewModel(INavigation navigation, Rack rack, bool createmode1) : base(navigation)
@@ -707,13 +707,15 @@ namespace WarehouseControlSystem.ViewModel
                 MessagingCenter.Send<RackViewModel>(this, "LocationsIsLoaded");
                 IsBusy = false;
             }
-            catch (OperationCanceledException ex)
+            catch (OperationCanceledException e)
             {
-                ErrorText = ex.Message;
+                System.Diagnostics.Debug.WriteLine(e.Message);
+                ErrorText = e.Message;
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                ErrorText = ex.Message;
+                System.Diagnostics.Debug.WriteLine(e.Message);
+                ErrorText = e.Message;
             }
         }
 
@@ -743,9 +745,10 @@ namespace WarehouseControlSystem.ViewModel
                     MessagingCenter.Send<RackViewModel>(this, "ZonesIsLoaded");
                     CheckNo();
                 }
-                catch (OperationCanceledException ex)
+                catch (OperationCanceledException e)
                 {
-                    ErrorText = ex.Message;
+                    System.Diagnostics.Debug.WriteLine(e.Message);
+                    ErrorText = e.Message;
                 }
                 finally
                 {
@@ -800,13 +803,15 @@ namespace WarehouseControlSystem.ViewModel
                     BinTemplatesIsLoaded = bintemplates.Count > 0;
                 }
             }
-            catch (OperationCanceledException ex)
+            catch (OperationCanceledException e)
             {
-                ErrorText = ex.Message;
+                System.Diagnostics.Debug.WriteLine(e.Message);
+                ErrorText = e.Message;
             }
-            catch(Exception ex)
+            catch(Exception e)
             {
-                ErrorText = ex.Message;
+                System.Diagnostics.Debug.WriteLine(e.Message);
+                ErrorText = e.Message;
             }
         }
 
@@ -929,10 +934,11 @@ namespace WarehouseControlSystem.ViewModel
                             await NAV.CreateBin(BinsViewModel.BinTemplate, bmv.Bin, ACD.Default);
                         }
                     }
-                    catch (Exception ex)
+                    catch (Exception e)
                     {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
                         errorsexist = true;
-                        ErrorText += ex.Message;
+                        ErrorText += e.Message;
                     }
                 }
                 SaveFields(Rack);
@@ -947,11 +953,12 @@ namespace WarehouseControlSystem.ViewModel
                     await Navigation.PopAsync();
                 }
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
+                System.Diagnostics.Debug.WriteLine(e.Message);
                 LoadAnimation = false;
                 State = State.Error;
-                ErrorText = ex.Message;
+                ErrorText = e.Message;
             }
         }
 
@@ -1003,14 +1010,16 @@ namespace WarehouseControlSystem.ViewModel
                     InfoText = AppResources.RackCardPage_Error_BinDidNotSelect;
                 }
             }
-            catch (OperationCanceledException ex)
+            catch (OperationCanceledException e)
             {
-                ErrorText = ex.Message;
+                System.Diagnostics.Debug.WriteLine(e.Message);
+                ErrorText = e.Message;
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
+                System.Diagnostics.Debug.WriteLine(e.Message);
                 State = State.Error;
-                ErrorText = ex.Message;
+                ErrorText = e.Message;
             }
             finally
             {
@@ -1030,12 +1039,14 @@ namespace WarehouseControlSystem.ViewModel
                 {
                     foreach (SearchResponse sr in list)
                     {
-                        SubSchemeSelect sss = new SubSchemeSelect();
-                        sss.Section = sr.Section;
-                        sss.Level = sr.Level;
-                        sss.Depth = sr.Depth;
-                        sss.HexColor = "#e3125c";
-                        sss.Value = sr.QuantityBase;
+                        SubSchemeSelect sss = new SubSchemeSelect()
+                        {
+                            Section = sr.Section,
+                            Level = sr.Level,
+                            Depth = sr.Depth,
+                            HexColor = "#e3125c",
+                            Value = sr.QuantityBase
+                        };
                         SubSchemeSelects.Add(sss);
                     }
                 }

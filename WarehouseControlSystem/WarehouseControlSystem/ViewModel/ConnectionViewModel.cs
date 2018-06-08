@@ -285,12 +285,13 @@ namespace WarehouseControlSystem.ViewModel
                 Connection.Verified = true;
                 State = State.Normal;
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
+                System.Diagnostics.Debug.WriteLine(e.Message);
                 Verified = false;
                 Connection.Verified = false;
                 State = State.Error;
-                ErrorText = ex.Message;
+                ErrorText = e.Message;
             }
             Title = AppResources.NewConnectionPage_Title;
         }

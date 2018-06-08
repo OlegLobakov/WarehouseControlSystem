@@ -90,11 +90,9 @@ namespace WarehouseControlSystem.ViewModel
 
         public async void Load()
         {
-            if ((!CrossConnectivity.Current.IsConnected) || (Global.CurrentConnection == null))
-            {
-                State = State.NoInternet;
+            if (!CheckNetAndConnection())
                 return;
-            }
+
             State = State.Loading;
             try
             {
@@ -144,11 +142,13 @@ namespace WarehouseControlSystem.ViewModel
                     }
                 }
             }
-            catch (OperationCanceledException)
+            catch (OperationCanceledException e)
             {
+                System.Diagnostics.Debug.WriteLine(e.Message);
             }
-            catch
+            catch(Exception e)
             {
+                System.Diagnostics.Debug.WriteLine(e.Message);
                 State = State.Error;
                 ErrorText = AppResources.Error_LoadZones;
             }
@@ -215,14 +215,14 @@ namespace WarehouseControlSystem.ViewModel
                     {
                         case SchemeElementEditMode.None:
                             break;
-
                         case SchemeElementEditMode.Move:
                             zvm.EditMode = SchemeElementEditMode.Resize;
                             break;
-
                         case SchemeElementEditMode.Resize:
                             zvm.Selected = false;
                             zvm.EditMode = SchemeElementEditMode.None;
+                            break;
+                        default:
                             break;
                     }
                 }
@@ -301,9 +301,10 @@ namespace WarehouseControlSystem.ViewModel
                 await NAV.DeleteZone(zvm.Zone, ACD.Default);
                 ZoneViewModels.Remove(zvm);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                ErrorText = ex.Message;
+                System.Diagnostics.Debug.WriteLine(e.Message);
+                ErrorText = e.Message;
                 State = State.Error;
             }
             finally
@@ -359,10 +360,11 @@ namespace WarehouseControlSystem.ViewModel
                 {
                     await NAV.ModifyZone(zvm.Zone, ACD.Default);
                 }
-                catch (Exception ex)
+                catch (Exception e)
                 {
+                    System.Diagnostics.Debug.WriteLine(e.Message);
                     State = State.Error;
-                    ErrorText = ex.Message;
+                    ErrorText = e.Message;
                 }
             }
         }

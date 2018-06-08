@@ -262,10 +262,11 @@ namespace WarehouseControlSystem.ViewModel
                     await NAV.CreateZone(Zone,ACD.Default);
                     await Navigation.PopAsync();
                 }
-                catch (Exception ex)
+                catch (Exception e)
                 {
+                    System.Diagnostics.Debug.WriteLine(e.Message);
                     State = State.Error;
-                    ErrorText = ex.Message;
+                    ErrorText = e.Message;
                 }
             }
             else
@@ -275,10 +276,11 @@ namespace WarehouseControlSystem.ViewModel
                     await NAV.ModifyZone(Zone, ACD.Default);
                     await Navigation.PopAsync();
                 }
-                catch (Exception ex)
+                catch (Exception e)
                 {
+                    System.Diagnostics.Debug.WriteLine(e.Message);
                     State = State.Error;
-                    ErrorText = ex.Message;
+                    ErrorText = e.Message;
                 }
             }
         }
@@ -333,14 +335,16 @@ namespace WarehouseControlSystem.ViewModel
                 BinTypesIsLoaded = bintypes.Count > 0;
                 MessagingCenter.Send<ZoneViewModel>(this, "BinTypesIsLoaded");
             }
-            catch (OperationCanceledException ex)
+            catch (OperationCanceledException e)
             {
-                ErrorText = ex.Message;
+                System.Diagnostics.Debug.WriteLine(e.Message);
+                ErrorText = e.Message;
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
+                System.Diagnostics.Debug.WriteLine(e.Message);
                 State = State.Error;
-                ErrorText = ex.Message;
+                ErrorText = e.Message;
             }
             finally
             {
@@ -361,12 +365,14 @@ namespace WarehouseControlSystem.ViewModel
                     SubSchemeElements.Clear();
                     foreach (Rack rack in racks)
                     {
-                        SubSchemeElement sse = new SubSchemeElement();
-                        sse.Left = rack.Left;
-                        sse.Top = rack.Top;
-                        sse.Height = rack.Height;
-                        sse.Width = rack.Width;
-                        sse.RackOrientation = rack.RackOrientation;
+                        SubSchemeElement sse = new SubSchemeElement()
+                        {
+                            Left = rack.Left,
+                            Top = rack.Top,
+                            Height = rack.Height,
+                            Width = rack.Width,
+                            RackOrientation = rack.RackOrientation
+                        };
 
                         if (Global.SearchResponses is List<SearchResponse>)
                         {
@@ -378,10 +384,12 @@ namespace WarehouseControlSystem.ViewModel
                                 sse.Selection = new List<SubSchemeSelect>();
                                 foreach (SearchResponse sr in list)
                                 {
-                                    SubSchemeSelect sss = new SubSchemeSelect();
-                                    sss.Section = sr.Section;
-                                    sss.Level = sr.Level;
-                                    sss.Depth = sr.Depth;
+                                    SubSchemeSelect sss = new SubSchemeSelect()
+                                    {
+                                        Section = sr.Section,
+                                        Level = sr.Level,
+                                        Depth = sr.Depth
+                                    };
                                     sse.Selection.Add(sss);
                                 }
                             }

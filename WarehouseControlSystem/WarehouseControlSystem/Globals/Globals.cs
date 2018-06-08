@@ -35,20 +35,20 @@ namespace WarehouseControlSystem
     /// </summary>
     public class Global
     {
-        public static MasterDetailPage MainPage;
+        public static MasterDetailPage MainPage { get; set; }
 
-        public static List<ColorPick> Colors = new List<ColorPick>();
-        public static List<RackOrientationPick> OrientationList = new List<RackOrientationPick>();
-        public static List<ClientCredentialTypeEnum> CreditialList = new List<ClientCredentialTypeEnum>();
+        public static List<ColorPick> Colors { get; set; } = new List<ColorPick>();
+        public static List<RackOrientationPick> OrientationList { get; set; } = new List<RackOrientationPick>();
+        public static List<ClientCredentialTypeEnum> CreditialList { get; set; } = new List<ClientCredentialTypeEnum>();
 
         static string parametersfilename = "Parameters.xml";
-        public static Parameters Parameters;
+        public static Parameters Parameters { get; set; }
 
-        public static List<SearchResponse> SearchResponses = new List<SearchResponse>();
-        public static string SearchLocationCode ="";
-        public static string SearchRequest;
+        public static List<SearchResponse> SearchResponses { get; set; } = new List<SearchResponse>();
+        public static string SearchLocationCode { get; set; } = "";
+        public static string SearchRequest { get; set; }
 
-        public static CultureInfo Culture;
+        public static CultureInfo Culture { get; set; }
 
         public static string CompliantPlug { get; set; }
 
@@ -168,7 +168,7 @@ namespace WarehouseControlSystem
         /// <summary>
         /// Current Connection
         /// </summary>
-        public static Connection CurrentConnection;
+        public static Connection CurrentConnection { get; set; }
         public static Connection TestConnection { get; set; } = new Connection();
 
         /// <summary>

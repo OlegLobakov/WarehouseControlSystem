@@ -28,111 +28,6 @@ namespace WarehouseControlSystem.ViewModel
 {
     public class BinsViewModel : BaseViewModel
     {
-        public List<BinViewModel> BinViewModels { get; set; } = new List<BinViewModel>();
-
-        public bool IsSelectedBins
-        {
-            get { return isselectedbins; }
-            set
-            {
-                if (isselectedbins != value)
-                {
-                    isselectedbins = value;
-                    OnPropertyChanged("IsSelectedBins");
-                }
-            }
-        } bool isselectedbins;
-
-        public BinTemplate BinTemplate
-        {
-            get { return bintemplate; }
-            set
-            {
-                if (bintemplate != value)
-                {
-                    bintemplate = value;
-                    ChangeBinTemplate();
-                    OnPropertyChanged(nameof(BinTemplate));
-                }
-            }
-        } BinTemplate bintemplate;
-
-        public ICommand BlockBinsCommand { protected set; get; }
-        public ICommand CombineBinsCommand { protected set; get; }
-        public ICommand DeleteBinsCommand { protected set; get; }
-        public ICommand ShowBinOperationCommand { protected set; get; }
-
-        public event Action<BinsViewModel> OnBinClick;
-
-        public ObservableCollection<BinContentShortViewModel> SelectedBinContent { get; set; } = new ObservableCollection<BinContentShortViewModel>();
-        public ObservableCollection<UserDefinedFunctionViewModel> UserDefinedFunctions { get; set; } = new ObservableCollection<UserDefinedFunctionViewModel>();
-
-        public ObservableCollection<string> BinTypes { get; set; } = new ObservableCollection<string>();
-        public ObservableCollection<string> SpecialEquipments { get; set; } = new ObservableCollection<string>();
-        public ObservableCollection<string> WarehouseClasses { get; set; } = new ObservableCollection<string>();
-        public bool SpecialEquipmentsIsEnabled
-        {
-            get { return specialequipmentsenabled; }
-            set
-            {
-                if (specialequipmentsenabled != value)
-                {
-                    specialequipmentsenabled = value;
-                    OnPropertyChanged(nameof(SpecialEquipmentsIsEnabled));
-                }
-            }
-        } bool specialequipmentsenabled;
-        public bool WarehouseClassesIsEnabled
-        {
-            get { return warehouseclassesisenabled; }
-            set
-            {
-                if (warehouseclassesisenabled != value)
-                {
-                    warehouseclassesisenabled = value;
-                    OnPropertyChanged(nameof(WarehouseClassesIsEnabled));
-                }
-            }
-        } bool warehouseclassesisenabled;
-        public bool BinTypesIsEnabled
-        {
-            get { return bintypesisenabled; }
-            set
-            {
-                if (bintypesisenabled != value)
-                {
-                    bintypesisenabled = value;
-                    OnPropertyChanged(nameof(BinTypesIsEnabled));
-                }
-            }
-        } bool bintypesisenabled;
-
-        public bool IsUserDefinedCommandsVisible
-        {
-            get { return isuserdefinedcommandsvisible; }
-            set
-            {
-                if (isuserdefinedcommandsvisible != value)
-                {
-                    isuserdefinedcommandsvisible = value;
-                    OnPropertyChanged(nameof(IsUserDefinedCommandsVisible));
-                }
-            }
-        } bool isuserdefinedcommandsvisible;
-
-        public bool EditedBinCodeIsEnabled
-        {
-            get { return editedbincodeisenabled; }
-            set
-            {
-                if (editedbincodeisenabled != value)
-                {
-                    editedbincodeisenabled = value;
-                    OnPropertyChanged(nameof(EditedBinCodeIsEnabled));
-                }
-            }
-        } bool editedbincodeisenabled;
-
         public string LocationCode
         {
             get { return locationcode; }
@@ -181,253 +76,108 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } string rackno;
+        public BinTemplate BinTemplate
+        {
+            get { return bintemplate; }
+            set
+            {
+                if (bintemplate != value)
+                {
+                    bintemplate = value;
+                    ChangeBinTemplate();
+                    OnPropertyChanged(nameof(BinTemplate));
+                }
+            }
+        } BinTemplate bintemplate;
 
-        /// <summary>
-        /// For editing bins
-        /// </summary>
-        public string Code
-        {
-            get
-            {
-                string rv = "";
-                BinViewModel bvm = BinViewModels.Find(x => x.Selected == true);
-                if (bvm is BinViewModel)
-                {
-                    rv = bvm.Code;
-                }
-                return rv;
-            }
-            set
-            {
-                BinViewModel selectedbvm = BinViewModels.Find(x => x.Selected == true);
-                if (selectedbvm is BinViewModel)
-                {
-                    selectedbvm.Code = value;
-                }
-                OnPropertyChanged(nameof(Code));
-            }
-        }
-        public bool Blocked
-        {
-            get
-            {
-                bool rv = false;
-                BinViewModel bvm = BinViewModels.Find(x => x.Selected == true);
-                if (bvm is BinViewModel)
-                {
-                    rv = bvm.Blocked;
-                }
-                return rv;
-            }
-            set
-            {
-                List<BinViewModel> selectedlist = BinViewModels.FindAll(x => x.Selected == true);
-                foreach (BinViewModel bvm in selectedlist)
-                {
-                    bvm.Blocked = value;
-                }
-                OnPropertyChanged(nameof(Blocked));
-            }
-        }
-        public int BlockMovement
-        {
-            get
-            {
-                int rv = 0;
-                BinViewModel bvm = BinViewModels.Find(x => x.Selected == true);
-                if (bvm is BinViewModel)
-                {
-                    rv = bvm.BlockMovement;
-                }
-                return rv;
-            }
-            set
-            {
-                List<BinViewModel> selectedlist = BinViewModels.FindAll(x => x.Selected == true);
-                foreach (BinViewModel bvm in selectedlist)
-                {
-                    bvm.BlockMovement = value;
-                }
-                OnPropertyChanged("BlockMovement");
-            }
-        }
-        public string BinType
-        {
-            get
-            {
-                string rv = "";
-                BinViewModel bvm = BinViewModels.Find(x => x.Selected == true);
-                if (bvm is BinViewModel)
-                {
-                    rv = bvm.BinType;
-                }
-                return rv;
-            }
-            set
-            {
-                List<BinViewModel> selectedlist = BinViewModels.FindAll(x => x.Selected == true);
-                foreach (BinViewModel bvm in selectedlist)
-                {
-                    bvm.BinType = value;
-                }
-                OnPropertyChanged("BinType");
-            }
-        }
-        public int BinRanking
-        {
-            get
-            {
-                int rv = 0;
-                BinViewModel bvm = BinViewModels.Find(x => x.Selected == true);
-                if (bvm is BinViewModel)
-                {
-                    rv = bvm.BinRanking;
-                }
-                return rv;
-            }
-            set
-            {
-                List<BinViewModel> selectedlist = BinViewModels.FindAll(x => x.Selected == true);
-                foreach (BinViewModel bvm in selectedlist)
-                {
-                    bvm.BinRanking = value;
-                }
-                OnPropertyChanged("BinRanking");
-            }
-        }
-        public decimal MaximumCubage
-        {
-            get
-            {
-                decimal rv = 0;
-                BinViewModel bvm = BinViewModels.Find(x => x.Selected == true);
-                if (bvm is BinViewModel)
-                {
-                    rv = bvm.MaximumCubage;
-                }
-                return rv;
-            }
-            set
-            {
-                List<BinViewModel> selectedlist = BinViewModels.FindAll(x => x.Selected == true);
-                foreach (BinViewModel bvm in selectedlist)
-                {
-                    bvm.MaximumCubage = value;
-                }
-                OnPropertyChanged("MaximumCubage");
-            }
-        }
-        public decimal MaximumWeight
-        {
-            get
-            {
-                decimal rv = 0;
-                BinViewModel bvm = BinViewModels.Find(x => x.Selected == true);
-                if (bvm is BinViewModel)
-                {
-                    rv = bvm.MaximumWeight;
-                }
-                return rv;
-            }
-            set
-            {
-                List<BinViewModel> selectedlist = BinViewModels.FindAll(x => x.Selected == true);
-                foreach (BinViewModel bvm in selectedlist)
-                {
-                    bvm.MaximumWeight = value;
-                }
-                OnPropertyChanged("MaximumWeight");
-            }
-        }
-        public bool AdjustmentBin
-        {
-            get
-            {
-                bool rv = false;
-                BinViewModel bvm = BinViewModels.Find(x => x.Selected == true);
-                if (bvm is BinViewModel)
-                {
-                    rv = bvm.AdjustmentBin;
-                }
-                return rv;
-            }
-            set
-            {
-                List<BinViewModel> selectedlist = BinViewModels.FindAll(x => x.Selected == true);
-                foreach (BinViewModel bvm in selectedlist)
-                {
-                    bvm.AdjustmentBin = value;
-                }
-                OnPropertyChanged("AdjustmentBin");
-            }
-        }
-        public string WarehouseClassCode
-        {
-            get
-            {
-                string rv = "";
-                BinViewModel bvm = BinViewModels.Find(x => x.Selected == true);
-                if (bvm is BinViewModel)
-                {
-                    rv = bvm.WarehouseClassCode;
-                }
-                return rv;
-            }
-            set
-            {
-                List<BinViewModel> selectedlist = BinViewModels.FindAll(x => x.Selected == true);
-                foreach (BinViewModel bvm in selectedlist)
-                {
-                    bvm.WarehouseClassCode = value;
-                }
-                OnPropertyChanged("WarehouseClassCode");
-            }
-        }
-        public string SpecialEquipmentCode
-        {
-            get
-            {
-                string rv = "";
-                BinViewModel bvm = BinViewModels.Find(x => x.Selected == true);
-                if (bvm is BinViewModel)
-                {
-                    rv = bvm.SpecialEquipmentCode;
-                }
-                return rv;
-            }
-            set
-            {
-                List<BinViewModel> selectedlist = BinViewModels.FindAll(x => x.Selected == true);
-                foreach (BinViewModel bvm in selectedlist)
-                {
-                    bvm.SpecialEquipmentCode = value;
-                }
-                OnPropertyChanged("SpecialEquipmentCode");
-            }
-        }
-        public bool Default
-        {
-            get
-            {
-                bool rv = false;
-                BinViewModel bvm = BinViewModels.Find(x => x.Selected == true);
-                if (bvm is BinViewModel)
-                {
-                    rv = bvm.Default;
-                }
-                return rv;
-            }
-            set
-            {
-                List<BinViewModel> selectedlist = BinViewModels.FindAll(x => x.Selected == true);
-                foreach (BinViewModel bvm in selectedlist)
-                {
-                    bvm.Default = value;
-                }
-                OnPropertyChanged("Default");
-            }
-        }
+        public ICommand BlockBinsCommand { protected set; get; }
+        public ICommand CombineBinsCommand { protected set; get; }
+        public ICommand DeleteBinsCommand { protected set; get; }
+        public ICommand ShowBinOperationCommand { protected set; get; }
 
+        public event Action<BinsViewModel> OnBinClick;
+
+        public List<BinViewModel> BinViewModels { get; set; } = new List<BinViewModel>();
+
+        public ObservableCollection<BinContentShortViewModel> SelectedBinContent { get; set; } = new ObservableCollection<BinContentShortViewModel>();
+        public ObservableCollection<UserDefinedFunctionViewModel> UserDefinedFunctions { get; set; } = new ObservableCollection<UserDefinedFunctionViewModel>();
+
+        public ObservableCollection<string> BinTypes { get; set; } = new ObservableCollection<string>();
+        public ObservableCollection<string> SpecialEquipments { get; set; } = new ObservableCollection<string>();
+        public ObservableCollection<string> WarehouseClasses { get; set; } = new ObservableCollection<string>();
+
+        public bool SpecialEquipmentsIsEnabled
+        {
+            get { return specialequipmentsenabled; }
+            set
+            {
+                if (specialequipmentsenabled != value)
+                {
+                    specialequipmentsenabled = value;
+                    OnPropertyChanged(nameof(SpecialEquipmentsIsEnabled));
+                }
+            }
+        } bool specialequipmentsenabled;
+        public bool WarehouseClassesIsEnabled
+        {
+            get { return warehouseclassesisenabled; }
+            set
+            {
+                if (warehouseclassesisenabled != value)
+                {
+                    warehouseclassesisenabled = value;
+                    OnPropertyChanged(nameof(WarehouseClassesIsEnabled));
+                }
+            }
+        } bool warehouseclassesisenabled;
+        public bool BinTypesIsEnabled
+        {
+            get { return bintypesisenabled; }
+            set
+            {
+                if (bintypesisenabled != value)
+                {
+                    bintypesisenabled = value;
+                    OnPropertyChanged(nameof(BinTypesIsEnabled));
+                }
+            }
+        } bool bintypesisenabled;
+        public bool IsUserDefinedCommandsVisible
+        {
+            get { return isuserdefinedcommandsvisible; }
+            set
+            {
+                if (isuserdefinedcommandsvisible != value)
+                {
+                    isuserdefinedcommandsvisible = value;
+                    OnPropertyChanged(nameof(IsUserDefinedCommandsVisible));
+                }
+            }
+        } bool isuserdefinedcommandsvisible;
+        public bool EditedBinCodeIsEnabled
+        {
+            get { return editedbincodeisenabled; }
+            set
+            {
+                if (editedbincodeisenabled != value)
+                {
+                    editedbincodeisenabled = value;
+                    OnPropertyChanged(nameof(EditedBinCodeIsEnabled));
+                }
+            }
+        } bool editedbincodeisenabled;
+        public bool IsSelectedBins
+        {
+            get { return isselectedbins; }
+            set
+            {
+                if (isselectedbins != value)
+                {
+                    isselectedbins = value;
+                    OnPropertyChanged("IsSelectedBins");
+                }
+            }
+        } bool isselectedbins;
         public int LoadedBinsQuantity
         {
             get { return loadedbinsquantity; }
@@ -452,6 +202,154 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } int searchbinsquantity = 1;
+
+        /// <summary>
+        /// For editing bins
+        /// </summary>
+        public string TemplateCode
+        {
+            get { return templatecode; }
+            set
+            {
+                if (templatecode != value)
+                {
+                    templatecode = value;
+                    SetSelectedBinsByTemplate();
+                    OnPropertyChanged(nameof(TemplateCode));
+                }
+            }
+        } string templatecode;
+        public bool TemplateBlocked
+        {
+            get { return templateblocked; }
+            set
+            {
+                if (templateblocked != value)
+                {
+                    templateblocked = value;
+                    SetSelectedBinsByTemplate();
+                    OnPropertyChanged(nameof(TemplateBlocked));
+                }
+            }
+        } bool templateblocked;
+        public int TemplateBlockMovement
+        {
+            get { return templateblockmovement; }
+            set
+            {
+                if (templateblockmovement != value)
+                {
+                    templateblockmovement = value;
+                    SetSelectedBinsByTemplate();
+                    OnPropertyChanged(nameof(TemplateBlockMovement));
+                }
+            }
+        } int templateblockmovement;
+        public string TemplateBinType
+        {
+            get { return templatebintype; }
+            set
+            {
+                if (templatebintype != value)
+                {
+                    templatebintype = value;
+                    SetSelectedBinsByTemplate();
+                    OnPropertyChanged(nameof(TemplateBinType));
+                }
+            }
+        } string templatebintype;
+        public int TemplateBinRanking
+        {
+            get { return templatebinranking; }
+            set
+            {
+                if (templatebinranking != value)
+                {
+                    templatebinranking = value;
+                    SetSelectedBinsByTemplate();
+                    OnPropertyChanged(nameof(TemplateBinRanking));
+                }
+            }
+        } int templatebinranking;  
+        public decimal TemplateMaximumCubage
+        {
+            get { return templatemaximumcubage; }
+            set
+            {
+                if (templatemaximumcubage != value)
+                {
+                    templatemaximumcubage = value;
+                    SetSelectedBinsByTemplate();
+                    OnPropertyChanged(nameof(TemplateMaximumCubage));
+                }
+            }
+        } decimal templatemaximumcubage;
+        public decimal TemplateMaximumWeight
+        {
+            get { return templatemaximumweight; }
+            set
+            {
+                if (templatemaximumweight != value)
+                {
+                    templatemaximumweight = value;
+                    SetSelectedBinsByTemplate();
+                    OnPropertyChanged(nameof(TemplateMaximumWeight));
+                }
+            }
+        } decimal templatemaximumweight;
+        public bool TemplateAdjustmentBin
+        {
+            get { return templateadjustmentbin; }
+            set
+            {
+                if (templateadjustmentbin != value)
+                {
+                    templateadjustmentbin = value;
+                    SetSelectedBinsByTemplate();
+                    OnPropertyChanged(nameof(TemplateAdjustmentBin));
+                }
+            }
+        } bool templateadjustmentbin;
+        public string TemplateWarehouseClassCode
+        {
+            get { return templatewarehouseclasscode; }
+            set
+            {
+                if (templatewarehouseclasscode != value)
+                {
+                    templatewarehouseclasscode = value;
+                    SetSelectedBinsByTemplate();
+                    OnPropertyChanged(nameof(TemplateWarehouseClassCode));
+                }
+            }
+        } string templatewarehouseclasscode; 
+        public string TemplateSpecialEquipmentCode
+        {
+            get { return templatespecialequipmentcode; }
+            set
+            {
+                if (templatespecialequipmentcode != value)
+                {
+                    templatespecialequipmentcode = value;
+                    SetSelectedBinsByTemplate();
+                    OnPropertyChanged(nameof(TemplateSpecialEquipmentCode));
+                }
+            }
+        } string templatespecialequipmentcode;
+        public bool TemplateDefault
+        {
+            get { return templatedefault1; }
+            set
+            {
+                if (templatedefault1 != value)
+                {
+                    templatedefault1 = value;
+                    SetSelectedBinsByTemplate();
+                    OnPropertyChanged(nameof(TemplateDefault));
+                }
+            }
+        } bool templatedefault1;
+
 
         public BinsViewModel(INavigation navigation) : base(navigation)
         {
@@ -678,7 +576,7 @@ namespace WarehouseControlSystem.ViewModel
         }
 
         public async void CheckBins(AsyncCancelationDispatcher acd)
-        { 
+        {
             try
             {
                 List<BinViewModel> list = BinViewModels.ToList();
@@ -708,16 +606,17 @@ namespace WarehouseControlSystem.ViewModel
                     bvm.IsChecked = true;
                 }
             }
-            catch (OperationCanceledException ex)
+            catch (OperationCanceledException e)
             {
-                ErrorText = ex.Message;
+                System.Diagnostics.Debug.WriteLine(e.Message);
+                ErrorText = e.Message;
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                ErrorText = ex.Message;
+                System.Diagnostics.Debug.WriteLine(e.Message);
+                ErrorText = e.Message;
             }
         }
-
         public async void LoadBins(AsyncCancelationDispatcher acd)
         {
             BinViewModelsDispose();
@@ -736,11 +635,12 @@ namespace WarehouseControlSystem.ViewModel
                             BinViewModel bvm = new BinViewModel(Navigation, bin);
                             bvm.IsContent = !bin.Empty;
                             bvm.OnTap += Bvm_OnTap;
+                        
                             if (!string.IsNullOrEmpty(Global.SearchRequest))
                             {
                                 bvm.ExcludeFromSearch = true;
                                 List<SearchResponse> list = Global.SearchResponses.FindAll(
-                                    x=>x.ZoneCode == ZoneCode &&
+                                    x => x.ZoneCode == ZoneCode &&
                                     x.RackNo == RackNo &&
                                     x.BinCode == bvm.Code);
                                 if (list is List<SearchResponse>)
@@ -758,39 +658,41 @@ namespace WarehouseControlSystem.ViewModel
                     MessagingCenter.Send<BinsViewModel>(this, "BinsIsLoaded");
                 }
             }
-            catch (OperationCanceledException ex)
+            catch (OperationCanceledException e)
             {
-                ErrorText = ex.Message;
+                System.Diagnostics.Debug.WriteLine(e.Message);
+                ErrorText = e.Message;
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                ErrorText = ex.Message;
+                System.Diagnostics.Debug.WriteLine(e.Message);
+                ErrorText = e.Message;
             }
         }
-
         public async void LoadUDF(AsyncCancelationDispatcher acd)
         {
             try
             {
                 UserDefinedFunctions.Clear();
-                List<UserDefinedFunction> list = await NAV.LoadUserDefinedFunctionList(LocationCode, ZoneCode,RackNo, ACD.Default);
+                List<UserDefinedFunction> list = await NAV.LoadUserDefinedFunctionList(LocationCode, ZoneCode, RackNo, ACD.Default);
                 if (list is List<UserDefinedFunction>)
                 {
                     foreach (UserDefinedFunction udf in list)
                     {
-                        UserDefinedFunctionViewModel udfvm = new UserDefinedFunctionViewModel(Navigation,udf);
+                        UserDefinedFunctionViewModel udfvm = new UserDefinedFunctionViewModel(Navigation, udf);
                         UserDefinedFunctions.Add(udfvm);
                     }
                 }
             }
             catch (OperationCanceledException e)
             {
-                Console.WriteLine("Cancel LoadUDF", e.Message);
+                System.Diagnostics.Debug.WriteLine("Cancel LoadUDF", e.Message);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
+                System.Diagnostics.Debug.WriteLine(e.Message);
                 State = Helpers.Containers.StateContainer.State.Error;
-                ErrorText = ex.ToString();
+                ErrorText = e.ToString();
             }
         }
 
@@ -819,7 +721,7 @@ namespace WarehouseControlSystem.ViewModel
         }
 
         public void ChangeBinTemplate()
-        {         
+        {
             foreach (BinViewModel bvm in BinViewModels)
             {
                 if (!bvm.IsExist)
@@ -849,7 +751,7 @@ namespace WarehouseControlSystem.ViewModel
 
             BinViewModel selectedbvm = BinViewModels.Find(x => x.Selected == true);
             IsSelectedBins = selectedbvm is BinViewModel;
-
+        
             if (bvm.IsContent)
             {
                 bvm.LoadAnimation = true;
@@ -868,10 +770,11 @@ namespace WarehouseControlSystem.ViewModel
                 }
                 catch (OperationCanceledException e)
                 {
-                    Console.WriteLine("Cancel LoadContent", e.Message);
+                    System.Diagnostics.Debug.WriteLine("Cancel LoadBinContent", e.Message);
                 }
-                catch
+                catch(Exception e)
                 {
+                    System.Diagnostics.Debug.WriteLine(e.Message);
                 }
                 bvm.LoadAnimation = false;
             }
@@ -887,7 +790,6 @@ namespace WarehouseControlSystem.ViewModel
                         SelectedBinContent.Add(bcsvm);
                     }
                 }
-
                 EditedBinCodeIsEnabled = list.Count == 1;
             }
             else
@@ -895,21 +797,34 @@ namespace WarehouseControlSystem.ViewModel
                 EditedBinCodeIsEnabled = false;
             }
 
-            Code = Code;
-            Blocked = Blocked;
-            BlockMovement = BlockMovement;
-            BinType = BinType;
-            BinRanking = BinRanking;
-            MaximumCubage = MaximumCubage;
-            MaximumWeight = MaximumWeight;
-            AdjustmentBin = AdjustmentBin;
-            WarehouseClassCode = WarehouseClassCode;
-            SpecialEquipmentCode = SpecialEquipmentCode;
-            Default = Default;
-
             if (OnBinClick is Action<BinsViewModel>)
             {
                 OnBinClick(this);
+            }
+        }
+
+        private BinViewModel GetFirstSelected()
+        {
+            return BinViewModels.Find(x => x.Selected == true);
+        }
+
+        private void SetSelectedBinsByTemplate()
+        {
+            List<BinViewModel> selectedlist = BinViewModels.FindAll(x => x.Selected == true);
+            foreach (BinViewModel bvm in selectedlist)
+            {
+                bvm.Code = TemplateCode;
+                bvm.MaximumWeight = TemplateMaximumWeight;
+                bvm.Blocked = TemplateBlocked;
+                bvm.BlockMovement = TemplateBlockMovement;
+                bvm.BinType = TemplateBinType;
+                bvm.BinRanking = TemplateBinRanking;
+                bvm.MaximumCubage = TemplateMaximumCubage;
+                bvm.MaximumWeight = TemplateMaximumWeight;
+                bvm.AdjustmentBin = TemplateAdjustmentBin;
+                bvm.WarehouseClassCode = TemplateWarehouseClassCode;
+                bvm.SpecialEquipmentCode = TemplateSpecialEquipmentCode;
+                bvm.Default = TemplateDefault;
             }
         }
 
