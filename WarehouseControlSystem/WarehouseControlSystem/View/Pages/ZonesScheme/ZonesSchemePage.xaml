@@ -31,30 +31,6 @@
                 </OnPlatform>
             </ToolbarItem.Icon>
         </ToolbarItem>
-        <!--<ToolbarItem  Order="Primary" Priority="30" Text="{i18n:Translate LocationsSchemePage_Toolbar_Delete}" Command="{Binding DeleteZoneCommand}">
-            <ToolbarItem.Icon>
-                <OnPlatform x:TypeArguments="FileImageSource">
-                    <On Platform="UWP,WinPhone">
-                        <FileImageSource File="Assets/Images/ic_action_remove_circle.png"/>
-                    </On>
-                    <On Platform="iOS,Android">
-                        <FileImageSource File="ic_action_remove_circle.png"/>
-                    </On>
-                </OnPlatform>
-            </ToolbarItem.Icon>
-        </ToolbarItem>
-        <ToolbarItem  Order="Primary" Priority="40" Text="{i18n:Translate LocationsSchemePage_Toolbar_Edit}" Command="{Binding EditZoneCommand}">
-            <ToolbarItem.Icon>
-                <OnPlatform x:TypeArguments="FileImageSource">
-                    <On Platform="UWP,WinPhone">
-                        <FileImageSource File="Assets/Images/ic_action_create.png"/>
-                    </On>
-                    <On Platform="iOS,Android">
-                        <FileImageSource File="ic_action_create.png"/>
-                    </On>
-                </OnPlatform>
-            </ToolbarItem.Icon>
-        </ToolbarItem>-->
         <ToolbarItem  Order="Primary" Priority="50"  Text="{i18n:Translate LocationsSchemePage_Toolbar_Scheme}" Command="{Binding ParamsCommand}">
             <ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
@@ -134,18 +110,6 @@
                             TextColor="Black"
                             BackgroundColor="White"/>
                     </Grid>
-                </sc:StateCondition>
-                <sc:StateCondition State="Warning">
-                </sc:StateCondition>
-                <sc:StateCondition State="NoInternet">
-                    <StackLayout>
-                        <!--<Label Text="{i18n:Translate StateContainer_StateNoInternet_Error}" HorizontalOptions="Center" VerticalOptions="Center"/>-->
-                    </StackLayout>
-                </sc:StateCondition>
-                <sc:StateCondition State="NoData">
-                    <Label Text="{i18n:Translate ZonesSchemePage_StateNoData}" FontSize="Large" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
-                </sc:StateCondition>
-                <sc:StateCondition State="Request">
                 </sc:StateCondition>
             </sc:StateContainer.Conditions>
         </sc:StateContainer>

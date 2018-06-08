@@ -254,6 +254,10 @@ namespace WarehouseControlSystem.ViewModel
                 try
                 {
                     ZonesSchemePage zsp = new ZonesSchemePage(tappedlvm.Location);
+                    Global.MainPage.Detail = new NavigationPage(zsp)
+                    {
+                        BarTextColor = Color.White,
+                    };
                     await Navigation.PushAsync(zsp);
                 }
                 catch (Exception e)

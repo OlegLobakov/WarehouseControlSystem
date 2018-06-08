@@ -97,56 +97,59 @@ namespace WarehouseControlSystem.ViewModel
             try
             {
                 List<Zone> zones = await NAV.GetZoneList(Location.Code, "", true, 1, int.MaxValue, ACD.Default);
-                if (zones is List<Zone>)
+                Device.BeginInvokeOnMainThread(() =>
                 {
-                    if (zones.Count > 0)
+                    if (zones is List<Zone>)
                     {
-                        ClearAll();
-                        int deftop = 1;
-                        int defleft = 1;
-                        int defwidth = Math.Max(1, (Location.PlanWidth - 6) / 5);
-                        int defheight = Math.Max(1, (Location.PlanHeight - 5) / 4);
-
-                        foreach (Zone zone in zones)
+                        if (zones.Count > 0)
                         {
-                            if (zone.Width == 0)
+                            ClearAll();
+                            int deftop = 1;
+                            int defleft = 1;
+                            int defwidth = Math.Max(1, (Location.PlanWidth - 6) / 5);
+                            int defheight = Math.Max(1, (Location.PlanHeight - 5) / 4);
+
+                            foreach (Zone zone in zones)
                             {
-                                zone.Left = defleft;
-                                zone.Width = defwidth;
-                                zone.Height = defheight;
-                                zone.Top = deftop;
-
-                                defleft = defleft + defwidth + 1;
-                                if (defleft > (Location.PlanWidth - defwidth))
+                                if (zone.Width == 0)
                                 {
-                                    defleft = 1;
-                                    deftop = deftop + defheight + 1;
-                                }
+                                    zone.Left = defleft;
+                                    zone.Width = defwidth;
+                                    zone.Height = defheight;
+                                    zone.Top = deftop;
 
-                                if (deftop > (Location.PlanHeight - defheight))
-                                {
-                                    deftop = 1;
+                                    defleft = defleft + defwidth + 1;
+                                    if (defleft > (Location.PlanWidth - defwidth))
+                                    {
+                                        defleft = 1;
+                                        deftop = deftop + defheight + 1;
+                                    }
+
+                                    if (deftop > (Location.PlanHeight - defheight))
+                                    {
+                                        deftop = 1;
+                                    }
                                 }
+                                ZoneViewModel zvm = new ZoneViewModel(Navigation, zone);
+                                zvm.OnTap += Zvm_OnTap;
+                                ZoneViewModels.Add(zvm);
                             }
-                            ZoneViewModel zvm = new ZoneViewModel(Navigation, zone);
-                            zvm.OnTap += Zvm_OnTap;
-                            ZoneViewModels.Add(zvm);
+                            State = State.Normal;
+                            UpdateMinSizes();
+                            ReDesign();
                         }
-                        State = State.Normal;
-                        UpdateMinSizes();
-                        ReDesign();
+                        else
+                        {
+                            State = State.NoData;
+                        }
                     }
-                    else
-                    {
-                        State = State.NoData;
-                    }
-                }
+                });
             }
             catch (OperationCanceledException e)
             {
                 System.Diagnostics.Debug.WriteLine(e.Message);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 System.Diagnostics.Debug.WriteLine(e.Message);
                 State = State.Error;

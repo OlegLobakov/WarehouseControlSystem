@@ -36,7 +36,7 @@ namespace WarehouseControlSystem
     public class Global
     {
         public static MasterDetailPage MainPage { get; set; }
-
+        
         public static List<ColorPick> Colors { get; set; } = new List<ColorPick>();
         public static List<RackOrientationPick> OrientationList { get; set; } = new List<RackOrientationPick>();
         public static List<ClientCredentialTypeEnum> CreditialList { get; set; } = new List<ClientCredentialTypeEnum>();

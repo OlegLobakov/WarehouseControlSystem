@@ -37,10 +37,9 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
 
         public ZonesSchemePage(Location location)
         {
+            InitializeComponent();
             model = new ZonesViewModel(Navigation, location);
             BindingContext = model;
-
-            InitializeComponent();
 
             Views = new List<ZoneView>();
             SelectedViews = new List<ZoneView>();

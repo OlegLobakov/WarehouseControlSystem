@@ -48,7 +48,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         XNamespace myns = GetNameSpace();
                         string functionname = "GetPlanWidth";
                         XElement body = new XElement(myns + functionname);
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
                         int rv = StringToInt(soapbodynode.Value);
                         tcs.SetResult(rv);
                     }
@@ -77,7 +77,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         XNamespace myns = GetNameSpace();
                         string functionname = "GetPlanHeight";
                         XElement body = new XElement(myns + functionname);
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
                         int rv = StringToInt(soapbodynode.Value);
                         tcs.SetResult(rv);
                     }
@@ -107,7 +107,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         string functionname = "SetPlanWidth";
                         XElement body = new XElement(myns + functionname,
                             new XElement(myns + "value", value));
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false); 
                         int rv = StringToInt(soapbodynode.Value);
                         tcs.SetResult(rv);
                     }
@@ -137,7 +137,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         string functionname = "SetPlanHeight";
                         XElement body = new XElement(myns + functionname,
                             new XElement(myns + "value", value));
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false); 
                         int rv = StringToInt(soapbodynode.Value);
                         tcs.SetResult(rv);
                     }
@@ -166,7 +166,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         XNamespace myns = GetNameSpace();
                         string functionname = "APIVersion";
                         XElement body = new XElement(myns + functionname);
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
                         int rv = StringToInt(soapbodynode.Value);
                         tcs.SetResult(rv);
                     }
@@ -215,7 +215,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                                             new XElement(myns + "requireShipment", location.RequireShipment),
                                             new XElement(myns + "requirePick", location.RequirePick),
                                             new XElement(myns + "requirePutaway", location.RequirePutaway));
-                            XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                            XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
                             tcs.SetResult(0);
                         }
                         catch (Exception e)
@@ -262,7 +262,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                                         new XElement(myns + "requireShipment", location.RequireShipment),
                                         new XElement(myns + "requirePick", location.RequirePick),
                                         new XElement(myns + "requirePutaway", location.RequirePutaway));
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
                         tcs.SetResult(0);
                     }
                     catch (Exception e)
@@ -293,7 +293,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         new XElement(myns + functionname,
                                     new XElement(myns + "code", location.Code),
                                     new XElement(myns + "visible", location.SchemeVisible.ToString()));
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
                         tcs.SetResult(0);
                     }
                     catch (Exception e)
@@ -324,7 +324,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         XElement body =
                             new XElement(myns + functionname,
                                         new XElement(myns + "name", locationcode));
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
                         rv = StringToInt(soapbodynode.Value);
                         tcs.SetResult(0);
                     }
@@ -357,7 +357,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                             new XElement(myns + functionname,
                                         new XElement(myns + "codeFilter", codefilter),
                                         new XElement(myns + "onlyVisibled", onlyvisibled.ToString()));
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
                         rv = StringToInt(soapbodynode.Value);
                         tcs.SetResult(rv);
                     }
@@ -392,7 +392,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         new XElement(myns + "entriesPosition", position),
                         new XElement(myns + "entriesCount", count),
                         new XElement(myns + "responseDocument", ""));
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false); 
                         List<Location> rv = new List<Location>();
                         string response = soapbodynode.Value;
                         XDocument document = GetDoc(response);
@@ -607,7 +607,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         new XElement(myns + "width", zone.Width),
                         new XElement(myns + "height", zone.Height),
                         new XElement(myns + "schemeVisible", zone.SchemeVisible));
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
                         tcs.SetResult(0);
                     }
                     catch (Exception e)
@@ -639,7 +639,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         new XElement(myns + "locationCode", zone.LocationCode),
                         new XElement(myns + "code", zone.Code),
                         new XElement(myns + "visible", zone.SchemeVisible));
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
                         tcs.SetResult(0);
                     }
                     catch (Exception e)
@@ -670,7 +670,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         new XElement(myns + functionname,
                         new XElement(myns + "locationCode", zone.LocationCode),
                         new XElement(myns + "code", zone.Code));
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
                         tcs.SetResult(0);
                     }
                     catch (Exception e)
@@ -704,7 +704,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                                         new XElement(myns + "codeFilter", codefilter),
                                         new XElement(myns + "onlyVisibled", onlyvisibled));
 
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
                         rv = StringToInt(soapbodynode.Value);
                         tcs.SetResult(rv);
                     }
@@ -740,7 +740,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         new XElement(myns + "entriesPosition", position),
                         new XElement(myns + "entriesCount", count),
                         new XElement(myns + "responseDocument", ""));
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
                         string response = soapbodynode.Value;
                         XDocument document = GetDoc(response);
                         List<Zone> rv = new List<Zone>();
@@ -876,20 +876,20 @@ namespace WarehouseControlSystem.Helpers.NAV
                         XNamespace myns = GetNameSpace();
                         string functionname = "CreateRack";
                         XElement body =
-                        new XElement(myns + functionname,
-                        new XElement(myns + "locationCode", rack.LocationCode),
-                        new XElement(myns + "zoneCode", rack.ZoneCode),
-                        new XElement(myns + "no", rack.No),
-                        new XElement(myns + "sections", rack.Sections),
-                        new XElement(myns + "levels", rack.Levels),
-                        new XElement(myns + "depth", rack.Depth),
-                        new XElement(myns + "left", rack.Left),
-                        new XElement(myns + "top", rack.Top),
-                        new XElement(myns + "width", rack.Width),
-                        new XElement(myns + "height", rack.Height),
-                        new XElement(myns + "rackOrientation", (int)rack.RackOrientation),
-                        new XElement(myns + "schemeVisible", rack.SchemeVisible));
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                            new XElement(myns + functionname,
+                            new XElement(myns + "locationCode", rack.LocationCode),
+                            new XElement(myns + "zoneCode", rack.ZoneCode),
+                            new XElement(myns + "no", rack.No),
+                            new XElement(myns + "sections", rack.Sections),
+                            new XElement(myns + "levels", rack.Levels),
+                            new XElement(myns + "depth", rack.Depth),
+                            new XElement(myns + "left", rack.Left),
+                            new XElement(myns + "top", rack.Top),
+                            new XElement(myns + "width", rack.Width),
+                            new XElement(myns + "height", rack.Height),
+                            new XElement(myns + "rackOrientation", (int)rack.RackOrientation),
+                            new XElement(myns + "schemeVisible", rack.SchemeVisible));
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
                         tcs.SetResult(0);
                     }
                     catch (Exception e)
@@ -917,21 +917,21 @@ namespace WarehouseControlSystem.Helpers.NAV
                         XNamespace myns = GetNameSpace();
                         string functionname = "ModifyRack";
                         XElement body =
-                        new XElement(myns + functionname,
-                        new XElement(myns + "locationCode", rack.LocationCode),
-                        new XElement(myns + "zoneCode", rack.ZoneCode),
-                        new XElement(myns + "no", rack.No),
-                        new XElement(myns + "prevNo", rack.PrevNo),
-                        new XElement(myns + "sections", rack.Sections),
-                        new XElement(myns + "levels", rack.Levels),
-                        new XElement(myns + "depth", rack.Depth),
-                        new XElement(myns + "left", rack.Left),
-                        new XElement(myns + "top", rack.Top),
-                        new XElement(myns + "width", rack.Width),
-                        new XElement(myns + "height", rack.Height),
-                        new XElement(myns + "rackOrientation", (int)rack.RackOrientation),
-                        new XElement(myns + "schemeVisible", rack.SchemeVisible));
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                            new XElement(myns + functionname,
+                            new XElement(myns + "locationCode", rack.LocationCode),
+                            new XElement(myns + "zoneCode", rack.ZoneCode),
+                            new XElement(myns + "no", rack.No),
+                            new XElement(myns + "prevNo", rack.PrevNo),
+                            new XElement(myns + "sections", rack.Sections),
+                            new XElement(myns + "levels", rack.Levels),
+                            new XElement(myns + "depth", rack.Depth),
+                            new XElement(myns + "left", rack.Left),
+                            new XElement(myns + "top", rack.Top),
+                            new XElement(myns + "width", rack.Width),
+                            new XElement(myns + "height", rack.Height),
+                            new XElement(myns + "rackOrientation", (int)rack.RackOrientation),
+                            new XElement(myns + "schemeVisible", rack.SchemeVisible));
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
                         tcs.SetResult(0);
                     }
                     catch (Exception e)
@@ -959,11 +959,11 @@ namespace WarehouseControlSystem.Helpers.NAV
                         XNamespace myns = GetNameSpace();
                         string functionname = "DeleteRack";
                         XElement body =
-                        new XElement(myns + functionname,
-                        new XElement(myns + "locationCode", rack.LocationCode),
-                        new XElement(myns + "zoneCode", rack.ZoneCode),
-                        new XElement(myns + "no", rack.No));
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                            new XElement(myns + functionname,
+                            new XElement(myns + "locationCode", rack.LocationCode),
+                            new XElement(myns + "zoneCode", rack.ZoneCode),
+                            new XElement(myns + "no", rack.No));
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
                         tcs.SetResult(0);
                     }
                     catch (Exception e)
@@ -996,7 +996,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         new XElement(myns + "zoneCode", rack.ZoneCode),
                         new XElement(myns + "no", rack.No),
                         new XElement(myns + "visible", rack.SchemeVisible));
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
                         tcs.SetResult(0);
                     }
                     catch (Exception e)
@@ -1029,7 +1029,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         new XElement(myns + "zoneCodeFilter", codefilter),
                         new XElement(myns + "nOFilter", nofilter),
                         new XElement(myns + "onlyVisibled", onlyvisibled));
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
                         int rv = StringToInt(soapbodynode.Value);
                         tcs.SetResult(rv);
                     }
@@ -1065,7 +1065,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         new XElement(myns + "entriesPosition", position),
                         new XElement(myns + "entriesCount", count),
                         new XElement(myns + "responseDocument", ""));
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
                         string response = soapbodynode.Value;
                         XDocument document = GetDoc(response);
                         List<Rack> rv = new List<Rack>();
@@ -1183,17 +1183,17 @@ namespace WarehouseControlSystem.Helpers.NAV
                         XNamespace myns = GetNameSpace();
                         string functionname = "CreateBin";
                         XElement body =
-                        new XElement(myns + functionname,
-                        new XElement(myns + "binTemplateCode", bintemplate.Code),
-                        new XElement(myns + "binCode", bin.Code),
-                        new XElement(myns + "rackNo", bin.RackNo),
-                        new XElement(myns + "section", bin.Section),
-                        new XElement(myns + "level", bin.Level),
-                        new XElement(myns + "depth", bin.Depth),
-                        new XElement(myns + "sectionSpan", bin.SectionSpan),
-                        new XElement(myns + "levelSpan", bin.LevelSpan),
-                        new XElement(myns + "depthSpan", bin.DepthSpan));
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                            new XElement(myns + functionname,
+                            new XElement(myns + "binTemplateCode", bintemplate.Code),
+                            new XElement(myns + "binCode", bin.Code),
+                            new XElement(myns + "rackNo", bin.RackNo),
+                            new XElement(myns + "section", bin.Section),
+                            new XElement(myns + "level", bin.Level),
+                            new XElement(myns + "depth", bin.Depth),
+                            new XElement(myns + "sectionSpan", bin.SectionSpan),
+                            new XElement(myns + "levelSpan", bin.LevelSpan),
+                            new XElement(myns + "depthSpan", bin.DepthSpan));
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
                         tcs.SetResult(0);
                     }
                     catch (Exception e)
@@ -1221,24 +1221,24 @@ namespace WarehouseControlSystem.Helpers.NAV
                         XNamespace myns = GetNameSpace();
                         string functionname = "ModifyBin";
                         XElement body =
-                        new XElement(myns + functionname,
-                        new XElement(myns + "locationCode", bin.LocationCode),
-                        new XElement(myns + "binCode", bin.Code),
-                        new XElement(myns + "prevBinCode", bin.PrevCode),
-                        new XElement(myns + "rackNo", bin.RackNo),
-                        new XElement(myns + "section", bin.Section),
-                        new XElement(myns + "level", bin.Level),
-                        new XElement(myns + "depth", bin.Depth),
-                        new XElement(myns + "sectionSpan", bin.SectionSpan),
-                        new XElement(myns + "depthSpan", bin.LevelSpan),
-                        new XElement(myns + "binRanking", bin.BinRanking),
-                        new XElement(myns + "maximumCubage", bin.MaximumCubage),
-                        new XElement(myns + "maximumWeight", bin.MaximumWeight),
-                        new XElement(myns + "blockMovement", bin.BlockMovement),
-                        new XElement(myns + "binTypeCode", bin.BinType),
-                        new XElement(myns + "warehouseClassCode", bin.WarehouseClassCode),
-                        new XElement(myns + "specialEquipmentCode", bin.SpecialEquipmentCode));
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                            new XElement(myns + functionname,
+                            new XElement(myns + "locationCode", bin.LocationCode),
+                            new XElement(myns + "binCode", bin.Code),
+                            new XElement(myns + "prevBinCode", bin.PrevCode),
+                            new XElement(myns + "rackNo", bin.RackNo),
+                            new XElement(myns + "section", bin.Section),
+                            new XElement(myns + "level", bin.Level),
+                            new XElement(myns + "depth", bin.Depth),
+                            new XElement(myns + "sectionSpan", bin.SectionSpan),
+                            new XElement(myns + "depthSpan", bin.LevelSpan),
+                            new XElement(myns + "binRanking", bin.BinRanking),
+                            new XElement(myns + "maximumCubage", bin.MaximumCubage),
+                            new XElement(myns + "maximumWeight", bin.MaximumWeight),
+                            new XElement(myns + "blockMovement", bin.BlockMovement),
+                            new XElement(myns + "binTypeCode", bin.BinType),
+                            new XElement(myns + "warehouseClassCode", bin.WarehouseClassCode),
+                            new XElement(myns + "specialEquipmentCode", bin.SpecialEquipmentCode));
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
                         tcs.SetResult(0);
                     }
                     catch (Exception e)
@@ -1266,12 +1266,12 @@ namespace WarehouseControlSystem.Helpers.NAV
                         XNamespace myns = GetNameSpace();
                         string functionname = "DeleteBin";
                         XElement body =
-                        new XElement(myns + functionname,
-                        new XElement(myns + "locationCodeFilter", bin.LocationCode),
-                        new XElement(myns + "zoneCodeFilter", bin.Code),
-                        new XElement(myns + "rackCodeFilter", bin.PrevCode),
-                        new XElement(myns + "code", bin.RackNo));
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                            new XElement(myns + functionname,
+                            new XElement(myns + "locationCodeFilter", bin.LocationCode),
+                            new XElement(myns + "zoneCodeFilter", bin.Code),
+                            new XElement(myns + "rackCodeFilter", bin.PrevCode),
+                            new XElement(myns + "code", bin.RackNo));
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
                         tcs.SetResult(0);
                     }
                     catch (Exception e)
@@ -1299,12 +1299,12 @@ namespace WarehouseControlSystem.Helpers.NAV
                         XNamespace myns = GetNameSpace();
                         string functionname = "GetBinCount";
                         XElement body =
-                        new XElement(myns + functionname,
-                        new XElement(myns + "locationCodeFilter", locationfilter),
-                        new XElement(myns + "zoneCodeFilter", codefilter),
-                        new XElement(myns + "rackCodeFilter", rackcodefilter),
-                        new XElement(myns + "binCodeFilter", bincodefilter));
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                            new XElement(myns + functionname,
+                            new XElement(myns + "locationCodeFilter", locationfilter),
+                            new XElement(myns + "zoneCodeFilter", codefilter),
+                            new XElement(myns + "rackCodeFilter", rackcodefilter),
+                            new XElement(myns + "binCodeFilter", bincodefilter));
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false); 
                         int rv = StringToInt(soapbodynode.Value);
                         tcs.SetResult(rv);
                     }
@@ -1333,15 +1333,15 @@ namespace WarehouseControlSystem.Helpers.NAV
                         XNamespace myns = GetNameSpace();
                         string functionname = "GetBinList";
                         XElement body =
-                        new XElement(myns + functionname,
-                        new XElement(myns + "locationCodeFilter", locationfilter),
-                        new XElement(myns + "zoneCodeFilter", codefilter),
-                        new XElement(myns + "rackCodeFilter", rackcodefilter),
-                        new XElement(myns + "binCodeFilter", bincodefilter),
-                        new XElement(myns + "entriesPosition", position),
-                        new XElement(myns + "entriesCount", count),
-                        new XElement(myns + "responseDocument", ""));
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                            new XElement(myns + functionname,
+                            new XElement(myns + "locationCodeFilter", locationfilter),
+                            new XElement(myns + "zoneCodeFilter", codefilter),
+                            new XElement(myns + "rackCodeFilter", rackcodefilter),
+                            new XElement(myns + "binCodeFilter", bincodefilter),
+                            new XElement(myns + "entriesPosition", position),
+                            new XElement(myns + "entriesCount", count),
+                            new XElement(myns + "responseDocument", ""));
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
                         string response = soapbodynode.Value;
                         XDocument document = GetDoc(response);
                         List<Bin> rv = new List<Bin>();
@@ -1490,20 +1490,20 @@ namespace WarehouseControlSystem.Helpers.NAV
                         XNamespace myns = GetNameSpace();
                         string functionname = "CreateBinTemplate";
                         XElement body =
-                        new XElement(myns + functionname,
-                        new XElement(myns + "locationCode", bintemplate.LocationCode),
-                        new XElement(myns + "zoneCode", bintemplate.ZoneCode),
-                        new XElement(myns + "code", bintemplate.Code),
-                        new XElement(myns + "description", bintemplate.Description),
-                        new XElement(myns + "binTypeCode", bintemplate.BinTypeCode),
-                        new XElement(myns + "warehouseClassCode", bintemplate.WarehouseClassCode),
-                        new XElement(myns + "blockMovement", bintemplate.BlockMovement),
-                        new XElement(myns + "specialEquipmentCode", bintemplate.SpecialEquipmentCode),
-                        new XElement(myns + "binRanking", bintemplate.BinRanking),
-                        new XElement(myns + "maximumCubage", bintemplate.MaximumCubage),
-                        new XElement(myns + "maximumWeight", bintemplate.MaximumWeight),
-                        new XElement(myns + "dedicated1", bintemplate.Dedicated));
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                            new XElement(myns + functionname,
+                            new XElement(myns + "locationCode", bintemplate.LocationCode),
+                            new XElement(myns + "zoneCode", bintemplate.ZoneCode),
+                            new XElement(myns + "code", bintemplate.Code),
+                            new XElement(myns + "description", bintemplate.Description),
+                            new XElement(myns + "binTypeCode", bintemplate.BinTypeCode),
+                            new XElement(myns + "warehouseClassCode", bintemplate.WarehouseClassCode),
+                            new XElement(myns + "blockMovement", bintemplate.BlockMovement),
+                            new XElement(myns + "specialEquipmentCode", bintemplate.SpecialEquipmentCode),
+                            new XElement(myns + "binRanking", bintemplate.BinRanking),
+                            new XElement(myns + "maximumCubage", bintemplate.MaximumCubage),
+                            new XElement(myns + "maximumWeight", bintemplate.MaximumWeight),
+                            new XElement(myns + "dedicated1", bintemplate.Dedicated));
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
                         tcs.SetResult(0);
                     }
                     catch (Exception e)
@@ -1532,20 +1532,20 @@ namespace WarehouseControlSystem.Helpers.NAV
                         string functionname = "ModifyBinTemplate";
 
                         XElement body =
-                        new XElement(myns + functionname,
-                        new XElement(myns + "locationCode", bintemplate.LocationCode),
-                        new XElement(myns + "zoneCode", bintemplate.ZoneCode),
-                        new XElement(myns + "code", bintemplate.Code),
-                        new XElement(myns + "description", bintemplate.Description),
-                        new XElement(myns + "binTypeCode", bintemplate.BinTypeCode),
-                        new XElement(myns + "warehouseClassCode", bintemplate.WarehouseClassCode),
-                        new XElement(myns + "blockMovement", bintemplate.BlockMovement),
-                        new XElement(myns + "specialEquipmentCode", bintemplate.SpecialEquipmentCode),
-                        new XElement(myns + "binRanking", bintemplate.BinRanking),
-                        new XElement(myns + "maximumCubage", bintemplate.MaximumCubage),
-                        new XElement(myns + "maximumWeight", bintemplate.MaximumWeight),
-                        new XElement(myns + "dedicated1", bintemplate.Dedicated));
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                            new XElement(myns + functionname,
+                            new XElement(myns + "locationCode", bintemplate.LocationCode),
+                            new XElement(myns + "zoneCode", bintemplate.ZoneCode),
+                            new XElement(myns + "code", bintemplate.Code),
+                            new XElement(myns + "description", bintemplate.Description),
+                            new XElement(myns + "binTypeCode", bintemplate.BinTypeCode),
+                            new XElement(myns + "warehouseClassCode", bintemplate.WarehouseClassCode),
+                            new XElement(myns + "blockMovement", bintemplate.BlockMovement),
+                            new XElement(myns + "specialEquipmentCode", bintemplate.SpecialEquipmentCode),
+                            new XElement(myns + "binRanking", bintemplate.BinRanking),
+                            new XElement(myns + "maximumCubage", bintemplate.MaximumCubage),
+                            new XElement(myns + "maximumWeight", bintemplate.MaximumWeight),
+                            new XElement(myns + "dedicated1", bintemplate.Dedicated));
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
                         tcs.SetResult(0);
                     }
                     catch (Exception e)
@@ -1574,9 +1574,9 @@ namespace WarehouseControlSystem.Helpers.NAV
                         XNamespace myns = GetNameSpace();
                         string functionname = "DeleteBinTemplate";
                         XElement body =
-                        new XElement(myns + functionname,
-                        new XElement(myns + "code", bintemplate.Code));
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                            new XElement(myns + functionname,
+                            new XElement(myns + "code", bintemplate.Code));
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
                         tcs.SetResult(0);
                     }
                     catch (Exception e)
@@ -1604,7 +1604,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         XNamespace myns = GetNameSpace();
                         string functionname = "GetBinTemplateCount";
                         XElement body = new XElement(myns + functionname);
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
                         int rv = StringToInt(soapbodynode.Value);
                         tcs.SetResult(rv);
                     }
@@ -1633,11 +1633,11 @@ namespace WarehouseControlSystem.Helpers.NAV
                             XNamespace myns = GetNameSpace();
                             string functionname = "GetBinTemplateList";
                             XElement body =
-                            new XElement(myns + functionname,
-                            new XElement(myns + "entriesPosition", position),
-                            new XElement(myns + "entriesCount", count),
-                            new XElement(myns + "responseDocument", ""));
-                            XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                                new XElement(myns + functionname,
+                                new XElement(myns + "entriesPosition", position),
+                                new XElement(myns + "entriesCount", count),
+                                new XElement(myns + "responseDocument", ""));
+                            XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
                             string response = soapbodynode.Value;
                             XDocument document = GetDoc(response);
                             List<BinTemplate> rv = new List<BinTemplate>();
@@ -1751,7 +1751,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         XNamespace myns = GetNameSpace();
                         string functionname = "GetBinTypeCount";
                         XElement body = new XElement(myns + functionname);
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
                         int rv = StringToInt(soapbodynode.Value);
                         tcs.SetResult(rv);
                     }
@@ -1783,7 +1783,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         new XElement(myns + "entriesPosition", position),
                         new XElement(myns + "entriesCount", count),
                         new XElement(myns + "responseDocument", ""));
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
                         string response = soapbodynode.Value;
                         XDocument document = GetDoc(response);
                         List<BinType> rv = new List<BinType>();
@@ -1868,7 +1868,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         new XElement(myns + "binCodeFilter", binCodeFiler),
                         new XElement(myns + "itemNoFilter", itemNoFilter),
                         new XElement(myns + "variantCodeFilter", variantCodeFilter));
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
                         int rv = StringToInt(soapbodynode.Value);
                         tcs.SetResult(rv);
                     }
@@ -1906,7 +1906,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         new XElement(myns + "entriesPosition", position),
                         new XElement(myns + "entriesCount", count),
                         new XElement(myns + "responseDocument", ""));
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
                         string response = soapbodynode.Value;
                         XDocument document = GetDoc(response);
                         List<BinContent> rv = new List<BinContent>();
@@ -2035,7 +2035,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         new XElement(myns + "barCodeFilter", barCodeCodeFilter),
                         new XElement(myns + "itemNoFilter", itemNoFilter),
                         new XElement(myns + "variantCodeFilter", variantCodeFilter));
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
                         int rv = StringToInt(soapbodynode.Value);
                         tcs.SetResult(rv);
                     }
@@ -2072,7 +2072,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                                     new XElement(myns + "entriesPosition", position),
                                     new XElement(myns + "entriesCount", count),
                                     new XElement(myns + "responseDocument", ""));
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                    XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
                     string response = soapbodynode.Value;
                     XDocument document = GetDoc(response);
                     List<ItemIdentifier> rv = new List<ItemIdentifier>();
@@ -2142,7 +2142,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         XNamespace myns = GetNameSpace();
                         string functionname = "GetWarehouseClassCount";
                         XElement body = new XElement(myns + functionname);
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
                         int rv = StringToInt(soapbodynode.Value);
                         tcs.SetResult(rv);
                     }
@@ -2175,7 +2175,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         new XElement(myns + "entriesPosition", position),
                         new XElement(myns + "entriesCount", count),
                         new XElement(myns + "responseDocument", ""));
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
                         string response = soapbodynode.Value;
                         XDocument document = GetDoc(response);
                         List<WarehouseClass> rv = new List<WarehouseClass>();
@@ -2235,7 +2235,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         XNamespace myns = GetNameSpace();
                         string functionname = "GetSpecialEquipmentCount";
                         XElement body = new XElement(myns + functionname);
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
                         int rv = StringToInt(soapbodynode.Value);
                         tcs.SetResult(rv);
                     }
@@ -2268,7 +2268,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         new XElement(myns + "entriesPosition", position),
                         new XElement(myns + "entriesCount", count),
                         new XElement(myns + "responseDocument", ""));
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
                         string response = soapbodynode.Value;
                         XDocument document = GetDoc(response);
                         List<SpecialEquipment> rv = new List<SpecialEquipment>();
@@ -2334,7 +2334,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         new XElement(myns + "binCodeFilter", binCodeFilter),
                         new XElement(myns + "itemNoFilter", itemNoFilter),
                         new XElement(myns + "variantCodeFilter", variantCodeFilter));
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
                         int rv = StringToInt(soapbodynode.Value);
                         tcs.SetResult(rv);
                     }
@@ -2373,7 +2373,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         new XElement(myns + "variantCodeFilter", position),
                         new XElement(myns + "variantCodeFilter", count),
                         new XElement(myns + "responseDocument", ""));
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
                         string response = soapbodynode.Value;
                         XDocument document = GetDoc(response);
                         List<WarehouseEntry> rv = new List<WarehouseEntry>();
@@ -2486,7 +2486,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         new XElement(myns + "locationCode", locationCode),
                         new XElement(myns + "zoneCode", zoneCode),
                         new XElement(myns + "responseDocument", ""));
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
                         string response = soapbodynode.Value;
                         XDocument document = GetDoc(response);
                         List<UserDefinedSelection> rv = new List<UserDefinedSelection>();
@@ -2563,7 +2563,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         new XElement(myns + "zoneCode", zoneCode),
                         new XElement(myns + "functionIndex", i),
                         new XElement(myns + "responseDocument", ""));
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
                         string response = soapbodynode.Value;
                         XDocument document = GetDoc(response);
                         List<UserDefinedSelectionResult> rv = new List<UserDefinedSelectionResult>();
@@ -2653,7 +2653,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         new XElement(myns + "zoneCode", zoneCode),
                         new XElement(myns + "rackNo", rackno),
                         new XElement(myns + "responseDocument", ""));
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
                         string response = soapbodynode.Value;
                         XDocument document = GetDoc(response);
                         List<UserDefinedFunction> rv = new List<UserDefinedFunction>();
@@ -2731,7 +2731,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         new XElement(myns + "itemNo", itemno),
                         new XElement(myns + "variantCode", variantcode),
                         new XElement(myns + "quantity", quantity));
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
                         string rv = soapbodynode.Value;
                         tcs.SetResult(rv);
                     }
@@ -2767,7 +2767,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         new XElement(myns + "locationCode", locationcode),
                         new XElement(myns + "request", searchrequest),
                         new XElement(myns + "responseDocument", ""));
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts);
+                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
                         string response = soapbodynode.Value;
                         XDocument document = GetDoc(response);
                         List<SearchResponse> rv = new List<SearchResponse>();

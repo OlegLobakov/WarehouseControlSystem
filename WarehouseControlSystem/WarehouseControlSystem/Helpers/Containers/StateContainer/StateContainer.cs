@@ -56,7 +56,6 @@ namespace WarehouseControlSystem.Helpers.Containers.StateContainer
                     return;
                 }
 
-
                 foreach (StateCondition sc in Conditions)
                 {
                     if (sc.State.ToString() == newValue.ToString())
@@ -69,17 +68,6 @@ namespace WarehouseControlSystem.Helpers.Containers.StateContainer
                         Content.IsVisible = true;
                     }
                 }
-
-                //foreach (var stateCondition in Conditions.Where(stateCondition => stateCondition.State != null && stateCondition.State.ToString().Equals(newValue.ToString())))
-                //{
-                //    if (Content != null)
-                //    {
-                //        Content.IsVisible = false;
-                //    }
-                //    Content = stateCondition.Content;
-                //    Content.IsVisible = true;
-                //    break;
-                //}
             }
             catch(Exception e)
             {

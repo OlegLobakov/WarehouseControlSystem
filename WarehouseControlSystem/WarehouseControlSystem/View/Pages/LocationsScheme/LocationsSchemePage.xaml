@@ -19,7 +19,6 @@
                 </OnPlatform>
             </ToolbarItem.Icon>
         </ToolbarItem>
-
         <ToolbarItem  Order="Primary" Priority="20" Text="{i18n:Translate LocationsSchemePage_Toolbar_New}" Command="{Binding NewLocationCommand}">
             <ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
@@ -32,30 +31,6 @@
                 </OnPlatform>
             </ToolbarItem.Icon>
         </ToolbarItem>
-        <!--<ToolbarItem  Order="Primary" Priority="30" Text="{i18n:Translate LocationsSchemePage_Toolbar_Delete}" Clicked="ToolbarItem_DeleteLocation">
-            <ToolbarItem.Icon>
-                <OnPlatform x:TypeArguments="FileImageSource">
-                    <On Platform="UWP,WinPhone">
-                        <FileImageSource File="Assets/Images/ic_action_remove_circle.png"/>
-                    </On>
-                    <On Platform="iOS,Android">
-                        <FileImageSource File="ic_action_remove_circle.png"/>
-                    </On>
-                </OnPlatform>
-            </ToolbarItem.Icon>
-        </ToolbarItem>-->
-        <!--<ToolbarItem  Order="Primary" Priority="40" Text="{i18n:Translate LocationsSchemePage_Toolbar_Edit}" Clicked="ToolbarItem_EditLocationClicked">
-            <ToolbarItem.Icon>
-                <OnPlatform x:TypeArguments="FileImageSource">
-                    <On Platform="UWP,WinPhone">
-                        <FileImageSource File="Assets/Images/ic_action_create.png"/>
-                    </On>
-                    <On Platform="iOS,Android">
-                        <FileImageSource File="ic_action_create.png"/>
-                    </On>
-                </OnPlatform>
-            </ToolbarItem.Icon>
-        </ToolbarItem>-->
         <ToolbarItem  Order="Primary" Priority="50"  Text="{i18n:Translate LocationsSchemePage_Toolbar_Scheme}" Command="{Binding ParamsCommand}">
             <ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
