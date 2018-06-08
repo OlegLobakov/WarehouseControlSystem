@@ -128,22 +128,5 @@ namespace WarehouseControlSystem.ViewModel
         {
             System.Diagnostics.Debug.WriteLine(sender.ToString());
         }
-
-        public override void Dispose()
-        {
-            SelectedTemplate = null;
-            foreach (BinTemplateViewModel bt in BinTemplates)
-            {
-                bt.Dispose();
-            }
-            BinTemplates.Clear();
-            BinTemplates = null;
-
-            NewCommand = null;
-            DeleteCommand = null;
-            EditCommand = null;
-            CopyCommand = null;
-            base.Dispose();
-        }
     }
 }

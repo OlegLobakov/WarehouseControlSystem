@@ -504,7 +504,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                             location.RequirePutaway = StringToBool(currentatribute.Value);
                             break;
                         }
-                    case "Transit":
+                    case "UseAsInTransit":
                         {
                             location.Transit = StringToBool(currentatribute.Value);
                             break;
@@ -525,7 +525,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                             break;
                         }
                     default:
-                        break;
+                        throw new InvalidOperationException("Impossible value > Name: "+ currentatribute.Name.LocalName);
                 }
             }
             return location;
@@ -1160,8 +1160,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                                     rack.RackOrientation = RackOrientationEnum.VerticalDown;
                                     break;
                                 default:
-                                    rack.RackOrientation = RackOrientationEnum.HorizontalLeft;
-                                    break;
+                                    throw new InvalidOperationException("Impossible value");
                             }
                             break;
                         }
@@ -2909,7 +2908,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                     handler.Credentials = connection.GetCreditials();
                     break;
                 default:
-                    break;
+                    throw new InvalidOperationException("Impossible value");
             }
 
             using (var client = new HttpClient(handler))

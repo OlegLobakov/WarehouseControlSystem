@@ -115,8 +115,10 @@ namespace WarehouseControlSystem.Droid
                 case "gsw-CH":  // "Schwiizertüütsch (Swiss German)" not supported .NET culture
                     netLanguage = "de-CH"; // closest supported
                     break;
-                    // add more application-specific cases here (if required)
-                    // ONLY use cultures that have been tested and known to work
+                // add more application-specific cases here (if required)
+                // ONLY use cultures that have been tested and known to work
+                default:
+                    throw new InvalidOperationException("Impossible value");
             }
 
             return netLanguage;

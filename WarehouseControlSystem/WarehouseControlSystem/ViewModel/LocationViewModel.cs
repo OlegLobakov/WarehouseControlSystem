@@ -396,6 +396,11 @@ namespace WarehouseControlSystem.ViewModel
                     }
                 }
             }
+            catch (OperationCanceledException e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.Message);
+                ErrorText = e.Message;
+            }
             finally
             {
                 ZonesIsLoaded = true;
@@ -403,12 +408,11 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
-        public override void Dispose()
+        public override void DisposeModel()
         {
-            Location = null;
-            TapCommand = null;
+            base.DisposeModel();
             SubSchemeElements.Clear();
-            SubSchemeElements = null;
+
             if (OnTap is Action<LocationViewModel>)
             {
                 Delegate[] clientList = OnTap.GetInvocationList();
@@ -417,7 +421,6 @@ namespace WarehouseControlSystem.ViewModel
                     OnTap -= (d as Action<LocationViewModel>);
                 }
             }
-            base.Dispose();
         }
     }
 }

@@ -20,8 +20,7 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ZonesFieldParamsPage : ContentPage
     {
-        public readonly ZonesViewModel model;
-
+        readonly ZonesViewModel model;
         public ZonesFieldParamsPage(ZonesViewModel zvm)
         {
             model = zvm;

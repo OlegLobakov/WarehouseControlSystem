@@ -7,20 +7,7 @@
              xmlns:i18n="clr-namespace:WarehouseControlSystem;assembly=WarehouseControlSystem"
              Title="{Binding Title}">
     <ContentPage.ToolbarItems>
-        <!--<ToolbarItem  Order="Primary" Priority="10" Text="{i18n:Translate LocationsSchemePage_Toolbar_List}" Command="{Binding ListLocationsCommand}">
-            <ToolbarItem.Icon>
-                <OnPlatform x:TypeArguments="FileImageSource">
-                    <On Platform="UWP,WinPhone">
-                        <FileImageSource File="Assets/Images/ic_action_dehaze.png"/>
-                    </On>
-                    <On Platform="iOS,Android">
-                        <FileImageSource File="ic_action_dehaze.png"/>
-                    </On>
-                </OnPlatform>
-            </ToolbarItem.Icon>
-        </ToolbarItem>-->
-
-        <ToolbarItem  Order="Primary" Priority="10" Text="{i18n:Translate LocationsSchemePage_Toolbar_List}" Clicked="ToolbarItem_Clicked_1">
+        <ToolbarItem  Order="Primary" Priority="10" Text="{i18n:Translate LocationsSchemePage_Toolbar_List}" Command="{Binding ListLocationsCommand}">
             <ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
                     <On Platform="UWP,WinPhone">
@@ -96,12 +83,13 @@
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <sc:StateContainer State="{Binding State}" Padding="5">
-            <sc:StateContainer.Conditions>
-                <sc:StateCondition State="Loading">
-                    <StackLayout Orientation="Horizontal" HorizontalOptions="Center" VerticalOptions="Center">
-                        <ActivityIndicator IsRunning="{Binding LoadAnimation}" HeightRequest="50" WidthRequest="50" VerticalOptions="Center" HorizontalOptions="Center"/>
-                        <Label Text="{Binding LoadText}"/>
-                    </StackLayout>
+            <sc:StateCondition State="Loading">
+                    <sc:StateCondition.Content>
+                        <StackLayout Orientation="Horizontal" HorizontalOptions="Center" VerticalOptions="Center">
+                            <ActivityIndicator IsRunning="{Binding LoadAnimation}" HeightRequest="50" WidthRequest="50" VerticalOptions="Center" HorizontalOptions="Center"/>
+                            <Label Text="{Binding LoadText}"/>
+                        </StackLayout>
+                    </sc:StateCondition.Content>
                 </sc:StateCondition>
                 <sc:StateCondition State="Normal">
                     <AbsoluteLayout x:Name="abslayout">
@@ -144,7 +132,6 @@
                 <sc:StateCondition State="NoData">
                     <Label Text="{i18n:Translate LocationsSchemePage_StateMessageNoData}" FontSize="Large" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
                 </sc:StateCondition>
-            </sc:StateContainer.Conditions>
         </sc:StateContainer>
     </ContentPage.Content>
 </ContentPage>

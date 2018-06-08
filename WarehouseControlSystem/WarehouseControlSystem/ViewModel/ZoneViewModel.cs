@@ -398,9 +398,9 @@ namespace WarehouseControlSystem.ViewModel
                     }
                 }
             }
-            catch
+            catch (Exception e)
             {
-
+                System.Diagnostics.Debug.WriteLine(e.Message);
             }
             finally
             {
@@ -409,17 +409,8 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
-        public override void Dispose()
+        public override void DisposeModel()
         {
-            Locations.Clear();
-            Locations = null;
-            BinTypes.Clear();
-            BinTypes = null;
-            SubSchemeElements.Clear();
-            SubSchemeElements = null;
-            TapCommand = null;
-            Location = null;
-            Zone = null;
             if (OnTap is Action<ZoneViewModel>)
             {
                 Delegate[] clientList = OnTap.GetInvocationList();
@@ -429,8 +420,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
 
-            Zone = null;
-            base.Dispose();
+            base.DisposeModel();
         }
     }
 }

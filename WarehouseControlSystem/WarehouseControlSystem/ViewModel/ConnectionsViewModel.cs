@@ -130,14 +130,14 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
-        public override void Dispose()
+        public override void DisposeModel()
         {
             foreach (ConnectionViewModel cvm in ConnectionViewModels)
             {
-                cvm.Dispose();
+                cvm.DisposeModel();
             }
             ConnectionViewModels.Clear();
-            base.Dispose();
+            base.DisposeModel();
         }
     }
 

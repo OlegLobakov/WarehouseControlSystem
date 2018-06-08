@@ -494,7 +494,7 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
-        public override void Dispose()
+        public override void DisposeModel()
         {
             if (OnTap is Action<BinViewModel>)
             {
@@ -505,7 +505,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
 
-            base.Dispose();
+            base.DisposeModel();
         }
     }
 }

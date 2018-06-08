@@ -295,13 +295,5 @@ namespace WarehouseControlSystem.ViewModel
             }
             Title = AppResources.NewConnectionPage_Title;
         }
-
-        public override void Dispose()
-        {
-            Connection = null;
-            TestConnectionCommand = null;
-            CreditialList = null;
-            base.Dispose();
-        }
     }
 }

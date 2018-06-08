@@ -54,8 +54,6 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
        
         protected override void OnDisappearing()
         {
-            //rackview.Dispose();
-
             base.OnDisappearing();
         }
 
@@ -63,7 +61,7 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
         {
             MessagingCenter.Unsubscribe<RackViewModel>(this, "ZonesIsLoaded");
             MessagingCenter.Unsubscribe<RackViewModel>(this, "LocationsIsLoaded");            
-            model.Dispose();
+            model.DisposeModel();
             base.OnBackButtonPressed();
             return false;
         }

@@ -35,7 +35,7 @@ namespace WarehouseControlSystem.View.Pages.Contacts
 
         protected override bool OnBackButtonPressed()
         {
-            model.Dispose();
+            model.DisposeModel();
             base.OnBackButtonPressed();
             return false;
         }

@@ -1058,13 +1058,12 @@ namespace WarehouseControlSystem.ViewModel
             ACD.CancelAll();
         }
 
-        public override void Dispose()
+        public override void DisposeModel()
         {
             Locations.Clear();
             Zones.Clear();
             BinTemplates.Clear();
-            TapCommand = null;
-            Rack = null;
+
             if (OnTap is Action<RackViewModel>)
             {
                 Delegate[] clientList = OnTap.GetInvocationList();
@@ -1073,8 +1072,8 @@ namespace WarehouseControlSystem.ViewModel
                     OnTap -= (d as Action<RackViewModel>);
                 }
             }
-            BinsViewModel.Dispose();
-            base.Dispose();
+            BinsViewModel.DisposeModel();
+            base.DisposeModel();
         }
     }
 }

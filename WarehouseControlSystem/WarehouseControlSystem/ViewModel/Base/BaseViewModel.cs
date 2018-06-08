@@ -19,7 +19,7 @@ using WarehouseControlSystem.Model;
 
 namespace WarehouseControlSystem.ViewModel.Base
 {
-    public class BaseViewModel : BindableObject, IDisposable
+    public class BaseViewModel : BindableObject
     {
         public INavigation Navigation { get; set; }
 
@@ -35,6 +35,7 @@ namespace WarehouseControlSystem.ViewModel.Base
                 }
             }
         } string title;
+
         public State State
         {
             get { return state1; }
@@ -43,11 +44,11 @@ namespace WarehouseControlSystem.ViewModel.Base
                 if (state1 != value)
                 {
                     state1 = value;
-                    LoadAnimation = state1 == State.Loading;
                     OnPropertyChanged(nameof(State));
                 }
             }
         } State state1;
+
         public bool Selected
         {
             get { return selected; }
@@ -60,6 +61,7 @@ namespace WarehouseControlSystem.ViewModel.Base
                 }
             }
         } bool selected;
+
         public string LoadingText
         {
             get { return loadingtext; }
@@ -72,6 +74,7 @@ namespace WarehouseControlSystem.ViewModel.Base
                 }
             }
         } string loadingtext;
+
         public bool LoadAnimation
         {
             get { return loadanimation; }
@@ -84,6 +87,7 @@ namespace WarehouseControlSystem.ViewModel.Base
                 }
             }
         } bool loadanimation;
+
         public string InfoText
         {
             get { return infotext; }
@@ -96,6 +100,7 @@ namespace WarehouseControlSystem.ViewModel.Base
                 }
             }
         } string infotext;
+
         public string ErrorText
         {
             get { return errortext; }
@@ -108,6 +113,7 @@ namespace WarehouseControlSystem.ViewModel.Base
                 }
             }
         } string errortext;
+
         public string RequestLabelText
         {
             get { return requestlabeltext; }
@@ -120,6 +126,7 @@ namespace WarehouseControlSystem.ViewModel.Base
                 }
             }
         } string requestlabeltext;
+
         public string RequestMessageText
         {
             get { return requesmessagettext; }
@@ -176,15 +183,9 @@ namespace WarehouseControlSystem.ViewModel.Base
             State = State.Normal;
         }
 
-        public virtual void Dispose()
+        public virtual void DisposeModel()
         {
             ACD.CancelAll();
-            Navigation = null;
-            ErrorOKCommand = null;
-            WarningOKCommand = null;
-            NoInternetOKCommand = null;
-            NoDataOKCommand = null;
-
             IsDisposed = true;
         }
 
@@ -207,7 +208,7 @@ namespace WarehouseControlSystem.ViewModel.Base
 
         public bool CheckNetAndConnection()
         {
-            bool rv = false;
+            bool rv = true;
             if (!Plugin.Connectivity.CrossConnectivity.Current.IsConnected)
             {
                 rv = false;

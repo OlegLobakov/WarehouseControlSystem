@@ -28,52 +28,53 @@
             </sc:StateCondition>
 
             <sc:StateCondition State="Normal">
-                <Grid RowSpacing="6" ColumnSpacing="6">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <vc:WellcomeBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"  Grid.RowSpan="3" 
+                <sc:StateCondition.Content>
+                    <Grid RowSpacing="6" ColumnSpacing="6">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <vc:WellcomeBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"  Grid.RowSpan="3" 
                          Name="{i18n:Translate WellcomePage_Locations}" 
                          BackgroundColor="{StaticResource WellcodeButtonBackgoundColor}" 
                          Taped="LocationsTaped"/>
-                    <vc:WellcomeBlock Grid.Row="1" Grid.Column="3" 
+                        <vc:WellcomeBlock Grid.Row="1" Grid.Column="3" 
                          Name="{i18n:Translate WellcomePage_About}" 
                          BackgroundColor="{StaticResource WellcodeButtonBackgoundColor}"
                          Taped="AboutTaped"/>
-                    <vc:WellcomeBlock Grid.Row="2" Grid.Column="3" 
+                        <vc:WellcomeBlock Grid.Row="2" Grid.Column="3" 
                          Name="{i18n:Translate WellcomePage_Connections}" 
                          BackgroundColor="{StaticResource WellcodeButtonBackgoundColor}"
                          Taped="ConnectionsTaped"/>
-                    <vc:WellcomeBlock Grid.Row="3" Grid.Column="3" 
+                        <vc:WellcomeBlock Grid.Row="3" Grid.Column="3" 
                          Name="{i18n:Translate WellcomePage_Options}" 
                          BackgroundColor="{StaticResource WellcodeButtonBackgoundColor}"
                          Taped="OptionsTaped"/>
-                    <vc:WellcomeBlock Grid.Row="4" Grid.Column="1" 
+                        <vc:WellcomeBlock Grid.Row="4" Grid.Column="1" 
                          Name="{i18n:Translate WellcomePage_AddLocation}" 
                          BackgroundColor="DarkGreen"
                          Taped="AddLocation"/>
-                    <vc:WellcomeBlock Grid.Row="4" Grid.Column="2" 
+                        <vc:WellcomeBlock Grid.Row="4" Grid.Column="2" 
                          Name="{i18n:Translate WellcomePage_AddZone}" 
                          BackgroundColor="DarkGreen"
                          Taped="AddZoneTaped"/>
-                    <vc:WellcomeBlock Grid.Row="4" Grid.Column="3" 
+                        <vc:WellcomeBlock Grid.Row="4" Grid.Column="3" 
                          Name="{i18n:Translate WellcomePage_AddRack}"  
                          BackgroundColor="DarkGreen"
                          Taped="AddRackTaped"/>
-
-                </Grid>
+                    </Grid>
+                </sc:StateCondition.Content>
             </sc:StateCondition>
 
             <sc:StateCondition State="Error">

@@ -22,148 +22,143 @@
 
     <ContentPage.Content>
         <sc:StateContainer State="{Binding State}">
-            <sc:StateCondition State="Loading">
-                <ActivityIndicator IsRunning="{Binding LoadAnimation}" HeightRequest="80" WidthRequest="80" VerticalOptions="Center" HorizontalOptions="Center"/>
-            </sc:StateCondition>
-            <sc:StateCondition State="Normal">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <Grid HeightRequest="70" BackgroundColor="White" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" x:Name="grid">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="2*"/>
-                            <ColumnDefinition Width="2*"/>
-                            <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="1*"/>
-                        </Grid.ColumnDefinitions>
-                        <Label  Grid.Column="0" Text="{i18n:Translate LocationListPage_FieldCode}" Margin="20,0,0,0"         
+            <sc:StateContainer.Conditions>
+                <sc:StateCondition State="Loading">
+                    <ActivityIndicator IsRunning="{Binding LoadAnimation}" HeightRequest="80" WidthRequest="80" VerticalOptions="Center" HorizontalOptions="Center"/>
+                </sc:StateCondition>
+                <sc:StateCondition State="Normal">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid HeightRequest="70" BackgroundColor="White" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" x:Name="grid">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label  Grid.Column="0" Text="{i18n:Translate LocationListPage_FieldCode}" Margin="20,0,0,0"         
                                             HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                                             HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
 
-                        <Label  Grid.Column="1" Text="{i18n:Translate LocationListPage_FieldName}" Margin="10,0,0,0"  
+                            <Label  Grid.Column="1" Text="{i18n:Translate LocationListPage_FieldName}" Margin="10,0,0,0"  
                                             HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                                             HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
 
-                        <Label  Grid.Column="2" Text="{i18n:Translate LocationListPage_FieldAddress}" Margin="10,0,0,0"  
+                            <Label  Grid.Column="2" Text="{i18n:Translate LocationListPage_FieldAddress}" Margin="10,0,0,0"  
                                             HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                                             HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
 
-                        <Label  Grid.Column="3" Text="{i18n:Translate LocationListPage_FieldSchemeVisible}" Margin="10,0,0,0"  
+                            <Label  Grid.Column="3" Text="{i18n:Translate LocationListPage_FieldSchemeVisible}" Margin="10,0,0,0"  
                                             HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                                             HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
 
-                        <Label  Grid.Column="4" Text="{i18n:Translate LocationListPage_FieldZoneQuantity}" Margin="10,0,20,0"  
+                            <Label  Grid.Column="4" Text="{i18n:Translate LocationListPage_FieldZoneQuantity}" Margin="10,0,20,0"  
                                             HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                                             HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
 
-                        <Label  Grid.Column="5" Text="{i18n:Translate LocationListPage_FieldBinQuantity}" Margin="10,0,20,0"  
+                            <Label  Grid.Column="5" Text="{i18n:Translate LocationListPage_FieldBinQuantity}" Margin="10,0,20,0"  
                                             HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                                             HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
-                    </Grid>
-
-                    <ListView Grid.Row="1" RowHeight="70" ItemsSource="{Binding LocationViewModels}" SelectedItem="{Binding SelectedLocationViewModel,Mode=TwoWay}">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <ViewCell>
-                                    <ViewCell.ContextActions>
-                                        <MenuItem Text="Edit"
+                        </Grid>
+                        <ListView Grid.Row="1" RowHeight="70" ItemsSource="{Binding LocationViewModels}" SelectedItem="{Binding SelectedLocationViewModel,Mode=TwoWay}">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+                                        <ViewCell.ContextActions>
+                                            <MenuItem Text="Edit"
                                                           Command="{Binding Path=BindingContext.EditLocationCommand, Source={x:Reference Name=ThisPage}}" 
                                                           CommandParameter="{Binding .}"  />
-                                        <MenuItem Text="Delete" IsDestructive="True"
+                                            <MenuItem Text="Delete" IsDestructive="True"
                                                           Command="{Binding Path=BindingContext.DeleteLocationCommand, Source={x:Reference Name=ThisPage}}" 
                                                           CommandParameter="{Binding .}"  />
-                                    </ViewCell.ContextActions>
-                                    <StackLayout Padding="0,1,0,1" BackgroundColor="LightGray" HeightRequest="70">
-                                        <Grid BackgroundColor="White" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" x:Name="grid">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="1*"/>
-                                                <ColumnDefinition Width="2*"/>
-                                                <ColumnDefinition Width="2*"/>
-                                                <ColumnDefinition Width="1*"/>
-                                                <ColumnDefinition Width="1*"/>
-                                                <ColumnDefinition Width="1*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <Label  Grid.Column="0" Text="{Binding Code}" Margin="20,0,0,0"         
+                                        </ViewCell.ContextActions>
+                                        <StackLayout Padding="0,1,0,1" BackgroundColor="LightGray" HeightRequest="70">
+                                            <Grid BackgroundColor="White" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" x:Name="grid">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="1*"/>
+                                                    <ColumnDefinition Width="2*"/>
+                                                    <ColumnDefinition Width="2*"/>
+                                                    <ColumnDefinition Width="1*"/>
+                                                    <ColumnDefinition Width="1*"/>
+                                                    <ColumnDefinition Width="1*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Label  Grid.Column="0" Text="{Binding Code}" Margin="20,0,0,0"         
                                             HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                                             HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
 
-                                            <Label  Grid.Column="1" Text="{Binding Name}" Margin="10,0,0,0"  
+                                                <Label  Grid.Column="1" Text="{Binding Name}" Margin="10,0,0,0"  
                                             HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                                             HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
 
-                                            <Label  Grid.Column="2" Text="{Binding Address}" Margin="10,0,0,0"  
+                                                <Label  Grid.Column="2" Text="{Binding Address}" Margin="10,0,0,0"  
                                             HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                                             HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
 
-                                            <Switch Grid.Column="3"  
+                                                <Switch Grid.Column="3"  
                                                 IsToggled="{Binding SchemeVisible, Mode=TwoWay}" 
                                                 HorizontalOptions="FillAndExpand" VerticalOptions="Center"/>
 
-                                            <Label  Grid.Column="4" Text="{Binding ZoneQuantity}" Margin="10,0,20,0"  
+                                                <Label  Grid.Column="4" Text="{Binding ZoneQuantity}" Margin="10,0,20,0"  
                                             HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                                             HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
 
-                                            <Label  Grid.Column="5" Text="{Binding BinQuantity}" Margin="10,0,20,0"  
+                                                <Label  Grid.Column="5" Text="{Binding BinQuantity}" Margin="10,0,20,0"  
                                             HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                                             HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
-                                        </Grid>
-                                    </StackLayout>
-                                </ViewCell>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                </Grid>
-            </sc:StateCondition>
-
-            <sc:StateCondition State="Error">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="1*"/>
-                        <RowDefinition Height="4*"/>
-                        <RowDefinition Height="1*"/>
-                    </Grid.RowDefinitions>
-                    <Label Grid.Row="0" Text="{i18n:Translate StateContainer_Error}" 
+                                            </Grid>
+                                        </StackLayout>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Grid>
+                </sc:StateCondition>
+                <sc:StateCondition State="Error">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="4*"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Row="0" Text="{i18n:Translate StateContainer_Error}" 
                            FontSize="Large" HorizontalOptions="Center"
                            TextColor="Black"
                            VerticalOptions="Center"/>
-                    <ScrollView Orientation="Vertical" Grid.Row="1" >
-                        <StackLayout>
-                            <Label Text="{Binding ErrorText}" FontSize="Large" 
+                        <ScrollView Orientation="Vertical" Grid.Row="1" >
+                            <StackLayout>
+                                <Label Text="{Binding ErrorText}" FontSize="Large" 
                                    TextColor="Black"
                                    HorizontalOptions="FillAndExpand" 
                                    VerticalOptions="FillAndExpand" 
                                    HorizontalTextAlignment="Center"
                                    VerticalTextAlignment="Center"/>
-                        </StackLayout>
-                    </ScrollView>
-                    <Button Grid.Row="2" Text="OK" FontSize="Large" 
+                            </StackLayout>
+                        </ScrollView>
+                        <Button Grid.Row="2" Text="OK" FontSize="Large" 
                             Command="{Binding ErrorOKCommand}" 
                             TextColor="Black"
                             BackgroundColor="White"/>
-                </Grid>
-            </sc:StateCondition>
-
-            <sc:StateCondition State="Warning">
-                <StackLayout HorizontalOptions="Center" VerticalOptions="Center" Orientation="Vertical">
-                    <Label x:Name="warninglabel" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Black" FontSize="Large"></Label>
-                </StackLayout>
-            </sc:StateCondition>
-
-            <sc:StateCondition State="NoInternet">
-                <StackLayout>
-                    <Label Text="{i18n:Translate StateContainer_StateNoInternet_Error}" HorizontalOptions="Center" VerticalOptions="Center"/>
-                </StackLayout>
-            </sc:StateCondition>
-
-            <sc:StateCondition State="NoData">
-                <Label Text="{i18n:Translate LocationsSchemePage_StateMessageNoData}" FontSize="Large" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
-            </sc:StateCondition>
-
+                    </Grid>
+                </sc:StateCondition>
+                <sc:StateCondition State="Warning">
+                    <StackLayout HorizontalOptions="Center" VerticalOptions="Center" Orientation="Vertical">
+                        <Label x:Name="warninglabel" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Black" FontSize="Large"></Label>
+                    </StackLayout>
+                </sc:StateCondition>
+                <sc:StateCondition State="NoInternet">
+                    <StackLayout>
+                        <Label Text="{i18n:Translate StateContainer_StateNoInternet_Error}" HorizontalOptions="Center" VerticalOptions="Center"/>
+                    </StackLayout>
+                </sc:StateCondition>
+                <sc:StateCondition State="NoData">
+                    <Label Text="{i18n:Translate LocationsSchemePage_StateMessageNoData}" FontSize="Large" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+                </sc:StateCondition>
+            </sc:StateContainer.Conditions>
         </sc:StateContainer>
-
     </ContentPage.Content>
 </ContentPage>

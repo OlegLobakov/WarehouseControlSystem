@@ -15,7 +15,7 @@ namespace WarehouseControlSystem.Helpers.Containers.StateContainer
     {
         public event Action<StateContainer> OnAfterStateSet;
 
-        public ObservableCollection<StateCondition> Conditions { get; set; } = new ObservableCollection<StateCondition>();
+        public List<StateCondition> Conditions { get; set; } = new List<StateCondition>();
 
         public static readonly BindableProperty StateProperty = BindableProperty.Create(nameof(State), typeof(object), typeof(StateContainer), null, BindingMode.Default, null, StateChanged);
 
@@ -56,19 +56,34 @@ namespace WarehouseControlSystem.Helpers.Containers.StateContainer
                     return;
                 }
 
-                foreach (var stateCondition in Conditions.Where(stateCondition => stateCondition.State != null && stateCondition.State.ToString().Equals(newValue.ToString())))
+
+                foreach (StateCondition sc in Conditions)
                 {
-                    if (Content != null)
+                    if (sc.State.ToString() == newValue.ToString())
                     {
-                        Content.IsVisible = false;
+                        if (Content != null)
+                        {
+                            Content.IsVisible = false;
+                        }
+                        Content = sc.Content;
+                        Content.IsVisible = true;
                     }
-                    Content = stateCondition.Content;
-                    Content.IsVisible = true;
-                    break;
                 }
+
+                //foreach (var stateCondition in Conditions.Where(stateCondition => stateCondition.State != null && stateCondition.State.ToString().Equals(newValue.ToString())))
+                //{
+                //    if (Content != null)
+                //    {
+                //        Content.IsVisible = false;
+                //    }
+                //    Content = stateCondition.Content;
+                //    Content.IsVisible = true;
+                //    break;
+                //}
             }
-            catch
+            catch(Exception e)
             {
+                System.Diagnostics.Debug.WriteLine(e.Message);
             }
         }
 

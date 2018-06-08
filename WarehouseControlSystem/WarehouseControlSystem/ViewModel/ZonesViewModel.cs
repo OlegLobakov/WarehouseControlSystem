@@ -83,7 +83,7 @@ namespace WarehouseControlSystem.ViewModel
             SelectedViewModels.Clear();
             foreach (ZoneViewModel zvm in ZoneViewModels)
             {
-                zvm.Dispose();
+                zvm.DisposeModel();
             }
             ZoneViewModels.Clear();
         }
@@ -223,7 +223,7 @@ namespace WarehouseControlSystem.ViewModel
                             zvm.EditMode = SchemeElementEditMode.None;
                             break;
                         default:
-                            break;
+                            throw new InvalidOperationException("Impossible value");
                     }
                 }
                 else
@@ -384,18 +384,10 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
-        public override void Dispose()
+        public override void DisposeModel()
         {
             ClearAll();
-            ListZonesCommand = null;
-            NewZoneCommand = null;
-            EditZoneCommand = null;
-            DeleteZoneCommand = null;
-            ParamsCommand = null;
-            SelectedZoneViewModel = null;
-            ZoneViewModels = null;
-            SelectedViewModels = null;
-            base.Dispose();
+            base.DisposeModel();
         }
     }
 }

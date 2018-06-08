@@ -9,21 +9,19 @@
               HasUnevenRows="true"
               ItemsSource="{Binding MenuItems}">
             <ListView.Header>
-                <Grid BackgroundColor="{StaticResource PageHeaderBarBackgoundColor}">
+                <Grid BackgroundColor="{StaticResource PageHeaderBarBackgoundColor}" HeightRequest="400">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="10"/>
-                        <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="10"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="30"/>
-                        <RowDefinition Height="80"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
                         <RowDefinition Height="10"/>
                     </Grid.RowDefinitions>
-                    <Image Grid.Column="2" Grid.Row="1" Aspect="AspectFit">
+                    <Image Grid.Column="1" Grid.Row="1" HorizontalOptions="StartAndExpand" VerticalOptions="Center">
                         <Image.Source>
                             <OnPlatform x:TypeArguments="FileImageSource">
                                 <On Platform="UWP,WinPhone">
@@ -35,12 +33,13 @@
                             </OnPlatform>
                         </Image.Source>
                     </Image>
-                    <Label Grid.Column="2" Grid.Row="2" Text="Warehouse Control System" TextColor="White" 
-                           HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" VerticalTextAlignment="End" 
-                           Style="{DynamicResource SubtitleStyle}" FontSize="Medium" />
-                    <Label Grid.Column="2" Grid.Row="3" Text="for Microsoft Dynamics NAV" TextColor="White" 
-                           HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" VerticalTextAlignment="Start" FontSize="Small" 
-                           Style="{DynamicResource SubtitleStyle}"/>
+                    <StackLayout Orientation="Vertical" Grid.Column="1" Grid.Row="2">
+                        <Label Text="Warehouse Control System" TextColor="White"
+                           HorizontalOptions="FillAndExpand" FontSize="Medium" />
+
+                        <Label  Text="for Microsoft Dynamics NAV" TextColor="White" 
+                           HorizontalOptions="FillAndExpand"  FontSize="Small" />
+                    </StackLayout>
                 </Grid>
             </ListView.Header>
             <ListView.ItemTemplate>

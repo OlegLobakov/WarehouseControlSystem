@@ -57,7 +57,7 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
         {
             MessagingCenter.Unsubscribe<ZoneViewModel>(this, "LocationsIsLoaded");
             MessagingCenter.Unsubscribe<ZoneViewModel>(this, "BinTypesIsLoaded");
-            model.Dispose();
+            model.DisposeModel();
             base.OnBackButtonPressed();
             return false;
         }

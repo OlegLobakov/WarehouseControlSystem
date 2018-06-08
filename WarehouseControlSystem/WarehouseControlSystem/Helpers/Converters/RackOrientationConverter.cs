@@ -55,7 +55,7 @@ namespace WarehouseControlSystem.Helpers.Converters
                         break;
                     }
                 default:
-                    break;
+                    throw new InvalidOperationException("Impossible value");
             }
 
             RackOrientationPick rop = new RackOrientationPick()
@@ -75,7 +75,10 @@ namespace WarehouseControlSystem.Helpers.Converters
                 RackOrientationPick rop = (RackOrientationPick)value;
                 rv = rop.RackOrientation;
             }
-            catch {}
+            catch
+            {
+                System.Diagnostics.Debug.WriteLine("RackOrientationConverter ConvertBack error ");
+            }
             return rv;
         }
     }

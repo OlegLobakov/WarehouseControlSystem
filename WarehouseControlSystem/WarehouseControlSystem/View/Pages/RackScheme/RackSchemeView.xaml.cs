@@ -205,7 +205,7 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
                         grid.Children.Add(label1, 0, i - 1);
                         break;
                     default:
-                        break;
+                        throw new InvalidOperationException("Impossible value");
                 }
                 udslabels.Add(label1);
             }

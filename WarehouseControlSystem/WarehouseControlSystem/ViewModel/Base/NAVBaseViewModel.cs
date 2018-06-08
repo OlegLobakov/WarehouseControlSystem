@@ -202,7 +202,7 @@ namespace WarehouseControlSystem.ViewModel.Base
                             EditModeText = AppResources.ZoneView_EditMode2;
                             break;
                         default:
-                            break;
+                            throw new InvalidOperationException("Impossible value");
                     }
                     Changed = true;
                     OnPropertyChanged("EditMode");

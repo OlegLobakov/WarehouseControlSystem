@@ -104,7 +104,7 @@ namespace WarehouseControlSystem.ViewModel
         {
             foreach (RackViewModel lvm in RackViewModels)
             {
-                lvm.Dispose();
+                lvm.DisposeModel();
             }
             RackViewModels.Clear();
             SelectedViewModels.Clear();
@@ -442,22 +442,11 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
-        public void CancelAsync()
+        public override void DisposeModel()
         {
-            ACD.CancelAll();
-        }
-
-        public override void Dispose()
-        {
-            Zone = null;
             ClearAll();
             UserDefinedSelectionViewModels.Clear();
-            RackListCommand = null;
-            NewRackCommand = null;
-            EditRackCommand = null;
-            DeleteRackCommand = null;
-            ParamsCommand = null;
-            base.Dispose();
+            base.DisposeModel();
         }
     }
 }

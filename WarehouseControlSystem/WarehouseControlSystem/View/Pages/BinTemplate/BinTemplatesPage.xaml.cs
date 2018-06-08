@@ -39,7 +39,7 @@ namespace WarehouseControlSystem.View.Pages.BinTemplate
 
         protected override bool OnBackButtonPressed()
         {
-            model.Dispose();
+            model.DisposeModel();
             base.OnBackButtonPressed();
             return false;
         }

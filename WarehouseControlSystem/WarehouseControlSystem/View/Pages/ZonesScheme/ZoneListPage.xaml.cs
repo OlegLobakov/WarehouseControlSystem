@@ -42,7 +42,7 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
         protected async override void OnDisappearing()
         {
             await model.SaveZonesVisible();
-            model.Dispose();
+            model.DisposeModel();
             MessagingCenter.Send(model, "ReLoad");
             base.OnDisappearing();
         }

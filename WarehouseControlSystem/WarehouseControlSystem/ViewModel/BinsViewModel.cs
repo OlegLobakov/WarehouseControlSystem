@@ -832,17 +832,14 @@ namespace WarehouseControlSystem.ViewModel
         {
             foreach (BinViewModel bvm in BinViewModels)
             {
-                bvm.Dispose();
+                bvm.DisposeModel();
             }
             BinViewModels.Clear();
         }
 
-        public override void Dispose()
+        public override void DisposeModel()
         {
-            BlockBinsCommand = null;
-            CombineBinsCommand = null;
-            DeleteBinsCommand = null;
-            ShowBinOperationCommand = null;
+            BinViewModelsDispose();
 
             if (OnBinClick is Action<BinsViewModel>)
             {
@@ -853,15 +850,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
 
-            SelectedBinContent.Clear();
-            UserDefinedFunctions.Clear();
-            BinTypes.Clear();
-            SpecialEquipments.Clear();
-            WarehouseClasses.Clear();
-
-            BinViewModelsDispose();
-
-            base.Dispose();
+            base.DisposeModel();
         }
     }
 }

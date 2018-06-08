@@ -48,7 +48,7 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
 
         protected override bool OnBackButtonPressed()
         {
-            model.Dispose();
+            model.DisposeModel();
             base.OnBackButtonPressed();
             return false;
         }

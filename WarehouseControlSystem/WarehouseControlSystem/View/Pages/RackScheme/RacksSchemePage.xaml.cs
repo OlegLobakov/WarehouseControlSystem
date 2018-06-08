@@ -56,9 +56,6 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             MessagingCenter.Subscribe<RacksViewModel>(this, "ReLoad", Reload);
             MessagingCenter.Subscribe<RacksViewModel>(this, "UDSRunIsDone", UDSRunIsDone);
             MessagingCenter.Subscribe<RacksViewModel>(this, "UDSListIsLoaded", UDSListIsLoaded);
-
-            PanGesture.PanUpdated += OnPaned;
-            TapGesture.Tapped += GridTapped;
         }
 
 
@@ -67,27 +64,25 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             base.OnAppearing();
             model.Load();
             model.LoadUDS();
+            PanGesture.PanUpdated += OnPaned;
+            TapGesture.Tapped += GridTapped;
         }
 
         protected override void OnDisappearing()
-        {
+        {     
+            PanGesture.PanUpdated -= OnPaned;
+            TapGesture.Tapped -= GridTapped;     
             base.OnDisappearing();
         }
 
         protected override bool OnBackButtonPressed()
         {
-            model.CancelAsync();
+            model.DisposeModel();
             MessagingCenter.Unsubscribe<RacksViewModel>(this, "Rebuild");
             MessagingCenter.Unsubscribe<RacksViewModel>(this, "ReLoad");
             MessagingCenter.Unsubscribe<SearchViewModel>(this, "Search");
             MessagingCenter.Unsubscribe<RacksViewModel>(this, "UDSRunIsDone");
             MessagingCenter.Unsubscribe<RacksViewModel>(this, "UDSListIsLoaded");
-
-            PanGesture.PanUpdated -= OnPaned;
-            TapGesture.Tapped -= GridTapped;
-            SelectedViews.Clear();
-            Views.Clear();
-            model.Dispose();
             base.OnBackButtonPressed();
             return false;
         }

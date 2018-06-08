@@ -68,18 +68,16 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
 
         protected override void OnDisappearing()
         {
-            MessagingCenter.Unsubscribe<ZonesViewModel>(this, "Rebuild");
-            MessagingCenter.Unsubscribe<ZonesViewModel>(this, "ReLoad");
             base.OnDisappearing();
         }
 
         protected override bool OnBackButtonPressed()
         {
-
+            model.DisposeModel();
+            MessagingCenter.Unsubscribe<ZonesViewModel>(this, "Rebuild");
+            MessagingCenter.Unsubscribe<ZonesViewModel>(this, "ReLoad");
             PanGesture.PanUpdated -= OnPaned;
-            TapGesture.Tapped -= GridTapped;
-            Views.Clear();
-            model.Dispose();
+            TapGesture.Tapped -= GridTapped;         
             base.OnBackButtonPressed();
             return false;
         }

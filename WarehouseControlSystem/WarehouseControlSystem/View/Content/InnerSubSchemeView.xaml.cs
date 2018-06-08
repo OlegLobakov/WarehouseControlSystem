@@ -209,7 +209,7 @@ namespace WarehouseControlSystem.View.Content
                                                 break;
                                             }
                                         default:
-                                            break;
+                                            throw new InvalidOperationException("Impossible value");
                                     }
 
                                     SKColor colorred = SKColors.Red;

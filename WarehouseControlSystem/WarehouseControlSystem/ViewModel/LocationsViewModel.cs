@@ -86,7 +86,7 @@ namespace WarehouseControlSystem.ViewModel
             SelectedViewModels.Clear();
             foreach (LocationViewModel lvm in LocationViewModels)
             {
-                lvm.Dispose();
+                lvm.DisposeModel();
             }
             LocationViewModels.Clear();
         }
@@ -193,9 +193,9 @@ namespace WarehouseControlSystem.ViewModel
 
         public async void LoadAll()
         {
-            State = State.Loading;
             if (CheckNetAndConnection())
             {
+                State = State.Loading;
                 try
                 {
                     List<Location> list = await NAV.GetLocationList("", false, 1, int.MaxValue, ACD.Default);
@@ -431,20 +431,10 @@ namespace WarehouseControlSystem.ViewModel
             return tcs.Task;
         }
 
-        public override void Dispose()
+        public override void DisposeModel()
         {
-            ListLocationsCommand = null;
-            NewLocationCommand = null;
-            EditLocationCommand = null;
-            DeleteLocationCommand = null;
-            ParamsCommand = null;
-
             ClearAll();
-            foreach (LocationViewModel lvm in LocationViewModels)
-            {          
-                lvm.Dispose();
-            }
-            base.Dispose();
+            base.DisposeModel();
         }
     }
 }

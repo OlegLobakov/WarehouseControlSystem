@@ -114,11 +114,5 @@ namespace WarehouseControlSystem.ViewModel
                 ErrorText = e.Message;
             }
         }
-
-        public override void Dispose()
-        {
-            MessageTypes = null;
-            base.Dispose();
-        }
     }
 }

@@ -150,6 +150,7 @@ namespace WarehouseControlSystem.ViewModel
         public List<BinType> BinTypes { get; set; }
         public List<Location> Locations { get; set; }
         public List<Zone> Zones { get; set; }
+
         public Location SelectedLocation
         {
             get { return selectedlocation; }
@@ -423,16 +424,12 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
-        public override void Dispose()
+        public override void DisposeModel()
         {
-            BinTemplate = null;
             BinTypes.Clear();
             Locations.Clear();
             Zones.Clear();
-            SelectedLocation = null;
-            SelectedZone = null;
-            SelectedBinType = null;
-            base.Dispose();
+            base.DisposeModel();
         }
     }
 }

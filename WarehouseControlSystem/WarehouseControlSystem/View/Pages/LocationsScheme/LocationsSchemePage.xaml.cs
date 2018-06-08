@@ -71,7 +71,7 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
             TapGesture.Tapped -= GridTapped;
             SelectedViews.Clear();
             Views.Clear();
-            model.Dispose();
+            model.DisposeModel();
             base.OnBackButtonPressed();
             return false;
         }
@@ -97,10 +97,11 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
                 LocationView lv = new LocationView(lvm1);
                 AbsoluteLayout.SetLayoutBounds(lv, new Rectangle(lvm1.Left, lvm1.Top, lvm1.Width, lvm1.Height));
                 abslayout.Children.Add(lv);
+                abslayout.RaiseChild(lv);
                 Views.Add(lv);
                 lvm1.LoadZones();
             }
-
+            abslayout.LowerChild(schemegrid);
         }
 
         private void Reload(LocationsViewModel lmv)
@@ -123,12 +124,6 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
         double topborder = double.MaxValue;
         double rightborder = double.MinValue;
         double bottomborder = double.MinValue;
-
-        private async void ToolbarItem_Clicked_1(object sender, EventArgs e)
-        {
-            LocationListPage llp = new LocationListPage();
-            await Navigation.PushAsync(llp);
-        }
 
         double oldeTotalX,oldeTotalY = 0;
         private async void OnPaned(object sender, PanUpdatedEventArgs e)
@@ -258,7 +253,7 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
                         break;
                     }
                 default:
-                    break;
+                    throw new InvalidOperationException("Impossible value");
             }
         }
 

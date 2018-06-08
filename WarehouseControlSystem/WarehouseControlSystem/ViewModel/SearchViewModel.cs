@@ -117,12 +117,5 @@ namespace WarehouseControlSystem.ViewModel
             Global.SearchResponses.Clear();
             UpdateInformation();
         }
-
-        public override void Dispose()
-        {
-            ClearCommand = null;
-            base.Dispose();
-        }
-
     }
 }
