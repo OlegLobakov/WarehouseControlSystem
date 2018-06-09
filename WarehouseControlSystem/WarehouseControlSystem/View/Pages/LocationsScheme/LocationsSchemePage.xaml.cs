@@ -41,13 +41,12 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
             SelectedViews = new List<LocationView>();
 
             TapGesture = new TapGestureRecognizer();
-            schemegrid.GestureRecognizers.Add(TapGesture);
+            abslayout.GestureRecognizers.Add(TapGesture);
 
             PanGesture = new PanGestureRecognizer();
             abslayout.GestureRecognizers.Add(PanGesture);
 
             MessagingCenter.Subscribe<LocationsViewModel>(this, "Rebuild", Rebuild);
-            MessagingCenter.Subscribe<LocationsViewModel>(this, "ReLoad", Reload);
             PanGesture.PanUpdated += OnPaned;
             TapGesture.Tapped += GridTapped;
         }
@@ -63,18 +62,17 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
             base.OnDisappearing();
         }
 
-        protected override bool OnBackButtonPressed()
-        {
-            MessagingCenter.Unsubscribe<LocationsViewModel>(this, "Rebuild");
-            MessagingCenter.Unsubscribe<LocationsViewModel>(this, "ReLoad");
-            PanGesture.PanUpdated -= OnPaned;
-            TapGesture.Tapped -= GridTapped;
-            SelectedViews.Clear();
-            Views.Clear();
-            model.DisposeModel();
-            base.OnBackButtonPressed();
-            return false;
-        }
+        //protected override bool OnBackButtonPressed()
+        //{
+        //    MessagingCenter.Unsubscribe<LocationsViewModel>(this, "Rebuild");
+        //    PanGesture.PanUpdated -= OnPaned;
+        //    TapGesture.Tapped -= GridTapped;
+        //    SelectedViews.Clear();
+        //    Views.Clear();
+        //    model.DisposeModel();
+        //    base.OnBackButtonPressed();
+        //    return false;
+        //}
 
         protected override void OnSizeAllocated(double width, double height)
         {
@@ -101,12 +99,6 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
                 Views.Add(lv);
                 lvm1.LoadZones();
             }
-            abslayout.LowerChild(schemegrid);
-        }
-
-        private void Reload(LocationsViewModel lmv)
-        {
-            model.Load();
         }
 
         private void GridTapped(object sender, EventArgs e)
@@ -263,14 +255,12 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
 
             if (model.RunMode == RunModeEnum.View)
             {
-                schemegrid.PlanWidth = model.PlanWidth;
-                schemegrid.PlanHeight = model.PlanHeight;
-                schemegrid.IsVisible = true;
+                abslayout.BackgroundColor = Color.FromHex("#336699");
                 model.RunMode = RunModeEnum.Edit;
             }
             else
             {
-                schemegrid.IsVisible = false;
+                abslayout.BackgroundColor = Color.White;
                 model.RunMode = RunModeEnum.View;
             }
         }

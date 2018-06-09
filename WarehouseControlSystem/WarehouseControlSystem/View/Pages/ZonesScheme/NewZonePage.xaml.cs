@@ -41,6 +41,7 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
 
             MessagingCenter.Subscribe<ZoneViewModel>(this, "LocationsIsLoaded", LocationsIsLoaded);
             MessagingCenter.Subscribe<ZoneViewModel>(this, "BinTypesIsLoaded", BinTypesIsLoaded);
+            model.State = Helpers.Containers.StateContainer.State.Normal;
         }
 
         protected override void OnAppearing()
@@ -48,19 +49,20 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
             base.OnAppearing();
             model.Load();
         }
+
         protected override void OnDisappearing()
         {
             base.OnDisappearing();
         }
 
-        protected override bool OnBackButtonPressed()
-        {
-            MessagingCenter.Unsubscribe<ZoneViewModel>(this, "LocationsIsLoaded");
-            MessagingCenter.Unsubscribe<ZoneViewModel>(this, "BinTypesIsLoaded");
-            model.DisposeModel();
-            base.OnBackButtonPressed();
-            return false;
-        }
+        //protected override bool OnBackButtonPressed()
+        //{
+        //    MessagingCenter.Unsubscribe<ZoneViewModel>(this, "LocationsIsLoaded");
+        //    MessagingCenter.Unsubscribe<ZoneViewModel>(this, "BinTypesIsLoaded");
+        //    model.DisposeModel();
+        //    base.OnBackButtonPressed();
+        //    return false;
+        //}
 
         public void LocationsIsLoaded(ZoneViewModel zvm)
         {
@@ -75,6 +77,7 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
                 }
             }
         }
+
         public void BinTypesIsLoaded(ZoneViewModel zvm)
         {
             bintypepicker.ItemsSource = model.BinTypes;
@@ -89,7 +92,6 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
             }
         }
         
-
         private void Entry_TextChanged(object sender, TextChangedEventArgs e)
         {
             Entry entry = (Entry)sender;
@@ -136,13 +138,13 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
 
         private void UpdateTitle()
         {
-            if (model.Location is Location)
+            if (model.CreateMode)
             {
-                Title = AppResources.NewZonePage_Title + " | " + model.Location.Code + " | " + model.Code;
+                Title = AppResources.NewZonePage_Title + " " + model.LocationCode + " | " + model.Code;
             }
             else
             {
-                Title = AppResources.NewZonePage_Title + " | " + model.Code;
+                Title = AppResources.NewZonePage_Title_Edit + " " + model.LocationCode + " | " + model.Code;
             }
         }
     }

@@ -2347,6 +2347,15 @@ namespace WarehouseControlSystem.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit zone | .
+        /// </summary>
+        internal static string NewZonePage_Title_Edit {
+            get {
+                return ResourceManager.GetString("NewZonePage_Title_Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Level-Depth Separator.
         /// </summary>
         internal static string ParametersPage_Section_BinsCreation_LD {

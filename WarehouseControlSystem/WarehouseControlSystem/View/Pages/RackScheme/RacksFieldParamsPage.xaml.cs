@@ -40,12 +40,12 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
 
         private void Slider_ValueChanged(object sender, ValueChangedEventArgs e)
         {
-            scheme.PlanHeight = (int)e.NewValue;
+            //scheme.PlanHeight = (int)e.NewValue;
         }
 
         private void Slider_ValueChanged_1(object sender, ValueChangedEventArgs e)
         {
-            scheme.PlanWidth = (int)e.NewValue;
+            //scheme.PlanWidth = (int)e.NewValue;
         }
     }
 }

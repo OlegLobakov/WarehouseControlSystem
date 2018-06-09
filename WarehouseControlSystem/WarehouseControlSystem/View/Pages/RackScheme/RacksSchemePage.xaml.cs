@@ -45,7 +45,7 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             SelectedViews = new List<RackSchemeView>(); 
 
             TapGesture = new TapGestureRecognizer();
-            schemegrid.GestureRecognizers.Add(TapGesture);
+            abslayout.GestureRecognizers.Add(TapGesture);
 
             PanGesture = new PanGestureRecognizer();
             abslayout.GestureRecognizers.Add(PanGesture);
@@ -53,7 +53,6 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             Title = AppResources.ZoneSchemePage_Title +" "+ Global.SearchLocationCode + " | " + AppResources.RackSchemePage_Title + " - " + zone.Description;
             MessagingCenter.Subscribe<RacksViewModel>(this, "Rebuild", Rebuild);
             MessagingCenter.Subscribe<SearchViewModel>(this, "Search", OnSearch);
-            MessagingCenter.Subscribe<RacksViewModel>(this, "ReLoad", Reload);
             MessagingCenter.Subscribe<RacksViewModel>(this, "UDSRunIsDone", UDSRunIsDone);
             MessagingCenter.Subscribe<RacksViewModel>(this, "UDSListIsLoaded", UDSListIsLoaded);
         }
@@ -79,7 +78,6 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
         {
             model.DisposeModel();
             MessagingCenter.Unsubscribe<RacksViewModel>(this, "Rebuild");
-            MessagingCenter.Unsubscribe<RacksViewModel>(this, "ReLoad");
             MessagingCenter.Unsubscribe<SearchViewModel>(this, "Search");
             MessagingCenter.Unsubscribe<RacksViewModel>(this, "UDSRunIsDone");
             MessagingCenter.Unsubscribe<RacksViewModel>(this, "UDSListIsLoaded");
@@ -112,11 +110,6 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
                 abslayout.Children.Add(rsv);
                 Views.Add(rsv);
             }
-        }
-
-        private void Reload(RacksViewModel zmv)
-        {
-            model.Load();
         }
 
         private void UDSRunIsDone(RacksViewModel zmv)
@@ -277,15 +270,13 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
         {
             if (model.RunMode == RunModeEnum.View)
             {
-                schemegrid.PlanHeight = model.PlanHeight;
-                schemegrid.PlanWidth = model.PlanWidth;
-                schemegrid.IsVisible = true;
+                abslayout.BackgroundColor = Color.WhiteSmoke;
                 model.RunMode = RunModeEnum.Edit;
             }
             else
             {
                 model.UnSelectAll();
-                schemegrid.IsVisible = false;
+                abslayout.BackgroundColor = Color.White;
                 model.RunMode = RunModeEnum.View;
             }
         }

@@ -1352,4 +1352,7 @@
   <data name="RackCardPage_Search_Finded" xml:space="preserve">
     <value>найдено</value>
   </data>
+  <data name="NewZonePage_Title_Edit" xml:space="preserve">
+    <value>Изменить зону | </value>
+  </data>
 </root>

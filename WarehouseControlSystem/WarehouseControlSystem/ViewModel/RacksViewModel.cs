@@ -87,7 +87,6 @@ namespace WarehouseControlSystem.ViewModel
 
         public RacksViewModel(INavigation navigation, Zone zone) : base(navigation)
         {
-            State = State.Normal;
             Zone = zone;
             RackViewModels = new ObservableCollection<RackViewModel>();
             SelectedViewModels = new ObservableCollection<RackViewModel>();
@@ -98,6 +97,22 @@ namespace WarehouseControlSystem.ViewModel
             EditRackCommand = new Command(EditRack);
             DeleteRackCommand = new Command(DeleteRack);
             ParamsCommand = new Command(Params);
+
+            PlanWidth = zone.PlanWidth;
+            PlanHeight = zone.PlanHeight;
+
+            if (PlanHeight == 0)
+            {
+                PlanHeight = Settings.DefaultZonePlanHeight;
+            }
+
+            if (PlanWidth == 0)
+            {
+                PlanWidth = Settings.DefaultZonePlanWidth;
+            }
+
+            State = State.Normal;
+
         }
 
         public void ClearAll()
@@ -113,22 +128,14 @@ namespace WarehouseControlSystem.ViewModel
 
         public async void Load()
         {
-            if (!CheckNetAndConnection())
+            if (NotNetOrConnection)
+            {
                 return;
-
-            if (Zone.PlanHeight == 0)
-            {
-                Zone.PlanHeight = Settings.DefaultZonePlanHeight;
             }
 
-            if (Zone.PlanWidth == 0)
-            {
-                Zone.PlanWidth = Settings.DefaultZonePlanWidth;
-            }
-
-            State = State.Loading;
             try
             {
+                State = State.Loading;
                 List<Rack> Racks = await NAV.GetRackList(Zone.LocationCode, Zone.Code, true, 1, int.MaxValue, ACD.Default);
                 if ((!IsDisposed) && (Racks is List<Rack>))
                 {
@@ -167,12 +174,14 @@ namespace WarehouseControlSystem.ViewModel
 
         public async void LoadAll()
         {
-            State = State.Loading;
-            if (!CheckNetAndConnection())
+            if (NotNetOrConnection)
+            {
                 return;
+            }
 
             try
             {
+                State = State.Loading;
                 List<Rack> racks = await NAV.GetRackList(Zone.LocationCode, Zone.Code, false, 1, int.MaxValue, ACD.Default);
                 if ((!IsDisposed) && (racks is List<Rack>))
                 {
@@ -206,8 +215,10 @@ namespace WarehouseControlSystem.ViewModel
 
         public async void LoadUDS()
         {
-            if (!CheckNetAndConnection())
+            if (NotNetOrConnection)
+            {
                 return;
+            }
 
             try
             {
@@ -264,8 +275,10 @@ namespace WarehouseControlSystem.ViewModel
 
         private async void RunUDS(UserDefinedSelectionViewModel udsvm)
         {
-            if (!CheckNetAndConnection())
+            if (NotNetOrConnection)
+            {
                 return;
+            }
 
             udsvm.State = State.Loading;
             LoadAnimation = true;
@@ -385,8 +398,10 @@ namespace WarehouseControlSystem.ViewModel
 
         public async void SaveRacksChangesAsync()
         {
-            if (!CheckNetAndConnection())
+            if (NotNetOrConnection)
+            {
                 return;
+            }
 
             List<RackViewModel> list = RackViewModels.ToList().FindAll(x => x.Selected == true);
             foreach (RackViewModel rvm in list)
@@ -404,6 +419,7 @@ namespace WarehouseControlSystem.ViewModel
 
         public Task<string> SaveRacksVisible()
         {
+            CancellationTokenSource cts = new CancellationTokenSource();
             var tcs = new TaskCompletionSource<string>();
             string rv = "";
             Task.Run(async () =>
@@ -415,7 +431,7 @@ namespace WarehouseControlSystem.ViewModel
                     {
                         Rack rack = new Rack();
                         rvm.SaveFields(rack);
-                        await NAV.SetRackVisible(rack, ACD.Default).ConfigureAwait(false);
+                        await NAV.SetRackVisible(rack, cts).ConfigureAwait(false);
                     }
                     tcs.SetResult(rv);
                 }

@@ -51,14 +51,14 @@
                         <Label Text="{Binding PlanWidth}" HorizontalOptions="Center"></Label>
                     </StackLayout>
 
-                    <vc:SchemeView x:Name="scheme"
+                    <!--<vc:SchemeView x:Name="scheme"
                         Grid.Row="1" Grid.Column="1" 
                         Grid.ColumnSpan="7" Grid.RowSpan="6"  
                         HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
                         PlanWidth="{Binding PlanWidth}"
                         PlanHeight="{Binding PlanHeight}"
                         Locations="{Binding LocationViewModels}">
-                    </vc:SchemeView>
+                    </vc:SchemeView>-->
                 </Grid>
             </sc:StateCondition>
             <sc:StateCondition State="Error">

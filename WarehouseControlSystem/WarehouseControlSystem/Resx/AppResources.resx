@@ -1353,4 +1353,7 @@
   <data name="RackCardPage_Search_Finded" xml:space="preserve">
     <value>finded</value>
   </data>
+  <data name="NewZonePage_Title_Edit" xml:space="preserve">
+    <value>Edit zone | </value>
+  </data>
 </root>

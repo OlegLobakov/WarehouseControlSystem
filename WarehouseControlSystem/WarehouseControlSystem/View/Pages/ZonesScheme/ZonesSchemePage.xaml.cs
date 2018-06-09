@@ -37,21 +37,22 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
 
         public ZonesSchemePage(Location location)
         {
-            InitializeComponent();
             model = new ZonesViewModel(Navigation, location);
             BindingContext = model;
+            InitializeComponent();
 
             Views = new List<ZoneView>();
             SelectedViews = new List<ZoneView>();
 
             TapGesture = new TapGestureRecognizer();
-            schemegrid.GestureRecognizers.Add(TapGesture);
+            abslayout.GestureRecognizers.Add(TapGesture);
 
             PanGesture = new PanGestureRecognizer();
             abslayout.GestureRecognizers.Add(PanGesture);
 
             Title = AppResources.ZoneSchemePage_Title + " - " + location.Name;
 
+            MessagingCenter.Subscribe<ZonesViewModel>(this, "Rebuild", Rebuild);
 
             PanGesture.PanUpdated += OnPaned;
             TapGesture.Tapped += GridTapped;
@@ -60,8 +61,6 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            MessagingCenter.Subscribe<ZonesViewModel>(this, "Rebuild", Rebuild);
-            MessagingCenter.Subscribe<ZonesViewModel>(this, "ReLoad", Reload);
             model.Load();
         }
 
@@ -70,16 +69,15 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
             base.OnDisappearing();
         }
 
-        protected override bool OnBackButtonPressed()
-        {
-            model.DisposeModel();
-            MessagingCenter.Unsubscribe<ZonesViewModel>(this, "Rebuild");
-            MessagingCenter.Unsubscribe<ZonesViewModel>(this, "ReLoad");
-            PanGesture.PanUpdated -= OnPaned;
-            TapGesture.Tapped -= GridTapped;         
-            base.OnBackButtonPressed();
-            return false;
-        }
+        //protected override bool OnBackButtonPressed()
+        //{
+        //    model.DisposeModel();
+        //    MessagingCenter.Unsubscribe<ZonesViewModel>(this, "Rebuild");
+        //    PanGesture.PanUpdated -= OnPaned;
+        //    TapGesture.Tapped -= GridTapped;         
+        //    base.OnBackButtonPressed();
+        //    return false;
+        //}
 
         protected override void OnSizeAllocated(double width, double height)
         {
@@ -105,13 +103,6 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
                 Views.Add(zv);
                 zvm.LoadRacks();
             }
-
-            string ff = Views.ToString();
-        }
-
-        private void Reload(ZonesViewModel zmv)
-        {
-            model.Load();
         }
 
         private void GridTapped(object sender, EventArgs e)
@@ -282,15 +273,13 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
             GridTapped(null, new EventArgs());
 
             if (model.RunMode == RunModeEnum.View)
-            {              
-                schemegrid.PlanHeight = model.Location.PlanHeight;
-                schemegrid.PlanWidth = model.Location.PlanWidth;
-                schemegrid.IsVisible = true;
+            {
+                abslayout.BackgroundColor = Color.WhiteSmoke;
                 model.RunMode = RunModeEnum.Edit;
             }
             else
             {
-                schemegrid.IsVisible = false;
+                abslayout.BackgroundColor = Color.White;
                 model.RunMode = RunModeEnum.View;
             }
         }

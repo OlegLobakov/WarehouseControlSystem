@@ -50,34 +50,36 @@ namespace WarehouseControlSystem.ViewModel
 
         public async void Load()
         {
-            State = State.Loading;
-            if (CheckNetAndConnection())
+            if (NotNetOrConnection)
             {
-                try
+                return;
+            }
+
+            try
+            {
+                State = State.Loading;
+                List<BinTemplate> bintemplates = await NAV.GetBinTemplateList(1, int.MaxValue, ACD.Default);
+                if ((!IsDisposed) && (bintemplates is List<BinTemplate>))
                 {
-                    List<BinTemplate> bintemplates = await NAV.GetBinTemplateList(1, int.MaxValue, ACD.Default);
-                    if ((!IsDisposed) && (bintemplates is List<BinTemplate>))
+                    BinTemplates.Clear();
+                    foreach (BinTemplate bt in bintemplates)
                     {
-                        BinTemplates.Clear();
-                        foreach (BinTemplate bt in bintemplates)
-                        {
-                            BinTemplateViewModel btvm = new BinTemplateViewModel(Navigation, bt);
-                            BinTemplates.Add(btvm);
-                        }
-                        State = State.Normal;
+                        BinTemplateViewModel btvm = new BinTemplateViewModel(Navigation, bt);
+                        BinTemplates.Add(btvm);
                     }
+                    State = State.Normal;
                 }
-                catch (OperationCanceledException e)
-                {
-                    System.Diagnostics.Debug.WriteLine(e.Message);
-                    ErrorText = e.Message;
-                }
-                catch (Exception e)
-                {
-                    System.Diagnostics.Debug.WriteLine(e.Message);
-                    State = State.Error;
-                    ErrorText = AppResources.Error_LoadBinTemplates;
-                }
+            }
+            catch (OperationCanceledException e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.Message);
+                ErrorText = e.Message;
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.Message);
+                State = State.Error;
+                ErrorText = AppResources.Error_LoadBinTemplates;
             }
         }
 
@@ -94,26 +96,28 @@ namespace WarehouseControlSystem.ViewModel
 
         public async void DeleteTemplate(object sender)
         {
-            BinTemplateViewModel btvm = (BinTemplateViewModel)sender;
-            if (CheckNetAndConnection())
+            if (NotNetOrConnection)
             {
+                return;
+            }
+
+            try
+            {
+                BinTemplateViewModel btvm = (BinTemplateViewModel)sender;
                 State = State.Loading;
-                try
+                await NAV.DeleteBinTemplate(btvm.BinTemplate, ACD.Default);
+                if (!IsDisposed)
                 {
-                    await NAV.DeleteBinTemplate(btvm.BinTemplate, ACD.Default);
-                    if (!IsDisposed)
-                    {
-                        BinTemplates.Remove(btvm);
-                        SelectedTemplate = null;
-                        State = State.Normal;
-                    }
+                    BinTemplates.Remove(btvm);
+                    SelectedTemplate = null;
+                    State = State.Normal;
                 }
-                catch (Exception e)
-                {
-                    System.Diagnostics.Debug.WriteLine(e.Message);
-                    State = State.Error;
-                    ErrorText = e.Message;
-                }
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.Message);
+                State = State.Error;
+                ErrorText = e.Message;
             }
         }
 

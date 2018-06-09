@@ -39,12 +39,12 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
 
         private void Slider_ValueChangedHeight(object sender, ValueChangedEventArgs e)
         {
-            scheme.PlanHeight = (int)e.NewValue;
+            //scheme.PlanHeight = (int)e.NewValue;
         }
 
         private void Slider_ValueChangedWidth(object sender, ValueChangedEventArgs e)
         {
-            scheme.PlanWidth = (int)e.NewValue;
+            //scheme.PlanWidth = (int)e.NewValue;
         }
     }
 }

@@ -34,7 +34,8 @@
                     <Grid Grid.Row="0" HeightRequest="70" BackgroundColor="White" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="1*"/>
                             <ColumnDefinition Width="1*"/>
                             <ColumnDefinition Width="1*"/>
                             <ColumnDefinition Width="1*"/>
@@ -63,6 +64,7 @@
                                 Margin="10,0,20,0"
                                 HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                                 HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
+           
                     </Grid>
                     <ListView Grid.Row="1" RowHeight="70" ItemsSource="{Binding ZoneViewModels}" SelectedItem="{Binding SelectedZoneViewModel,Mode=TwoWay}">
                         <ListView.ItemTemplate>
@@ -81,7 +83,8 @@
                                         <Grid BackgroundColor="White" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="1*"/>
-                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="3*"/>
+                                                <ColumnDefinition Width="1*"/>
                                                 <ColumnDefinition Width="1*"/>
                                                 <ColumnDefinition Width="1*"/>
                                                 <ColumnDefinition Width="1*"/>
@@ -104,6 +107,12 @@
                                             <Label  Grid.Column="4" Text="{Binding BinQuantity}" Margin="10,0,20,0"  
                                                 HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                                                 HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
+
+                                            <ActivityIndicator  Grid.Column="5" IsRunning="{Binding IsBeenSavingToNAV}" 
+                                                                IsVisible="{Binding IsBeenSavingToNAV}" 
+                                                                VerticalOptions="Center" 
+                                                                HorizontalOptions="Center"/>
+
                                         </Grid>
                                     </StackLayout>
                                 </ViewCell>

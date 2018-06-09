@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WarehouseControlSystem.View.Pages.ZonesScheme.ZonesFieldParamsPage"
              xmlns:sc="clr-namespace:WarehouseControlSystem.Helpers.Containers.StateContainer"
-             xmlns:vc="clr-namespace:WarehouseControlSystem.View.Content"
              xmlns:i18n="clr-namespace:WarehouseControlSystem;assembly=WarehouseControlSystem">
 
     <ContentPage.Content>
@@ -56,14 +55,14 @@
                         <Label Text="{Binding PlanWidth}" HorizontalOptions="Center"></Label>
                     </StackLayout>
 
-                    <vc:SchemeView x:Name="scheme"
+                    <!--<vc:SchemeView x:Name="scheme"
                         Grid.Row="1" Grid.Column="1" 
                         Grid.ColumnSpan="7" Grid.RowSpan="6"  
                         HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
                         PlanWidth="{Binding PlanWidth}"
                         PlanHeight="{Binding PlahHeight}"
                         Zones="{Binding ZoneViewModels}">
-                    </vc:SchemeView>
+                    </vc:SchemeView>-->
                 </Grid>
             </sc:StateCondition>
 

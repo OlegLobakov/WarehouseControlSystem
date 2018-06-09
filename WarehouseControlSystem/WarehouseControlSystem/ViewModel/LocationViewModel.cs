@@ -319,13 +319,12 @@ namespace WarehouseControlSystem.ViewModel
                 SaveFields(location);
                 await NAV.SetLocationVisible(location, ACD.Default);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 System.Diagnostics.Debug.WriteLine(e.Message);
                 State = State.Error;
                 ErrorText = e.Message;
-            }
-            
+            }        
         }
 
         public async void CheckLocationCode()

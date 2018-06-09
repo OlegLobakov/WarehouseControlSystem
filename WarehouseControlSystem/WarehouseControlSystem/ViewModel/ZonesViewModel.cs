@@ -63,7 +63,7 @@ namespace WarehouseControlSystem.ViewModel
         public ZonesViewModel(INavigation navigation, Location location) : base(navigation)
         {
             Location = location;
-            State = State.Normal;
+
             ZoneViewModels = new ObservableCollection<ZoneViewModel>();
             SelectedViewModels = new ObservableCollection<ZoneViewModel>();
 
@@ -75,11 +75,15 @@ namespace WarehouseControlSystem.ViewModel
 
             RunMode = RunModeEnum.View;
             Title = AppResources.ZoneListPage_Title + " - " + location.Code;
+
+            PlanWidth = location.PlanWidth;
+            PlanHeight = location.PlanHeight;
+
+            State = State.Normal;
         }
 
         public void ClearAll()
         {
-            SelectedZoneViewModel = null;
             SelectedViewModels.Clear();
             foreach (ZoneViewModel zvm in ZoneViewModels)
             {
@@ -90,60 +94,71 @@ namespace WarehouseControlSystem.ViewModel
 
         public async void Load()
         {
-            if (!CheckNetAndConnection())
+            if (NotNetOrConnection)
+            {
                 return;
+            }
 
-            State = State.Loading;
             try
             {
-                List<Zone> zones = await NAV.GetZoneList(Location.Code, "", true, 1, int.MaxValue, ACD.Default);
-                Device.BeginInvokeOnMainThread(() =>
+                State = State.Loading;
+                List<Zone> zones = await NAV.GetZoneList(Location.Code, "", true, 1, int.MaxValue, ACD.Default).ConfigureAwait(true);
+
+                if (zones is List<Zone>)
                 {
-                    if (zones is List<Zone>)
+                    if (zones.Count > 0)
                     {
-                        if (zones.Count > 0)
-                        {
-                            ClearAll();
-                            int deftop = 1;
-                            int defleft = 1;
-                            int defwidth = Math.Max(1, (Location.PlanWidth - 6) / 5);
-                            int defheight = Math.Max(1, (Location.PlanHeight - 5) / 4);
+                        ClearAll();
+                        int deftop = 1;
+                        int defleft = 1;
+                        int defwidth = Math.Max(1, (PlanWidth - 6) / 5);
+                        int defheight = Math.Max(1, (PlanHeight - 5) / 4);
 
-                            foreach (Zone zone in zones)
+                        foreach (Zone zone in zones)
+                        {
+                            if (zone.Width == 0)
                             {
-                                if (zone.Width == 0)
+                                zone.Left = defleft;
+                                zone.Width = defwidth;
+                                zone.Height = defheight;
+                                zone.Top = deftop;
+
+                                defleft = defleft + defwidth + 1;
+                                if (defleft > (PlanWidth - defwidth))
                                 {
-                                    zone.Left = defleft;
-                                    zone.Width = defwidth;
-                                    zone.Height = defheight;
-                                    zone.Top = deftop;
-
-                                    defleft = defleft + defwidth + 1;
-                                    if (defleft > (Location.PlanWidth - defwidth))
-                                    {
-                                        defleft = 1;
-                                        deftop = deftop + defheight + 1;
-                                    }
-
-                                    if (deftop > (Location.PlanHeight - defheight))
-                                    {
-                                        deftop = 1;
-                                    }
+                                    defleft = 1;
+                                    deftop = deftop + defheight + 1;
                                 }
-                                ZoneViewModel zvm = new ZoneViewModel(Navigation, zone);
-                                zvm.OnTap += Zvm_OnTap;
-                                ZoneViewModels.Add(zvm);
+
+                                if (deftop > (PlanHeight - defheight))
+                                {
+                                    deftop = 1;
+                                }
                             }
-                            State = State.Normal;
-                            UpdateMinSizes();
-                            ReDesign();
+
+                            ZoneViewModel zvm = new ZoneViewModel(Navigation, zone);
+                            zvm.OnTap += Zvm_OnTap;
+                            ZoneViewModels.Add(zvm);
+
+                            if (zone.Left + zone.Width > MinPlanWidth)
+                            {
+                                MinPlanWidth = zone.Left + zone.Width;
+                            }
+                            if (zone.Top + zone.Height > MinPlanHeight)
+                            {
+                                MinPlanHeight = zone.Top + zone.Height;
+                            }
                         }
-                        else
-                        {
-                            State = State.NoData;
-                        }
+                    
+                        State = State.Normal;
+                        UpdateMinSizes();
+                        ReDesign();
                     }
-                });
+                    else
+                    {
+                        State = State.NoData;
+                    }
+                }
             }
             catch (OperationCanceledException e)
             {
@@ -159,14 +174,14 @@ namespace WarehouseControlSystem.ViewModel
 
         public async void LoadAll()
         {
-            if ((!CrossConnectivity.Current.IsConnected) || (Global.CurrentConnection == null))
+            if (NotNetOrConnection)
             {
-                State = State.NoInternet;
                 return;
             }
-            State = State.Loading;
+
             try
             {
+                State = State.Loading;
                 List<Zone> zones = await NAV.GetZoneList(Location.Code, "", false, 1, int.MaxValue, ACD.Default);
                 if (zones is List<Zone>)
                 {
@@ -285,9 +300,9 @@ namespace WarehouseControlSystem.ViewModel
 
         public async void EditZone(object obj)
         {
-            ZoneViewModel zvm = (ZoneViewModel)obj;
-            if (zvm is ZoneViewModel)
+            if (obj is ZoneViewModel)
             {
+                ZoneViewModel zvm = (ZoneViewModel)obj;
                 zvm.CreateMode = false;
                 NewZonePage nzp = new NewZonePage(zvm);
                 await Navigation.PushAsync(nzp);
@@ -296,6 +311,11 @@ namespace WarehouseControlSystem.ViewModel
 
         public async void DeleteZone(object obj)
         {
+            if (NotNetOrConnection)
+            {
+                return;
+            }
+
             ZoneViewModel zvm = (ZoneViewModel)obj;
             State = State.Loading;
             LoadAnimation = true;
@@ -322,31 +342,6 @@ namespace WarehouseControlSystem.ViewModel
             State = State.Normal;
             ZonesFieldParamsPage zfpp = new ZonesFieldParamsPage(this);
             await Navigation.PushAsync(zfpp);
-        }
-
-        public Task<string> SaveZonesVisible()
-        {
-            var tcs = new TaskCompletionSource<string>();
-            string rv = "";
-            Task.Run(async () =>
-            {
-                try
-                {
-                    List<ZoneViewModel> list = ZoneViewModels.ToList().FindAll(x => x.Changed == true);
-                    foreach (ZoneViewModel zvm in list)
-                    {
-                        Zone zone = new Zone();
-                        zvm.SaveFields(zone);
-                        await NAV.SetZoneVisible(zone, ACD.Default);
-                    }
-                    tcs.SetResult(rv);
-                }
-                catch
-                {
-                    tcs.SetResult(rv);
-                }
-            });
-            return tcs.Task;
         }
 
         public async void SaveLocationParams()

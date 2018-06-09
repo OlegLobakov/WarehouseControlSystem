@@ -234,38 +234,41 @@ namespace WarehouseControlSystem.ViewModel
 
         public async void OK()
         {
-            if (CheckNetAndConnection())
+
+            if (NotNetOrConnection)
             {
-                if (CheckFields())
+                return;
+            }
+
+            if (CheckFields())
+            {
+                SaveFields(BinTemplate);
+                if (CreateMode)
                 {
-                    SaveFields(BinTemplate);
-                    if (CreateMode)
+                    try
                     {
-                        try
-                        {
-                            await NAV.CreateBinTemplate(BinTemplate, ACD.Default);
-                            await Navigation.PopAsync();
-                        }
-                        catch (Exception e)
-                        {
-                            System.Diagnostics.Debug.WriteLine(e.Message);
-                            State = State.Error;
-                            ErrorText = e.Message;
-                        }
+                        await NAV.CreateBinTemplate(BinTemplate, ACD.Default);
+                        await Navigation.PopAsync();
                     }
-                    else
+                    catch (Exception e)
                     {
-                        try
-                        {
-                            await NAV.ModifyBinTemplate(BinTemplate, ACD.Default);
-                            await Navigation.PopAsync();
-                        }
-                        catch (Exception e)
-                        {
-                            System.Diagnostics.Debug.WriteLine(e.Message);
-                            State = State.Error;
-                            ErrorText = e.Message;
-                        }
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                        State = State.Error;
+                        ErrorText = e.Message;
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        await NAV.ModifyBinTemplate(BinTemplate, ACD.Default);
+                        await Navigation.PopAsync();
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                        State = State.Error;
+                        ErrorText = e.Message;
                     }
                 }
             }
@@ -283,56 +286,98 @@ namespace WarehouseControlSystem.ViewModel
 
         public async void Update()
         {
-            State = State.Loading;
-            if (CheckNetAndConnection())
+            if (NotNetOrConnection)
             {
+                return;
+            }
+
+            try
+            {
+                State = State.Loading;
+                List<BinType> loadedbintypes = await NAV.GetBinTypeList(1, int.MaxValue, ACD.Default);
+                if ((!IsDisposed) && (loadedbintypes is List<BinType>))
+                {
+                    BinTypes.Clear();
+                    foreach (BinType bintype in loadedbintypes)
+                    {
+                        BinTypes.Add(bintype);
+                    }
+                    BinType finded = BinTypes.Find(x => x.Code == BinTypeCode);
+                    if (finded is BinType)
+                    {
+                        SelectedBinType = finded;
+                    }
+                }
+
+
+                List<Location> loadedlocations = await NAV.GetLocationList("", false, 1, int.MaxValue, ACD.Default);
+                if ((!IsDisposed) && (loadedlocations is List<Location>))
+                {
+                    Locations.Clear();
+                    foreach (Location location in loadedlocations)
+                    {
+                        Locations.Add(location);
+                    }
+                    Location finded = Locations.Find(x => x.Code == LocationCode);
+                    if (finded is Location)
+                    {
+                        SelectedLocation = finded;
+                    }
+                }
+
+                if (LocationCode != "")
+                {
+                    List<Zone> list = await NAV.GetZoneList(LocationCode, "", false, 1, int.MaxValue, ACD.Default);
+                    if ((!IsDisposed) && (list is List<Zone>))
+                    {
+                        Zones.Clear();
+                        foreach (Zone zone in list)
+                        {
+                            Zones.Add(zone);
+                        }
+                        Zone finded = Zones.Find(x => x.Code == ZoneCode);
+                        if (finded is Zone)
+                        {
+                            SelectedZone = finded;
+                        }
+                    }
+                }
+            }
+            catch (OperationCanceledException e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.Message);
+                ErrorText = e.Message;
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.Message);
+                ErrorText = e.Message;
+            }
+            State = State.Normal;
+        }
+
+        public async void UpdateLocation(Location location)
+        {
+            if (NotNetOrConnection)
+            {
+                return;
+            }
+
+            if (LocationCode != location.Code)
+            {
+                LocationCode = location.Code;
+                ZoneCode = "";
                 try
                 {
-                    List<BinType> loadedbintypes = await NAV.GetBinTypeList(1, int.MaxValue, ACD.Default);
-                    if ((!IsDisposed) && (loadedbintypes is List<BinType>))
+                    List<Zone> list = await NAV.GetZoneList(location.Code, "", false, 1, int.MaxValue, ACD.Default);
+                    if (!IsDisposed)
                     {
-                        BinTypes.Clear();
-                        foreach (BinType bintype in loadedbintypes)
-                        {
-                            BinTypes.Add(bintype);
-                        }
-                        BinType finded = BinTypes.Find(x => x.Code == BinTypeCode);
-                        if (finded is BinType)
-                        {
-                            SelectedBinType = finded;
-                        }
-                    }
-
-
-                    List<Location> loadedlocations = await NAV.GetLocationList("", false, 1, int.MaxValue, ACD.Default);
-                    if ((!IsDisposed) && (loadedlocations is List<Location>))
-                    {
-                        Locations.Clear();
-                        foreach (Location location in loadedlocations)
-                        {
-                            Locations.Add(location);
-                        }
-                        Location finded = Locations.Find(x => x.Code == LocationCode);
-                        if (finded is Location)
-                        {
-                            SelectedLocation = finded;
-                        }
-                    }
-
-                    if (LocationCode != "")
-                    {
-                        List<Zone> list = await NAV.GetZoneList(LocationCode, "", false, 1, int.MaxValue, ACD.Default);
-                        if ((!IsDisposed) && (list is List<Zone>))
+                        if (list is List<Zone>)
                         {
                             Zones.Clear();
                             foreach (Zone zone in list)
                             {
                                 Zones.Add(zone);
-                            }
-                            Zone finded = Zones.Find(x => x.Code == ZoneCode);
-                            if (finded is Zone)
-                            {
-                                SelectedZone = finded;
                             }
                         }
                     }
@@ -346,45 +391,6 @@ namespace WarehouseControlSystem.ViewModel
                 {
                     System.Diagnostics.Debug.WriteLine(e.Message);
                     ErrorText = e.Message;
-                }
-
-                State = State.Normal;
-            }
-        }
-
-        public async void UpdateLocation(Location location)
-        {
-            if (CheckNetAndConnection())
-            {
-                if (LocationCode != location.Code)
-                {
-                    LocationCode = location.Code;
-                    ZoneCode = "";
-                    try
-                    {
-                        List<Zone> list = await NAV.GetZoneList(location.Code, "", false, 1, int.MaxValue, ACD.Default);
-                        if (!IsDisposed)
-                        {
-                            if (list is List<Zone>)
-                            {
-                                Zones.Clear();
-                                foreach (Zone zone in list)
-                                {
-                                    Zones.Add(zone);
-                                }
-                            }
-                        }
-                    }
-                    catch (OperationCanceledException e)
-                    {
-                        System.Diagnostics.Debug.WriteLine(e.Message);
-                        ErrorText = e.Message;
-                    }
-                    catch (Exception e)
-                    {
-                        System.Diagnostics.Debug.WriteLine(e.Message);
-                        ErrorText = e.Message;
-                    }
                 }
             }
         }

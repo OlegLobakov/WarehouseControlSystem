@@ -78,19 +78,33 @@ namespace WarehouseControlSystem.ViewModel.Base
             }
         } string codewarningtext;
 
-        public string Name
+        public bool IsSaveToNAVEnabled
         {
-            get { return name; }
+            get { return issavetoNAVenables; }
             set
             {
-                if (name != value)
+                if (issavetoNAVenables != value)
                 {
-                    name = value;
-                    Changed = true;
-                    OnPropertyChanged(nameof(Name));
+                    issavetoNAVenables = value;
+                    OnPropertyChanged(nameof(IsSaveToNAVEnabled));
                 }
             }
-        } string name;
+        } bool issavetoNAVenables;
+
+        public bool IsBeenSavingToNAV
+        {
+            get { return isbeensavingtoNAV; }
+            set
+            {
+                if (isbeensavingtoNAV != value)
+                {
+                    isbeensavingtoNAV = value;
+                    OnPropertyChanged(nameof(IsBeenSavingToNAV));
+                }
+            }
+        }
+        bool isbeensavingtoNAV;
+
 
         public Color Color
         {
@@ -210,6 +224,21 @@ namespace WarehouseControlSystem.ViewModel.Base
             }
         }
         SchemeElementEditMode editmode;
+
+        public string Name
+        {
+            get { return name; }
+            set
+            {
+                if (name != value)
+                {
+                    name = value;
+                    Changed = true;
+                    OnPropertyChanged(nameof(Name));
+                }
+            }
+        }
+        string name;
 
         public NAVBaseViewModel(INavigation navigation) : base(navigation)
         {

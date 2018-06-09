@@ -2,7 +2,6 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:sc="clr-namespace:WarehouseControlSystem.Helpers.Containers.StateContainer"
-             xmlns:vc="clr-namespace:WarehouseControlSystem.View.Content"
              xmlns:hs="clr-namespace:WarehouseControlSystem.Helpers.Containers.HorizontalListView"
              xmlns:components="clr-namespace:WarehouseControlSystem.View.Content"
              x:Class="WarehouseControlSystem.View.Pages.RackScheme.RacksSchemePage"
@@ -93,13 +92,13 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <AbsoluteLayout Grid.Row="0" Grid.RowSpan="2" x:Name="abslayout">
-                        <vc:SchemeView x:Name="schemegrid" 
+                        <!--<vc:SchemeView x:Name="schemegrid" 
                                    AbsoluteLayout.LayoutBounds="0,0, 1, 1" 
                                    AbsoluteLayout.LayoutFlags="All" 
                                    PlanWidth="{Binding PlanWidth}"
                                    PlanHeight="{Binding PlanHeight}"
                                    IsVisible="False">
-                        </vc:SchemeView>
+                        </vc:SchemeView>-->
                     </AbsoluteLayout>
                     <ScrollView Grid.Row="1" HeightRequest="{Binding UDSPanelHeight}" IsVisible="{Binding IsVisibleUDS}" Orientation="Horizontal">
                         <hs:HorizontalListView  x:Name="hlv">

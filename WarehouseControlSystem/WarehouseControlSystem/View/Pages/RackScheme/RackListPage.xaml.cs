@@ -40,9 +40,8 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
 
         protected override async void OnDisappearing()
         {
-            await model.SaveRacksVisible();
-            MessagingCenter.Send(model, "ReLoad");
             base.OnDisappearing();
+            await model.SaveRacksVisible();
         }
 
         protected override bool OnBackButtonPressed()

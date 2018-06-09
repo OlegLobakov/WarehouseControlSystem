@@ -70,48 +70,40 @@
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <sc:StateContainer State="{Binding State}" Padding="5">
-            <sc:StateContainer.Conditions>
-                <sc:StateCondition State="Loading">
-                    <ActivityIndicator IsRunning="{Binding LoadAnimation}" HeightRequest="50" WidthRequest="50" VerticalOptions="Center" HorizontalOptions="Center"/>
-                </sc:StateCondition>
-                <sc:StateCondition State="Normal">
-                    <AbsoluteLayout x:Name="abslayout">
-                        <vc:SchemeView x:Name="schemegrid" 
-                         AbsoluteLayout.LayoutBounds="0,0, 1, 1" AbsoluteLayout.LayoutFlags="All" 
-                         PlanWidth="{Binding PlanWidth}"
-                         PlanHeight="{Binding PlanHeight}"
-                         IsVisible="False">
-                        </vc:SchemeView>
-                    </AbsoluteLayout>
-                </sc:StateCondition>
-                <sc:StateCondition State="Error">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="1*"/>
-                            <RowDefinition Height="4*"/>
-                            <RowDefinition Height="1*"/>
-                        </Grid.RowDefinitions>
-                        <Label Grid.Row="0" Text="{i18n:Translate StateContainer_Error}" 
+            <sc:StateCondition State="Loading">
+                <ActivityIndicator IsRunning="{Binding LoadAnimation}" HeightRequest="50" WidthRequest="50" VerticalOptions="Center" HorizontalOptions="Center"/>
+            </sc:StateCondition>
+            <sc:StateCondition State="Normal">
+                <AbsoluteLayout x:Name="abslayout">
+                </AbsoluteLayout>
+            </sc:StateCondition>
+            <sc:StateCondition State="Error">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="4*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" Text="{i18n:Translate StateContainer_Error}" 
                            FontSize="Large" HorizontalOptions="Center"
                            TextColor="Black"
                            VerticalOptions="Center"/>
-                        <ScrollView Orientation="Vertical" Grid.Row="1" >
-                            <StackLayout>
-                                <Label Text="{Binding ErrorText}" FontSize="Large" 
+                    <ScrollView Orientation="Vertical" Grid.Row="1" >
+                        <StackLayout>
+                            <Label Text="{Binding ErrorText}" FontSize="Large" 
                                    TextColor="Black"
                                    HorizontalOptions="FillAndExpand" 
                                    VerticalOptions="FillAndExpand" 
                                    HorizontalTextAlignment="Center"
                                    VerticalTextAlignment="Center"/>
-                            </StackLayout>
-                        </ScrollView>
-                        <Button Grid.Row="2" Text="OK" FontSize="Large" 
+                        </StackLayout>
+                    </ScrollView>
+                    <Button Grid.Row="2" Text="OK" FontSize="Large" 
                             Command="{Binding ErrorOKCommand}" 
                             TextColor="Black"
                             BackgroundColor="White"/>
-                    </Grid>
-                </sc:StateCondition>
-            </sc:StateContainer.Conditions>
+                </Grid>
+            </sc:StateCondition>
         </sc:StateContainer>
     </ContentPage.Content>
 </ContentPage>

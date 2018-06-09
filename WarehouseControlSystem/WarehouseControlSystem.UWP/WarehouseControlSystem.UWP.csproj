@@ -23,7 +23,7 @@
     <AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x86|x64</AppxBundlePlatforms>
-    <PackageCertificateThumbprint>40569D23868160203469E6D69704CD6CB32570B5</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>15D74829F611A39D52CB8D1E50FB05E756A48384</PackageCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
     <DebugSymbols>true</DebugSymbols>
@@ -209,9 +209,6 @@
     </PackageReference>
     <PackageReference Include="PCLStorage">
       <Version>1.0.2</Version>
-    </PackageReference>
-    <PackageReference Include="SkiaSharp.Views.Forms">
-      <Version>1.60.1</Version>
     </PackageReference>
     <PackageReference Include="System.Net.Http">
       <Version>4.3.3</Version>

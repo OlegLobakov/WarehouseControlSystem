@@ -21,36 +21,25 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ZoneListPage : ContentPage
     {
-        private Location Location;
         private readonly ZonesViewModel model;
 
         public ZoneListPage(Location location)
         {
-            Location = location;
-            model = new ZonesViewModel(Navigation, Location);
+            model = new ZonesViewModel(Navigation, location);
             BindingContext = model;
             InitializeComponent();
             Title = AppResources.ZoneListPage_Title;
         }
-     
+
         protected override void OnAppearing()
         {
             base.OnAppearing();
             model.LoadAll();
         }
 
-        protected async override void OnDisappearing()
+        protected override void OnDisappearing()
         {
-            await model.SaveZonesVisible();
-            model.DisposeModel();
-            MessagingCenter.Send(model, "ReLoad");
             base.OnDisappearing();
-        }
-
-        protected override bool OnBackButtonPressed()
-        {       
-            base.OnBackButtonPressed();
-            return false;
         }
     }
 }

@@ -44,6 +44,7 @@ namespace WarehouseControlSystem.ViewModel.Base
                 if (state1 != value)
                 {
                     state1 = value;
+                    LoadAnimation = state1 == State.Loading;
                     OnPropertyChanged(nameof(State));
                 }
             }
@@ -149,9 +150,14 @@ namespace WarehouseControlSystem.ViewModel.Base
         public ICommand CancelCommand { protected set; get; }
         public ICommand CancelChangesCommand { protected set; get; }
 
-        protected bool IsDisposed = false;
+        public bool IsDisposed { get; set; } = false;
 
         public AsyncCancelationDispatcher ACD { get; set; }
+
+        public bool NotNetOrConnection
+        {
+            get { return !IsNetAndConnection(); }
+        }
 
         public BaseViewModel(INavigation navigation)
         {
@@ -206,7 +212,7 @@ namespace WarehouseControlSystem.ViewModel.Base
             return String.Format("#{0:X2}{1:X2}{2:X2}{3:X2}", red, green, blue, alpha);
         }
 
-        public bool CheckNetAndConnection()
+        public bool IsNetAndConnection()
         {
             bool rv = true;
             if (!Plugin.Connectivity.CrossConnectivity.Current.IsConnected)

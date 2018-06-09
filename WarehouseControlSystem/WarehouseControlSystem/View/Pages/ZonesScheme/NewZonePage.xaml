@@ -4,10 +4,9 @@
              x:Class="WarehouseControlSystem.View.Pages.ZonesScheme.NewZonePage"
              xmlns:sc="clr-namespace:WarehouseControlSystem.Helpers.Containers.StateContainer"
              xmlns:i18n="clr-namespace:WarehouseControlSystem;assembly=WarehouseControlSystem">
-
-    
     <ContentPage.Content>
         <sc:StateContainer State="{Binding State}">
+            
             <sc:StateCondition State="Loading">
                 <StackLayout VerticalOptions="Center" HorizontalOptions="Center" Orientation="Vertical">
                     <ActivityIndicator IsRunning="{Binding LoadAnimation}" HeightRequest="50" WidthRequest="50"/>
@@ -16,7 +15,6 @@
             </sc:StateCondition>
 
             <sc:StateCondition State="Normal">
-
                 <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Padding="10">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
@@ -37,11 +35,12 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            
+
                             <Label Grid.Row="0" Grid.Column="0" 
                                    Text="{i18n:Translate NewZonePage_FieldLocationCode}"  
                                    HorizontalOptions="Start" HorizontalTextAlignment="Start" 
                                    VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
+                            
                             <Picker Grid.Row="0" Grid.Column="1" 
                                    x:Name="locationpicker" 
                                    VerticalOptions="Center" 
@@ -49,19 +48,22 @@
                                    ItemDisplayBinding="{Binding Name}"
                                    SelectedIndexChanged="LocationSelectedIndexChanged">
                             </Picker>
+                            
                             <ActivityIndicator Grid.Row="0" Grid.Column="2" 
                                    HeightRequest="20" WidthRequest="20"
                                    HorizontalOptions="Start"
                                    IsRunning="{Binding LocationsIsBeingLoaded}"/>
-                            
+
                             <Label Grid.Row="1" Grid.Column="0" 
                                    Text="{i18n:Translate NewZonePage_FieldCode}"  
                                    HorizontalOptions="Start" HorizontalTextAlignment="Start" 
                                    VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
+                            
                             <Entry Grid.Row="1" Grid.Column="1"  
                                    Text="{Binding Code, Mode=TwoWay}" Keyboard="Text" x:Name="codeentry" 
                                    HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
                                    TextChanged="Entry_TextChanged" />
+                            
                             <Label Grid.Row="1" Grid.Column="2" 
                                    Text="{Binding CodeWarningText}"/>
 
@@ -69,10 +71,11 @@
                                    Text="{i18n:Translate NewZonePage_FieldName}"  
                                    HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
                                    Margin="10,0,0,0"></Label>
+                            
                             <Entry Grid.Row="2" Grid.Column="1" 
                                    Text="{Binding Description, Mode=TwoWay}" Keyboard="Text" 
                                    HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
-                        
+
                             <Label Text="{i18n:Translate NewZonePage_FieldColor}" 
                                    Grid.Row="3" Grid.Column="0" HorizontalOptions="Start" 
                                    HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
@@ -102,17 +105,23 @@
                                     SelectedIndexChanged="BinTypepicker_SelectedIndexChanged"></Picker>
                         </Grid>
                     </ScrollView>
-
                     <Grid Grid.Row="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
+                        
                         <Button Grid.Column="0" Text="{i18n:Translate NewZonePage_CreateButton}"  
                                 HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
                                 Command="{Binding OKCommand}" 
-                                BackgroundColor="White" FontAttributes="Bold" Margin="20"/>
+                                BackgroundColor="White" FontAttributes="Bold" Margin="20">
+                            <Button.Triggers>
+                                <DataTrigger Binding="{Binding CreateMode}" TargetType="Button" Value="False">
+                                    <Setter Property="Text" Value="OK"/>
+                                </DataTrigger>
+                            </Button.Triggers>
+                        </Button>
 
                         <Button Grid.Column="1" Text="{i18n:Translate NewZonePage_CancelChangesButton}"  
                                 HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
@@ -131,7 +140,6 @@
                                 BackgroundColor="White" FontAttributes="Bold" Margin="20">
                         </Button>
                     </Grid>
-
                 </Grid>
             </sc:StateCondition>
 
@@ -162,23 +170,6 @@
                             BackgroundColor="White"/>
                 </Grid>
             </sc:StateCondition>
-
-            <sc:StateCondition State="Warning">
-                <StackLayout HorizontalOptions="Center" VerticalOptions="Center" Orientation="Vertical">
-                    <Label x:Name="warninglabel" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Black" FontSize="Large"></Label>
-                </StackLayout>
-            </sc:StateCondition>
-
-            <sc:StateCondition State="NoInternet">
-                <StackLayout>
-                    <Label Text="{i18n:Translate StateContainer_StateNoInternet_Error}" HorizontalOptions="Center" VerticalOptions="Center"/>
-                </StackLayout>
-            </sc:StateCondition>
-
-            <sc:StateCondition State="NoData">
-                <Label Text="" FontSize="Large" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
-            </sc:StateCondition>
-
         </sc:StateContainer>
 
     </ContentPage.Content>

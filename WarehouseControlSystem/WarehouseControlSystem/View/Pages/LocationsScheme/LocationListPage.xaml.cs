@@ -14,6 +14,11 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using WarehouseControlSystem.Resx;
 using WarehouseControlSystem.ViewModel;
+using System.Threading;
+using WarehouseControlSystem.Helpers.Containers.StateContainer;
+using WarehouseControlSystem.Helpers.NAV;
+using WarehouseControlSystem.Model.NAV;
+using System.Collections.Generic;
 
 namespace WarehouseControlSystem.View.Pages.LocationsScheme
 {
@@ -36,17 +41,11 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
             model.LoadAll();
         }
 
-        protected override async void OnDisappearing()
-        {
-            await model.SaveLocationsVisible(model.ACD.Default);
-            MessagingCenter.Send(model, "ReLoad");
-            base.OnDisappearing();
-        }
-
-        protected override bool OnBackButtonPressed()
-        {
-            base.OnBackButtonPressed();
-            return false;
-        }
+        //protected override void OnDisappearing()
+        //{
+        //    base.OnDisappearing();
+        //    //CancellationTokenSource cts = new CancellationTokenSource();
+        //    //await model.SaveLocationsVisible(cts);
+        //}
     }
 }

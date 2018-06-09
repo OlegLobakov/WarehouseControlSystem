@@ -72,6 +72,7 @@ namespace WarehouseControlSystem.ViewModel
                 {
                     schemevisible = value;
                     Changed = true;
+                    SaveToNAVSchemeVisible();
                     OnPropertyChanged(nameof(SchemeVisible));
                 }
             }
@@ -132,6 +133,7 @@ namespace WarehouseControlSystem.ViewModel
         } bool locationsisbeingloaded;
 
         public ObservableCollection<BinType> BinTypes { get; set; } = new ObservableCollection<BinType>();
+
         public bool BinTypesIsLoaded
         {
             get { return bintypesisloaded; }
@@ -144,6 +146,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } bool bintypesisloaded;
+
         public bool BinTypesIsBeingLoaded
         {
             get { return bintypesisbeingloaded; }
@@ -200,6 +203,7 @@ namespace WarehouseControlSystem.ViewModel
         public ZoneViewModel(INavigation navigation, Zone zone) : base(navigation)
         {
             Zone = zone;
+            IsSaveToNAVEnabled = false;
             FillFields(zone);
             EditMode = SchemeElementEditMode.None;
             TapCommand = new Command<object>(Tap);
@@ -208,8 +212,9 @@ namespace WarehouseControlSystem.ViewModel
             CancelCommand = new Command(Cancel);
             CancelChangesCommand = new Command(CancelChanges);
 
-            State = State.Normal;
+            State = State.Loading;
             Changed = false;
+            IsSaveToNAVEnabled = true;
         }
 
         public void FillFields(Zone zone)
@@ -254,12 +259,19 @@ namespace WarehouseControlSystem.ViewModel
 
         public async void OK()
         {
+            if (NotNetOrConnection)
+            {
+                return;
+            }
+
             SaveFields(Zone);
+
             if (CreateMode)
             {
                 try
                 {
-                    await NAV.CreateZone(Zone,ACD.Default);
+                    IsBeenSavingToNAV = true;
+                    await NAV.CreateZone(Zone, ACD.Default);
                     await Navigation.PopAsync();
                 }
                 catch (Exception e)
@@ -268,11 +280,16 @@ namespace WarehouseControlSystem.ViewModel
                     State = State.Error;
                     ErrorText = e.Message;
                 }
+                finally
+                {
+                    IsBeenSavingToNAV = false;
+                }
             }
             else
             {
                 try
                 {
+                    IsBeenSavingToNAV = true;
                     await NAV.ModifyZone(Zone, ACD.Default);
                     await Navigation.PopAsync();
                 }
@@ -281,6 +298,10 @@ namespace WarehouseControlSystem.ViewModel
                     System.Diagnostics.Debug.WriteLine(e.Message);
                     State = State.Error;
                     ErrorText = e.Message;
+                }
+                finally
+                {
+                    IsBeenSavingToNAV = false;
                 }
             }
         }
@@ -313,17 +334,25 @@ namespace WarehouseControlSystem.ViewModel
 
         public async void Load()
         {
+            if (NotNetOrConnection)
+            {
+                return;
+            }
+
             try
             {
-                LocationsIsBeingLoaded = true;
-                List<Location> locations = await NAV.GetLocationList("", false, 1, int.MaxValue, ACD.Default);
-                Locations.Clear();
-                foreach (Location location in locations)
+                if (CanChangeLocationCode)
                 {
-                    Locations.Add(location);
+                    LocationsIsBeingLoaded = true;
+                    List<Location> locations = await NAV.GetLocationList("", false, 1, int.MaxValue, ACD.Default);
+                    Locations.Clear();
+                    foreach (Location location in locations)
+                    {
+                        Locations.Add(location);
+                    }
+                    LocationsIsLoaded = locations.Count > 0 && CanChangeLocationCode;
+                    MessagingCenter.Send<ZoneViewModel>(this, "LocationsIsLoaded");
                 }
-                LocationsIsLoaded = locations.Count > 0 && CanChangeLocationCode;
-                MessagingCenter.Send<ZoneViewModel>(this, "LocationsIsLoaded");
 
                 BinTypesIsBeingLoaded = true;
                 List<BinType> bintypes = await NAV.GetBinTypeList(1, int.MaxValue, ACD.Default);
@@ -338,6 +367,7 @@ namespace WarehouseControlSystem.ViewModel
             catch (OperationCanceledException e)
             {
                 System.Diagnostics.Debug.WriteLine(e.Message);
+                State = State.Error;
                 ErrorText = e.Message;
             }
             catch (Exception e)
@@ -406,6 +436,36 @@ namespace WarehouseControlSystem.ViewModel
             {
                 RacksIsLoaded = true;
                 RacksIsBeingLoaded = false;
+            }
+        }
+
+
+        private async void SaveToNAVSchemeVisible()
+        {
+            if (IsSaveToNAVEnabled)
+            {
+                if (NotNetOrConnection)
+                {
+                    return;
+                }
+
+                try
+                {
+                    IsBeenSavingToNAV = true;
+                    Zone zone = new Zone();
+                    SaveFields(zone);
+                    await NAV.SetZoneVisible(zone, ACD.Default);
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine(e.Message);
+                    ErrorText = e.Message;
+                    State = State.Error;
+                }
+                finally
+                {
+                    IsBeenSavingToNAV = false;
+                }
             }
         }
 

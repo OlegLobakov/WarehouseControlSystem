@@ -14,8 +14,6 @@ using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using SkiaSharp;
-using SkiaSharp.Views.Forms;
 using WarehouseControlSystem.Model;
 using WarehouseControlSystem.Model.NAV;
 using WarehouseControlSystem.ViewModel;
@@ -219,14 +217,6 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             model.SchemeHeight = height;
 
             model.SchemeFontSize = 12;
-            //if (width > height)
-            //{
-            //    model.SchemeFontSize = height - 10;
-            //}
-            //else
-            //{
-            //    model.SchemeFontSize = width - 10;
-            //}
         }
 
     }

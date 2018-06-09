@@ -17,12 +17,7 @@ namespace WarehouseControlSystem.Helpers.Containers.StateContainer
 
         public List<StateCondition> Conditions { get; set; } = new List<StateCondition>();
 
-        public static readonly BindableProperty StateProperty = BindableProperty.Create(nameof(State), typeof(object), typeof(StateContainer), null, BindingMode.Default, null, StateChanged);
-
-        public static void Init()
-        {
-            //for linker
-        }
+        public static readonly BindableProperty StateProperty = BindableProperty.Create(nameof(State), typeof(State), typeof(StateContainer), State.Normal, BindingMode.Default, null, StateChanged);
 
         private static void StateChanged(BindableObject bindable, object oldValue, object newValue)
         {
@@ -41,9 +36,9 @@ namespace WarehouseControlSystem.Helpers.Containers.StateContainer
             }
         }
 
-        public object State
+        public State State
         {
-            get { return GetValue(StateProperty); }
+            get { return (State)GetValue(StateProperty); }
             set { SetValue(StateProperty, value); }
         }
 
@@ -72,36 +67,6 @@ namespace WarehouseControlSystem.Helpers.Containers.StateContainer
             catch(Exception e)
             {
                 System.Diagnostics.Debug.WriteLine(e.Message);
-            }
-        }
-
-        private async Task ChooseStateProperty2(object newValue)
-        {
-            if (Conditions == null && Conditions?.Count == 0)
-            {
-                return;
-            }
-
-            try
-            {
-                foreach (var stateCondition in Conditions.Where(stateCondition => stateCondition.State != null && stateCondition.State.ToString().Equals(newValue.ToString())))
-                {
-                    if (Content != null)
-                    {
-                        await Content.FadeTo(0, 100U); 
-                        Content.IsVisible = false; 
-                        await Task.Delay(50); 
-                    }  
-                    stateCondition.Content.Opacity = 0;
-                    Content = stateCondition.Content;
-                    Content.IsVisible = true;
-                    await Content.FadeTo(1);
-
-                    break;
-                }
-            }
-            catch
-            {
             }
         }
     }
