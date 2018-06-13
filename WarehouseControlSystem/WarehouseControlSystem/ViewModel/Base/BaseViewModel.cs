@@ -11,7 +11,6 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 using System;
-using WarehouseControlSystem.Helpers.Containers.StateContainer;
 using Xamarin.Forms;
 using System.Windows.Input;
 using System.Threading;
@@ -36,7 +35,7 @@ namespace WarehouseControlSystem.ViewModel.Base
             }
         } string title;
 
-        public State State
+        public ModelState State
         {
             get { return state1; }
             set
@@ -44,11 +43,52 @@ namespace WarehouseControlSystem.ViewModel.Base
                 if (state1 != value)
                 {
                     state1 = value;
-                    LoadAnimation = state1 == State.Loading;
+                    ChangeState(state1);
+                    LoadAnimation = state1 == ModelState.Loading;
                     OnPropertyChanged(nameof(State));
                 }
             }
-        } State state1;
+        }
+        ModelState state1;
+
+        public bool IsLoadingState
+        {
+            get { return isloadingstate; }
+            set
+            {
+                if (isloadingstate != value)
+                {
+                    isloadingstate = value;
+                    OnPropertyChanged(nameof(IsLoadingState));
+                }
+            }
+        } bool isloadingstate;
+
+        public bool IsNormalState
+        {
+            get { return isnormalstate; }
+            set
+            {
+                if (isnormalstate != value)
+                {
+                    isnormalstate = value;
+                    OnPropertyChanged(nameof(IsNormalState));
+                }
+            }
+        } bool isnormalstate;
+
+        public bool IsErrorState
+        {
+            get { return iserrorstate; }
+            set
+            {
+                if (iserrorstate != value)
+                {
+                    iserrorstate = value;
+                    OnPropertyChanged(nameof(IsErrorState));
+                }
+            }
+        }  bool iserrorstate;
 
         public bool Selected
         {
@@ -142,9 +182,6 @@ namespace WarehouseControlSystem.ViewModel.Base
         } string requesmessagettext;
 
         public ICommand ErrorOKCommand { protected set; get; }
-        public ICommand WarningOKCommand { protected set; get; }
-        public ICommand NoInternetOKCommand { protected set; get; }
-        public ICommand NoDataOKCommand { protected set; get; }
 
         public ICommand OKCommand { protected set; get; }
         public ICommand CancelCommand { protected set; get; }
@@ -163,31 +200,14 @@ namespace WarehouseControlSystem.ViewModel.Base
         {
             Navigation = navigation;
             ErrorOKCommand = new Command(ErrorOk);
-            WarningOKCommand = new Command(WarningOk);
-            NoInternetOKCommand = new Command(NoInternetOK);
-            NoDataOKCommand = new Command(NoDataOK);
             ACD = new AsyncCancelationDispatcher();
         }
 
         public virtual void ErrorOk()
         {
-            State = State.Normal;
+            State = ModelState.Normal;
         }
 
-        public virtual void WarningOk()
-        {
-            State = State.Normal;
-        }
-
-        public virtual void NoInternetOK()
-        {
-            State = State.Normal;
-        }
-
-        public virtual void NoDataOK()
-        {
-            State = State.Normal;
-        }
 
         public virtual void DisposeModel()
         {
@@ -212,13 +232,34 @@ namespace WarehouseControlSystem.ViewModel.Base
             return String.Format("#{0:X2}{1:X2}{2:X2}{3:X2}", red, green, blue, alpha);
         }
 
+        private void ChangeState(ModelState state)
+        {
+            IsLoadingState = false;
+            IsErrorState = false;
+            IsErrorState = false;
+            switch (state)
+            {
+                case ModelState.Loading:
+                    IsLoadingState = true;
+                    break;
+                case ModelState.Normal:
+                    IsNormalState = true;
+                    break;
+                case ModelState.Error:
+                    IsErrorState = true;
+                    break;
+                default:
+                    throw new InvalidOperationException("Impossible value");
+            }
+        }
+
         public bool IsNetAndConnection()
         {
             bool rv = true;
             if (!Plugin.Connectivity.CrossConnectivity.Current.IsConnected)
             {
                 rv = false;
-                State = State.Error;
+                State = ModelState.Error;
                 ErrorText = "Internet not available";
             }
             else
@@ -229,7 +270,7 @@ namespace WarehouseControlSystem.ViewModel.Base
                 else
                 {
                     rv = false;
-                    State = State.Error;
+                    State = ModelState.Error;
                     ErrorText = "Сonnection not created";
                 }
             }

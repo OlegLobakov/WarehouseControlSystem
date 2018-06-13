@@ -17,7 +17,6 @@ using System.Text;
 using System.Threading.Tasks;
 using WarehouseControlSystem.Resx;
 using WarehouseControlSystem.ViewModel.Base;
-using WarehouseControlSystem.Helpers.Containers.StateContainer;
 using Xamarin.Forms;
 using System.Windows.Input;
 using WarehouseControlSystem.Model;
@@ -197,7 +196,7 @@ namespace WarehouseControlSystem.ViewModel
             BinTypes = new List<BinType>();
             Locations = new List<Location>();
             Zones = new List<Zone>();
-            State = State.Normal;
+            State = ModelState.Normal;
         }
 
         public void FillFields(BinTemplate bintemplate)
@@ -253,7 +252,7 @@ namespace WarehouseControlSystem.ViewModel
                     catch (Exception e)
                     {
                         System.Diagnostics.Debug.WriteLine(e.Message);
-                        State = State.Error;
+                        State = ModelState.Error;
                         ErrorText = e.Message;
                     }
                 }
@@ -267,7 +266,7 @@ namespace WarehouseControlSystem.ViewModel
                     catch (Exception e)
                     {
                         System.Diagnostics.Debug.WriteLine(e.Message);
-                        State = State.Error;
+                        State = ModelState.Error;
                         ErrorText = e.Message;
                     }
                 }
@@ -293,7 +292,7 @@ namespace WarehouseControlSystem.ViewModel
 
             try
             {
-                State = State.Loading;
+                State = ModelState.Loading;
                 List<BinType> loadedbintypes = await NAV.GetBinTypeList(1, int.MaxValue, ACD.Default);
                 if ((!IsDisposed) && (loadedbintypes is List<BinType>))
                 {
@@ -353,7 +352,7 @@ namespace WarehouseControlSystem.ViewModel
                 System.Diagnostics.Debug.WriteLine(e.Message);
                 ErrorText = e.Message;
             }
-            State = State.Normal;
+            State = ModelState.Normal;
         }
 
         public async void UpdateLocation(Location location)
@@ -421,7 +420,7 @@ namespace WarehouseControlSystem.ViewModel
             if (error != "")
             {
                 ErrorText = error;
-                State = State.Error;
+                State = ModelState.Error;
                 return false;
             }
             else

@@ -14,7 +14,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using WarehouseControlSystem.ViewModel.Base;
-using WarehouseControlSystem.Helpers.Containers.StateContainer;
 using WarehouseControlSystem.Model;
 using WarehouseControlSystem.Model.NAV;
 using Xamarin.Forms;
@@ -45,7 +44,7 @@ namespace WarehouseControlSystem.ViewModel
 
         public SearchViewModel(INavigation navigation) : base(navigation)
         {
-            State = State.Normal;
+            State = ModelState.Normal;
             ClearCommand = new Command(Clear);
             UpdateInformation();
         }
@@ -80,13 +79,13 @@ namespace WarehouseControlSystem.ViewModel
         {
             if (request.Length < 4)
             {
-                State = State.Error;
+                State = ModelState.Error;
                 ErrorText = AppResources.FindPage_RequestLengthError;
                 return;
             }
             try
             {
-                State = State.Loading;
+                State = ModelState.Loading;
                 LoadingText = AppResources.FindPage_Search;
                 Global.SearchRequest = request;
                 Global.SearchResponses = await NAV.Search(Global.SearchLocationCode, request, ACD.Default);
@@ -102,7 +101,7 @@ namespace WarehouseControlSystem.ViewModel
             catch (Exception e)
             {
                 System.Diagnostics.Debug.WriteLine(e.Message);
-                State = State.Error;
+                State = ModelState.Error;
                 ErrorText = e.Message;
             }
             finally

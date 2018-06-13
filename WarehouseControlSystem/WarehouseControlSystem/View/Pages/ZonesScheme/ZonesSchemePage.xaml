@@ -2,7 +2,6 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WarehouseControlSystem.View.Pages.ZonesScheme.ZonesSchemePage"
-             xmlns:sc="clr-namespace:WarehouseControlSystem.Helpers.Containers.StateContainer"
              xmlns:vc="clr-namespace:WarehouseControlSystem.View.Content"
              xmlns:i18n="clr-namespace:WarehouseControlSystem;assembly=WarehouseControlSystem">
 
@@ -10,7 +9,7 @@
         <ToolbarItem  Order="Primary" Priority="10" Text="{i18n:Translate LocationsSchemePage_Toolbar_List}" Command="{Binding ListZonesCommand}">
             <ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
-                    <On Platform="UWP,WinPhone">
+                    <On Platform="UWP">
                         <FileImageSource File="Assets/Images/ic_action_dehaze.png"/>
                     </On>
                     <On Platform="iOS,Android">
@@ -22,7 +21,7 @@
         <ToolbarItem  Order="Primary" Priority="20" Text="{i18n:Translate LocationsSchemePage_Toolbar_New}" Command="{Binding NewZoneCommand}">
             <ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
-                    <On Platform="UWP,WinPhone">
+                    <On Platform="UWP">
                         <FileImageSource File="Assets/Images/ic_action_add_circle.png"/>
                     </On>
                     <On Platform="iOS,Android">
@@ -31,22 +30,10 @@
                 </OnPlatform>
             </ToolbarItem.Icon>
         </ToolbarItem>
-        <ToolbarItem  Order="Primary" Priority="50"  Text="{i18n:Translate LocationsSchemePage_Toolbar_Scheme}" Command="{Binding ParamsCommand}">
-            <ToolbarItem.Icon>
-                <OnPlatform x:TypeArguments="FileImageSource">
-                    <On Platform="UWP,WinPhone">
-                        <FileImageSource File="Assets/Images/ic_action_aspect_ratio.png"/>
-                    </On>
-                    <On Platform="iOS,Android">
-                        <FileImageSource File="ic_action_aspect_ratio.png"/>
-                    </On>
-                </OnPlatform>
-            </ToolbarItem.Icon>
-        </ToolbarItem>
         <ToolbarItem  Order="Primary" Priority="1000" Text="{i18n:Translate LocationsSchemePage_Toolbar_Mode}" Clicked="ToolbarItem_Clicked">
             <ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
-                    <On Platform="UWP,WinPhone">
+                    <On Platform="UWP">
                         <FileImageSource File="Assets/Images/ic_action_dashboard.png"/>
                     </On>
                     <On Platform="iOS,Android">
@@ -58,7 +45,7 @@
         <ToolbarItem  Order="Primary" Priority="2000" Text="{i18n:Translate LocationsSchemePage_Toolbar_Search}" Clicked="ToolbarItem_Search">
             <ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
-                    <On Platform="UWP,WinPhone">
+                    <On Platform="UWP">
                         <FileImageSource File="Assets/Images/ic_action_search.png"/>
                     </On>
                     <On Platform="iOS,Android">
@@ -69,15 +56,46 @@
         </ToolbarItem>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <sc:StateContainer State="{Binding State}" Padding="5">
-            <sc:StateCondition State="Loading">
-                <ActivityIndicator IsRunning="{Binding LoadAnimation}" HeightRequest="50" WidthRequest="50" VerticalOptions="Center" HorizontalOptions="Center"/>
-            </sc:StateCondition>
-            <sc:StateCondition State="Normal">
-                <AbsoluteLayout x:Name="abslayout">
-                </AbsoluteLayout>
-            </sc:StateCondition>
-            <sc:StateCondition State="Error">
+        <StackLayout>
+            <StackLayout IsVisible="{Binding IsLoadingState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                <StackLayout VerticalOptions="Center" HorizontalOptions="Center" Orientation="Vertical">
+                    <ActivityIndicator IsRunning="{Binding LoadAnimation}" HeightRequest="50" WidthRequest="50"/>
+                    <Label Text="{Binding LoadingText}" FontSize="Small"/>
+                </StackLayout>
+            </StackLayout>
+            <StackLayout IsVisible="{Binding IsNormalState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0" IsVisible="{Binding IsEditMode}"  HorizontalOptions="FillAndExpand" Padding="20">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackLayout Grid.Column="0" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" Orientation="Vertical">
+                            <Label Text="Height" HorizontalOptions="Center"></Label>
+                            <Slider HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
+                                Maximum="80" Minimum="{Binding MinPlanHeight}" 
+                                Value="{Binding PlanHeight, Mode=TwoWay}">
+                            </Slider>
+                            <Label Text="{Binding PlanHeight}" HorizontalOptions="Center"></Label>
+                        </StackLayout>
+                        <StackLayout Grid.Column="1" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" Orientation="Vertical">
+                            <Label Text="Width" HorizontalOptions="Center"></Label>
+                            <Slider HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
+                               Maximum="80" Minimum="{Binding MinPlanWidth}"
+                               Value="{Binding PlanWidth, Mode=TwoWay}">
+                            </Slider>
+                            <Label Text="{Binding PlanWidth}" HorizontalOptions="Center"></Label>
+                        </StackLayout>
+                    </Grid>
+                    <AbsoluteLayout Grid.Row="1" x:Name="abslayout" SizeChanged="abslayout_SizeChanged"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                    </AbsoluteLayout>
+                </Grid>
+            </StackLayout>
+            <StackLayout IsVisible="{Binding IsErrorState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1*"/>
@@ -103,7 +121,7 @@
                             TextColor="Black"
                             BackgroundColor="White"/>
                 </Grid>
-            </sc:StateCondition>
-        </sc:StateContainer>
+            </StackLayout>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

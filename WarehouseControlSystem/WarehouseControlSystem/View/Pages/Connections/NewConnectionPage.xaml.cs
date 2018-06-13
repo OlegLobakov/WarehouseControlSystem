@@ -17,7 +17,6 @@ using WarehouseControlSystem.Model;
 using WarehouseControlSystem.Resx;
 using WarehouseControlSystem.ViewModel;
 using WarehouseControlSystem.Helpers.NAV;
-using WarehouseControlSystem.Helpers.Containers.StateContainer;
 
 namespace WarehouseControlSystem.View.Pages.Connections
 {
@@ -29,7 +28,6 @@ namespace WarehouseControlSystem.View.Pages.Connections
         public NewConnectionPage(ConnectionViewModel cvm, bool createmode)
         {
             model = cvm;
-            model.State = State.Normal;
             BindingContext = model;
             InitializeComponent();
             model.CreateMode = createmode;                   
@@ -54,13 +52,13 @@ namespace WarehouseControlSystem.View.Pages.Connections
             return false;
         }
 
-        private void AfterChangeState(StateContainer sc)
-        {
-            if (model.State == State.Normal)
-            {
-                creditialspicker.SelectedItem = model.CreditialList.Find(x => x == model.ClientCredentialType);
-            }
-        }
+        //private void AfterChangeState(StateContainer sc)
+        //{
+        //    if (model.State == State.Normal)
+        //    {
+        //        creditialspicker.SelectedItem = model.CreditialList.Find(x => x == model.ClientCredentialType);
+        //    }
+        //}
 
         private void creditialspicker_SelectedIndexChanged(object sender, EventArgs e)
         {

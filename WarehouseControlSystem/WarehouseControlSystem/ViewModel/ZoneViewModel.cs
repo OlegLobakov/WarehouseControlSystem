@@ -18,7 +18,6 @@ using System.Threading.Tasks;
 
 using WarehouseControlSystem.Resx;
 using WarehouseControlSystem.ViewModel.Base;
-using WarehouseControlSystem.Helpers.Containers.StateContainer;
 using Xamarin.Forms;
 using System.Windows.Input;
 using WarehouseControlSystem.Model;
@@ -212,7 +211,7 @@ namespace WarehouseControlSystem.ViewModel
             CancelCommand = new Command(Cancel);
             CancelChangesCommand = new Command(CancelChanges);
 
-            State = State.Loading;
+            State = ModelState.Loading;
             Changed = false;
             IsSaveToNAVEnabled = true;
         }
@@ -277,7 +276,7 @@ namespace WarehouseControlSystem.ViewModel
                 catch (Exception e)
                 {
                     System.Diagnostics.Debug.WriteLine(e.Message);
-                    State = State.Error;
+                    State = ModelState.Error;
                     ErrorText = e.Message;
                 }
                 finally
@@ -296,7 +295,7 @@ namespace WarehouseControlSystem.ViewModel
                 catch (Exception e)
                 {
                     System.Diagnostics.Debug.WriteLine(e.Message);
-                    State = State.Error;
+                    State = ModelState.Error;
                     ErrorText = e.Message;
                 }
                 finally
@@ -367,13 +366,13 @@ namespace WarehouseControlSystem.ViewModel
             catch (OperationCanceledException e)
             {
                 System.Diagnostics.Debug.WriteLine(e.Message);
-                State = State.Error;
+                State = ModelState.Error;
                 ErrorText = e.Message;
             }
             catch (Exception e)
             {
                 System.Diagnostics.Debug.WriteLine(e.Message);
-                State = State.Error;
+                State = ModelState.Error;
                 ErrorText = e.Message;
             }
             finally
@@ -389,6 +388,11 @@ namespace WarehouseControlSystem.ViewModel
             RacksIsBeingLoaded = true;
             try
             {
+                if (SubSchemeElements.Count != 0)
+                {
+                    return;
+                }
+
                 List<Rack> racks = await NAV.GetRackList(LocationCode, Code, true, 1, int.MaxValue, ACD.Default);
                 if (!IsDisposed)
                 {
@@ -401,6 +405,7 @@ namespace WarehouseControlSystem.ViewModel
                             Top = rack.Top,
                             Height = rack.Height,
                             Width = rack.Width,
+                            HexColor = ColorToHex(Color.Gray),
                             RackOrientation = rack.RackOrientation
                         };
 
@@ -426,6 +431,7 @@ namespace WarehouseControlSystem.ViewModel
                         }
                         SubSchemeElements.Add(sse);
                     }
+                    RacksIsLoaded = SubSchemeElements.Count > 0;
                 }
             }
             catch (Exception e)
@@ -434,7 +440,6 @@ namespace WarehouseControlSystem.ViewModel
             }
             finally
             {
-                RacksIsLoaded = true;
                 RacksIsBeingLoaded = false;
             }
         }
@@ -460,7 +465,7 @@ namespace WarehouseControlSystem.ViewModel
                 {
                     System.Diagnostics.Debug.WriteLine(e.Message);
                     ErrorText = e.Message;
-                    State = State.Error;
+                    State = ModelState.Error;
                 }
                 finally
                 {

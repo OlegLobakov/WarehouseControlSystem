@@ -22,7 +22,6 @@ using WarehouseControlSystem.View.Pages.Connections;
 using WarehouseControlSystem.Resx;
 using WarehouseControlSystem.ViewModel.Base;
 using System.Windows.Input;
-using WarehouseControlSystem.Helpers.Containers.StateContainer;
 
 namespace WarehouseControlSystem.ViewModel
 {
@@ -275,7 +274,7 @@ namespace WarehouseControlSystem.ViewModel
 
         public async void TestConnection()
         {
-            State = State.Loading;
+            State = ModelState.Loading;
             Title = AppResources.NewConnectionPage_Test;
             SaveFields(Global.TestConnection);
             try
@@ -283,14 +282,14 @@ namespace WarehouseControlSystem.ViewModel
                 await NAV.TestConnection(ACD.Default);
                 Verified = true;
                 Connection.Verified = true;
-                State = State.Normal;
+                State = ModelState.Normal;
             }
             catch (Exception e)
             {
                 System.Diagnostics.Debug.WriteLine(e.Message);
                 Verified = false;
                 Connection.Verified = false;
-                State = State.Error;
+                State = ModelState.Error;
                 ErrorText = e.Message;
             }
             Title = AppResources.NewConnectionPage_Title;

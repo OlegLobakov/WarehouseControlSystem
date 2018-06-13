@@ -691,7 +691,7 @@ namespace WarehouseControlSystem.ViewModel
             catch (Exception e)
             {
                 System.Diagnostics.Debug.WriteLine(e.Message);
-                State = Helpers.Containers.StateContainer.State.Error;
+                State = ModelState.Error;
                 ErrorText = e.ToString();
             }
         }

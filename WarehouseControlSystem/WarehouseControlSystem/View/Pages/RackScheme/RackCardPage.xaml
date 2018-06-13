@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:sc="clr-namespace:WarehouseControlSystem.Helpers.Containers.StateContainer"
              xmlns:rv="clr-namespace:WarehouseControlSystem.View.Pages.RackScheme"
              xmlns:vc="clr-namespace:WarehouseControlSystem.View.Content"
              x:Class="WarehouseControlSystem.View.Pages.RackScheme.RackCardPage"
@@ -21,14 +20,14 @@
         </ToolbarItem>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <sc:StateContainer State="{Binding State}" OnAfterStateSet="AfterStateSet">
-            <sc:StateCondition State="Loading">
+        <StackLayout>
+            <StackLayout IsVisible="{Binding IsLoadingState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                 <StackLayout VerticalOptions="Center" HorizontalOptions="Center" Orientation="Vertical">
                     <ActivityIndicator IsRunning="{Binding LoadAnimation}" HeightRequest="50" WidthRequest="50"/>
                     <Label Text="{Binding LoadingText}" FontSize="Small"/>
                 </StackLayout>
-            </sc:StateCondition>
-            <sc:StateCondition State="Normal">
+            </StackLayout>
+            <StackLayout IsVisible="{Binding IsNormalState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                 <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" x:Name="maingrid">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -72,8 +71,8 @@
                     </Grid>
 
                 </Grid>
-            </sc:StateCondition>
-            <sc:StateCondition State="Error">
+            </StackLayout>
+            <StackLayout IsVisible="{Binding IsErrorState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1*"/>
@@ -99,7 +98,10 @@
                             TextColor="Black"
                             BackgroundColor="White"/>
                 </Grid>
-            </sc:StateCondition>
+            </StackLayout>
+        </StackLayout>
+
+        <!--<sc:StateContainer State="{Binding State}" OnAfterStateSet="AfterStateSet">
             <sc:StateCondition State="Warning">
                 <StackLayout HorizontalOptions="Center" VerticalOptions="Center" Orientation="Vertical">
                     <Label Text="{Binding InfoText}" 
@@ -122,6 +124,6 @@
                     </StackLayout>
                 </StackLayout>
             </sc:StateCondition>
-        </sc:StateContainer>
+        </sc:StateContainer>-->
     </ContentPage.Content>
 </ContentPage>

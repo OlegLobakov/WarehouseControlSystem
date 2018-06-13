@@ -1356,4 +1356,7 @@
   <data name="NewZonePage_Title_Edit" xml:space="preserve">
     <value>Edit zone | </value>
   </data>
+  <data name="NewZonePage_Color_White" xml:space="preserve">
+    <value>White</value>
+  </data>
 </root>

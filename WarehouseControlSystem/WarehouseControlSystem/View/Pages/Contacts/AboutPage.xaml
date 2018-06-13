@@ -11,7 +11,7 @@
                     <Image Aspect="AspectFill" VerticalOptions="Start">
                         <Image.Source>
                             <OnPlatform x:TypeArguments="FileImageSource">
-                                <On Platform="UWP,WinPhone">
+                                <On Platform="UWP">
                                     <FileImageSource File="Assets/Images/ParallaxBackground.jpg"/>
                                 </On>
                                 <On Platform="iOS,Android">
@@ -44,7 +44,7 @@
                                 <Image Grid.Column="0"  Aspect="AspectFit" VerticalOptions="CenterAndExpand" Margin="20,20,20,70">
                                     <Image.Source>
                                         <OnPlatform x:TypeArguments="FileImageSource">
-                                            <On Platform="UWP,WinPhone">
+                                            <On Platform="UWP">
                                                 <FileImageSource File="Assets/Images/icon.png"/>
                                             </On>
                                             <On Platform="iOS,Android">

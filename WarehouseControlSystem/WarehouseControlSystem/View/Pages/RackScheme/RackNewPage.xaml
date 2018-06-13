@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:sc="clr-namespace:WarehouseControlSystem.Helpers.Containers.StateContainer"
              xmlns:rv="clr-namespace:WarehouseControlSystem.View.Pages.RackScheme"
              xmlns:vc="clr-namespace:WarehouseControlSystem.View.Content"
              xmlns:convertors="clr-namespace:WarehouseControlSystem.Helpers.Converters"
@@ -27,14 +26,14 @@
         </ToolbarItem>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <sc:StateContainer State="{Binding State}" Padding="5">
-            <sc:StateCondition State="Loading">
+        <StackLayout>
+            <StackLayout IsVisible="{Binding IsLoadingState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                 <StackLayout VerticalOptions="Center" HorizontalOptions="Center" Orientation="Vertical">
                     <ActivityIndicator IsRunning="{Binding LoadAnimation}" HeightRequest="50" WidthRequest="50"/>
                     <Label Text="{Binding LoadingText}" FontSize="Small"/>
                 </StackLayout>
-            </sc:StateCondition>
-            <sc:StateCondition State="Normal">
+            </StackLayout>
+            <StackLayout IsVisible="{Binding IsNormalState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                 <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" x:Name="maingrid">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -257,8 +256,8 @@
                     </Grid>
                     <vc:BinInfoPanel Grid.Column="1" x:Name="infopanel" IsVisible="{Binding IsSelectedBins}"/>
                 </Grid>
-            </sc:StateCondition>
-            <sc:StateCondition State="Error">
+            </StackLayout>
+            <StackLayout IsVisible="{Binding IsErrorState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1*"/>
@@ -284,33 +283,7 @@
                             TextColor="Black"
                             BackgroundColor="White"/>
                 </Grid>
-            </sc:StateCondition>
-            <sc:StateCondition State="Warning">
-                <!--<StackLayout HorizontalOptions="Center" VerticalOptions="Center" Orientation="Vertical">
-                    <Label x:Name="warninglabel" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Black" FontSize="Large"></Label>
-                    <Button Text="OK" />
-                </StackLayout>-->
-            </sc:StateCondition>
-            <sc:StateCondition State="NoInternet">
-                <!--<StackLayout Orientation="Vertical" HorizontalOptions="Center" VerticalOptions="Center">
-                    <Label Text="{i18n:Translate StateContainer_StateNoInternet_Error}" FontSize="Large" HorizontalOptions="Center" VerticalOptions="Center"/>
-                </StackLayout>-->
-            </sc:StateCondition>
-            <sc:StateCondition State="NoData">
-                <!--<Label Text="No Data" FontSize="Large" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>-->
-            </sc:StateCondition>
-            <sc:StateCondition State="Request">
-                <!--<StackLayout Orientation="Vertical" HorizontalOptions="Center" VerticalOptions="Center">
-                    <Label x:Name="requestnamelabel" FontSize="Large"/>
-                    <Label x:Name="requestmessagelabel"/>
-                    <StackLayout Orientation="Horizontal">
-                        -->
-                <!--<Button Text="{i18n:Translate RackNewPage_ButtonsOK}" Clicked="Button_Clicked_OkMessage" WidthRequest="150"/>
-                        <Button Text="{i18n:Translate RackNewPage_ButtonsCancel}" Clicked="Button_Clicked_CancelMessage" WidthRequest="150"/>-->
-                <!--
-                    </StackLayout>
-                </StackLayout>-->
-            </sc:StateCondition>
-        </sc:StateContainer>
+            </StackLayout>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

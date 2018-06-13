@@ -16,7 +16,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WarehouseControlSystem.ViewModel.Base;
-using WarehouseControlSystem.Helpers.Containers.StateContainer;
 using WarehouseControlSystem.Model;
 using WarehouseControlSystem.Model.NAV;
 using System.Collections.ObjectModel;
@@ -201,7 +200,7 @@ namespace WarehouseControlSystem.ViewModel
 
         public LocationViewModel(INavigation navigation, Location location) : base(navigation)
         {
-            State = State.Normal;
+            State = ModelState.Normal;
             Location = location;
             FillFields(location);
             Color = Color.FromHex(location.HexColor);
@@ -267,7 +266,7 @@ namespace WarehouseControlSystem.ViewModel
 
         public async void OK()
         {
-            State = State.Loading;
+            State = ModelState.Loading;
             LoadAnimation = true;
             SaveFields(Location);
             if (CreateMode)
@@ -280,7 +279,7 @@ namespace WarehouseControlSystem.ViewModel
                 catch (Exception e)
                 {
                     System.Diagnostics.Debug.WriteLine(e.Message);
-                    State = State.Error;
+                    State = ModelState.Error;
                     ErrorText = e.Message+" "+e.StackTrace;
                 }
             }
@@ -294,7 +293,7 @@ namespace WarehouseControlSystem.ViewModel
                 catch (Exception e)
                 {
                     System.Diagnostics.Debug.WriteLine(e.Message);
-                    State = State.Error;
+                    State = ModelState.Error;
                     ErrorText = e.Message + " " + e.StackTrace;
                 }
             }
@@ -322,7 +321,7 @@ namespace WarehouseControlSystem.ViewModel
             catch (Exception e)
             {
                 System.Diagnostics.Debug.WriteLine(e.Message);
-                State = State.Error;
+                State = ModelState.Error;
                 ErrorText = e.Message;
             }        
         }
@@ -393,6 +392,7 @@ namespace WarehouseControlSystem.ViewModel
                         };
                         SubSchemeElements.Add(sse);
                     }
+                    ZonesIsLoaded = SubSchemeElements.Count > 0;
                 }
             }
             catch (OperationCanceledException e)
@@ -402,7 +402,6 @@ namespace WarehouseControlSystem.ViewModel
             }
             finally
             {
-                ZonesIsLoaded = true;
                 ZonesIsBeingLoaded = false;
             }
         }

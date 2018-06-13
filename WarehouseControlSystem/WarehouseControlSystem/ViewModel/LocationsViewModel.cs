@@ -16,7 +16,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WarehouseControlSystem.ViewModel.Base;
-using WarehouseControlSystem.Helpers.Containers.StateContainer;
 using WarehouseControlSystem.Helpers.NAV;
 using WarehouseControlSystem.Model;
 using WarehouseControlSystem.Model.NAV;
@@ -26,7 +25,6 @@ using System.Collections.ObjectModel;
 using Xamarin.Forms;
 using WarehouseControlSystem.Resx;
 using System.Windows.Input;
-using Plugin.Connectivity;
 using System.Threading;
 
 namespace WarehouseControlSystem.ViewModel
@@ -37,24 +35,23 @@ namespace WarehouseControlSystem.ViewModel
         public ObservableCollection<LocationViewModel> LocationViewModels { get; set; } = new ObservableCollection<LocationViewModel>();
         public ObservableCollection<LocationViewModel> SelectedViewModels { get; set; } = new ObservableCollection<LocationViewModel>();
 
-        public RunModeEnum RunMode
+        public bool IsEditMode
         {
-            get { return runmode; }
+            get { return iseditmode; }
             set
             {
-                if (runmode != value)
+                if (iseditmode != value)
                 {
-                    runmode = value;
-                    OnPropertyChanged("RunMode");
+                    iseditmode = value;
+                    OnPropertyChanged("IsEditMode");
                 }
             }
-        } RunModeEnum runmode;
+        } bool iseditmode;
 
         public ICommand ListLocationsCommand { protected set; get; }
         public ICommand NewLocationCommand { protected set; get; }
         public ICommand EditLocationCommand { protected set; get; }
         public ICommand DeleteLocationCommand { protected set; get; }
-        public ICommand ParamsCommand { protected set; get; }
 
         public bool IsSelectedList { get { return SelectedViewModels.Count > 0; } }
 
@@ -65,15 +62,15 @@ namespace WarehouseControlSystem.ViewModel
             NewLocationCommand = new Command(NewLocation);
             EditLocationCommand = new Command(EditLocation);
             DeleteLocationCommand = new Command(DeleteLocation);
-            ParamsCommand = new Command(Params);
 
-            RunMode = RunModeEnum.View;
+            IsEditMode = true;
             Title = AppResources.LocationsSchemePage_Title;
             if (Global.CurrentConnection != null)
             {
                 Title = Global.CurrentConnection.Name + " | " + AppResources.LocationsSchemePage_Title;
             }
-            State = State.Normal;
+            State = ModelState.Loading;
+            IsEditMode = false;
         }
 
         public void ClearAll()
@@ -93,9 +90,10 @@ namespace WarehouseControlSystem.ViewModel
                 return;
             }
 
-            State = State.Loading;
+
             try
             {
+                State = ModelState.Loading;
                 PlanWidth = await NAV.GetPlanWidth(ACD.Default);
                 PlanHeight = await NAV.GetPlanHeight(ACD.Default);
                 if (PlanWidth == 0)
@@ -106,7 +104,7 @@ namespace WarehouseControlSystem.ViewModel
                 {
                     PlanHeight = 10;
                 }
-                List<Location> list = await NAV.GetLocationList("", true, 1, int.MaxValue, ACD.Default);
+                List<Location> list = await NAV.GetLocationList("", true, 1, int.MaxValue, ACD.Default).ConfigureAwait(true);
                 if ((list is List<Location>) && (!IsDisposed))
                 {
                     if (list.Count > 0)
@@ -160,12 +158,13 @@ namespace WarehouseControlSystem.ViewModel
                                 MinPlanHeight = location.Top + location.Height;
                             }
                         }
-                        State = State.Normal;
+                        State = ModelState.Normal;
                         ReDesign();
                     }
                     else
                     {
-                        State = State.NoData;
+                        State = ModelState.Error;
+                        ErrorText = "No Data";
                     }
                 }
             }
@@ -177,13 +176,13 @@ namespace WarehouseControlSystem.ViewModel
             catch (NAVErrorException e)
             {
                 System.Diagnostics.Debug.WriteLine(e.Message);
-                State = State.Error;
+                State = ModelState.Error;
                 ErrorText = AppResources.Error_LoadLocation + Environment.NewLine + e.Message;
             }
             catch (Exception e)
             {
                 System.Diagnostics.Debug.WriteLine(e.Message);
-                State = State.Error;
+                State = ModelState.Error;
                 ErrorText = AppResources.Error_LoadLocation + Environment.NewLine + e.Message;
             }
         }
@@ -197,7 +196,7 @@ namespace WarehouseControlSystem.ViewModel
 
             try
             {
-                State = State.Loading;
+                State = ModelState.Loading;
                 List<Location> list = await NAV.GetLocationList("", false, 1, int.MaxValue, ACD.Default).ConfigureAwait(true);
                 if ((!IsDisposed) && (list is List<Location>))
                 {
@@ -209,11 +208,12 @@ namespace WarehouseControlSystem.ViewModel
                             LocationViewModel lvm = new LocationViewModel(Navigation, location);
                             LocationViewModels.Add(lvm);
                         }
-                        State = State.Normal;
+                        State = ModelState.Normal;
                     }
                     else
                     {
-                        State = State.NoData;
+                        State = ModelState.Error;
+                        ErrorText = "No Data";
                     }
                 }
             }
@@ -226,13 +226,13 @@ namespace WarehouseControlSystem.ViewModel
             {
                 System.Diagnostics.Debug.WriteLine(e.Message);
                 ErrorText = e.Message;
-                State = State.Error;
+                State = ModelState.Error;
                 ErrorText = AppResources.Error_LoadLocationList;
             }
         }
         
 
-        public void ReDesign()
+        public override void ReDesign()
         {
             double widthstep = (ScreenWidth / PlanWidth);
             double heightstep = (ScreenHeight / PlanHeight);
@@ -248,7 +248,7 @@ namespace WarehouseControlSystem.ViewModel
 
         private async void Lvm_OnTap(LocationViewModel tappedlvm)
         {
-            if (RunMode == RunModeEnum.View)
+            if (!IsEditMode)
             {
                 Global.SearchLocationCode = tappedlvm.Code;
                 try
@@ -343,11 +343,11 @@ namespace WarehouseControlSystem.ViewModel
                 return;
             }
 
-            LocationViewModel lvm = (LocationViewModel)obj;
-            State = State.Loading;
-            LoadAnimation = true;
             try
             {
+
+                LocationViewModel lvm = (LocationViewModel)obj;
+                State = ModelState.Loading;
                 await NAV.DeleteLocation(lvm.Location.Code, ACD.Default);
                 LocationViewModels.Remove(lvm);
             }
@@ -355,22 +355,16 @@ namespace WarehouseControlSystem.ViewModel
             {
                 System.Diagnostics.Debug.WriteLine(e.Message);
                 ErrorText = e.Message;
-                State = State.Error;
+                State = ModelState.Error;
             }
             finally
             {
-                State = State.Normal;
+                State = ModelState.Normal;
                 LoadAnimation = false;
             }
 
         }
 
-        public async void Params()
-        {
-            State = State.Normal;
-            LocationsFieldParamsPage lgpp = new LocationsFieldParamsPage(this);
-            await Navigation.PushAsync(lgpp);
-        }
 
         public async void SaveLocationChangesAsync()
         {

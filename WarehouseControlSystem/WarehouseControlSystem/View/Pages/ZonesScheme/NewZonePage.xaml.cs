@@ -18,6 +18,7 @@ using WarehouseControlSystem.Model;
 using WarehouseControlSystem.Resx;
 using WarehouseControlSystem.ViewModel;
 using WarehouseControlSystem.Model.NAV;
+using WarehouseControlSystem.ViewModel.Base;
 
 namespace WarehouseControlSystem.View.Pages.ZonesScheme
 {
@@ -41,7 +42,7 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
 
             MessagingCenter.Subscribe<ZoneViewModel>(this, "LocationsIsLoaded", LocationsIsLoaded);
             MessagingCenter.Subscribe<ZoneViewModel>(this, "BinTypesIsLoaded", BinTypesIsLoaded);
-            model.State = Helpers.Containers.StateContainer.State.Normal;
+            model.State = ModelState.Normal;
         }
 
         protected override void OnAppearing()

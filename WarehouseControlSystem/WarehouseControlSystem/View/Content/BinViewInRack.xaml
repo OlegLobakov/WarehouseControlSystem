@@ -47,7 +47,7 @@
                        IsVisible="{Binding IsContent}">
                     <Image.Source>
                         <OnPlatform x:TypeArguments="FileImageSource">
-                            <On Platform="UWP,WinPhone">
+                            <On Platform="UWP">
                                 <FileImageSource File="Assets/Images/ic_action_view_module_light.png"/>
                             </On>
                             <On Platform="iOS,Android">

@@ -16,7 +16,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WarehouseControlSystem.ViewModel.Base;
-using WarehouseControlSystem.Helpers.Containers.StateContainer;
 using Xamarin.Forms;
 using Plugin.Messaging;
 
@@ -84,7 +83,7 @@ namespace WarehouseControlSystem.ViewModel
 
         public ContactViewModel(INavigation navigation) : base(navigation)
         {
-            State = State.Normal;
+            State = ModelState.Normal;
             MessageTypes = new List<string>();
             MessageTypes.Add("Message");
             MessageTypes.Add("Bug report");
@@ -103,14 +102,14 @@ namespace WarehouseControlSystem.ViewModel
                         .Body(Message)
                         .Build();
                     emailTask.SendEmail(email);
-                    State = State.Warning;
+                    State = ModelState.Error;
                     ErrorText = "Email was sent by default application";
                 }
             }
             catch (Exception e)
             {
                 System.Diagnostics.Debug.WriteLine(e.Message);
-                State = State.Error;
+                State = ModelState.Error;
                 ErrorText = e.Message;
             }
         }

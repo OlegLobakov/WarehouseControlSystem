@@ -1355,4 +1355,7 @@
   <data name="NewZonePage_Title_Edit" xml:space="preserve">
     <value>Изменить зону | </value>
   </data>
+  <data name="NewZonePage_Color_White" xml:space="preserve">
+    <value>Белый</value>
+  </data>
 </root>

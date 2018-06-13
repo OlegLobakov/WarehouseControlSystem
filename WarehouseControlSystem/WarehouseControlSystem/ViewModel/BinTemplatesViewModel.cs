@@ -20,7 +20,6 @@ using WarehouseControlSystem.Model.NAV;
 using WarehouseControlSystem.Resx;
 using WarehouseControlSystem.ViewModel.Base;
 using WarehouseControlSystem.Helpers.NAV;
-using WarehouseControlSystem.Helpers.Containers.StateContainer;
 using Xamarin.Forms;
 using System.Windows.Input;
 using System.Collections.ObjectModel;
@@ -57,7 +56,7 @@ namespace WarehouseControlSystem.ViewModel
 
             try
             {
-                State = State.Loading;
+                State = ModelState.Loading;
                 List<BinTemplate> bintemplates = await NAV.GetBinTemplateList(1, int.MaxValue, ACD.Default);
                 if ((!IsDisposed) && (bintemplates is List<BinTemplate>))
                 {
@@ -67,7 +66,7 @@ namespace WarehouseControlSystem.ViewModel
                         BinTemplateViewModel btvm = new BinTemplateViewModel(Navigation, bt);
                         BinTemplates.Add(btvm);
                     }
-                    State = State.Normal;
+                    State = ModelState.Normal;
                 }
             }
             catch (OperationCanceledException e)
@@ -78,7 +77,7 @@ namespace WarehouseControlSystem.ViewModel
             catch (Exception e)
             {
                 System.Diagnostics.Debug.WriteLine(e.Message);
-                State = State.Error;
+                State = ModelState.Error;
                 ErrorText = AppResources.Error_LoadBinTemplates;
             }
         }
@@ -104,19 +103,19 @@ namespace WarehouseControlSystem.ViewModel
             try
             {
                 BinTemplateViewModel btvm = (BinTemplateViewModel)sender;
-                State = State.Loading;
+                State = ModelState.Loading;
                 await NAV.DeleteBinTemplate(btvm.BinTemplate, ACD.Default);
                 if (!IsDisposed)
                 {
                     BinTemplates.Remove(btvm);
                     SelectedTemplate = null;
-                    State = State.Normal;
+                    State = ModelState.Normal;
                 }
             }
             catch (Exception e)
             {
                 System.Diagnostics.Debug.WriteLine(e.Message);
-                State = State.Error;
+                State = ModelState.Error;
                 ErrorText = e.Message;
             }
         }

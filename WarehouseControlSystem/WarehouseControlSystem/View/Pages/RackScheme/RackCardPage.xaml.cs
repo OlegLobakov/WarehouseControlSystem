@@ -19,9 +19,9 @@ using WarehouseControlSystem.Resx;
 using WarehouseControlSystem.ViewModel;
 using WarehouseControlSystem.Model.NAV;
 using WarehouseControlSystem.Helpers.NAV;
-using WarehouseControlSystem.Helpers.Containers.StateContainer;
 using System.Threading;
 using WarehouseControlSystem.View.Pages.Find;
+using WarehouseControlSystem.ViewModel.Base;
 
 namespace WarehouseControlSystem.View.Pages.RackScheme
 {
@@ -44,7 +44,7 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
         {
             base.OnAppearing();
             MessagingCenter.Subscribe<BinsViewModel>(this, "BinsIsLoaded", BinsIsLoaded);
-            model.State = Helpers.Containers.StateContainer.State.Loading;
+            model.State = ModelState.Loading;
             model.LoadAnimation = true;
             model.LoadingText = AppResources.RackCardPage_LoadingText;
             model.LoadBins();         
@@ -66,19 +66,19 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
         public void BinsIsLoaded(BinsViewModel bvm)
         {
             model.LoadAnimation = false;
-            model.State = Helpers.Containers.StateContainer.State.Normal;
+            model.State = ModelState.Normal;
             model.GetSearchText();
         }
 
-        public void AfterStateSet(StateContainer sc)
-        {
-            if (model.State == State.Normal)
-            {
-                rackview.Update(model);
-                //model.LoadContent();
-                model.LoadUDF();
-            }
-        }
+        //public void AfterStateSet(StateContainer sc)
+        //{
+        //    if (model.State == State.Normal)
+        //    {
+        //        rackview.Update(model);
+        //        //model.LoadContent();
+        //        model.LoadUDF();
+        //    }
+        //}
 
         public void BinInfopanelItemTap(BinContentShortViewModel bcsvm)
         {

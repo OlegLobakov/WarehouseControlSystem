@@ -56,6 +56,8 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
 
             PanGesture.PanUpdated += OnPaned;
             TapGesture.Tapped += GridTapped;
+
+            model.IsEditMode = false;
         }
 
         protected override void OnAppearing()
@@ -79,11 +81,11 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
         //    return false;
         //}
 
-        protected override void OnSizeAllocated(double width, double height)
+        private void abslayout_SizeChanged(object sender, EventArgs e)
         {
-            base.OnSizeAllocated(width, height);
-            model.ScreenWidth = width - 10;
-            model.ScreenHeight = height - 10;
+            AbsoluteLayout al = (AbsoluteLayout)sender;
+            model.ScreenWidth = al.Width;
+            model.ScreenHeight = al.Height;
         }
 
         private void Rebuild(ZonesViewModel lmv)
@@ -121,9 +123,10 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
         double bottomborder = double.MinValue;
 
         double oldeTotalX, oldeTotalY = 0;
+
         private async void OnPaned(object sender, PanUpdatedEventArgs e)
         {
-            if (model.RunMode == RunModeEnum.View)
+            if (!model.IsEditMode)
             {
                 return;
             }
@@ -145,8 +148,8 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
                         SelectedViews = Views.FindAll(x => x.Model.Selected == true);
                         MovingAction = MovingActionTypeEnum.Pan;
 
-                        widthstep = (abslayout.Width / model.Location.PlanWidth);
-                        heightstep = (abslayout.Height / model.Location.PlanHeight);
+                        widthstep = (model.ScreenWidth/ model.PlanWidth);
+                        heightstep = (model.ScreenHeight / model.PlanHeight);
 
                         leftborder = double.MaxValue;
                         topborder = double.MaxValue;
@@ -180,9 +183,9 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
                             dx = -leftborder;
                         }
 
-                        if (dx + rightborder > abslayout.Width)
+                        if (dx + rightborder > model.ScreenWidth)
                         {
-                            dx = abslayout.Width - rightborder;
+                            dx = model.ScreenWidth - rightborder;
                         }
 
                         if (dy + topborder < 0)
@@ -190,9 +193,9 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
                             dy = -topborder;
                         }
 
-                        if (dy + bottomborder > abslayout.Height)
+                        if (dy + bottomborder > model.ScreenHeight)
                         {
-                            dy = abslayout.Height - bottomborder;
+                            dy = model.ScreenHeight - bottomborder;
                         }
 
                         foreach (ZoneView zv in SelectedViews)
@@ -263,24 +266,20 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
             await Navigation.PushAsync(fp);
         }
 
-        private async void ToolbarItem_FieldParamsClicked(object sender, EventArgs e)
-        {
-            await Navigation.PushAsync(new ZonesFieldParamsPage(model));
-        }
-
         private void ToolbarItem_Clicked(object sender, EventArgs e)
         {
             GridTapped(null, new EventArgs());
 
-            if (model.RunMode == RunModeEnum.View)
+            if (model.IsEditMode)
             {
-                abslayout.BackgroundColor = Color.WhiteSmoke;
-                model.RunMode = RunModeEnum.Edit;
+                model.IsEditMode = false;
+                abslayout.BackgroundColor = Color.White;
+                model.SaveLocationParams();
             }
             else
             {
-                abslayout.BackgroundColor = Color.White;
-                model.RunMode = RunModeEnum.View;
+                abslayout.BackgroundColor = Color.LightGray;
+                model.IsEditMode = true;
             }
         }
     }

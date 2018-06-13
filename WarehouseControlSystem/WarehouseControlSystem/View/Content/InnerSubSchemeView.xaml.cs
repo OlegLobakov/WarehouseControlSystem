@@ -27,59 +27,73 @@ namespace WarehouseControlSystem.View.Content
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class InnerSubSchemeView : ContentView
     {
-        public static readonly BindableProperty PlanHeightProperty = BindableProperty.Create("PlanHeight", typeof(int), typeof(InnerSubSchemeView),0);
+        public static readonly BindableProperty PlanHeightProperty = BindableProperty.Create("PlanHeight", typeof(int), typeof(InnerSubSchemeView),0,BindingMode.Default,null, Changed);
         public int PlanHeight
         {
             get { return (int)GetValue(PlanHeightProperty); }
-            set
-            {
-                SetValue(PlanHeightProperty, value);
-                //Update();
-            }
+            set { SetValue(PlanHeightProperty, value); }
         }
 
-        public static readonly BindableProperty PlanWidthProperty = BindableProperty.Create("PlanWidth", typeof(int), typeof(InnerSubSchemeView),0);
+        public static readonly BindableProperty PlanWidthProperty = BindableProperty.Create("PlanWidth", typeof(int), typeof(InnerSubSchemeView), 0,BindingMode.Default, null, Changed);
         public int PlanWidth
         {
             get { return (int)GetValue(PlanWidthProperty); }
-            set
-            {
-                SetValue(PlanWidthProperty, value);
-                //Update();
-            }
+            set { SetValue(PlanWidthProperty, value); }
         }
 
-        public static readonly BindableProperty SubSchemeElementsProperty = BindableProperty.Create("SubSchemeElements", typeof(List<SubSchemeElement>), typeof(InnerSubSchemeView), null);
+        public static readonly BindableProperty SubSchemeElementsProperty = BindableProperty.Create("SubSchemeElements", typeof(List<SubSchemeElement>), typeof(InnerSubSchemeView), null,BindingMode.Default, null, Changed);
         public List<SubSchemeElement> SubSchemeElements
         {
             get { return (List<SubSchemeElement>)GetValue(SubSchemeElementsProperty); }
-            set
-            {
-                SetValue(SubSchemeElementsProperty, value);
-                //Update();
-            }
+            set { SetValue(SubSchemeElementsProperty, value); }
         }
 
-        //SKCanvasView canvasView;
+        public static readonly BindableProperty SubSchemeBackgroundColorProperty = BindableProperty.Create("SubSchemeElements", typeof(Color), typeof(InnerSubSchemeView), Color.Transparent, BindingMode.Default, null, Changed);
+        public Color SubSchemeBackgroundColor
+        {
+            get { return (Color)GetValue(SubSchemeBackgroundColorProperty); }
+            set { SetValue(SubSchemeBackgroundColorProperty, value); }
+        }
+
+        private static void Changed(BindableObject bindable, object oldValue, object newValue)
+        {
+            var instance = bindable as InnerSubSchemeView;
+            instance?.Update();
+        }
 
         public InnerSubSchemeView()
         {
             InitializeComponent();
-
-            //canvasView = new SKCanvasView();
-            ////canvasView.IgnorePixelScaling = true;
-
-            //canvasView.PaintSurface += OnCanvasViewPaintSurface;
-            //Content = canvasView;
         }
 
-        //public void Update()
-        //{
-        //    if (canvasView is SKCanvasView)
-        //    {
-        //        canvasView.InvalidateSurface();
-        //    }
-        //}
+        public void Update()
+        {
+            maingrid.BackgroundColor = SubSchemeBackgroundColor;
+            maingrid.Children.Clear();
+            maingrid.RowDefinitions.Clear();
+            maingrid.ColumnDefinitions.Clear();
+
+            for (int i = 1; i <= PlanWidth; i++)
+            {
+                maingrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            }
+            for (int i = 1; i <= PlanHeight; i++)
+            {
+                maingrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+            }
+
+            if (SubSchemeElements is List<SubSchemeElement>)
+            {
+                foreach (SubSchemeElement sse in SubSchemeElements)
+                {
+                    maingrid.Children.Add(
+                        new BoxView()
+                        {
+                            BackgroundColor = Color.FromHex(sse.HexColor)
+                        }, sse.Left, sse.Left + sse.Width, sse.Top, sse.Top + sse.Height);
+                }
+            }
+        }
 
         //void OnCanvasViewPaintSurface(object sender, SKPaintSurfaceEventArgs args)
         //{
@@ -231,7 +245,7 @@ namespace WarehouseControlSystem.View.Content
         //                    }
         //                }
         //            }
-   
+
         //        }
         //    }
         //}

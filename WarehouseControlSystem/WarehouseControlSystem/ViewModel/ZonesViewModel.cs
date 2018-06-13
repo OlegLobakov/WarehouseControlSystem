@@ -13,10 +13,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WarehouseControlSystem.ViewModel.Base;
-using WarehouseControlSystem.Helpers.Containers.StateContainer;
 using WarehouseControlSystem.Model;
 using WarehouseControlSystem.Model.NAV;
 using System.Collections.ObjectModel;
@@ -24,10 +21,8 @@ using Xamarin.Forms;
 using WarehouseControlSystem.Helpers.NAV;
 using WarehouseControlSystem.Resx;
 using System.Windows.Input;
-using Plugin.Connectivity;
 using WarehouseControlSystem.View.Pages.ZonesScheme;
 using WarehouseControlSystem.View.Pages.RackScheme;
-using System.Threading;
 
 namespace WarehouseControlSystem.ViewModel
 {
@@ -39,24 +34,23 @@ namespace WarehouseControlSystem.ViewModel
         public ObservableCollection<ZoneViewModel> ZoneViewModels { get; set; }
         public ObservableCollection<ZoneViewModel> SelectedViewModels { get; set; }
 
-        public RunModeEnum RunMode
+        public bool IsEditMode
         {
-            get { return runmode; }
+            get { return iseditmode; }
             set
             {
-                if (runmode != value)
+                if (iseditmode != value)
                 {
-                    runmode = value;
-                    OnPropertyChanged("RunMode");
+                    iseditmode = value;
+                    OnPropertyChanged("IsEditMode");
                 }
             }
-        } RunModeEnum runmode;
+        } bool iseditmode;
 
         public ICommand ListZonesCommand { protected set; get; }
         public ICommand NewZoneCommand { protected set; get; }
         public ICommand EditZoneCommand { protected set; get; }
         public ICommand DeleteZoneCommand { protected set; get; }
-        public ICommand ParamsCommand { protected set; get; }
 
         public bool IsSelectedList { get { return SelectedViewModels.Count > 0; } }
 
@@ -71,15 +65,21 @@ namespace WarehouseControlSystem.ViewModel
             NewZoneCommand = new Command(NewZone);
             EditZoneCommand = new Command(EditZone);
             DeleteZoneCommand = new Command(DeleteZone);
-            ParamsCommand = new Command(Params);
 
-            RunMode = RunModeEnum.View;
+            IsEditMode = true;
             Title = AppResources.ZoneListPage_Title + " - " + location.Code;
 
             PlanWidth = location.PlanWidth;
             PlanHeight = location.PlanHeight;
-
-            State = State.Normal;
+            if (PlanWidth == 0)
+            {
+                PlanWidth = 80;
+            }
+            if (PlanHeight == 0)
+            {
+                PlanHeight = 60;
+            }
+            State = ModelState.Loading;
         }
 
         public void ClearAll()
@@ -101,14 +101,16 @@ namespace WarehouseControlSystem.ViewModel
 
             try
             {
-                State = State.Loading;
+                State = ModelState.Loading;
                 List<Zone> zones = await NAV.GetZoneList(Location.Code, "", true, 1, int.MaxValue, ACD.Default).ConfigureAwait(true);
 
+                
                 if (zones is List<Zone>)
                 {
                     if (zones.Count > 0)
                     {
                         ClearAll();
+
                         int deftop = 1;
                         int defleft = 1;
                         int defwidth = Math.Max(1, (PlanWidth - 6) / 5);
@@ -144,19 +146,21 @@ namespace WarehouseControlSystem.ViewModel
                             {
                                 MinPlanWidth = zone.Left + zone.Width;
                             }
+
                             if (zone.Top + zone.Height > MinPlanHeight)
                             {
                                 MinPlanHeight = zone.Top + zone.Height;
                             }
                         }
-                    
-                        State = State.Normal;
+                        
+                        State = ModelState.Normal;
                         UpdateMinSizes();
                         ReDesign();
                     }
                     else
                     {
-                        State = State.NoData;
+                        State = ModelState.Error;
+                        ErrorText = "No Data";
                     }
                 }
             }
@@ -167,7 +171,7 @@ namespace WarehouseControlSystem.ViewModel
             catch (Exception e)
             {
                 System.Diagnostics.Debug.WriteLine(e.Message);
-                State = State.Error;
+                State = ModelState.Error;
                 ErrorText = AppResources.Error_LoadZones;
             }
         }
@@ -181,7 +185,7 @@ namespace WarehouseControlSystem.ViewModel
 
             try
             {
-                State = State.Loading;
+                State = ModelState.Loading;
                 List<Zone> zones = await NAV.GetZoneList(Location.Code, "", false, 1, int.MaxValue, ACD.Default);
                 if (zones is List<Zone>)
                 {
@@ -193,11 +197,12 @@ namespace WarehouseControlSystem.ViewModel
                             ZoneViewModel zvm = new ZoneViewModel(Navigation, zone);
                             ZoneViewModels.Add(zvm);
                         }
-                        State = State.Normal;
+                        State = ModelState.Normal;
                     }
                     else
                     {
-                        State = State.NoData;
+                        State = ModelState.Error;
+                        ErrorText = "No Data";
                     }
                 }
             }
@@ -206,14 +211,14 @@ namespace WarehouseControlSystem.ViewModel
             }
             catch
             {
-                State = State.Error;
+                State = ModelState.Error;
                 ErrorText = AppResources.Error_LoadZoneList;
             }
         }
 
         private async void Zvm_OnTap(ZoneViewModel zvm)
         {
-            if (RunMode == RunModeEnum.View)
+            if (!IsEditMode)
             {
                 await Navigation.PushAsync(new RacksSchemePage(zvm.Zone));
             }
@@ -254,7 +259,7 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
-        public void ReDesign()
+        public override void ReDesign()
         {
             double widthstep = (ScreenWidth / PlanWidth);
             double heightstep = (ScreenHeight / PlanHeight);
@@ -316,11 +321,10 @@ namespace WarehouseControlSystem.ViewModel
                 return;
             }
 
-            ZoneViewModel zvm = (ZoneViewModel)obj;
-            State = State.Loading;
-            LoadAnimation = true;
             try
             {
+                ZoneViewModel zvm = (ZoneViewModel)obj;
+                State = ModelState.Loading;
                 await NAV.DeleteZone(zvm.Zone, ACD.Default);
                 ZoneViewModels.Remove(zvm);
             }
@@ -328,24 +332,19 @@ namespace WarehouseControlSystem.ViewModel
             {
                 System.Diagnostics.Debug.WriteLine(e.Message);
                 ErrorText = e.Message;
-                State = State.Error;
+                State = ModelState.Error;
             }
             finally
             {
-                State = State.Normal;
+                State = ModelState.Normal;
                 LoadAnimation = false;
             }
         }
 
-        public async void Params()
-        {
-            State = State.Normal;
-            ZonesFieldParamsPage zfpp = new ZonesFieldParamsPage(this);
-            await Navigation.PushAsync(zfpp);
-        }
-
         public async void SaveLocationParams()
         {
+            Location.PlanWidth = PlanWidth;
+            Location.PlanHeight = PlanHeight;
             await NAV.ModifyLocation(Location, ACD.Default);
         }
 
@@ -361,7 +360,7 @@ namespace WarehouseControlSystem.ViewModel
                 catch (Exception e)
                 {
                     System.Diagnostics.Debug.WriteLine(e.Message);
-                    State = State.Error;
+                    State = ModelState.Error;
                     ErrorText = e.Message;
                 }
             }

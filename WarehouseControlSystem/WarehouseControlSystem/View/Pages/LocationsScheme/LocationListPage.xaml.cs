@@ -15,7 +15,6 @@ using Xamarin.Forms.Xaml;
 using WarehouseControlSystem.Resx;
 using WarehouseControlSystem.ViewModel;
 using System.Threading;
-using WarehouseControlSystem.Helpers.Containers.StateContainer;
 using WarehouseControlSystem.Helpers.NAV;
 using WarehouseControlSystem.Model.NAV;
 using System.Collections.Generic;
@@ -40,12 +39,5 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
             base.OnAppearing();
             model.LoadAll();
         }
-
-        //protected override void OnDisappearing()
-        //{
-        //    base.OnDisappearing();
-        //    //CancellationTokenSource cts = new CancellationTokenSource();
-        //    //await model.SaveLocationsVisible(cts);
-        //}
     }
 }

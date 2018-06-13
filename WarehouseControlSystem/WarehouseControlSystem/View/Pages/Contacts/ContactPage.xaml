@@ -1,16 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:sc="clr-namespace:WarehouseControlSystem.Helpers.Containers.StateContainer"
              xmlns:pv="clr-namespace:WarehouseControlSystem.Helpers.Containers.ParallaxContainer"
              xmlns:i18n="clr-namespace:WarehouseControlSystem;assembly=WarehouseControlSystem"
              x:Class="WarehouseControlSystem.View.Pages.Contacts.ContactPage">
     <ContentPage.Content>
-        <sc:StateContainer State="{Binding State}">
-            <sc:StateCondition State="Loading">
-                <ActivityIndicator IsRunning="{Binding LoadAnimation}" HeightRequest="50" WidthRequest="50" VerticalOptions="Center" HorizontalOptions="Center"/>
-            </sc:StateCondition>
-            <sc:StateCondition State="Normal">
+        <StackLayout>
+            <StackLayout IsVisible="{Binding IsLoadingState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                <StackLayout VerticalOptions="Center" HorizontalOptions="Center" Orientation="Vertical">
+                    <ActivityIndicator IsRunning="{Binding LoadAnimation}" HeightRequest="50" WidthRequest="50"/>
+                    <Label Text="{Binding LoadingText}" FontSize="Small"/>
+                </StackLayout>
+            </StackLayout>
+            <StackLayout IsVisible="{Binding IsNormalState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                 <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
@@ -37,7 +39,7 @@
                             <ContentView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="White" HeightRequest="500">
                                 <ContentView.Margin>
                                     <OnPlatform x:TypeArguments="Thickness" WinPhone="200,300,200,200" Android="200,300,200,200"/>
-                                </ContentView.Margin> 
+                                </ContentView.Margin>
                                 <Grid Padding="5,15,5,5" x:Name="fieldsgrid">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="50" />
@@ -82,14 +84,34 @@
                         <Button Grid.Column="1" Text="{i18n:Translate ContactPage_CancelButton}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Clicked="ButtonCancelClicked" BorderRadius="0" BackgroundColor="{StaticResource PageHeaderBarBackgoundColor}" TextColor="White"/>
                     </Grid>
                 </Grid>
-            </sc:StateCondition>
-            <sc:StateCondition State="Error">
-                <StackLayout Orientation="Vertical" HorizontalOptions="Center" VerticalOptions="Center">
-                    <Label Text="{i18n:Translate StateContainer_StateError_Header}" FontSize="Large"/>
-                    <Label Text="" x:Name="errortextlabel"/>
-                    <Button Text="{i18n:Translate GlobalButtonOK}" Command="{Binding ErrorCommand}"/>
-                </StackLayout>
-            </sc:StateCondition>
-        </sc:StateContainer>
+            </StackLayout>
+            <StackLayout IsVisible="{Binding IsErrorState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="4*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" Text="{i18n:Translate StateContainer_Error}" 
+                           FontSize="Large" HorizontalOptions="Center"
+                           TextColor="Black"
+                           VerticalOptions="Center"/>
+                    <ScrollView Orientation="Vertical" Grid.Row="1" >
+                        <StackLayout>
+                            <Label Text="{Binding ErrorText}" FontSize="Large" 
+                                   TextColor="Black"
+                                   HorizontalOptions="FillAndExpand" 
+                                   VerticalOptions="FillAndExpand" 
+                                   HorizontalTextAlignment="Center"
+                                   VerticalTextAlignment="Center"/>
+                        </StackLayout>
+                    </ScrollView>
+                    <Button Grid.Row="2" Text="OK" FontSize="Large" 
+                            Command="{Binding ErrorOKCommand}" 
+                            TextColor="Black"
+                            BackgroundColor="White"/>
+                </Grid>
+            </StackLayout>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

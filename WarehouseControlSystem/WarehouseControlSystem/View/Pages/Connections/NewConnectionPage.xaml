@@ -2,32 +2,31 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WarehouseControlSystem.View.Pages.Connections.NewConnectionPage"
-             xmlns:sc="clr-namespace:WarehouseControlSystem.Helpers.Containers.StateContainer"
              xmlns:i18n="clr-namespace:WarehouseControlSystem;assembly=WarehouseControlSystem">
     <ContentPage.ToolbarItems>
         <ToolbarItem  Order="Primary" Priority="10" Command="{Binding TestConnectionCommand}" Text="{i18n:Translate NewConnectionPage_Test}">
             <ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
-                    <OnPlatform.iOS>
-                        <FileImageSource File="ic_action_check_circle.png"/>
-                    </OnPlatform.iOS>
-                    <OnPlatform.Android>
-                        <FileImageSource File="ic_action_check_circle.png"/>
-                    </OnPlatform.Android>
-                    <OnPlatform.WinPhone>
+                    <On Platform="UWP">
                         <FileImageSource File="Assets/Images/ic_action_check_circle.png"/>
-                    </OnPlatform.WinPhone>
+                    </On>
+                    <On Platform="iOS,Android">
+                        <FileImageSource File="ic_action_check_circle.png"/>
+                    </On>
                 </OnPlatform>
             </ToolbarItem.Icon>
         </ToolbarItem>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <sc:StateContainer State="{Binding State}"  OnAfterStateSet="AfterChangeState">
-            <sc:StateCondition State="Loading">
-                <ActivityIndicator IsRunning="True" HeightRequest="50" WidthRequest="50" VerticalOptions="Center" HorizontalOptions="Center"/>
-            </sc:StateCondition>
 
-            <sc:StateCondition State="Normal">
+        <StackLayout>
+            <StackLayout IsVisible="{Binding IsLoadingState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                <StackLayout VerticalOptions="Center" HorizontalOptions="Center" Orientation="Vertical">
+                    <ActivityIndicator IsRunning="{Binding LoadAnimation}" HeightRequest="50" WidthRequest="50"/>
+                    <Label Text="{Binding LoadingText}" FontSize="Small"/>
+                </StackLayout>
+            </StackLayout>
+            <StackLayout IsVisible="{Binding IsNormalState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                 <Grid Padding="10">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
@@ -63,14 +62,14 @@
                             <Entry Text="{Binding Name, Mode=TwoWay}" 
                                    Grid.Row="0" Grid.Column="1" Keyboard="Text" 
                                    HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"  />
-                            
+
                             <Label Text="{i18n:Translate NewConnectionPage_FieldComment}" 
                                    Grid.Row="1" Grid.Column="0" 
                                    HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
                             <Entry Text="{Binding Comment, Mode=TwoWay}" 
                                    Grid.Row="1" Grid.Column="1" Keyboard="Text" 
                                    HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"  />
-                            
+
                             <Label Text="{i18n:Translate NewConnectionPage_FieldHttps}" 
                                    Grid.Row="2" Grid.Column="0" 
                                    HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
@@ -133,7 +132,7 @@
                             <Entry Text="{Binding Domen, Mode=TwoWay}" 
                                    Grid.Row="10" Grid.Column="1" 
                                    Keyboard="Text" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
-                            
+
                             <Label Text="{i18n:Translate NewConnectionPage_FieldCodeunit}" 
                                    Grid.Row="11" Grid.Column="0" 
                                    HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
@@ -147,7 +146,7 @@
                             <Image Grid.Row="12" Grid.Column="1" IsVisible="{Binding Verified}" HorizontalOptions="Start" VerticalOptions="CenterAndExpand">
                                 <Image.Source>
                                     <OnPlatform x:TypeArguments="FileImageSource">
-                                        <On Platform="UWP,WinPhone">
+                                        <On Platform="UWP">
                                             <FileImageSource File="Assets/Images/ic_action_check_circle_dark.png"/>
                                         </On>
                                         <On Platform="iOS,Android">
@@ -162,12 +161,8 @@
                              Command="{Binding CancelChangesCommand}" 
                              BackgroundColor="White" FontAttributes="Bold" Margin="20"/>
                 </Grid>
-            </sc:StateCondition>
-            
-            <sc:StateCondition State="Request">
-            </sc:StateCondition>
-            
-            <sc:StateCondition State="Error">
+            </StackLayout>
+            <StackLayout IsVisible="{Binding IsErrorState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1*"/>
@@ -193,24 +188,7 @@
                             TextColor="Black"
                             BackgroundColor="White"/>
                 </Grid>
-            </sc:StateCondition>
-
-            <sc:StateCondition State="Warning">
-                <StackLayout HorizontalOptions="Center" VerticalOptions="Center" Orientation="Vertical">
-                    <Label x:Name="warninglabel" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Black" FontSize="Large"></Label>
-                </StackLayout>
-            </sc:StateCondition>
-
-            <sc:StateCondition State="NoInternet">
-                <StackLayout>
-                    <Label Text="{i18n:Translate StateContainer_StateNoInternet_Error}" HorizontalOptions="Center" VerticalOptions="Center"/>
-                </StackLayout>
-            </sc:StateCondition>
-
-            <sc:StateCondition State="NoData">
-                <Label Text="" FontSize="Large" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
-            </sc:StateCondition>
-
-        </sc:StateContainer>
+            </StackLayout>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

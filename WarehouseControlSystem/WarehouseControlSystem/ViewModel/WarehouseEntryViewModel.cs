@@ -15,7 +15,6 @@ using System.Collections.Generic;
 using System.Text;
 using WarehouseControlSystem.Resx;
 using WarehouseControlSystem.ViewModel.Base;
-using WarehouseControlSystem.Helpers.Containers.StateContainer;
 using Xamarin.Forms;
 using System.Windows.Input;
 using WarehouseControlSystem.Model;

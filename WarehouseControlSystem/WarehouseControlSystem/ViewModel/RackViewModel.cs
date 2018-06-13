@@ -15,7 +15,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ServiceModel;
 using System.Windows.Input;
-using WarehouseControlSystem.Helpers.Containers.StateContainer;
 using WarehouseControlSystem.Helpers.NAV;
 using WarehouseControlSystem.Model.NAV;
 using WarehouseControlSystem.Resx;
@@ -534,7 +533,7 @@ namespace WarehouseControlSystem.ViewModel
             TapCommand = new Command<object>(Tap);
             FillFields(Rack);
             CreateRackCommand = new Command(CreateRackInNAV);
-            State = State.Normal;
+            State = ModelState.Normal;
             Changed = false;
             GetSearchSelection();
         }
@@ -861,26 +860,26 @@ namespace WarehouseControlSystem.ViewModel
         {
             if (RackOrientation == RackOrientationEnum.Undefined)
             {
-                State = State.Error;
+                State = ModelState.Error;
                 ErrorText = AppResources.RackNewPage_Error_RackOrientationNeeded;
                 return;
             }
 
             if (SelectedBinTemplate == null)
             {
-                State = State.Error;
+                State = ModelState.Error;
                 ErrorText = AppResources.RackNewPage_Error_BinTemplateIsNeeded;
                 return;
             }
 
             if (string.IsNullOrEmpty(No))
             {
-                State = State.Error;
+                State = ModelState.Error;
                 ErrorText = AppResources.RackNewPage_Error_NoNeeded;
                 return;
             }
 
-            State = State.Loading;
+            State = ModelState.Loading;
             LoadAnimation = true;
             Rack newrack = new Rack();
             SaveFields(newrack);
@@ -897,7 +896,7 @@ namespace WarehouseControlSystem.ViewModel
                     }
                     else
                     {
-                        State = State.Error;
+                        State = ModelState.Error;
                         ErrorText = AppResources.RackNewPage_Error_RackAlreadyExist;
                     }
                 }
@@ -945,7 +944,7 @@ namespace WarehouseControlSystem.ViewModel
                 LoadAnimation = false;
                 if (errorsexist)
                 {
-                    State = State.Error;
+                    State = ModelState.Error;
                 }
                 else
                 {
@@ -957,7 +956,7 @@ namespace WarehouseControlSystem.ViewModel
             {
                 System.Diagnostics.Debug.WriteLine(e.Message);
                 LoadAnimation = false;
-                State = State.Error;
+                State = ModelState.Error;
                 ErrorText = e.Message;
             }
         }
@@ -974,8 +973,8 @@ namespace WarehouseControlSystem.ViewModel
             udfvmselected = udfvm;
             if (!string.IsNullOrEmpty(udfvm.Confirm))
             {
-                State = State.Request;
-                RequestMessageText = udfvm.Confirm;
+                State = ModelState.Error;
+                ErrorText = udfvm.Confirm;
             }
             else
             {
@@ -988,7 +987,7 @@ namespace WarehouseControlSystem.ViewModel
         }
         public void RunUserDefineFunctionCancel()
         {
-            State = State.Normal;
+            State = ModelState.Normal;
         }
 
         public async void RunUDF()
@@ -998,15 +997,15 @@ namespace WarehouseControlSystem.ViewModel
                 BinViewModel bvm = BinsViewModel.BinViewModels.Find(x => x.Selected == true);
                 if (bvm is BinViewModel)
                 {
-                    State = State.Loading;
+                    State = ModelState.Loading;
                     LoadAnimation = true;
                     string response = await NAV.RunFunction(udfvmselected.ID, bvm.LocationCode, bvm.ZoneCode, bvm.RackNo, bvm.Code, "", "", 0, ACD.Default);
-                    State = State.Warning;
+                    State = ModelState.Error;
                     InfoText = response;
                 }
                 else
                 {
-                    State = State.Warning;
+                    State = ModelState.Error;
                     InfoText = AppResources.RackCardPage_Error_BinDidNotSelect;
                 }
             }
@@ -1018,7 +1017,7 @@ namespace WarehouseControlSystem.ViewModel
             catch (Exception e)
             {
                 System.Diagnostics.Debug.WriteLine(e.Message);
-                State = State.Error;
+                State = ModelState.Error;
                 ErrorText = e.Message;
             }
             finally

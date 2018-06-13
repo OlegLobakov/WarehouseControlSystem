@@ -32,7 +32,7 @@
                        IsVisible="{Binding IsExist}">
                     <Image.Source>
                         <OnPlatform x:TypeArguments="FileImageSource">
-                            <On Platform="UWP,WinPhone">
+                            <On Platform="UWP">
                                 <FileImageSource File="Assets/Images/ic_action_red_report_problem.png"/>
                             </On>
                             <On Platform="iOS,Android">

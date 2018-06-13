@@ -16,7 +16,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using WarehouseControlSystem.Helpers.Containers.StateContainer;
 using WarehouseControlSystem.ViewModel.Base;
 using System.Collections.ObjectModel;
 using Xamarin.Forms;

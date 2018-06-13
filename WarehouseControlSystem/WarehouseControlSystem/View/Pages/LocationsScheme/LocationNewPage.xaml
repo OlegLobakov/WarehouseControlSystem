@@ -1,18 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:sc="clr-namespace:WarehouseControlSystem.Helpers.Containers.StateContainer"
              x:Class="WarehouseControlSystem.View.Pages.LocationsScheme.LocationNewPage"
              xmlns:i18n="clr-namespace:WarehouseControlSystem;assembly=WarehouseControlSystem">
     <ContentPage.Content>
-        <sc:StateContainer State="{Binding State}">
-            <sc:StateCondition State="Loading">
+        <StackLayout>
+            <StackLayout IsVisible="{Binding IsLoadingState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                 <StackLayout VerticalOptions="Center" HorizontalOptions="Center" Orientation="Vertical">
                     <ActivityIndicator IsRunning="{Binding LoadAnimation}" HeightRequest="50" WidthRequest="50"/>
                     <Label Text="{Binding LoadingText}" FontSize="Small"/>
                 </StackLayout>
-            </sc:StateCondition>
-            <sc:StateCondition State="Normal">
+            </StackLayout>
+            <StackLayout IsVisible="{Binding IsNormalState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
@@ -100,9 +99,8 @@
                                 BackgroundColor="White" FontAttributes="Bold" Margin="20"/>
                     </Grid>
                 </Grid>
-            </sc:StateCondition>
-
-            <sc:StateCondition State="Error">
+            </StackLayout>
+            <StackLayout IsVisible="{Binding IsErrorState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1*"/>
@@ -128,31 +126,7 @@
                             TextColor="Black"
                             BackgroundColor="White"/>
                 </Grid>
-            </sc:StateCondition>
-
-            <sc:StateCondition State="Warning">
-                <StackLayout HorizontalOptions="Center" VerticalOptions="Center" Orientation="Vertical">
-                    <Label x:Name="warninglabel" 
-                           HorizontalOptions="Center" VerticalOptions="Center" 
-                           TextColor="Black" FontSize="Large"></Label>
-                    <Button Text="OK" Command="{Binding WarningOkCommand}"/>
-                </StackLayout>
-            </sc:StateCondition>
-
-            <sc:StateCondition State="NoInternet">
-                <StackLayout>
-                    <Label Text="{i18n:Translate StateContainer_StateNoInternet_Error}" 
-                           HorizontalOptions="Center" VerticalOptions="Center"/>
-                    <Button Text="OK" Command="{Binding NoInternetOKCommand}"/>
-                </StackLayout>
-            </sc:StateCondition>
-
-            <sc:StateCondition State="NoData">
-                <Label Text="" FontSize="Large" VerticalOptions="CenterAndExpand" 
-                       HorizontalOptions="CenterAndExpand"/>
-                <Button Text="OK" Command="{Binding NoDataOKCommand}"/>
-            </sc:StateCondition>
-
-        </sc:StateContainer>
+            </StackLayout>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -21,7 +21,6 @@ using WarehouseControlSystem.View.Pages.ZonesScheme;
 using WarehouseControlSystem.ViewModel;
 using WarehouseControlSystem.Model.NAV;
 using WarehouseControlSystem.View.Pages.Find;
-using WarehouseControlSystem.Helpers.Containers.StateContainer;
 using System;
 using WarehouseControlSystem.Helpers.NAV;
 using System.Net.Http;
@@ -34,26 +33,11 @@ namespace WarehouseControlSystem
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MainPageDetail : ContentPage
     {
-        public State State
-        {
-            get { return state1; }
-            set
-            {
-                if (state1 != value)
-                {
-                    state1 = value;
-                    OnPropertyChanged(nameof(State));
-                }
-            }
-        }
-        State state1;
-
 
         public MainPageDetail()
         {
             InitializeComponent();
             BindingContext = this;
-            State = State.Normal;
         }
 
         private async void LocationsTaped()

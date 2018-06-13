@@ -21,7 +21,6 @@ using WarehouseControlSystem.Model;
 using Xamarin.Forms;
 using System.Collections.ObjectModel;
 using Plugin.Connectivity;
-using WarehouseControlSystem.Helpers.Containers.StateContainer;
 using WarehouseControlSystem.Helpers.NAV;
 using WarehouseControlSystem.Resx;
 using WarehouseControlSystem.View.Pages.RackScheme;
@@ -38,24 +37,23 @@ namespace WarehouseControlSystem.ViewModel
         public ObservableCollection<RackViewModel> RackViewModels { get; set; }
         public ObservableCollection<RackViewModel> SelectedViewModels { get; set; }
 
-        public RunModeEnum RunMode
+        public bool IsEditMode
         {
-            get { return runmode; }
+            get { return iseditmode; }
             set
             {
-                if (runmode != value)
+                if (iseditmode != value)
                 {
-                    runmode = value;
-                    OnPropertyChanged("RunMode");
+                    iseditmode = value;
+                    OnPropertyChanged("IsEditMode");
                 }
             }
-        } RunModeEnum runmode;
+        } bool iseditmode;
 
         public ICommand RackListCommand { protected set; get; }
         public ICommand NewRackCommand { protected set; get; }
         public ICommand EditRackCommand { protected set; get; }
         public ICommand DeleteRackCommand { protected set; get; }
-        public ICommand ParamsCommand { protected set; get; }
 
         public bool IsSelectedList { get { return SelectedViewModels.Count > 0; } }
 
@@ -96,7 +94,6 @@ namespace WarehouseControlSystem.ViewModel
             NewRackCommand = new Command(NewRack);
             EditRackCommand = new Command(EditRack);
             DeleteRackCommand = new Command(DeleteRack);
-            ParamsCommand = new Command(Params);
 
             PlanWidth = zone.PlanWidth;
             PlanHeight = zone.PlanHeight;
@@ -111,7 +108,8 @@ namespace WarehouseControlSystem.ViewModel
                 PlanWidth = Settings.DefaultZonePlanWidth;
             }
 
-            State = State.Normal;
+            State = ModelState.Loading;
+            IsEditMode = false;
 
         }
 
@@ -135,7 +133,7 @@ namespace WarehouseControlSystem.ViewModel
 
             try
             {
-                State = State.Loading;
+                State = ModelState.Loading;
                 List<Rack> Racks = await NAV.GetRackList(Zone.LocationCode, Zone.Code, true, 1, int.MaxValue, ACD.Default);
                 if ((!IsDisposed) && (Racks is List<Rack>))
                 {
@@ -143,7 +141,7 @@ namespace WarehouseControlSystem.ViewModel
                     {
                         RackViewModels.Clear();
                         SelectedViewModels.Clear();
-                        State = State.Normal;
+                        State = ModelState.Normal;
                         foreach (Rack rack in Racks)
                         {
                             RackViewModel rvm = new RackViewModel(Navigation, rack, false);
@@ -155,7 +153,8 @@ namespace WarehouseControlSystem.ViewModel
                     }
                     else
                     {
-                        State = State.NoData;
+                        State = ModelState.Error;
+                        ErrorText = "No Data";
                     }
                 }
             }
@@ -166,7 +165,7 @@ namespace WarehouseControlSystem.ViewModel
             catch (Exception e)
             {
                 System.Diagnostics.Debug.WriteLine(e.Message);
-                State = State.Error;
+                State = ModelState.Error;
                 ErrorText = AppResources.Error_LoadRacks;
             }
 
@@ -181,13 +180,13 @@ namespace WarehouseControlSystem.ViewModel
 
             try
             {
-                State = State.Loading;
+                State = ModelState.Loading;
                 List<Rack> racks = await NAV.GetRackList(Zone.LocationCode, Zone.Code, false, 1, int.MaxValue, ACD.Default);
                 if ((!IsDisposed) && (racks is List<Rack>))
                 {
                     if (racks.Count > 0)
                     {
-                        State = State.Normal;
+                        State = ModelState.Normal;
                         foreach (Rack rack in racks)
                         {
                             RackViewModel rvm = new RackViewModel(Navigation, rack, false);
@@ -196,7 +195,8 @@ namespace WarehouseControlSystem.ViewModel
                     }
                     else
                     {
-                        State = State.NoData;
+                        State = ModelState.Error;
+                        ErrorText = "No Data";
                     }
                 }
             }
@@ -207,7 +207,7 @@ namespace WarehouseControlSystem.ViewModel
             catch (Exception e)
             {
                 System.Diagnostics.Debug.WriteLine(e.Message);
-                State = State.Error;
+                State = ModelState.Error;
                 ErrorText = AppResources.Error_LoadRacksList;
             }
 
@@ -246,7 +246,7 @@ namespace WarehouseControlSystem.ViewModel
             catch (Exception e)
             {
                 System.Diagnostics.Debug.WriteLine(e.Message);
-                State = Helpers.Containers.StateContainer.State.Error;
+                State = ModelState.Error;
                 ErrorText = e.ToString();
             }
 
@@ -254,7 +254,7 @@ namespace WarehouseControlSystem.ViewModel
 
         private async void Rvm_OnTap(RackViewModel rvm)
         {
-            if (RunMode == RunModeEnum.View)
+            if (!IsEditMode)
             {
                 await Navigation.PushAsync(new RackCardPage(rvm));
             }
@@ -280,7 +280,7 @@ namespace WarehouseControlSystem.ViewModel
                 return;
             }
 
-            udsvm.State = State.Loading;
+            udsvm.State = ModelState.Loading;
             LoadAnimation = true;
             try
             {
@@ -322,12 +322,12 @@ namespace WarehouseControlSystem.ViewModel
             {
                 System.Diagnostics.Debug.WriteLine(e.Message);
             }
-            udsvm.State = State.Normal;
+            udsvm.State = ModelState.Normal;
 
             LoadAnimation = false;
         }
 
-        public void ReDesign()
+        public override void ReDesign()
         {
             double widthstep = (ScreenWidth / PlanWidth);
             double heightstep = (ScreenHeight / PlanHeight);
@@ -383,12 +383,6 @@ namespace WarehouseControlSystem.ViewModel
         public void DeleteRack(object obj)
         {
             System.Diagnostics.Debug.WriteLine(obj.ToString());
-        }
-
-        public async void Params()
-        {
-            RacksFieldParamsPage rfpp = new RacksFieldParamsPage(this);
-            await Navigation.PushAsync(rfpp);
         }
 
         public async void SaveZoneParams()

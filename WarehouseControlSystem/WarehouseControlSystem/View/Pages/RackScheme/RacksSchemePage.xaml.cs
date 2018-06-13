@@ -148,9 +148,17 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
         double bottomborder = double.MinValue;
 
         double oldeTotalX, oldeTotalY = 0;
+
+        private void abslayout_SizeChanged(object sender, EventArgs e)
+        {
+            AbsoluteLayout al = (AbsoluteLayout)sender;
+            model.ScreenWidth = al.Width;
+            model.ScreenHeight = al.Height;
+        }
+
         private async void OnPaned(object sender, PanUpdatedEventArgs e)
         {
-            if (model.RunMode == RunModeEnum.View)
+            if (!model.IsEditMode)
             {
                 return;
             }
@@ -172,8 +180,8 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
                         SelectedViews = Views.FindAll(x => x.Model.Selected == true);
                         MovingAction = MovingActionTypeEnum.Pan;
 
-                        widthstep = (abslayout.Width / model.PlanWidth);
-                        heightstep = (abslayout.Height / model.PlanHeight);
+                        widthstep = model.ScreenWidth / model.PlanWidth;
+                        heightstep = model.ScreenHeight / model.PlanHeight;
 
                         leftborder = double.MaxValue;
                         topborder = double.MaxValue;
@@ -206,9 +214,9 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
                             dx = -leftborder;
                         }
 
-                        if (dx + rightborder > abslayout.Width)
+                        if (dx + rightborder > model.ScreenWidth)
                         {
-                            dx = abslayout.Width - rightborder;
+                            dx = model.ScreenWidth - rightborder;
                         }
 
                         if (dy + topborder < 0)
@@ -216,9 +224,9 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
                             dy = -topborder;
                         }
 
-                        if (dy + bottomborder > abslayout.Height)
+                        if (dy + bottomborder > model.ScreenHeight)
                         {
-                            dy = abslayout.Height - bottomborder;
+                            dy = model.ScreenHeight - bottomborder;
                         }
 
                         foreach (RackSchemeView lv in SelectedViews)
@@ -268,30 +276,23 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
 
         private void ToolbarItem_Clicked(object sender, EventArgs e)
         {
-            if (model.RunMode == RunModeEnum.View)
+            if (model.IsEditMode)
             {
-                abslayout.BackgroundColor = Color.WhiteSmoke;
-                model.RunMode = RunModeEnum.Edit;
+                model.IsEditMode = false;
+                abslayout.BackgroundColor = Color.White;
+                model.SaveZoneParams();
             }
             else
             {
                 model.UnSelectAll();
-                abslayout.BackgroundColor = Color.White;
-                model.RunMode = RunModeEnum.View;
+                abslayout.BackgroundColor = Color.LightGray;
+                model.IsEditMode = true;
             }
         }
 
         private void ToolbarItem_UDS(object sender, EventArgs e)
         {
             model.IsVisibleUDS = !model.IsVisibleUDS;
-            //object obj = hlv.ItemsSource;
-
-            //DataTemplate dt = hlv.ItemTemplate;
-            
-            //if (obj is ObservableCollection<UserDefinedSelectionViewModel>)
-            //{
-            //    model.IsVisibleUDS = !model.IsVisibleUDS;
-            //}
         }
 
         private async void ToolbarItem_Search(object sender, EventArgs e)

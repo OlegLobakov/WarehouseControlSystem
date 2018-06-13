@@ -2,7 +2,6 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WarehouseControlSystem.View.Pages.ZonesScheme.ZoneListPage"
-             xmlns:sc="clr-namespace:WarehouseControlSystem.Helpers.Containers.StateContainer"
              xmlns:i18n="clr-namespace:WarehouseControlSystem;assembly=WarehouseControlSystem"
              Title="{Binding Title}"
              x:Name="ThisPage">
@@ -21,11 +20,11 @@
         </ToolbarItem>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <sc:StateContainer State="{Binding State}">
-            <sc:StateCondition State="Loading">
+        <StackLayout>
+            <StackLayout IsVisible="{Binding IsLoadingState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                 <ActivityIndicator IsRunning="{Binding LoadAnimation}" HeightRequest="50" WidthRequest="50" VerticalOptions="Center" HorizontalOptions="Center"/>
-            </sc:StateCondition>
-            <sc:StateCondition State="Normal">
+            </StackLayout>
+            <StackLayout IsVisible="{Binding IsNormalState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -64,7 +63,7 @@
                                 Margin="10,0,20,0"
                                 HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                                 HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
-           
+
                     </Grid>
                     <ListView Grid.Row="1" RowHeight="70" ItemsSource="{Binding ZoneViewModels}" SelectedItem="{Binding SelectedZoneViewModel,Mode=TwoWay}">
                         <ListView.ItemTemplate>
@@ -120,9 +119,8 @@
                         </ListView.ItemTemplate>
                     </ListView>
                 </Grid>
-            </sc:StateCondition>
-
-            <sc:StateCondition State="Error">
+            </StackLayout>
+            <StackLayout IsVisible="{Binding IsErrorState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1*"/>
@@ -148,22 +146,7 @@
                             TextColor="Black"
                             BackgroundColor="White"/>
                 </Grid>
-            </sc:StateCondition>
-
-            <sc:StateCondition State="Warning">
-
-            </sc:StateCondition>
-
-            <sc:StateCondition State="NoInternet">
-                <StackLayout>
-                    <Label Text="{i18n:Translate StateContainer_StateNoInternet_Error}" HorizontalOptions="Center" VerticalOptions="Center"/>
-                </StackLayout>
-            </sc:StateCondition>
-
-            <sc:StateCondition State="NoData">
-                <Label Text="" FontSize="Large" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
-            </sc:StateCondition>
-
-        </sc:StateContainer>
+            </StackLayout>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -2266,6 +2266,15 @@ namespace WarehouseControlSystem.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to White.
+        /// </summary>
+        internal static string NewZonePage_Color_White {
+            get {
+                return ResourceManager.GetString("NewZonePage_Color_White", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create.
         /// </summary>
         internal static string NewZonePage_CreateButton {

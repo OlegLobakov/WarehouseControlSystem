@@ -74,28 +74,17 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
         //    return false;
         //}
 
-        protected override void OnSizeAllocated(double width, double height)
-        {
-            base.OnSizeAllocated(width, height);
-            model.ScreenWidth = width - 10;
-            model.ScreenHeight = height - 10;
-        }
-
         private void Rebuild(LocationsViewModel lmv)
         {
             SelectedViews.Clear();
-            foreach (LocationView lv in Views)
-            {
-                abslayout.Children.Remove(lv);
-            }
             Views.Clear();
+            abslayout.Children.Clear();
 
             foreach (LocationViewModel lvm1 in model.LocationViewModels)
             {
                 LocationView lv = new LocationView(lvm1);
                 AbsoluteLayout.SetLayoutBounds(lv, new Rectangle(lvm1.Left, lvm1.Top, lvm1.Width, lvm1.Height));
                 abslayout.Children.Add(lv);
-                abslayout.RaiseChild(lv);
                 Views.Add(lv);
                 lvm1.LoadZones();
             }
@@ -117,10 +106,17 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
         double rightborder = double.MinValue;
         double bottomborder = double.MinValue;
 
+        private void abslayout_SizeChanged(object sender, EventArgs e)
+        {
+            AbsoluteLayout al = (AbsoluteLayout)sender;
+            model.ScreenWidth = al.Width;
+            model.ScreenHeight = al.Height;
+        }
+
         double oldeTotalX,oldeTotalY = 0;
         private async void OnPaned(object sender, PanUpdatedEventArgs e)
         {
-            if (model.RunMode == RunModeEnum.View)
+            if (!model.IsEditMode)
             {
                 return;
             }
@@ -142,8 +138,8 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
                         SelectedViews = Views.FindAll(x => x.model.Selected == true);
                         MovingAction = MovingActionTypeEnum.Pan;
 
-                        widthstep = (abslayout.Width / model.PlanWidth);
-                        heightstep = (abslayout.Height / model.PlanHeight);
+                        widthstep = model.ScreenWidth / model.PlanWidth;
+                        heightstep = model.ScreenHeight / model.PlanHeight;
                         leftborder = double.MaxValue;
                         topborder = double.MaxValue;
                         rightborder = double.MinValue;
@@ -172,9 +168,9 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
                             dx = -leftborder;
                         }
 
-                        if (dx + rightborder > abslayout.Width)
+                        if (dx + rightborder > model.ScreenWidth)
                         {
-                            dx = abslayout.Width - rightborder;
+                            dx = model.ScreenWidth - rightborder;
                         }
 
                         if (dy + topborder < 0)
@@ -182,9 +178,9 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
                             dy = -topborder;
                         }
 
-                        if (dy + bottomborder > abslayout.Height)
+                        if (dy + bottomborder > (model.ScreenHeight))
                         {
-                            dy = abslayout.Height - bottomborder;
+                            dy = model.ScreenHeight - bottomborder;
                         }
 
                         foreach (LocationView lv in SelectedViews)
@@ -253,15 +249,16 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
         {
             GridTapped(null, new EventArgs());
 
-            if (model.RunMode == RunModeEnum.View)
+            if (model.IsEditMode)
             {
-                abslayout.BackgroundColor = Color.FromHex("#336699");
-                model.RunMode = RunModeEnum.Edit;
+                abslayout.BackgroundColor = Color.White;
+                model.IsEditMode = false;
+                model.SaveSchemeParams();
             }
             else
             {
-                abslayout.BackgroundColor = Color.White;
-                model.RunMode = RunModeEnum.View;
+                abslayout.BackgroundColor = Color.LightGray;
+                model.IsEditMode = true;
             }
         }
     }

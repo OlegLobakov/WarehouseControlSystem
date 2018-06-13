@@ -55,6 +55,14 @@ namespace WarehouseControlSystem
         public static void Init()
         {
             LoadParameters();
+
+            Colors.Add(new ColorPick
+            {
+                HexColor = "#e5e5e5",
+                Name = AppResources.NewZonePage_Color_White,
+                Color = Color.FromHex("#e5e5e5")
+            });
+
             Colors.Add(new ColorPick
             {
                 HexColor = "#4775a3",

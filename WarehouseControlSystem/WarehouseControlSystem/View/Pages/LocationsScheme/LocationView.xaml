@@ -27,32 +27,24 @@
                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
                        HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
                        TextColor="White" Margin="10,5,0,0"/>
-
-                <!--<Label Grid.Row="0" Text="{Binding ZoneQuantity}"    
-                       FontSize="Medium"   
-                       HorizontalOptions="EndAndExpand"
-                       TextColor="White" Margin="10"/>-->
                 
                 <Label Grid.Row="1" x:Name="namelabel"    Text="{Binding Name}"     
-                       FontSize="Medium"   
+                       FontSize="Default"   
                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
                        HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
                        TextColor="White" Margin="10,0,0,0"/>
 
-                <!--<Label Grid.Row="1" Text="{Binding BinQuantity}"    
-                       FontSize="Medium"   
-                       HorizontalOptions="EndAndExpand"
-                       TextColor="White" Margin="10"/>-->
                 <vc:InnerSubSchemeView                         
                         Grid.Row="3" Margin="10,5,10,5"
                         HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"  
                         PlanWidth="{Binding PlanWidth}"
                         PlanHeight="{Binding PlanHeight}"
                         SubSchemeElements="{Binding SubSchemeElements}" 
-                        IsVisible="{Binding ZonesIsLoaded}"/>
+                        IsVisible="{Binding ZonesIsLoaded}"
+                        SubSchemeBackgroundColor="{Binding Color}"/>
 
                 <Label Grid.Row="2" Text="{Binding Address}"    
-                       FontSize="Medium"       
+                       FontSize="Default"       
                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
                        HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
                        TextColor="White" Margin="10,0,0,0"/>

@@ -1,8 +1,12 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:skia="clr-namespace:SkiaSharp.Views.Forms;assembly=SkiaSharp.Views.Forms"
              x:Class="WarehouseControlSystem.View.Content.InnerSubSchemeView">
     <ContentView.Content>
+        <StackLayout Padding="1" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <Grid x:Name="maingrid" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" ColumnSpacing="0" RowSpacing="0">
+
+            </Grid>
+        </StackLayout>
     </ContentView.Content>
 </ContentView>

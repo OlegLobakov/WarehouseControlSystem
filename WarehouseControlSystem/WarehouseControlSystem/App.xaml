@@ -6,6 +6,7 @@
         <ResourceDictionary>
             <Color x:Key="PageHeaderBarBackgoundColor">#336699</Color>
             <Color x:Key="WellcodeButtonBackgoundColor">#6d6d6d</Color>
+            <Color x:Key="WhiteColor">#e5e5e5</Color>
         </ResourceDictionary>
 	</Application.Resources>
 </Application>
