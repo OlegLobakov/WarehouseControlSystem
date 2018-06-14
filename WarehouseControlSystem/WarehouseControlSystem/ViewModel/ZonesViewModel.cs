@@ -42,6 +42,10 @@ namespace WarehouseControlSystem.ViewModel
                 if (iseditmode != value)
                 {
                     iseditmode = value;
+                    foreach (ZoneViewModel zvm in ZoneViewModels)
+                    {
+                        zvm.IsEditMode = value;
+                    }
                     OnPropertyChanged("IsEditMode");
                 }
             }
@@ -79,7 +83,7 @@ namespace WarehouseControlSystem.ViewModel
             {
                 PlanHeight = 60;
             }
-            State = ModelState.Loading;
+            State = ModelState.Undefined;
         }
 
         public void ClearAll()
@@ -141,21 +145,11 @@ namespace WarehouseControlSystem.ViewModel
                             ZoneViewModel zvm = new ZoneViewModel(Navigation, zone);
                             zvm.OnTap += Zvm_OnTap;
                             ZoneViewModels.Add(zvm);
-
-                            if (zone.Left + zone.Width > MinPlanWidth)
-                            {
-                                MinPlanWidth = zone.Left + zone.Width;
-                            }
-
-                            if (zone.Top + zone.Height > MinPlanHeight)
-                            {
-                                MinPlanHeight = zone.Top + zone.Height;
-                            }
                         }
                         
                         State = ModelState.Normal;
                         UpdateMinSizes();
-                        ReDesign();
+                        Rebuild(true);
                     }
                     else
                     {
@@ -259,7 +253,7 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
-        public override void ReDesign()
+        public override void Rebuild(bool recreate)
         {
             double widthstep = (ScreenWidth / PlanWidth);
             double heightstep = (ScreenHeight / PlanHeight);
@@ -270,8 +264,18 @@ namespace WarehouseControlSystem.ViewModel
                 zvm.Width = zvm.Zone.Width * widthstep;
                 zvm.Height = zvm.Zone.Height * heightstep;
             }
-            MessagingCenter.Send(this, "Rebuild");
+
+            if (recreate)
+            {
+                MessagingCenter.Send(this, "Rebuild");
+            }
+            else
+            {
+                MessagingCenter.Send(this, "Reshape");
+            }
         }
+
+
 
         public void UnSelectAll()
         {
@@ -364,21 +368,27 @@ namespace WarehouseControlSystem.ViewModel
                     ErrorText = e.Message;
                 }
             }
+            UpdateMinSizes();
         }
 
         public void UpdateMinSizes()
         {
+            int newminplanwidth = 0; 
+            int newminplanheight = 0;
             foreach (ZoneViewModel zvm in ZoneViewModels)
             {
-                if (zvm.Zone.Left + zvm.Zone.Width > 10)
+                if (zvm.Zone.Left + zvm.Zone.Width > newminplanwidth)
                 {
-                    MinPlanWidth = zvm.Zone.Left + zvm.Zone.Width;
+                    newminplanwidth = zvm.Zone.Left + zvm.Zone.Width;
                 }
-                if (zvm.Zone.Top + zvm.Zone.Height > 5)
+
+                if (zvm.Zone.Top + zvm.Zone.Height > newminplanheight)
                 {
-                    MinPlanHeight = zvm.Zone.Top + zvm.Zone.Height;
+                    newminplanheight = zvm.Zone.Top + zvm.Zone.Height;
                 }
             }
+            MinPlanWidth = newminplanwidth;
+            MinPlanHeight = newminplanheight;
         }
 
         public override void DisposeModel()

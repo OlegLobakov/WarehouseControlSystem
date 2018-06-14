@@ -20,7 +20,7 @@ using WarehouseControlSystem.Model;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using WarehouseControlSystem.Resx;
-using WarehouseControlSystem.Pages;
+using WarehouseControlSystem.ViewModel.Base;
 using WarehouseControlSystem.Helpers.NAV;
 using WarehouseControlSystem.Model.NAV;
 using PCLStorage;
@@ -56,11 +56,13 @@ namespace WarehouseControlSystem
         {
             LoadParameters();
 
+            Color whitecolor = (Color)Application.Current.Resources["SchemeBlockWhiteColor"];
+
             Colors.Add(new ColorPick
             {
-                HexColor = "#e5e5e5",
+                HexColor = BaseViewModel.ColorToHex(whitecolor),
                 Name = AppResources.NewZonePage_Color_White,
-                Color = Color.FromHex("#e5e5e5")
+                Color = whitecolor
             });
 
             Colors.Add(new ColorPick
@@ -69,30 +71,35 @@ namespace WarehouseControlSystem
                 Name = AppResources.NewZonePage_Color_Blue,
                 Color = Color.FromHex("#4775a3")
             });
+
             Colors.Add(new ColorPick
             {
                 HexColor = "#84a3c1",
                 Name = AppResources.NewZonePage_Color_BlueLight,
                 Color = Color.FromHex("#84a3c1")
             });
+
             Colors.Add(new ColorPick
             {
                 HexColor = "#4d7326",
                 Name = AppResources.NewZonePage_Color_Green,
                 Color = Color.FromHex("#4d7326")
             });
+
             Colors.Add(new ColorPick
             {
                 HexColor = "#73ac39",
                 Name = AppResources.NewZonePage_Color_Green_Light,
                 Color = Color.FromHex("#73ac39")
             });
+
             Colors.Add(new ColorPick
             {
                 HexColor = "#b41848",
                 Name = AppResources.NewZonePage_Color_Red,
                 Color = Color.FromHex("#b41848")
             });
+
             Colors.Add(new ColorPick
             {
                 HexColor = "#c3466c",
@@ -112,6 +119,7 @@ namespace WarehouseControlSystem
                 Name = AppResources.Colors_Gray2,
                 Color = Color.FromHex("#737373")
             });
+
             Colors.Add(new ColorPick
             {
                 HexColor = "#666666",

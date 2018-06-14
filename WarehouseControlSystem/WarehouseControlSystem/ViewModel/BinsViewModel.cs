@@ -357,6 +357,7 @@ namespace WarehouseControlSystem.ViewModel
             CombineBinsCommand = new Command(CombineBins);
             DeleteBinsCommand = new Command(DeleteBins);
             ShowBinOperationCommand = new Command(ShowBinOperations);
+            State = ModelState.Undefined;
         }
 
         public void RecreateBins(int prevdepth, int newdepth, int prevlevels, int newlevels, int prevsections, int newsections)

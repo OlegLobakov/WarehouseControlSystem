@@ -44,9 +44,9 @@ namespace WarehouseControlSystem.ViewModel
 
         public SearchViewModel(INavigation navigation) : base(navigation)
         {
-            State = ModelState.Normal;
             ClearCommand = new Command(Clear);
             UpdateInformation();
+            State = ModelState.Undefined;
         }
 
         public void UpdateInformation()
@@ -83,19 +83,20 @@ namespace WarehouseControlSystem.ViewModel
                 ErrorText = AppResources.FindPage_RequestLengthError;
                 return;
             }
+
             try
             {
                 State = ModelState.Loading;
                 LoadingText = AppResources.FindPage_Search;
                 Global.SearchRequest = request;
                 Global.SearchResponses = await NAV.Search(Global.SearchLocationCode, request, ACD.Default);
-                MessagingCenter.Send(this, "Search");
                 LoadAnimation = true;
                 await Navigation.PopAsync();
             }
             catch (OperationCanceledException e)
             {
                 System.Diagnostics.Debug.WriteLine(e.Message);
+                State = ModelState.Error;
                 ErrorText = e.Message;
             }
             catch (Exception e)
@@ -103,10 +104,6 @@ namespace WarehouseControlSystem.ViewModel
                 System.Diagnostics.Debug.WriteLine(e.Message);
                 State = ModelState.Error;
                 ErrorText = e.Message;
-            }
-            finally
-            {
-                LoadAnimation = false;
             }
         }
 

@@ -23,7 +23,15 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
     public partial class RackView : ContentView
     {
         Label HeaderLabel;
-        private RackViewModel model;
+
+        public RackViewModel Model
+        {
+            get
+            {
+                return model;
+            }
+        }
+        RackViewModel model;
 
         public RackView()
         {
@@ -36,11 +44,11 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
 
         private void Update(BinsViewModel bvm)
         {
-            Update(model);
+            Update(Model);
         }
 
         public void Update(RackViewModel rvm)
-        {            
+        {
             model = rvm;
             BindingContext = model;
 
@@ -48,13 +56,13 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             grid.RowDefinitions.Clear();
             grid.ColumnDefinitions.Clear();
             grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(25, GridUnitType.Absolute) });
-            for (int i = 1; i <= model.Levels; i++)
+            for (int i = 1; i <= Model.Levels; i++)
             {
                 grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
             }
 
             grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(40, GridUnitType.Absolute) });
-            for (int i = 1; i <= model.Sections; i++)
+            for (int i = 1; i <= Model.Sections; i++)
             {
                 grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(120, GridUnitType.Absolute) });
             }

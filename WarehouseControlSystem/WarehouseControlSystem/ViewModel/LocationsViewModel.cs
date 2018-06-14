@@ -69,7 +69,7 @@ namespace WarehouseControlSystem.ViewModel
             {
                 Title = Global.CurrentConnection.Name + " | " + AppResources.LocationsSchemePage_Title;
             }
-            State = ModelState.Loading;
+            State = ModelState.Undefined;
             IsEditMode = false;
         }
 
@@ -90,12 +90,11 @@ namespace WarehouseControlSystem.ViewModel
                 return;
             }
 
-
             try
             {
                 State = ModelState.Loading;
-                PlanWidth = await NAV.GetPlanWidth(ACD.Default);
-                PlanHeight = await NAV.GetPlanHeight(ACD.Default);
+                PlanWidth = await NAV.GetPlanWidth(ACD.Default).ConfigureAwait(true);
+                PlanHeight = await NAV.GetPlanHeight(ACD.Default).ConfigureAwait(true);
                 if (PlanWidth == 0)
                 {
                     PlanWidth = 20;
@@ -148,18 +147,10 @@ namespace WarehouseControlSystem.ViewModel
                             LocationViewModel lvm = new LocationViewModel(Navigation, location);
                             lvm.OnTap += Lvm_OnTap;
                             LocationViewModels.Add(lvm);
-
-                            if (location.Left + location.Width > MinPlanWidth)
-                            {
-                                MinPlanWidth = location.Left + location.Width;
-                            }
-                            if (location.Top + location.Height > MinPlanHeight)
-                            {
-                                MinPlanHeight = location.Top + location.Height;
-                            }
                         }
                         State = ModelState.Normal;
-                        ReDesign();
+                        UpdateMinSizes();
+                        Rebuild(true);
                     }
                     else
                     {
@@ -232,7 +223,7 @@ namespace WarehouseControlSystem.ViewModel
         }
         
 
-        public override void ReDesign()
+        public override void Rebuild(bool recreate)
         {
             double widthstep = (ScreenWidth / PlanWidth);
             double heightstep = (ScreenHeight / PlanHeight);
@@ -243,7 +234,14 @@ namespace WarehouseControlSystem.ViewModel
                 lvm.Width = lvm.Location.Width * widthstep;
                 lvm.Height = lvm.Location.Height * heightstep;
             }
-            MessagingCenter.Send(this, "Rebuild");
+            if (recreate)
+            {
+                MessagingCenter.Send(this, "Rebuild");
+            }
+            else
+            {
+                MessagingCenter.Send(this, "Reshape");
+            }
         }
 
         private async void Lvm_OnTap(LocationViewModel tappedlvm)
@@ -386,6 +384,7 @@ namespace WarehouseControlSystem.ViewModel
                     ErrorText = e.Message;
                 }
             }
+            UpdateMinSizes();
         }
 
         public async void SaveSchemeParams()
@@ -407,29 +406,24 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
-        public Task<string> SaveLocationsVisible(CancellationTokenSource cts)
+        public void UpdateMinSizes()
         {
-            var tcs = new TaskCompletionSource<string>();
-            string rv = "";
-            Task.Run(async () =>
+            int newminplanwidth = 0;
+            int newminplanheight = 0;
+
+            foreach (LocationViewModel lvm in LocationViewModels)
             {
-                try
+                if (lvm.Location.Left + lvm.Location.Width > newminplanwidth)
                 {
-                    List<LocationViewModel> list = LocationViewModels.ToList().FindAll(x => x.Changed == true);
-                    foreach (LocationViewModel lvm in list)
-                    {
-                        Location location = new Location();
-                        lvm.SaveFields(location);
-                        await NAV.SetLocationVisible(location, cts).ConfigureAwait(false);
-                    }
-                    tcs.SetResult(rv);
+                    newminplanwidth = lvm.Location.Left + lvm.Location.Width;
                 }
-                catch
+                if (lvm.Location.Top + lvm.Location.Height > newminplanheight)
                 {
-                    tcs.SetResult(rv);
+                    newminplanheight = lvm.Location.Top + lvm.Location.Height;
                 }
-            });
-            return tcs.Task;
+            }
+            MinPlanWidth = newminplanwidth;
+            MinPlanHeight = newminplanheight;
         }
 
         public override void DisposeModel()

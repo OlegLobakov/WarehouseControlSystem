@@ -6,6 +6,7 @@ namespace WarehouseControlSystem.ViewModel.Base
 {
     public enum ModelState
     {
+        Undefined,
         Loading,
         Normal,
         Error

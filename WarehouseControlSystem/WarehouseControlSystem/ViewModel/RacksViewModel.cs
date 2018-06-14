@@ -108,7 +108,7 @@ namespace WarehouseControlSystem.ViewModel
                 PlanWidth = Settings.DefaultZonePlanWidth;
             }
 
-            State = ModelState.Loading;
+            State = ModelState.Undefined;
             IsEditMode = false;
 
         }
@@ -148,7 +148,7 @@ namespace WarehouseControlSystem.ViewModel
                             rvm.OnTap += Rvm_OnTap;
                             RackViewModels.Add(rvm);
                         }
-                        ReDesign();
+                        Rebuild(true);
                         UpdateMinSizes();
                     }
                     else
@@ -327,7 +327,7 @@ namespace WarehouseControlSystem.ViewModel
             LoadAnimation = false;
         }
 
-        public override void ReDesign()
+        public override void Rebuild(bool recreate)
         {
             double widthstep = (ScreenWidth / PlanWidth);
             double heightstep = (ScreenHeight / PlanHeight);
@@ -338,7 +338,15 @@ namespace WarehouseControlSystem.ViewModel
                 rvm.Width = rvm.Rack.Width * widthstep;
                 rvm.Height = rvm.Rack.Height * heightstep;
             }
-            MessagingCenter.Send(this, "Rebuild");
+
+            if (recreate)
+            {
+                MessagingCenter.Send(this, "Rebuild");
+            }
+            else
+            {
+                MessagingCenter.Send(this, "Reshape");
+            }
         }
 
         public void UnSelectAll()
@@ -411,45 +419,23 @@ namespace WarehouseControlSystem.ViewModel
 
         }
 
-        public Task<string> SaveRacksVisible()
-        {
-            CancellationTokenSource cts = new CancellationTokenSource();
-            var tcs = new TaskCompletionSource<string>();
-            string rv = "";
-            Task.Run(async () =>
-            {
-                try
-                {
-                    List<RackViewModel> list = RackViewModels.ToList().FindAll(x => x.Changed == true);
-                    foreach (RackViewModel rvm in list)
-                    {
-                        Rack rack = new Rack();
-                        rvm.SaveFields(rack);
-                        await NAV.SetRackVisible(rack, cts).ConfigureAwait(false);
-                    }
-                    tcs.SetResult(rv);
-                }
-                catch
-                {
-                    tcs.SetResult(rv);
-                }
-            });
-            return tcs.Task;
-        }
-
         public void UpdateMinSizes()
         {
+            int newminplanwidth = 0;
+            int newminplanheight = 0;
             foreach (RackViewModel rvm in RackViewModels)
             {
-                if ((rvm.Rack.Left + rvm.Rack.Width) > MinPlanWidth)
+                if ((rvm.Rack.Left + rvm.Rack.Width) > newminplanwidth)
                 {
-                    MinPlanWidth = rvm.Rack.Left + rvm.Rack.Width;
+                    newminplanwidth = rvm.Rack.Left + rvm.Rack.Width;
                 }
-                if ((rvm.Rack.Top + rvm.Rack.Height) > MinPlanHeight)
+                if ((rvm.Rack.Top + rvm.Rack.Height) > newminplanheight)
                 {
-                    MinPlanHeight = rvm.Rack.Top + rvm.Rack.Height;
+                    newminplanheight = rvm.Rack.Top + rvm.Rack.Height;
                 }
             }
+            MinPlanWidth = newminplanwidth;
+            MinPlanHeight = newminplanheight;
         }
 
         public override void DisposeModel()

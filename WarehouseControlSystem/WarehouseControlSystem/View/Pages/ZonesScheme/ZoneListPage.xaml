@@ -38,6 +38,7 @@
                             <ColumnDefinition Width="1*"/>
                             <ColumnDefinition Width="1*"/>
                             <ColumnDefinition Width="1*"/>
+                            
                         </Grid.ColumnDefinitions>
                         <Label  Grid.Column="0" Text="{i18n:Translate ZoneListPage_ColumnCode}"
                                 Margin="10,0,0,0"

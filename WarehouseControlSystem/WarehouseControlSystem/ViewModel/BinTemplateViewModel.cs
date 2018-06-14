@@ -196,7 +196,7 @@ namespace WarehouseControlSystem.ViewModel
             BinTypes = new List<BinType>();
             Locations = new List<Location>();
             Zones = new List<Zone>();
-            State = ModelState.Normal;
+            State = ModelState.Undefined;
         }
 
         public void FillFields(BinTemplate bintemplate)

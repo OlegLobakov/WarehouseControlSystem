@@ -52,7 +52,7 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
 
             Title = AppResources.ZoneSchemePage_Title +" "+ Global.SearchLocationCode + " | " + AppResources.RackSchemePage_Title + " - " + zone.Description;
             MessagingCenter.Subscribe<RacksViewModel>(this, "Rebuild", Rebuild);
-            MessagingCenter.Subscribe<SearchViewModel>(this, "Search", OnSearch);
+            MessagingCenter.Subscribe<RacksViewModel>(this, "Reshape", Reshape);
             MessagingCenter.Subscribe<RacksViewModel>(this, "UDSRunIsDone", UDSRunIsDone);
             MessagingCenter.Subscribe<RacksViewModel>(this, "UDSListIsLoaded", UDSListIsLoaded);
         }
@@ -61,16 +61,20 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            model.Load();
-            model.LoadUDS();
             PanGesture.PanUpdated += OnPaned;
             TapGesture.Tapped += GridTapped;
+            model.Load();
+            model.LoadUDS();
         }
 
         protected override void OnDisappearing()
-        {     
+        {
+            model.State = ViewModel.Base.ModelState.Undefined;
             PanGesture.PanUpdated -= OnPaned;
-            TapGesture.Tapped -= GridTapped;     
+            TapGesture.Tapped -= GridTapped;
+            SelectedViews.Clear();
+            abslayout.Children.Clear();
+            Views.Clear();
             base.OnDisappearing();
         }
 
@@ -78,29 +82,32 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
         {
             model.DisposeModel();
             MessagingCenter.Unsubscribe<RacksViewModel>(this, "Rebuild");
-            MessagingCenter.Unsubscribe<SearchViewModel>(this, "Search");
+            MessagingCenter.Unsubscribe<RacksViewModel>(this, "Reshape");
             MessagingCenter.Unsubscribe<RacksViewModel>(this, "UDSRunIsDone");
             MessagingCenter.Unsubscribe<RacksViewModel>(this, "UDSListIsLoaded");
             base.OnBackButtonPressed();
             return false;
         }
 
-
-        protected override void OnSizeAllocated(double width, double height)
+        private void StackLayout_SizeChanged(object sender, EventArgs e)
         {
-            base.OnSizeAllocated(width, height);
-            model.ScreenWidth = width - 10;
-            model.ScreenHeight = height - 10;
-            model.UDSPanelHeight = (int)Math.Round(height / 6);
+            StackLayout al = (StackLayout)sender;
+            model.ScreenWidth = al.Width;
+            model.ScreenHeight = al.Height;
+            model.UDSPanelHeight = (int)Math.Round(al.Height / 6);
+        }
+
+        private void abslayout_SizeChanged(object sender, EventArgs e)
+        {
+            AbsoluteLayout al = (AbsoluteLayout)sender;
+            model.ScreenWidth = al.Width;
+            model.ScreenHeight = al.Height;
         }
 
         private void Rebuild(RacksViewModel rsmv)
         {
             SelectedViews.Clear();
-            foreach (RackSchemeView lv in Views)
-            {
-                abslayout.Children.Remove(lv);
-            }
+            abslayout.Children.Clear();
             Views.Clear();
             foreach (RackViewModel rvm in model.RackViewModels)
             {
@@ -109,6 +116,14 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
                     new Rectangle(rvm.Left, rvm.Top, rvm.Width, rvm.Height));
                 abslayout.Children.Add(rsv);
                 Views.Add(rsv);
+            }
+        }
+
+        private void Reshape(RacksViewModel rsmv)
+        {
+            foreach (RackSchemeView rsv in Views)
+            {
+                AbsoluteLayout.SetLayoutBounds(rsv, new Rectangle(rsv.Model.Left, rsv.Model.Top, rsv.Model.Width, rsv.Model.Height));
             }
         }
 
@@ -148,13 +163,6 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
         double bottomborder = double.MinValue;
 
         double oldeTotalX, oldeTotalY = 0;
-
-        private void abslayout_SizeChanged(object sender, EventArgs e)
-        {
-            AbsoluteLayout al = (AbsoluteLayout)sender;
-            model.ScreenWidth = al.Width;
-            model.ScreenHeight = al.Height;
-        }
 
         private async void OnPaned(object sender, PanUpdatedEventArgs e)
         {
@@ -287,6 +295,7 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
                 model.UnSelectAll();
                 abslayout.BackgroundColor = Color.LightGray;
                 model.IsEditMode = true;
+                model.Rebuild(false);
             }
         }
 

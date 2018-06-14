@@ -51,20 +51,6 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
             model.Load();
         }
 
-        protected override void OnDisappearing()
-        {
-            base.OnDisappearing();
-        }
-
-        //protected override bool OnBackButtonPressed()
-        //{
-        //    MessagingCenter.Unsubscribe<ZoneViewModel>(this, "LocationsIsLoaded");
-        //    MessagingCenter.Unsubscribe<ZoneViewModel>(this, "BinTypesIsLoaded");
-        //    model.DisposeModel();
-        //    base.OnBackButtonPressed();
-        //    return false;
-        //}
-
         public void LocationsIsLoaded(ZoneViewModel zvm)
         {
             locationpicker.ItemsSource = model.Locations;

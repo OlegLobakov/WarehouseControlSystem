@@ -53,9 +53,7 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
             Title = AppResources.ZoneSchemePage_Title + " - " + location.Name;
 
             MessagingCenter.Subscribe<ZonesViewModel>(this, "Rebuild", Rebuild);
-
-            PanGesture.PanUpdated += OnPaned;
-            TapGesture.Tapped += GridTapped;
+            MessagingCenter.Subscribe<ZonesViewModel>(this, "Reshape", Reshape);
 
             model.IsEditMode = false;
         }
@@ -63,23 +61,28 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
         protected override void OnAppearing()
         {
             base.OnAppearing();
+            PanGesture.PanUpdated += OnPaned;
+            TapGesture.Tapped += GridTapped;
             model.Load();
         }
 
         protected override void OnDisappearing()
         {
+            model.State = ViewModel.Base.ModelState.Undefined;
+            PanGesture.PanUpdated -= OnPaned;
+            TapGesture.Tapped -= GridTapped;
+            SelectedViews.Clear();
+            Views.Clear();
+            abslayout.Children.Clear();
             base.OnDisappearing();
         }
 
-        //protected override bool OnBackButtonPressed()
-        //{
-        //    model.DisposeModel();
-        //    MessagingCenter.Unsubscribe<ZonesViewModel>(this, "Rebuild");
-        //    PanGesture.PanUpdated -= OnPaned;
-        //    TapGesture.Tapped -= GridTapped;         
-        //    base.OnBackButtonPressed();
-        //    return false;
-        //}
+        private void StackLayout_SizeChanged(object sender, EventArgs e)
+        {
+            StackLayout al = (StackLayout)sender;
+            model.ScreenWidth = al.Width;
+            model.ScreenHeight = al.Height;
+        }
 
         private void abslayout_SizeChanged(object sender, EventArgs e)
         {
@@ -91,12 +94,8 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
         private void Rebuild(ZonesViewModel lmv)
         {
             SelectedViews.Clear();
-            foreach (ZoneView lv in Views)
-            {
-                abslayout.Children.Remove(lv);
-            }
+            abslayout.Children.Clear();
             Views.Clear();
-
             foreach (ZoneViewModel zvm in model.ZoneViewModels)
             {
                 ZoneView zv = new ZoneView(zvm);
@@ -104,6 +103,14 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
                 abslayout.Children.Add(zv);
                 Views.Add(zv);
                 zvm.LoadRacks();
+            }
+        }
+
+        private void Reshape(ZonesViewModel rsmv)
+        {
+            foreach (ZoneView lv in Views)
+            {
+                AbsoluteLayout.SetLayoutBounds(lv, new Rectangle(lv.Model.Left, lv.Model.Top, lv.Model.Width, lv.Model.Height));
             }
         }
 
@@ -280,6 +287,7 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
             {
                 abslayout.BackgroundColor = Color.LightGray;
                 model.IsEditMode = true;
+                model.Rebuild(false);
             }
         }
     }

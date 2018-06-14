@@ -37,17 +37,5 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             base.OnAppearing();
             model.LoadAll();
         }
-
-        protected override async void OnDisappearing()
-        {
-            base.OnDisappearing();
-            await model.SaveRacksVisible();
-        }
-
-        protected override bool OnBackButtonPressed()
-        {
-            base.OnBackButtonPressed();
-            return false;
-        }
     }
 }

@@ -68,14 +68,14 @@
         </ToolbarItem>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout>
-            <StackLayout IsVisible="{Binding IsLoadingState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" SizeChanged="StackLayout_SizeChanged" Padding="0">
+            <Grid IsVisible="{Binding IsLoadingState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Padding="0">
                 <StackLayout VerticalOptions="Center" HorizontalOptions="Center" Orientation="Vertical">
                     <ActivityIndicator IsRunning="{Binding LoadAnimation}" HeightRequest="50" WidthRequest="50"/>
                     <Label Text="{Binding LoadingText}" FontSize="Small"/>
                 </StackLayout>
-            </StackLayout>
-            <StackLayout IsVisible="{Binding IsNormalState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            </Grid>
+            <StackLayout IsVisible="{Binding IsNormalState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Padding="0">
                 <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -104,7 +104,7 @@
                             <Label Text="{Binding PlanWidth}" HorizontalOptions="Center"></Label>
                         </StackLayout>
                     </Grid>
-                    <AbsoluteLayout Grid.Row="1" x:Name="abslayout" SizeChanged="abslayout_SizeChanged"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                    <AbsoluteLayout Grid.Row="1" x:Name="abslayout" SizeChanged="abslayout_SizeChanged" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
 
                     </AbsoluteLayout>
                     <ScrollView Grid.Row="2" HeightRequest="{Binding UDSPanelHeight}" IsVisible="{Binding IsVisibleUDS}" Orientation="Horizontal">
@@ -118,7 +118,7 @@
                     </ScrollView>
                 </Grid>
             </StackLayout>
-            <StackLayout IsVisible="{Binding IsErrorState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <StackLayout IsVisible="{Binding IsErrorState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Padding="0">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1*"/>

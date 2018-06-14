@@ -5,7 +5,6 @@
     <ContentView.Content>
         <StackLayout Padding="1" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
             <Grid x:Name="maingrid" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" ColumnSpacing="0" RowSpacing="0">
-
             </Grid>
         </StackLayout>
     </ContentView.Content>

@@ -4,72 +4,99 @@
              x:Class="WarehouseControlSystem.View.Pages.LocationsScheme.LocationView"
              xmlns:vc="clr-namespace:WarehouseControlSystem.View.Content">
     <ContentView.Content>
-        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="{Binding Color}">
-            <StackLayout.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding TapCommand}"/>
-            </StackLayout.GestureRecognizers>
+        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Padding="0" BackgroundColor="DarkGray">
             <StackLayout.Triggers>
-                <DataTrigger Binding="{Binding Selected}" TargetType="StackLayout" Value="true">
-                    <Setter Property="BackgroundColor" Value="Red"/>
+                <DataTrigger Binding="{Binding Color}" TargetType="StackLayout" Value="{StaticResource SchemeBlockWhiteColor}">
+                    <Setter Property="Padding" Value="1"/>
                 </DataTrigger>
             </StackLayout.Triggers>
+            
+            <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="{Binding Color}">
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding TapCommand}"/>
+                </StackLayout.GestureRecognizers>
+                <StackLayout.Triggers>
+                    <DataTrigger Binding="{Binding Selected}" TargetType="StackLayout" Value="true">
+                        <Setter Property="BackgroundColor" Value="Red"/>
+                    </DataTrigger>
+                </StackLayout.Triggers>
 
-            <Grid x:Name="grid" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <Label Grid.Row="0" x:Name="codelabel"    Text="{Binding Code}"     
+                <Grid x:Name="grid" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" x:Name="codelabel"    Text="{Binding Code}"     
                        FontSize="Large"    
                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
                        HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
-                       TextColor="White" Margin="10,5,0,0"/>
-                
-                <Label Grid.Row="1" x:Name="namelabel"    Text="{Binding Name}"     
+                       TextColor="White" Margin="10,5,0,0">
+                        <Label.Triggers>
+                            <DataTrigger Binding="{Binding Color}" TargetType="Label" Value="{StaticResource SchemeBlockWhiteColor}">
+                                <Setter Property="TextColor" Value="Black"/>
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+
+                    <Label Grid.Row="1" x:Name="namelabel"    Text="{Binding Name}"     
                        FontSize="Default"   
                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
                        HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
-                       TextColor="White" Margin="10,0,0,0"/>
+                       TextColor="White" Margin="10,0,0,0">
+                        <Label.Triggers>
+                            <DataTrigger Binding="{Binding Color}" TargetType="Label" Value="{StaticResource SchemeBlockWhiteColor}">
+                                <Setter Property="TextColor" Value="Black"/>
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
 
-                <vc:InnerSubSchemeView                         
+                    <vc:InnerSubSchemeView                         
                         Grid.Row="3" Margin="10,5,10,5"
                         HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"  
                         PlanWidth="{Binding PlanWidth}"
                         PlanHeight="{Binding PlanHeight}"
                         SubSchemeElements="{Binding SubSchemeElements}" 
                         IsVisible="{Binding ZonesIsLoaded}"
-                        SubSchemeBackgroundColor="{Binding Color}"/>
+                        SubSchemeBackgroundColor="{Binding Color}"
+                        UpdateScheme="{Binding ZonesIsLoaded}"/>
 
-                <Label Grid.Row="2" Text="{Binding Address}"    
+                    <Label Grid.Row="2" Text="{Binding Address}"    
                        FontSize="Default"       
                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
                        HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
-                       TextColor="White" Margin="10,0,0,0"/>
+                       TextColor="White" Margin="10,0,0,0">
+                        <Label.Triggers>
+                            <DataTrigger Binding="{Binding Color}" TargetType="Label" Value="{StaticResource SchemeBlockWhiteColor}">
+                                <Setter Property="TextColor" Value="Black"/>
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
 
-                <StackLayout Grid.Row="4" Orientation="Horizontal">
-                    <Label Text="{Binding EditModeText}" TextColor="White" 
+                    <StackLayout Grid.Row="4" Orientation="Horizontal">
+                        <Label Text="{Binding EditModeText}" TextColor="White" 
                            HorizontalOptions="Start" VerticalOptions="Center"  
                            IsVisible="{Binding Selected}" Margin="10,0,0,0"/>
-                    <Image  x:Name="iconelement" 
+                        <Image  x:Name="iconelement" 
                             HorizontalOptions="EndAndExpand" VerticalOptions="End" 
                             Aspect="AspectFit" 
                             IsVisible="{Binding Selected}" Margin="5">
-                        <Image.Source>
-                            <OnPlatform x:TypeArguments="FileImageSource">
-                                <On Platform="UWP,WinPhone">
-                                    <FileImageSource File="Assets/Images/ic_action_zoom_out_map.png"/>
-                                </On>
-                                <On Platform="iOS,Android">
-                                    <FileImageSource File="ic_action_zoom_out_map.png"/>
-                                </On>
-                            </OnPlatform>
-                        </Image.Source>
-                    </Image>
-                </StackLayout>
-            </Grid>
+                            <Image.Source>
+                                <OnPlatform x:TypeArguments="FileImageSource">
+                                    <On Platform="UWP,WinPhone">
+                                        <FileImageSource File="Assets/Images/ic_action_zoom_out_map.png"/>
+                                    </On>
+                                    <On Platform="iOS,Android">
+                                        <FileImageSource File="ic_action_zoom_out_map.png"/>
+                                    </On>
+                                </OnPlatform>
+                            </Image.Source>
+                        </Image>
+                    </StackLayout>
+                </Grid>
+            </StackLayout>
         </StackLayout>
     </ContentView.Content>
 </ContentView>

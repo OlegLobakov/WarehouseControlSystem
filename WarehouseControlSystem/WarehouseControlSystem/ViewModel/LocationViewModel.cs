@@ -66,6 +66,7 @@ namespace WarehouseControlSystem.ViewModel
                 {
                     schemevisible = value;
                     Changed = true;
+                    SaveToNAVSchemeVisible();
                     OnPropertyChanged(nameof(SchemeVisible));
                 }
             }
@@ -173,6 +174,20 @@ namespace WarehouseControlSystem.ViewModel
         public event Action<LocationViewModel> OnTap;
 
         public List<SubSchemeElement> SubSchemeElements { get; set; } = new List<SubSchemeElement>();
+
+        public bool IsEditMode
+        {
+            get { return iseditmode; }
+            set
+            {
+                if (iseditmode != value)
+                {
+                    iseditmode = value;
+                    OnPropertyChanged("IsEditMode");
+                }
+            }
+        } bool iseditmode;
+
         public bool ZonesIsLoaded
         {
             get { return zonesisloaded; }
@@ -185,6 +200,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } bool zonesisloaded;
+
         public bool ZonesIsBeingLoaded
         {
             get { return zonesisbeingloaded; }
@@ -200,7 +216,8 @@ namespace WarehouseControlSystem.ViewModel
 
         public LocationViewModel(INavigation navigation, Location location) : base(navigation)
         {
-            State = ModelState.Normal;
+            State = ModelState.Undefined;
+            IsSaveToNAVEnabled = false;
             Location = location;
             FillFields(location);
             Color = Color.FromHex(location.HexColor);
@@ -212,6 +229,7 @@ namespace WarehouseControlSystem.ViewModel
             CancelChangesCommand = new Command(CancelChanges);
 
             Changed = false;
+            IsSaveToNAVEnabled = true;
         }
 
         public void FillFields(Location location)
@@ -310,20 +328,32 @@ namespace WarehouseControlSystem.ViewModel
             FillFields(Location);
         }
 
-        public async void SaveLocationVisible()
+        public async void SaveToNAVSchemeVisible()
         {
-            try
+            if (IsSaveToNAVEnabled)
             {
-                Location location = new Location();
-                SaveFields(location);
-                await NAV.SetLocationVisible(location, ACD.Default);
+                if (NotNetOrConnection)
+                {
+                    return;
+                }
+                try
+                {
+                    IsBeenSavingToNAV = true;
+                    Location location = new Location();
+                    SaveFields(location);
+                    await NAV.SetLocationVisible(location, ACD.Default);
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine(e.Message);
+                    State = ModelState.Error;
+                    ErrorText = e.Message;
+                }
+                finally
+                {
+                    IsBeenSavingToNAV = false;
+                }
             }
-            catch (Exception e)
-            {
-                System.Diagnostics.Debug.WriteLine(e.Message);
-                State = ModelState.Error;
-                ErrorText = e.Message;
-            }        
         }
 
         public async void CheckLocationCode()
@@ -372,6 +402,11 @@ namespace WarehouseControlSystem.ViewModel
 
         public async void LoadZones()
         {
+            if (IsEditMode)
+            {
+                return;
+            }
+
             ZonesIsLoaded = false;
             ZonesIsBeingLoaded = true;
             try

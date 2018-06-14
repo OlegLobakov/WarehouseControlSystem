@@ -27,32 +27,46 @@ namespace WarehouseControlSystem.View.Content
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class InnerSubSchemeView : ContentView
     {
-        public static readonly BindableProperty PlanHeightProperty = BindableProperty.Create("PlanHeight", typeof(int), typeof(InnerSubSchemeView),0,BindingMode.Default,null, Changed);
+        public static readonly BindableProperty PlanHeightProperty = BindableProperty.Create(nameof(PlanHeight), typeof(int), typeof(InnerSubSchemeView),0,BindingMode.Default,null, Changed);
         public int PlanHeight
         {
             get { return (int)GetValue(PlanHeightProperty); }
             set { SetValue(PlanHeightProperty, value); }
         }
 
-        public static readonly BindableProperty PlanWidthProperty = BindableProperty.Create("PlanWidth", typeof(int), typeof(InnerSubSchemeView), 0,BindingMode.Default, null, Changed);
+        public static readonly BindableProperty PlanWidthProperty = BindableProperty.Create(nameof(PlanWidth), typeof(int), typeof(InnerSubSchemeView), 0,BindingMode.Default, null, Changed);
         public int PlanWidth
         {
             get { return (int)GetValue(PlanWidthProperty); }
             set { SetValue(PlanWidthProperty, value); }
         }
 
-        public static readonly BindableProperty SubSchemeElementsProperty = BindableProperty.Create("SubSchemeElements", typeof(List<SubSchemeElement>), typeof(InnerSubSchemeView), null,BindingMode.Default, null, Changed);
+        public static readonly BindableProperty SubSchemeElementsProperty = BindableProperty.Create(nameof(SubSchemeElements), typeof(List<SubSchemeElement>), typeof(InnerSubSchemeView), null,BindingMode.Default, null, Changed);
         public List<SubSchemeElement> SubSchemeElements
         {
             get { return (List<SubSchemeElement>)GetValue(SubSchemeElementsProperty); }
             set { SetValue(SubSchemeElementsProperty, value); }
         }
 
-        public static readonly BindableProperty SubSchemeBackgroundColorProperty = BindableProperty.Create("SubSchemeElements", typeof(Color), typeof(InnerSubSchemeView), Color.Transparent, BindingMode.Default, null, Changed);
+        public static readonly BindableProperty SubSchemeBackgroundColorProperty = BindableProperty.Create(nameof(SubSchemeBackgroundColor), typeof(Color), typeof(InnerSubSchemeView), Color.Transparent, BindingMode.Default, null, Changed);
         public Color SubSchemeBackgroundColor
         {
             get { return (Color)GetValue(SubSchemeBackgroundColorProperty); }
             set { SetValue(SubSchemeBackgroundColorProperty, value); }
+        }
+
+        public static readonly BindableProperty SubSchemeElementColorProperty = BindableProperty.Create(nameof(SubSchemeElementColor), typeof(Color), typeof(InnerSubSchemeView), Color.Transparent, BindingMode.Default, null, Changed);
+        public Color SubSchemeElementColor
+        {
+            get { return (Color)GetValue(SubSchemeElementColorProperty); }
+            set { SetValue(SubSchemeElementColorProperty, value); }
+        }
+
+        public static readonly BindableProperty UpdateSchemeProperty = BindableProperty.Create(nameof(UpdateScheme), typeof(bool), typeof(InnerSubSchemeView), false, BindingMode.Default, null, Changed);
+        public bool UpdateScheme
+        {
+            get { return (bool)GetValue(UpdateSchemeProperty); }
+            set { SetValue(UpdateSchemeProperty, value); }
         }
 
         private static void Changed(BindableObject bindable, object oldValue, object newValue)
@@ -84,13 +98,79 @@ namespace WarehouseControlSystem.View.Content
 
             if (SubSchemeElements is List<SubSchemeElement>)
             {
-                foreach (SubSchemeElement sse in SubSchemeElements)
+                foreach (SubSchemeElement element in SubSchemeElements)
                 {
+                    Color color1 = Color.FromHex(element.HexColor);
+                    if (color1 == (Color)Application.Current.Resources["SchemeBlockWhiteColor"])
+                    {
+                        color1 = (Color)Application.Current.Resources["SchemeBlockWhiteColorDark"];
+                    }
+
                     maingrid.Children.Add(
                         new BoxView()
                         {
-                            BackgroundColor = Color.FromHex(sse.HexColor)
-                        }, sse.Left, sse.Left + sse.Width, sse.Top, sse.Top + sse.Height);
+                            Opacity = 0.7,
+                            BackgroundColor = color1
+                        }, element.Left, element.Left + element.Width, element.Top, element.Top + element.Height);
+
+                    if (element.Selection is List<SubSchemeSelect>)
+                    {
+                        foreach (SubSchemeSelect sss in element.Selection)
+                        {
+                            switch (element.RackOrientation)
+                            {
+                                case RackOrientationEnum.Undefined:
+                                    break;
+                                case RackOrientationEnum.HorizontalLeft:
+                                    {
+                                        maingrid.Children.Add(
+                                            new BoxView()
+                                            {
+                                                Opacity = 0.9,
+                                                BackgroundColor = Color.Red
+                                            }, element.Left + sss.Section, element.Top + sss.Depth);
+
+                                        break;
+                                    }
+                                case RackOrientationEnum.HorizontalRight:
+                                    {
+                                        maingrid.Children.Add(
+                                            new BoxView()
+                                            {
+                                                Opacity = 0.9,
+                                                BackgroundColor = Color.Red
+                                            }, element.Left + sss.Section, element.Top + sss.Depth);
+
+                                        break;
+                                    }
+                                case RackOrientationEnum.VerticalDown:
+                                    {
+                                        maingrid.Children.Add(
+                                            new BoxView()
+                                            {
+                                                Opacity = 0.9,
+                                                BackgroundColor = Color.Red
+                                            }, element.Left+ sss.Depth, element.Top + element.Height - sss.Section);
+
+                                        break;
+                                    }
+                                case RackOrientationEnum.VerticalUp:
+                                    {
+                                        maingrid.Children.Add(
+                                            new BoxView()
+                                            {
+                                                Opacity = 0.9,
+                                                BackgroundColor = Color.Red
+                                            }, element.Left + sss.Depth, element.Top + sss.Section);
+                                        break;
+                                    }
+                                default:
+                                    throw new InvalidOperationException("Impossible value");
+                            }
+                        }
+                    }
+
+
                 }
             }
         }

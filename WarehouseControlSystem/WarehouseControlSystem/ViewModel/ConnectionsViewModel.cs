@@ -58,6 +58,7 @@ namespace WarehouseControlSystem.ViewModel
             DeleteConnectionCommand = new Command<object>(Delete);
             EditConnectionCommand = new Command<object>(Edit);
             CopyConnectionCommand = new Command<object>(Copy);
+            State = ModelState.Undefined;
         }
 
         public void SaveChanges()

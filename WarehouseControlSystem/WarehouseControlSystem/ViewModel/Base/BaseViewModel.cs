@@ -239,6 +239,8 @@ namespace WarehouseControlSystem.ViewModel.Base
             IsErrorState = false;
             switch (state)
             {
+                case ModelState.Undefined:
+                    break;
                 case ModelState.Loading:
                     IsLoadingState = true;
                     break;

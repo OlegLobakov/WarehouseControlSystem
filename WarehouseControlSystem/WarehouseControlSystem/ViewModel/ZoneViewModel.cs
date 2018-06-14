@@ -101,6 +101,19 @@ namespace WarehouseControlSystem.ViewModel
             }
         } int binquantity;
 
+        public bool IsEditMode
+        {
+            get { return iseditmode; }
+            set
+            {
+                if (iseditmode != value)
+                {
+                    iseditmode = value;
+                    OnPropertyChanged("IsEditMode");
+                }
+            }
+        } bool iseditmode;
+
         public ICommand TapCommand { protected set; get; }
         public event Action<ZoneViewModel> OnTap;
 
@@ -211,7 +224,7 @@ namespace WarehouseControlSystem.ViewModel
             CancelCommand = new Command(Cancel);
             CancelChangesCommand = new Command(CancelChanges);
 
-            State = ModelState.Loading;
+            State = ModelState.Undefined;
             Changed = false;
             IsSaveToNAVEnabled = true;
         }
@@ -384,15 +397,15 @@ namespace WarehouseControlSystem.ViewModel
 
         public async void LoadRacks()
         {
+            if (IsEditMode)
+            {
+                return;
+            }
+
             RacksIsLoaded = false;
             RacksIsBeingLoaded = true;
             try
             {
-                if (SubSchemeElements.Count != 0)
-                {
-                    return;
-                }
-
                 List<Rack> racks = await NAV.GetRackList(LocationCode, Code, true, 1, int.MaxValue, ACD.Default);
                 if (!IsDisposed)
                 {

@@ -224,6 +224,7 @@ namespace WarehouseControlSystem.ViewModel
 
             CreditialList = Global.CreditialList;
             TestConnectionCommand = new Command(TestConnection);
+            State = ModelState.Undefined;
         }
 
         public void FillFields(Connection connection)

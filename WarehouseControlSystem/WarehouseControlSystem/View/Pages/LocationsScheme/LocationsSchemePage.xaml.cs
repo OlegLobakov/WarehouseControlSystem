@@ -47,19 +47,40 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
             abslayout.GestureRecognizers.Add(PanGesture);
 
             MessagingCenter.Subscribe<LocationsViewModel>(this, "Rebuild", Rebuild);
-            PanGesture.PanUpdated += OnPaned;
-            TapGesture.Tapped += GridTapped;
+            MessagingCenter.Subscribe<LocationsViewModel>(this, "Reshape", Reshape);
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
+            PanGesture.PanUpdated += OnPaned;
+            TapGesture.Tapped += GridTapped;
             model.Load();
         }
 
         protected override void OnDisappearing()
-        {        
+        {
+            model.State = ViewModel.Base.ModelState.Undefined;
+            PanGesture.PanUpdated -= OnPaned;
+            TapGesture.Tapped -= GridTapped;
+            SelectedViews.Clear();
+            Views.Clear();
+            abslayout.Children.Clear();
             base.OnDisappearing();
+        }
+
+        private void StackLayout_SizeChanged(object sender, EventArgs e)
+        {
+            StackLayout al = (StackLayout)sender;
+            model.ScreenWidth = al.Width;
+            model.ScreenHeight = al.Height;
+        }
+
+        private void abslayout_SizeChanged(object sender, EventArgs e)
+        {
+            AbsoluteLayout al = (AbsoluteLayout)sender;
+            model.ScreenWidth = al.Width;
+            model.ScreenHeight = al.Height;
         }
 
         //protected override bool OnBackButtonPressed()
@@ -76,10 +97,9 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
 
         private void Rebuild(LocationsViewModel lmv)
         {
+            abslayout.Children.Clear();
             SelectedViews.Clear();
             Views.Clear();
-            abslayout.Children.Clear();
-
             foreach (LocationViewModel lvm1 in model.LocationViewModels)
             {
                 LocationView lv = new LocationView(lvm1);
@@ -90,11 +110,18 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
             }
         }
 
+        private void Reshape(LocationsViewModel rsmv)
+        {
+            foreach (LocationView lv in Views)
+            {
+                AbsoluteLayout.SetLayoutBounds(lv, new Rectangle(lv.Model.Left, lv.Model.Top, lv.Model.Width, lv.Model.Height));
+            }
+        }
+
         private void GridTapped(object sender, EventArgs e)
         {
             model.UnSelectAll();
         }
-
 
         Easing easing1 = Easing.Linear;
         Easing easingParcking = Easing.CubicInOut;
@@ -106,12 +133,6 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
         double rightborder = double.MinValue;
         double bottomborder = double.MinValue;
 
-        private void abslayout_SizeChanged(object sender, EventArgs e)
-        {
-            AbsoluteLayout al = (AbsoluteLayout)sender;
-            model.ScreenWidth = al.Width;
-            model.ScreenHeight = al.Height;
-        }
 
         double oldeTotalX,oldeTotalY = 0;
         private async void OnPaned(object sender, PanUpdatedEventArgs e)
@@ -135,7 +156,7 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
             {
                 case GestureStatus.Started:
                     {
-                        SelectedViews = Views.FindAll(x => x.model.Selected == true);
+                        SelectedViews = Views.FindAll(x => x.Model.Selected == true);
                         MovingAction = MovingActionTypeEnum.Pan;
 
                         widthstep = model.ScreenWidth / model.PlanWidth;
@@ -151,7 +172,7 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
                             rightborder = Math.Max(lv.X + lv.Width, rightborder);
                             bottomborder = Math.Max(lv.Y + lv.Height, bottomborder);
                             lv.Opacity = 0.5;
-                            lv.model.SavePrevSize(lv.Width,lv.Height);
+                            lv.Model.SavePrevSize(lv.Width,lv.Height);
                         }
                         x += oldeTotalX;
                         y += oldeTotalY;                       
@@ -185,13 +206,13 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
 
                         foreach (LocationView lv in SelectedViews)
                         {
-                            if (lv.model.EditMode == SchemeElementEditMode.Move)
+                            if (lv.Model.EditMode == SchemeElementEditMode.Move)
                             {
                                 await lv.TranslateTo(dx, dy, 250, easing1);
                             }
-                            if (lv.model.EditMode == SchemeElementEditMode.Resize)
+                            if (lv.Model.EditMode == SchemeElementEditMode.Resize)
                             {
-                                AbsoluteLayout.SetLayoutBounds(lv, new Rectangle(lv.X, lv.Y, lv.model.PrevWidth + dx, lv.model.PrevHeight + dy));
+                                AbsoluteLayout.SetLayoutBounds(lv, new Rectangle(lv.X, lv.Y, lv.Model.PrevWidth + dx, lv.Model.PrevHeight + dy));
                             }
                         }
                         break;
@@ -204,16 +225,16 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
                         oldeTotalY = 0;
                         foreach (LocationView lv in SelectedViews)
                         {
-                            if (lv.model.EditMode == SchemeElementEditMode.Move)
+                            if (lv.Model.EditMode == SchemeElementEditMode.Move)
                             {
                                 double newX = lv.X + lv.TranslationX;
                                 double newY = lv.Y + lv.TranslationY;
 
-                                lv.model.Location.Left = (int)Math.Round(newX / widthstep);
-                                lv.model.Location.Top = (int)Math.Round(newY / heightstep);
+                                lv.Model.Location.Left = (int)Math.Round(newX / widthstep);
+                                lv.Model.Location.Top = (int)Math.Round(newY / heightstep);
 
-                                double dX = lv.model.Location.Left * widthstep - lv.X;
-                                double dY = lv.model.Location.Top * heightstep - lv.Y;
+                                double dX = lv.Model.Location.Left * widthstep - lv.X;
+                                double dY = lv.Model.Location.Top * heightstep - lv.Y;
 
                                 await lv.TranslateTo(dX, dY, 500, easingParcking);
                                 //lv.Layout(new Rectangle(lv.X + dX, lv.Y + dY, lv.Width, lv.Height)); //в таком варианте почемуто есть глюк при переключении режима редактирования
@@ -221,12 +242,12 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
                                 lv.TranslationX = 0;
                                 lv.TranslationY = 0;
                             }
-                            if (lv.model.EditMode == SchemeElementEditMode.Resize)
+                            if (lv.Model.EditMode == SchemeElementEditMode.Resize)
                             {
-                                lv.model.Location.Width = (int)Math.Round(lv.Width / widthstep);
-                                lv.model.Location.Height = (int)Math.Round(lv.Height / heightstep);
-                                double newWidth = lv.model.Location.Width * widthstep;
-                                double newheight = lv.model.Location.Height * heightstep;
+                                lv.Model.Location.Width = (int)Math.Round(lv.Width / widthstep);
+                                lv.Model.Location.Height = (int)Math.Round(lv.Height / heightstep);
+                                double newWidth = lv.Model.Location.Width * widthstep;
+                                double newheight = lv.Model.Location.Height * heightstep;
                                 AbsoluteLayout.SetLayoutBounds(lv, new Rectangle(lv.X, lv.Y, newWidth, newheight));
                             }
                             lv.Opacity = 1;
@@ -259,6 +280,7 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
             {
                 abslayout.BackgroundColor = Color.LightGray;
                 model.IsEditMode = true;
+                model.Rebuild(false);
             }
         }
     }

@@ -421,6 +421,7 @@ namespace WarehouseControlSystem.ViewModel
             Bin = bin;
             FillFields(bin);
             TapCommand = new Command(Tap);
+            State = ModelState.Undefined;
         }
 
         public void FillFields(Bin bin)

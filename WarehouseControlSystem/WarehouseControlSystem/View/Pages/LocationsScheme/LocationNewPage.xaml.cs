@@ -39,11 +39,11 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
                 colorpicker.SelectedItem = color;
             }
         }
-       
-        protected override void OnDisappearing()
+
+        protected override void OnAppearing()
         {
-            base.OnDisappearing();
-            MessagingCenter.Send<LocationNewPage>(this, "Update");
+            base.OnAppearing();
+            model.State = ViewModel.Base.ModelState.Normal;
         }
 
         protected override bool OnBackButtonPressed()

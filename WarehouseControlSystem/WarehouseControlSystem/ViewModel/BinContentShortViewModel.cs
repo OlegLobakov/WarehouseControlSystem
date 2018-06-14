@@ -83,6 +83,7 @@ namespace WarehouseControlSystem.ViewModel
         {
             BinContent = bc;
             FillFields(bc);
+            State = ModelState.Undefined;
         }
         public void FillFields(BinContent bc)
         {

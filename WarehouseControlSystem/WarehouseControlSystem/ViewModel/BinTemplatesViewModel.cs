@@ -45,6 +45,7 @@ namespace WarehouseControlSystem.ViewModel
             DeleteCommand = new Command<object>(DeleteTemplate);
             EditCommand = new Command<object>(EditTemplate);
             CopyCommand = new Command<object>(CopyTemplate);
+            State = ModelState.Undefined;
         }
 
         public async void Load()

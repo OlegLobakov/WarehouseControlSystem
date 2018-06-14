@@ -50,13 +50,7 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             model.Load();
             rackview.Update(model);
         }
-
-       
-        protected override void OnDisappearing()
-        {
-            base.OnDisappearing();
-        }
-
+      
         protected override bool OnBackButtonPressed()
         {
             MessagingCenter.Unsubscribe<RackViewModel>(this, "ZonesIsLoaded");

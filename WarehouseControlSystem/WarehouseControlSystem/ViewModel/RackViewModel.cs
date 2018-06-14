@@ -25,7 +25,7 @@ using System.Threading;
 
 namespace WarehouseControlSystem.ViewModel
 {
-    public class RackViewModel : BaseViewModel
+    public class RackViewModel : NAVBaseViewModel
     {
         public Rack Rack { get; set; }
         public string No
@@ -56,34 +56,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } string nowarningtext;
-        public string LocationCode
-        {
-            get { return locationcode; }
-            set
-            {
-                if (locationcode != value)
-                {
-                    locationcode = value;
-                    BinsViewModel.LocationCode = locationcode;
-                    Changed = true;
-                    OnPropertyChanged(nameof(LocationCode));
-                }
-            }
-        } string locationcode;
-        public string ZoneCode
-        {
-            get { return zonecode; }
-            set
-            {
-                if (zonecode != value)
-                {
-                    zonecode = value;
-                    BinsViewModel.ZoneCode = zonecode;
-                    Changed = true;
-                    OnPropertyChanged(nameof(ZoneCode));
-                }
-            }
-        } string zonecode;
+
         public bool CanChangeLocationAndZone
         {
             get { return canchangelocationAndzone; }
@@ -317,17 +290,11 @@ namespace WarehouseControlSystem.ViewModel
                 {
                     schemevisible = value;
                     Changed = true;
+                    SaveToNAVSchemeVisible();
                     OnPropertyChanged(nameof(SchemeVisible));
                 }
             }
         } bool schemevisible;
-        public double PrevWidth { get; set; }
-        public double PrevHeight { get; set; }
-
-        public double Left { get; set; }
-        public double Top { get; set; }
-        public double Width { get; set; }
-        public double Height { get; set; }
 
         public double SchemeWidth
         {
@@ -365,18 +332,6 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } double schemefontsize;
-        public bool CreateMode
-        {
-            get { return createmode; }
-            set
-            {
-                if (createmode != value)
-                {
-                    createmode = value;
-                    OnPropertyChanged(nameof(CreateMode));
-                }
-            }
-        } bool createmode;
 
         public ICommand TapCommand { protected set; get; }
         public event Action<RackViewModel> OnTap;
@@ -489,18 +444,6 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         }  bool conflictrackchange;
-        public bool Changed
-        {
-            get { return changed; }
-            set
-            {
-                if (changed != value)
-                {
-                    changed = value;
-                    OnPropertyChanged(nameof(Changed));
-                }
-            }
-        } bool changed;
 
         public string SearchResult
         {
@@ -523,19 +466,19 @@ namespace WarehouseControlSystem.ViewModel
         public RackViewModel(INavigation navigation, Rack rack, bool createmode1) : base(navigation)
         {
             Rack = rack;
-
+            IsSaveToNAVEnabled = false;
             RackSectionSeparator = Settings.DefaultRackSectionSeparator;
             SectionLevelSeparator = Settings.DefaultSectionLevelSeparator;
             LevelDepthSeparator = Settings.DefaultLevelDepthSeparator;
-
             CreateMode = createmode1;
             BinsViewModel = new BinsViewModel(navigation);
             TapCommand = new Command<object>(Tap);
             FillFields(Rack);
             CreateRackCommand = new Command(CreateRackInNAV);
-            State = ModelState.Normal;
+            State = ModelState.Undefined;
             Changed = false;
             GetSearchSelection();
+            IsSaveToNAVEnabled = true;
         }
 
         public void FillFields(Rack rack)
@@ -819,10 +762,34 @@ namespace WarehouseControlSystem.ViewModel
             BinsViewModel.BinTemplate = SelectedBinTemplate;
         }
 
-        //public void LoadContent()
-        //{
-        //    BinsViewModel.LoadContent(ACD);
-        //}
+
+        public async void SaveToNAVSchemeVisible()
+        {
+            if (IsSaveToNAVEnabled)
+            {
+                if (NotNetOrConnection)
+                {
+                    return;
+                }
+                try
+                {
+                    IsBeenSavingToNAV = true;                    
+                    Rack rack = new Rack();
+                    SaveFields(rack);
+                    await NAV.SetRackVisible(rack, ACD.Default).ConfigureAwait(true);
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine(e.Message);
+                    State = ModelState.Error;
+                    ErrorText = e.Message;
+                }
+                finally
+                {
+                    IsBeenSavingToNAV = false;
+                }
+            }
+        }
 
         public void LoadUDF()
         {

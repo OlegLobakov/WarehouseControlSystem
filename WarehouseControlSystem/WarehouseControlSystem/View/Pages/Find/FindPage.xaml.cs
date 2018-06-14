@@ -36,14 +36,8 @@ namespace WarehouseControlSystem.View.Pages.Find
         protected override void OnAppearing()
         {
             base.OnAppearing();
+            model.State = ViewModel.Base.ModelState.Normal;
             entry.Focus();
-        }
-
-        protected override bool OnBackButtonPressed()
-        {
-            model.DisposeModel();
-            base.OnBackButtonPressed();
-            return false;
         }
 
         public async void ButtonScanClick(object sender, EventArgs e)
@@ -70,15 +64,9 @@ namespace WarehouseControlSystem.View.Pages.Find
             model.Search(entry.Text);
         }
 
-        protected override void OnDisappearing()
+        private void entry_Completed(object sender, EventArgs e)
         {
-            base.OnDisappearing();
-            //// To avoid memory leak:
-            //if (scanPage is ZXingScannerPage)
-            //{
-            //    scanPage.OnScanResult -= OnScan;
-            //    scanPage = null;
-            //}
+            model.Search(entry.Text);
         }
     }
 }
