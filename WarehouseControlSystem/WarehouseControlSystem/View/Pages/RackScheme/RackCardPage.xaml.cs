@@ -50,12 +50,6 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             model.LoadBins();         
         }
 
-        protected override void OnDisappearing()
-        {
-            MessagingCenter.Unsubscribe<BinsViewModel>(this, "BinsIsLoaded");
-            base.OnDisappearing();
-        }
-
         protected override bool OnBackButtonPressed()
         {
             model.CancelAsync();

@@ -49,6 +49,7 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             base.OnAppearing();
             model.Load();
             rackview.Update(model);
+            model.State = ViewModel.Base.ModelState.Normal;
         }
       
         protected override bool OnBackButtonPressed()

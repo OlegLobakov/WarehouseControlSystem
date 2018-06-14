@@ -600,6 +600,7 @@ namespace WarehouseControlSystem.ViewModel
                     }
                     LocationsIsLoaded = CanChangeLocationAndZone && locations.Count > 0;
                 }
+
                 List<BinType> bintypes = await NAV.GetBinTypeList(1, int.MaxValue, ACD.Default);
                 if (!IsDisposed)
                 {
@@ -610,6 +611,7 @@ namespace WarehouseControlSystem.ViewModel
                     }
                     BinsViewModel.BinTypesIsEnabled = bintypes.Count > 0;
                 }
+
                 List<WarehouseClass> warehouseclasses = await NAV.GetWarehouseClassList(1, int.MaxValue, ACD.Default);
                 if (!IsDisposed)
                 {
@@ -620,6 +622,7 @@ namespace WarehouseControlSystem.ViewModel
                     }
                     BinsViewModel.WarehouseClassesIsEnabled = warehouseclasses.Count > 0;
                 }
+
                 List<SpecialEquipment> specialequipments = await NAV.GetSpecialEquipmentList(1, int.MaxValue, ACD.Default);
                 if (!IsDisposed)
                 {

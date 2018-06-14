@@ -16,7 +16,6 @@ namespace WarehouseControlSystem.ViewModel.Base
                 if (screenwidth != value)
                 {
                     screenwidth = value;
-                    Rebuild(false);
                     OnPropertyChanged(nameof(ScreenWidth));
                 }
             }
@@ -31,7 +30,6 @@ namespace WarehouseControlSystem.ViewModel.Base
                 if (screenheight != value)
                 {
                     screenheight = value;
-                    Rebuild(false);
                     OnPropertyChanged(nameof(ScreenHeight));
                 }
             }

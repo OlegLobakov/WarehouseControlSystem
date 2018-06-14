@@ -83,6 +83,12 @@ namespace WarehouseControlSystem.View.Content
         public void Update()
         {
             maingrid.BackgroundColor = SubSchemeBackgroundColor;
+
+            if ((PlanWidth <= 0) || (PlanHeight <= 0))
+            {
+                return;
+            }
+
             maingrid.Children.Clear();
             maingrid.RowDefinitions.Clear();
             maingrid.ColumnDefinitions.Clear();
@@ -100,75 +106,91 @@ namespace WarehouseControlSystem.View.Content
             {
                 foreach (SubSchemeElement element in SubSchemeElements)
                 {
+                    if ((element.Width == 0) || (element.Height == 0))
+                    {
+                        break;
+                    }
+
                     Color color1 = Color.FromHex(element.HexColor);
                     if (color1 == (Color)Application.Current.Resources["SchemeBlockWhiteColor"])
                     {
                         color1 = (Color)Application.Current.Resources["SchemeBlockWhiteColorDark"];
                     }
 
-                    maingrid.Children.Add(
-                        new BoxView()
-                        {
-                            Opacity = 0.7,
-                            BackgroundColor = color1
-                        }, element.Left, element.Left + element.Width, element.Top, element.Top + element.Height);
-
-                    if (element.Selection is List<SubSchemeSelect>)
+                    int left = Math.Max(0,element.Left);
+                    int right = Math.Min(PlanWidth, element.Left + element.Width);
+                    int top = Math.Max(0, element.Top);
+                    int bottom = Math.Min(PlanHeight, element.Top + element.Height);
+                    try
                     {
-                        foreach (SubSchemeSelect sss in element.Selection)
-                        {
-                            switch (element.RackOrientation)
+                        maingrid.Children.Add(
+                            new BoxView()
                             {
-                                case RackOrientationEnum.Undefined:
-                                    break;
-                                case RackOrientationEnum.HorizontalLeft:
-                                    {
-                                        maingrid.Children.Add(
-                                            new BoxView()
-                                            {
-                                                Opacity = 0.9,
-                                                BackgroundColor = Color.Red
-                                            }, element.Left + sss.Section, element.Top + sss.Depth);
-
-                                        break;
-                                    }
-                                case RackOrientationEnum.HorizontalRight:
-                                    {
-                                        maingrid.Children.Add(
-                                            new BoxView()
-                                            {
-                                                Opacity = 0.9,
-                                                BackgroundColor = Color.Red
-                                            }, element.Left + sss.Section, element.Top + sss.Depth);
-
-                                        break;
-                                    }
-                                case RackOrientationEnum.VerticalDown:
-                                    {
-                                        maingrid.Children.Add(
-                                            new BoxView()
-                                            {
-                                                Opacity = 0.9,
-                                                BackgroundColor = Color.Red
-                                            }, element.Left+ sss.Depth, element.Top + element.Height - sss.Section);
-
-                                        break;
-                                    }
-                                case RackOrientationEnum.VerticalUp:
-                                    {
-                                        maingrid.Children.Add(
-                                            new BoxView()
-                                            {
-                                                Opacity = 0.9,
-                                                BackgroundColor = Color.Red
-                                            }, element.Left + sss.Depth, element.Top + sss.Section);
-                                        break;
-                                    }
-                                default:
-                                    throw new InvalidOperationException("Impossible value");
-                            }
-                        }
+                                Opacity = 0.7,
+                                BackgroundColor = color1
+                            }, left, right, top, bottom);
                     }
+                    catch (Exception ex)
+                    {
+                        string t = "EX: " + left.ToString() + " " + right.ToString() + " " + top.ToString() + "" + bottom.ToString() + " PlanWidth: " + PlanWidth.ToString() + " PlanHeight:" + PlanHeight.ToString();
+                        System.Diagnostics.Debug.WriteLine(t);
+                    }
+                    
+                    //if (element.Selection is List<SubSchemeSelect>)
+                    //{
+                    //    foreach (SubSchemeSelect sss in element.Selection)
+                    //    {
+                    //        int sssleft = Math.Max(0, element.Left);
+                    //        int sssright = Math.Min(PlanWidth, element.Left + element.Width);
+                          
+                    //        switch (element.RackOrientation)
+                    //        {
+                    //            case RackOrientationEnum.Undefined:
+                    //                break;
+                    //            case RackOrientationEnum.HorizontalLeft:
+                    //                {
+                    //                    maingrid.Children.Add(
+                    //                        new BoxView()
+                    //                        {
+                    //                            BackgroundColor = Color.Red
+                    //                        }, element.Left + sss.Section, element.Top + sss.Depth - 1);
+
+                    //                    break;
+                    //                }
+                    //            case RackOrientationEnum.HorizontalRight:
+                    //                {
+                    //                    maingrid.Children.Add(
+                    //                        new BoxView()
+                    //                        {
+                    //                            BackgroundColor = Color.Red
+                    //                        }, element.Left + sss.Section, element.Top + sss.Depth -1);
+
+                    //                    break;
+                    //                }
+                    //            case RackOrientationEnum.VerticalDown:
+                    //                {
+                    //                    maingrid.Children.Add(
+                    //                        new BoxView()
+                    //                        {
+                    //                            BackgroundColor = Color.Red
+                    //                        }, element.Left+ sss.Depth - 1, element.Top + element.Height - sss.Section);
+
+                    //                    break;
+                    //                }
+                    //            case RackOrientationEnum.VerticalUp:
+                    //                {
+                    //                    maingrid.Children.Add(
+                    //                        new BoxView()
+                    //                        {
+                    //                            BackgroundColor = Color.Red
+                    //                        }, element.Left + sss.Depth - 1, element.Top + sss.Section);
+                    //                    break;
+                    //                }
+                    //            default:
+                    //                throw new InvalidOperationException("Impossible value");
+                    //        }
+                    //    }
+                    //}
 
 
                 }

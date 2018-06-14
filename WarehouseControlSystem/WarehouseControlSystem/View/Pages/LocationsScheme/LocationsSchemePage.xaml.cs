@@ -51,7 +51,7 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
         }
 
         protected override void OnAppearing()
-        {
+        { 
             base.OnAppearing();
             PanGesture.PanUpdated += OnPaned;
             TapGesture.Tapped += GridTapped;
@@ -60,7 +60,6 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
 
         protected override void OnDisappearing()
         {
-            model.State = ViewModel.Base.ModelState.Undefined;
             PanGesture.PanUpdated -= OnPaned;
             TapGesture.Tapped -= GridTapped;
             SelectedViews.Clear();
@@ -71,29 +70,18 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
 
         private void StackLayout_SizeChanged(object sender, EventArgs e)
         {
-            StackLayout al = (StackLayout)sender;
-            model.ScreenWidth = al.Width;
-            model.ScreenHeight = al.Height;
+            StackLayout sl = (StackLayout)sender;
+            model.ScreenWidth = sl.Width;
+            model.ScreenHeight = sl.Height;
         }
 
-        private void abslayout_SizeChanged(object sender, EventArgs e)
+        private void Abslayout_SizeChanged(object sender, EventArgs e)
         {
             AbsoluteLayout al = (AbsoluteLayout)sender;
             model.ScreenWidth = al.Width;
             model.ScreenHeight = al.Height;
+            model.Rebuild(false);
         }
-
-        //protected override bool OnBackButtonPressed()
-        //{
-        //    MessagingCenter.Unsubscribe<LocationsViewModel>(this, "Rebuild");
-        //    PanGesture.PanUpdated -= OnPaned;
-        //    TapGesture.Tapped -= GridTapped;
-        //    SelectedViews.Clear();
-        //    Views.Clear();
-        //    model.DisposeModel();
-        //    base.OnBackButtonPressed();
-        //    return false;
-        //}
 
         private void Rebuild(LocationsViewModel lmv)
         {
@@ -132,7 +120,6 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
         double topborder = double.MaxValue;
         double rightborder = double.MinValue;
         double bottomborder = double.MinValue;
-
 
         double oldeTotalX,oldeTotalY = 0;
         private async void OnPaned(object sender, PanUpdatedEventArgs e)
@@ -280,7 +267,6 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
             {
                 abslayout.BackgroundColor = Color.LightGray;
                 model.IsEditMode = true;
-                model.Rebuild(false);
             }
         }
     }

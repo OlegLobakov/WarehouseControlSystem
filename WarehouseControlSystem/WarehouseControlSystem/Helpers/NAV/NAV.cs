@@ -54,8 +54,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                     }
                     catch (Exception e)
                     {
-                        System.Diagnostics.Debug.WriteLine(e.Message);
-                        tcs.SetException(e);
+                       tcs.SetException(e);
                     }
                 });
             }
@@ -83,7 +82,6 @@ namespace WarehouseControlSystem.Helpers.NAV
                     }
                     catch (Exception e)
                     {
-                        System.Diagnostics.Debug.WriteLine(e.Message);
                         tcs.SetException(e);
                     }
                 });
@@ -113,7 +111,6 @@ namespace WarehouseControlSystem.Helpers.NAV
                     }
                     catch (Exception e)
                     {
-                        System.Diagnostics.Debug.WriteLine(e.Message);
                         tcs.SetException(e);
                     }
                 });
@@ -143,7 +140,6 @@ namespace WarehouseControlSystem.Helpers.NAV
                     }
                     catch (Exception e)
                     {
-                        System.Diagnostics.Debug.WriteLine(e.Message);
                         tcs.SetException(e);
                     }
                 });
@@ -405,7 +401,6 @@ namespace WarehouseControlSystem.Helpers.NAV
                     }
                     catch (Exception e)
                     {
-                        System.Diagnostics.Debug.WriteLine(e.Message);
                         tcs.SetException(e);
                     }
                 });

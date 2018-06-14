@@ -93,8 +93,8 @@ namespace WarehouseControlSystem.ViewModel
             try
             {
                 State = ModelState.Loading;
-                PlanWidth = await NAV.GetPlanWidth(ACD.Default).ConfigureAwait(true);
-                PlanHeight = await NAV.GetPlanHeight(ACD.Default).ConfigureAwait(true);
+                PlanWidth = await NAV.GetPlanWidth(ACD.Default);
+                PlanHeight = await NAV.GetPlanHeight(ACD.Default);
                 if (PlanWidth == 0)
                 {
                     PlanWidth = 20;
@@ -103,7 +103,7 @@ namespace WarehouseControlSystem.ViewModel
                 {
                     PlanHeight = 10;
                 }
-                List<Location> list = await NAV.GetLocationList("", true, 1, int.MaxValue, ACD.Default).ConfigureAwait(true);
+                List<Location> list = await NAV.GetLocationList("", true, 1, int.MaxValue, ACD.Default);
                 if ((list is List<Location>) && (!IsDisposed))
                 {
                     if (list.Count > 0)
@@ -225,6 +225,11 @@ namespace WarehouseControlSystem.ViewModel
 
         public override void Rebuild(bool recreate)
         {
+            if ((ScreenWidth == 0) || (ScreenHeight == 0))
+            {
+                return;
+            }
+
             double widthstep = (ScreenWidth / PlanWidth);
             double heightstep = (ScreenHeight / PlanHeight);
             foreach (LocationViewModel lvm in LocationViewModels)
