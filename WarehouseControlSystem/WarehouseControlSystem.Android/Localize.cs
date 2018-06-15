@@ -125,7 +125,8 @@ namespace WarehouseControlSystem.Droid
         }
         string ToDotnetFallbackLanguage(PlatformCulture platCulture)
         {
-            var netLanguage = platCulture.LanguageCode; // use the first part of the identifier (two chars, usually);
+            // use the first part of the identifier (two chars, usually);
+            var netLanguage = platCulture.LanguageCode; 
 
             switch (platCulture.LanguageCode)
             {

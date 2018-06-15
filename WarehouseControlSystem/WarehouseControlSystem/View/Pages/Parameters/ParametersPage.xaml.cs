@@ -154,7 +154,7 @@ namespace WarehouseControlSystem.View.Pages.Parameters
             }
         }
 
-        List<LocaleSelector> Locales = new List<LocaleSelector>();
+        List<LocaleSelector> Locales { get; set; } = new List<LocaleSelector>();
 
 
         public ParametersPage()

@@ -51,7 +51,7 @@ namespace WarehouseControlSystem.View.Content
             InitializeComponent ();
             BindingContext = this;
 
-            TapGestureRecognizer tc = new TapGestureRecognizer()
+            TapGestureRecognizer tc = new TapGestureRecognizer
             {
                 Command = new Command(() =>
                 {

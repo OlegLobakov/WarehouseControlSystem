@@ -266,10 +266,7 @@ namespace WarehouseControlSystem.ViewModel.Base
             }
             else
             {
-                if (Global.CurrentConnection is Helpers.NAV.Connection)
-                {
-                }
-                else
+                if (!(Global.CurrentConnection is Helpers.NAV.Connection))
                 {
                     rv = false;
                     State = ModelState.Error;

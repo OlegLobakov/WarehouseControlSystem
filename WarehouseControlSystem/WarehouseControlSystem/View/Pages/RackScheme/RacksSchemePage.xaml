@@ -104,11 +104,12 @@
                             <Label Text="{Binding PlanWidth}" HorizontalOptions="Center"></Label>
                         </StackLayout>
                     </Grid>
-                    <AbsoluteLayout Grid.Row="1" x:Name="abslayout" SizeChanged="abslayout_SizeChanged" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                    <AbsoluteLayout Grid.Row="1" x:Name="abslayout" SizeChanged="Abslayout_SizeChanged" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
 
                     </AbsoluteLayout>
-                    <ScrollView Grid.Row="2" HeightRequest="{Binding UDSPanelHeight}" IsVisible="{Binding IsVisibleUDS}" Orientation="Horizontal">
-                        <hs:HorizontalListView  x:Name="hlv">
+                    <ScrollView Grid.Row="2" HeightRequest="{Binding UDSPanelHeight}" IsVisible="{Binding IsVisibleUDS}" 
+                                Orientation="Horizontal" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                        <hs:HorizontalListView  x:Name="hlv" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Padding="2">
                             <hs:HorizontalListView.ItemTemplate>
                                 <DataTemplate>
                                     <components:UserDefinedSelectionView/>

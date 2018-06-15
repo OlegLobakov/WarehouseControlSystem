@@ -168,17 +168,14 @@ namespace WarehouseControlSystem
 
         public static string GetPlatformPath(string source)
         {
-            string rv = "";
-            switch (Device.RuntimePlatform)
+            if (Device.RuntimePlatform == Device.UWP)
             {
-                case Device.UWP:
-                    rv = "Assets/Images/" + source;
-                    break;
-                default:
-                    rv = source;
-                    break;
+                return "Assets/Images/" + source;
             }
-            return rv;
+            else
+            {
+                return source;
+            }
         }
 
         /// <summary>
@@ -209,8 +206,9 @@ namespace WarehouseControlSystem
                             {
                                 Parameters = (Parameters)x.Deserialize(stream);
                             }
-                            catch
+                            catch (Exception e)
                             {
+                                System.Diagnostics.Debug.WriteLine(e.Message);
                             }
                         }
                     }

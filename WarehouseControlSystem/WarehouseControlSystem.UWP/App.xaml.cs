@@ -50,7 +50,7 @@ namespace WarehouseControl.UWP
         {
             e.Handled = true;
             System.Diagnostics.Debug.WriteLine("<UnhandledException> (" + sender.ToString() + ") Message:" +
-                e.Message + " Exception.Source: " + e.Exception.Source.ToString() +
+                e.Message + " Exception.Source: " + e.Exception.Source +
                 " Stack: " + e.Exception.StackTrace);
         }
 

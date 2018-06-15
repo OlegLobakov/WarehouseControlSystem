@@ -108,20 +108,25 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
 
         private void GridTapped(object sender, EventArgs e)
         {
+            foreach (LocationView lv in Views)
+            {
+                lv.Opacity = 1;
+            }
             model.UnSelectAll();
         }
 
-        Easing easing1 = Easing.Linear;
-        Easing easingParcking = Easing.CubicInOut;
+        readonly Easing easing1 = Easing.Linear;
+        readonly Easing easingParcking = Easing.CubicInOut;
 
-        double x,y,widthstep, heightstep = 0;
+        double x = 0, y = 0, widthstep = 0, heightstep = 0;
 
         double leftborder = double.MaxValue;
         double topborder = double.MaxValue;
         double rightborder = double.MinValue;
         double bottomborder = double.MinValue;
 
-        double oldeTotalX,oldeTotalY = 0;
+        double oldeTotalX = 0, oldeTotalY = 0;
+
         private async void OnPaned(object sender, PanUpdatedEventArgs e)
         {
             if (!model.IsEditMode)

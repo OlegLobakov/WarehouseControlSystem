@@ -382,13 +382,12 @@ namespace WarehouseControlSystem.ViewModel
                 {
                     if (!string.IsNullOrEmpty(code))
                     {
-                        code = code.Trim().ToUpper();
-                        int exist = await NAV.GetLocationCount(code, false, ACD.Default);
+                        string code1 = code.Trim().ToUpper();
+                        int exist = await NAV.GetLocationCount(code1, false, ACD.Default);
                         if (exist > 0)
                         {
                             rv = AppResources.LocationNewPage_CodeAlreadyExist;
                         }
-
                     }
                     tcs.SetResult(rv);
                 }

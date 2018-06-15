@@ -79,15 +79,6 @@ namespace WarehouseControlSystem.ViewModel
             await Navigation.PushAsync(nc);
         }
 
-        //public async void CreateNew()
-        //{
-        //    Connection connection = new Connection();
-        //    ConnectionViewModel cvm = new ConnectionViewModel(Navigation,connection);
-        //    ConnectionViewModels.Add(cvm);
-        //    NewConnectionPage ncp = new NewConnectionPage(cvm, true);
-        //    await Navigation.PushAsync(ncp);
-        //}
-
         public void Copy(object sender)
         {
             ConnectionViewModel source = (ConnectionViewModel)sender;

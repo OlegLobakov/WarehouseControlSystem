@@ -200,8 +200,9 @@ namespace WarehouseControlSystem.ViewModel
                     }
                 }
             }
-            catch (OperationCanceledException)
+            catch (OperationCanceledException e)
             {
+                System.Diagnostics.Debug.WriteLine(e.Message);
             }
             catch
             {
@@ -240,7 +241,7 @@ namespace WarehouseControlSystem.ViewModel
                             zvm.EditMode = SchemeElementEditMode.None;
                             break;
                         default:
-                            throw new InvalidOperationException("Impossible value");
+                            throw new InvalidOperationException("ZonesViewModel.Zvm_OnTap Impossible value");
                     }
                 }
                 else
@@ -347,6 +348,11 @@ namespace WarehouseControlSystem.ViewModel
 
         public async void SaveLocationParams()
         {
+            if (NotNetOrConnection)
+            {
+                return;
+            }
+
             Location.PlanWidth = PlanWidth;
             Location.PlanHeight = PlanHeight;
             await NAV.ModifyLocation(Location, ACD.Default);
@@ -354,6 +360,11 @@ namespace WarehouseControlSystem.ViewModel
 
         public async void SaveZonesChangesAsync()
         {
+            if (NotNetOrConnection)
+            {
+                return;
+            }
+
             List<ZoneViewModel> list = ZoneViewModels.ToList().FindAll(x => x.Selected == true);
             foreach (ZoneViewModel zvm in list)
             {
@@ -368,6 +379,7 @@ namespace WarehouseControlSystem.ViewModel
                     ErrorText = e.Message;
                 }
             }
+
             UpdateMinSizes();
         }
 

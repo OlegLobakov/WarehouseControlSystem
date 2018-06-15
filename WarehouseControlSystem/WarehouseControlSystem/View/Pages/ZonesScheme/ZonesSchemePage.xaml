@@ -91,7 +91,7 @@
                             <Label Text="{Binding PlanWidth}" HorizontalOptions="Center"></Label>
                         </StackLayout>
                     </Grid>
-                    <AbsoluteLayout Grid.Row="1" x:Name="abslayout" SizeChanged="abslayout_SizeChanged" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                    <AbsoluteLayout Grid.Row="1" x:Name="abslayout" SizeChanged="Abslayout_SizeChanged" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                     </AbsoluteLayout>
                 </Grid>
             </StackLayout>

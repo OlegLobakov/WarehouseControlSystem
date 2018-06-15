@@ -366,7 +366,7 @@ namespace WarehouseControlSystem.ViewModel
 
         public async void NewRack()
         {
-            Rack newrack = new Rack()
+            Rack newrack = new Rack
             {
                 Sections = Settings.DefaultRackSections,
                 Levels = Settings.DefaultRackLevels,
@@ -395,6 +395,14 @@ namespace WarehouseControlSystem.ViewModel
 
         public async void SaveZoneParams()
         {
+            if (NotNetOrConnection)
+            {
+                return;
+            }
+
+            Zone.PlanWidth = PlanWidth;
+            Zone.PlanHeight = PlanHeight;
+
             await NAV.ModifyZone(Zone, ACD.Default);
         }
 
@@ -412,11 +420,12 @@ namespace WarehouseControlSystem.ViewModel
                 {
                     await NAV.ModifyRack(rvm.Rack, ACD.Default);
                 }
-                catch
+                catch (Exception e)
                 {
+                    System.Diagnostics.Debug.WriteLine(e.Message);
+                    ErrorText = e.Message;
                 }
             }
-
         }
 
         public void UpdateMinSizes()

@@ -64,16 +64,6 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             model.GetSearchText();
         }
 
-        //public void AfterStateSet(StateContainer sc)
-        //{
-        //    if (model.State == State.Normal)
-        //    {
-        //        rackview.Update(model);
-        //        //model.LoadContent();
-        //        model.LoadUDF();
-        //    }
-        //}
-
         public void BinInfopanelItemTap(BinContentShortViewModel bcsvm)
         {
             Global.CompliantPlug = bcsvm.ToString();

@@ -111,7 +111,7 @@ namespace WarehouseControlSystem.Model.NAV
 
         public Rack GetCopy()
         {
-            return new Rack()
+            return new Rack
             {
                 LocationCode = LocationCode,
                 ZoneCode = ZoneCode,

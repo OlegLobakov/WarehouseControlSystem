@@ -130,7 +130,7 @@ namespace WarehouseControlSystem.ViewModel
         { 
             FillFields(uds);
             TapCommand = new Command(Tap);
-            State = ModelState.Undefined;
+            State = ModelState.Normal;
         }
 
         public void FillFields(UserDefinedSelection uds)

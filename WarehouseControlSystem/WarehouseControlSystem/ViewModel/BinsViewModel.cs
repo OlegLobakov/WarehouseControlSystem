@@ -487,9 +487,9 @@ namespace WarehouseControlSystem.ViewModel
 
         public void CombineBins()
         {
-            string combinedrackno = "";
-            string locationcode = "";
-            string rackno = "";
+            string combinedrackno1 = "";
+            string locationcode1 = "";
+            string rackno1 = "";
             List<BinViewModel> selectedlist = BinViewModels.FindAll(x => x.Selected == true);
             if (selectedlist.Count > 1)
             {
@@ -499,7 +499,7 @@ namespace WarehouseControlSystem.ViewModel
                 int rightlevel = 0;
                 foreach (BinViewModel bvm1 in selectedlist)
                 {
-                    combinedrackno = bvm1.Code;
+                    combinedrackno1 = bvm1.Code;
                     if (bvm1.Section < leftsection)
                     {
                         leftsection = bvm1.Section;
@@ -530,9 +530,9 @@ namespace WarehouseControlSystem.ViewModel
                         x.Level >= leftlevel);
                 if (firstbvm is BinViewModel)
                 {
-                    combinedrackno = firstbvm.Code;
-                    locationcode = firstbvm.LocationCode;
-                    rackno = firstbvm.RackNo;
+                    combinedrackno1 = firstbvm.Code;
+                    locationcode1 = firstbvm.LocationCode;
+                    rackno1 = firstbvm.RackNo;
                 }
 
                 foreach (BinViewModel bvm2 in deleted)
@@ -542,9 +542,9 @@ namespace WarehouseControlSystem.ViewModel
 
                 Bin newbin = new Bin()
                 {
-                    LocationCode = locationcode,
-                    RackNo = rackno,
-                    Code = combinedrackno,
+                    LocationCode = locationcode1,
+                    RackNo = rackno1,
+                    Code = combinedrackno1,
                     Section = leftsection,
                     Level = leftlevel,
                     Depth = 1,

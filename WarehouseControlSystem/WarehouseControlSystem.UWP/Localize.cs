@@ -32,12 +32,10 @@ namespace WarehouseControl.UWP
 
         public System.Globalization.CultureInfo GetCurrentCultureInfo()
         {
-            //return System.Threading.Thread.CurrentThread.CurrentUICulture;
             return CultureInfo.CurrentUICulture;
         }
         public System.Globalization.CultureInfo GetDeviceCultureInfo()
         {
-            //return System.Threading.Thread.CurrentThread.CurrentUICulture;
             return CultureInfo.CurrentUICulture;
         }
 

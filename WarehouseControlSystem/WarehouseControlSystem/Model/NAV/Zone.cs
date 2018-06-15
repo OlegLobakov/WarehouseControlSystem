@@ -58,7 +58,7 @@ namespace WarehouseControlSystem.Model.NAV
 
         public Zone GetCopy()
         {
-            return new Zone()
+            return new Zone
             {
                 LocationCode = LocationCode,
                 Code = Code,

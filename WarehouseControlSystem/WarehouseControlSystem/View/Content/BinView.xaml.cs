@@ -33,7 +33,7 @@ namespace WarehouseControlSystem.View.Content
             BindingContext = model;
             InitializeComponent();
 
-            TapGestureRecognizer tc = new TapGestureRecognizer()
+            TapGestureRecognizer tc = new TapGestureRecognizer
             {
                 Command = model.TapCommand
             };

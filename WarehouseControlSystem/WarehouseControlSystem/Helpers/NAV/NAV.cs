@@ -520,7 +520,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                             break;
                         }
                     default:
-                        throw new InvalidOperationException("Impossible value > Name: "+ currentatribute.Name.LocalName);
+                        throw new InvalidOperationException("Impossible value GetLocationFromXML > Name: " + currentatribute.Name.LocalName);
                 }
             }
             return location;
@@ -852,6 +852,8 @@ namespace WarehouseControlSystem.Helpers.NAV
                             zone.SchemeVisible = StringToBool(currentatribute.Value);
                             break;
                         }
+                    default:
+                        throw new InvalidOperationException("Impossible value GetZoneFromXML > Name: " + currentatribute.Name.LocalName);
                 }
             }
             return zone;
@@ -1159,6 +1161,8 @@ namespace WarehouseControlSystem.Helpers.NAV
                             }
                             break;
                         }
+                    default:
+                        throw new InvalidOperationException("Impossible value GetRackFromXML > Name: " + currentatribute.Name.LocalName);
                 }
             }
             return rack;
@@ -1467,6 +1471,8 @@ namespace WarehouseControlSystem.Helpers.NAV
                             bin.WarehouseClassCode = currentatribute.Value;
                             break;
                         }
+                    default:
+                        throw new InvalidOperationException("Impossible value GetBinFromXML > Name: " + currentatribute.Name.LocalName);
                 }
             }
             return bin;
@@ -2845,7 +2851,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         XNamespace myns = "urn:microsoft-dynamics-schemas/codeunit/" + Global.TestConnection.Codeunit;
                         string functionname = "APIVersion";
                         XElement body = new XElement(myns + functionname);
-                        XElement soapbodynode = await Process(functionname, body, myns, true, cts);
+                        XElement soapbodynode = await Process(functionname, body, myns, true, cts).ConfigureAwait(false);
                         int rv = StringToInt(soapbodynode.Value);
                         tcs.SetResult(rv);
                     }
@@ -2879,8 +2885,9 @@ namespace WarehouseControlSystem.Helpers.NAV
             else
             {
                 if (!(Global.CurrentConnection is Connection))
+                {
                     return null;
-
+                }
                 connection = Global.CurrentConnection;
             }
 

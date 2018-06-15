@@ -53,6 +53,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } int section;
+
         public int Level
         {
             get { return level; }
@@ -65,6 +66,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } int level;
+
         public int Depth
         {
             get { return depth; }
@@ -77,6 +79,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } int depth;
+
         public int SectionSpan
         {
             get { return sectionspan; }
@@ -89,6 +92,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } int sectionspan;
+
         public int LevelSpan
         {
             get { return levelspan; }
@@ -101,6 +105,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } int levelspan;
+
         public int DepthSpan
         {
             get { return depthspan; }
@@ -177,7 +182,7 @@ namespace WarehouseControlSystem.ViewModel
                     OnPropertyChanged("Quantity");
                 }
             }
-        } int quantity = 0;
+        } int quantity;
 
         public int BlockMovement
         {
@@ -190,7 +195,7 @@ namespace WarehouseControlSystem.ViewModel
                     OnPropertyChanged("BlockMovement");
                 }
             }
-        } int blockmovement = 0;
+        } int blockmovement;
 
         public bool IsChecked
         {
@@ -207,6 +212,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } bool ischecked = false;
+
         public bool IsExist
         {
             get
@@ -222,6 +228,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } bool isexist = false;
+
         public bool IsContent
         {
             get

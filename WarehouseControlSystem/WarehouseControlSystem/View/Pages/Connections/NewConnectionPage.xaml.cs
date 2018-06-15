@@ -36,8 +36,7 @@ namespace WarehouseControlSystem.View.Pages.Connections
 
         protected override void OnAppearing()
         {
-            base.OnAppearing();
-            
+            base.OnAppearing();           
         }
 
         protected override void OnDisappearing()
@@ -52,14 +51,6 @@ namespace WarehouseControlSystem.View.Pages.Connections
             return false;
         }
 
-        //private void AfterChangeState(StateContainer sc)
-        //{
-        //    if (model.State == State.Normal)
-        //    {
-        //        creditialspicker.SelectedItem = model.CreditialList.Find(x => x == model.ClientCredentialType);
-        //    }
-        //}
-
         private void creditialspicker_SelectedIndexChanged(object sender, EventArgs e)
         {
             var picker = (Picker)sender;
@@ -72,18 +63,5 @@ namespace WarehouseControlSystem.View.Pages.Connections
                 model.ClientCredentialType = (ClientCredentialTypeEnum)picker.SelectedItem;
             }
         }
-
-
-        //private void PickerCreditials(object sender, EventArgs e)
-        //{ 
-        //    var picker = (Picker)sender;
-        //    int selectedIndex = picker.SelectedIndex;
-        //    if (selectedIndex >= 0)
-        //    {
-        //        NAVClientCredentialTypeEnum selected = (NAVClientCredentialTypeEnum)picker.SelectedItem;
-        //        NAVConnection.ClientCredentialType = selected;
-        //    }
-        //}
-
     }
 }

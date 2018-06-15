@@ -27,21 +27,21 @@ namespace WarehouseControlSystem.View.Content
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class InnerSubSchemeView : ContentView
     {
-        public static readonly BindableProperty PlanHeightProperty = BindableProperty.Create(nameof(PlanHeight), typeof(int), typeof(InnerSubSchemeView),0,BindingMode.Default,null, Changed);
+        public static readonly BindableProperty PlanHeightProperty = BindableProperty.Create(nameof(PlanHeight), typeof(int), typeof(InnerSubSchemeView), 0, BindingMode.Default, null, Changed);
         public int PlanHeight
         {
             get { return (int)GetValue(PlanHeightProperty); }
             set { SetValue(PlanHeightProperty, value); }
         }
 
-        public static readonly BindableProperty PlanWidthProperty = BindableProperty.Create(nameof(PlanWidth), typeof(int), typeof(InnerSubSchemeView), 0,BindingMode.Default, null, Changed);
+        public static readonly BindableProperty PlanWidthProperty = BindableProperty.Create(nameof(PlanWidth), typeof(int), typeof(InnerSubSchemeView), 0, BindingMode.Default, null, Changed);
         public int PlanWidth
         {
             get { return (int)GetValue(PlanWidthProperty); }
             set { SetValue(PlanWidthProperty, value); }
         }
 
-        public static readonly BindableProperty SubSchemeElementsProperty = BindableProperty.Create(nameof(SubSchemeElements), typeof(List<SubSchemeElement>), typeof(InnerSubSchemeView), null,BindingMode.Default, null, Changed);
+        public static readonly BindableProperty SubSchemeElementsProperty = BindableProperty.Create(nameof(SubSchemeElements), typeof(List<SubSchemeElement>), typeof(InnerSubSchemeView), null, BindingMode.Default, null, Changed);
         public List<SubSchemeElement> SubSchemeElements
         {
             get { return (List<SubSchemeElement>)GetValue(SubSchemeElementsProperty); }
@@ -89,6 +89,19 @@ namespace WarehouseControlSystem.View.Content
                 return;
             }
 
+            try
+            {
+                Rebuild();
+            }
+            catch (Exception ex)
+            {
+                string t = "InnerSubSchemeView.Update Exception " + ex.ToString();
+                System.Diagnostics.Debug.WriteLine(t);
+            }
+        }
+
+        private void Rebuild()
+        {
             maingrid.Children.Clear();
             maingrid.RowDefinitions.Clear();
             maingrid.ColumnDefinitions.Clear();
@@ -106,7 +119,7 @@ namespace WarehouseControlSystem.View.Content
             {
                 foreach (SubSchemeElement element in SubSchemeElements)
                 {
-                    if ((element.Width == 0) || (element.Height == 0))
+                    if ((element.Width <= 0) || (element.Height <= 0) || (element.Left > PlanWidth) || (element.Top > PlanHeight))
                     {
                         break;
                     }
@@ -117,239 +130,71 @@ namespace WarehouseControlSystem.View.Content
                         color1 = (Color)Application.Current.Resources["SchemeBlockWhiteColorDark"];
                     }
 
-                    int left = Math.Max(0,element.Left);
+                    int left = Math.Max(0, Math.Min(PlanWidth, element.Left));
                     int right = Math.Min(PlanWidth, element.Left + element.Width);
-                    int top = Math.Max(0, element.Top);
+                    int top = Math.Max(0, Math.Min(PlanHeight, element.Top));
                     int bottom = Math.Min(PlanHeight, element.Top + element.Height);
-                    try
+
+                    maingrid.Children.Add(
+                        new BoxView()
+                        {
+                            Opacity = 0.7,
+                            BackgroundColor = color1
+                        }, left, right, top, bottom);
+
+                    if (element.Selection is List<SubSchemeSelect>)
                     {
-                        maingrid.Children.Add(
-                            new BoxView()
+                        foreach (SubSchemeSelect sss in element.Selection)
+                        {
+                            int selectLeft = 0;
+                            int selectTop = 0;
+                            switch (element.RackOrientation)
                             {
-                                Opacity = 0.7,
-                                BackgroundColor = color1
-                            }, left, right, top, bottom);
+                                case RackOrientationEnum.Undefined:
+                                    break;
+                                case RackOrientationEnum.HorizontalLeft:
+                                    {
+                                        selectLeft = element.Left + sss.Section;
+                                        selectTop = element.Top + sss.Depth - 1;
+                                        break;
+                                    }
+                                case RackOrientationEnum.HorizontalRight:
+                                    {
+                                        selectLeft = element.Left + element.Width - sss.Section;
+                                        selectTop = element.Top + sss.Depth - 1;
+                                        break;
+                                    }
+                                case RackOrientationEnum.VerticalDown:
+                                    {
+                                        selectLeft = element.Left + sss.Depth - 1;
+                                        selectTop = element.Top + element.Height - sss.Section;
+                                        break;
+                                    }
+                                case RackOrientationEnum.VerticalUp:
+                                    {
+                                        selectLeft = element.Left + sss.Depth - 1;
+                                        selectTop = element.Top + sss.Section - 1;
+                                        break;
+                                    }
+                                default:
+                                    throw new InvalidOperationException("Impossible value");
+                            }
+
+                            if ((selectLeft < 0) || (selectTop < 0) || (selectLeft > PlanWidth) || (selectTop > PlanHeight))
+                            {
+                                break;
+                            }
+
+                            maingrid.Children.Add(
+                                new BoxView()
+                                {
+                                    BackgroundColor = Color.Red
+                                }, selectLeft, selectTop);
+
+                        }
                     }
-                    catch (Exception ex)
-                    {
-                        string t = "EX: " + left.ToString() + " " + right.ToString() + " " + top.ToString() + "" + bottom.ToString() + " PlanWidth: " + PlanWidth.ToString() + " PlanHeight:" + PlanHeight.ToString();
-                        System.Diagnostics.Debug.WriteLine(t);
-                    }
-                    
-                    //if (element.Selection is List<SubSchemeSelect>)
-                    //{
-                    //    foreach (SubSchemeSelect sss in element.Selection)
-                    //    {
-                    //        int sssleft = Math.Max(0, element.Left);
-                    //        int sssright = Math.Min(PlanWidth, element.Left + element.Width);
-                          
-                    //        switch (element.RackOrientation)
-                    //        {
-                    //            case RackOrientationEnum.Undefined:
-                    //                break;
-                    //            case RackOrientationEnum.HorizontalLeft:
-                    //                {
-                    //                    maingrid.Children.Add(
-                    //                        new BoxView()
-                    //                        {
-                    //                            BackgroundColor = Color.Red
-                    //                        }, element.Left + sss.Section, element.Top + sss.Depth - 1);
-
-                    //                    break;
-                    //                }
-                    //            case RackOrientationEnum.HorizontalRight:
-                    //                {
-                    //                    maingrid.Children.Add(
-                    //                        new BoxView()
-                    //                        {
-                    //                            BackgroundColor = Color.Red
-                    //                        }, element.Left + sss.Section, element.Top + sss.Depth -1);
-
-                    //                    break;
-                    //                }
-                    //            case RackOrientationEnum.VerticalDown:
-                    //                {
-                    //                    maingrid.Children.Add(
-                    //                        new BoxView()
-                    //                        {
-                    //                            BackgroundColor = Color.Red
-                    //                        }, element.Left+ sss.Depth - 1, element.Top + element.Height - sss.Section);
-
-                    //                    break;
-                    //                }
-                    //            case RackOrientationEnum.VerticalUp:
-                    //                {
-                    //                    maingrid.Children.Add(
-                    //                        new BoxView()
-                    //                        {
-                    //                            BackgroundColor = Color.Red
-                    //                        }, element.Left + sss.Depth - 1, element.Top + sss.Section);
-                    //                    break;
-                    //                }
-                    //            default:
-                    //                throw new InvalidOperationException("Impossible value");
-                    //        }
-                    //    }
-                    //}
-
-
                 }
             }
         }
-
-        //void OnCanvasViewPaintSurface(object sender, SKPaintSurfaceEventArgs args)
-        //{
-        //    SKImageInfo info = args.Info;
-        //    SKSurface surface = args.Surface;
-        //    SKCanvas canvas = surface.Canvas;
-
-        //    canvas.Clear();
-
-        //    if ((PlanWidth == 0) || (PlanHeight == 0))
-        //    {
-        //        return;
-        //    }
-
-        //    float blocksize;
-        //    float top = 0;
-        //    float left = 0;
-
-        //    if (info.Width > info.Height)
-        //    {
-        //        blocksize = (float)info.Height / PlanHeight;
-        //        top = 0;
-        //        left = (float)info.Width - (blocksize * PlanWidth);
-        //    }
-        //    else
-        //    {
-        //        blocksize = (float)info.Width / PlanWidth;
-        //        top = (float)info.Height - (blocksize * PlanHeight);
-        //        left = 0;
-        //    }
-
-        //    if (SubSchemeElements is List<SubSchemeElement>)
-        //    {
-        //        if (SubSchemeElements.Count > 0)
-        //        {
-        //            //float heightsize = (float)info.Height / PlanHeight;
-        //            //float widthsize = (float)info.Width / PlanWidth;
-
-        //            SKColor colorborder = SKColors.White;
-        //            colorborder = colorborder.WithAlpha(50);
-        //            SKPaint thinLinePaint2 = new SKPaint
-        //            {
-        //                Style = SKPaintStyle.Stroke,
-        //                Color = colorborder,
-        //                StrokeWidth = 1
-        //            };
-
-        //            SKRect rect = new SKRect(left+2, top, left + (PlanWidth * blocksize) - 5, top + (PlanHeight * blocksize) - 5);
-        //            canvas.DrawRect(rect, thinLinePaint2);
-
-        //            foreach (SubSchemeElement element in SubSchemeElements)
-        //            {
-        //                SKColor color;
-        //                try
-        //                {
-        //                    color = SKColor.Parse(element.HexColor);
-        //                }
-        //                catch
-        //                {
-        //                    color = SKColors.White;
-        //                }
-
-        //                color = color.WithAlpha(120);
-
-        //                SKPaint rectPaint = new SKPaint
-        //                {
-        //                    Style = SKPaintStyle.StrokeAndFill,
-        //                    Color = color,
-        //                    StrokeWidth = 1
-        //                };
-
-        //                SKRect rectelement = new SKRect
-        //                {
-        //                    Left = (element.Left * blocksize) + left,
-        //                    Top = (element.Top * blocksize) + top,
-        //                    Right = ((element.Left + element.Width) * blocksize) + left,
-        //                    Bottom = ((element.Top + element.Height) * blocksize) + top
-        //                };
-        //                canvas.DrawRect(rectelement, rectPaint);
-
-        //                if (element.RackOrientation != RackOrientationEnum.Undefined)
-        //                {
-        //                    if (element.Selection is List<SubSchemeSelect>)
-        //                    {
-        //                        foreach (SubSchemeSelect sss in element.Selection)
-        //                        {
-        //                            //section, level ,depth
-        //                            float selectionleft = rectelement.Left;
-        //                            float selectiontop = rectelement.Top;
-        //                            float selectionright = rectelement.Left;
-        //                            float selectionbottom = rectelement.Top;
-
-        //                            switch (element.RackOrientation)
-        //                            {
-        //                                case RackOrientationEnum.HorizontalLeft:
-        //                                    {
-        //                                        selectionleft += (sss.Section * blocksize);
-        //                                        selectiontop += 0;
-        //                                        selectionright += (sss.Section * blocksize) + blocksize;
-        //                                        selectionbottom += blocksize;
-        //                                        break;
-        //                                    }
-        //                                case RackOrientationEnum.HorizontalRight:
-        //                                    {
-        //                                        selectionleft += sss.Section * blocksize;
-        //                                        selectiontop += 0;
-        //                                        selectionright += (sss.Section * blocksize) + blocksize;
-        //                                        selectionbottom += blocksize;
-        //                                        break;
-        //                                    }
-        //                                case RackOrientationEnum.VerticalDown:
-        //                                    {
-        //                                        selectionleft += 0;
-        //                                        selectiontop += (element.Height - sss.Section) * blocksize;
-        //                                        selectionright += blocksize;
-        //                                        selectionbottom += ((element.Height - sss.Section) * blocksize) + blocksize;
-        //                                        break;
-        //                                    }
-        //                                case RackOrientationEnum.VerticalUp:
-        //                                    {
-        //                                        selectionleft += 0;
-        //                                        selectiontop += sss.Section * blocksize;
-        //                                        selectionright += blocksize;
-        //                                        selectionbottom += (sss.Section * blocksize) + blocksize;
-        //                                        break;
-        //                                    }
-        //                                default:
-        //                                    throw new InvalidOperationException("Impossible value");
-        //                            }
-
-        //                            SKColor colorred = SKColors.Red;
-        //                            color = color.WithAlpha(100);
-
-        //                            using (var selectionPaint = new SKPaint())
-        //                            {
-        //                                selectionPaint.Style = SKPaintStyle.StrokeAndFill;
-        //                                selectionPaint.Color = colorred;
-        //                                selectionPaint.StrokeWidth = 1;
-        //                                SKRect selectionTect = new SKRect
-        //                                {
-        //                                    Left = selectionleft,
-        //                                    Top = selectiontop,
-        //                                    Right = selectionright,
-        //                                    Bottom = selectionbottom,
-        //                                };
-        //                                canvas.DrawRect(selectionTect, selectionPaint);
-        //                            }
-        //                        }
-        //                    }
-        //                }
-        //            }
-
-        //        }
-        //    }
-        //}
     }
 }

@@ -94,14 +94,16 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             StackLayout al = (StackLayout)sender;
             model.ScreenWidth = al.Width;
             model.ScreenHeight = al.Height;
-            model.UDSPanelHeight = (int)Math.Round(al.Height / 6);
+            model.UDSPanelHeight = (int)Math.Round(al.Height / 5.5);
         }
 
-        private void abslayout_SizeChanged(object sender, EventArgs e)
+        private void Abslayout_SizeChanged(object sender, EventArgs e)
         {
             AbsoluteLayout al = (AbsoluteLayout)sender;
             model.ScreenWidth = al.Width;
             model.ScreenHeight = al.Height;
+            model.UDSPanelHeight = (int)Math.Round(al.Height / 5.5);
+            model.Rebuild(false);
         }
 
         private void Rebuild(RacksViewModel rsmv)
@@ -148,21 +150,25 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
 
         private void GridTapped(object sender, EventArgs e)
         {
+            foreach (RackSchemeView rsv in Views)
+            {
+                rsv.Opacity = 1;
+            }
             model.UnSelectAll();
         }
 
 
-        Easing easing1 = Easing.Linear;
-        Easing easingParcking = Easing.CubicInOut;
+        readonly Easing easing1 = Easing.Linear;
+        readonly Easing easingParcking = Easing.CubicInOut;
 
-        double x, y, widthstep, heightstep = 0;
+        double x = 0, y = 0, widthstep = 0, heightstep = 0;
 
         double leftborder = double.MaxValue;
         double topborder = double.MaxValue;
         double rightborder = double.MinValue;
         double bottomborder = double.MinValue;
 
-        double oldeTotalX, oldeTotalY = 0;
+        double oldeTotalX = 0, oldeTotalY = 0;
 
         private async void OnPaned(object sender, PanUpdatedEventArgs e)
         {
@@ -279,11 +285,15 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
                         MovingAction = MovingActionTypeEnum.None;
                         break;
                     }
+                default:
+                    throw new InvalidOperationException("RacksSchemePage OnPaned Impossible Value ");
             }
         }
 
         private void ToolbarItem_Clicked(object sender, EventArgs e)
         {
+            GridTapped(null, new EventArgs());
+
             if (model.IsEditMode)
             {
                 model.IsEditMode = false;

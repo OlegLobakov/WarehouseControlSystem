@@ -98,11 +98,11 @@ namespace WarehouseControlSystem.Helpers.NAV
                 }
             }
             return rv;
-        }        
+        }
 
         public Connection GetCopy()
         {
-            return (new Connection()
+            return (new Connection
             {
                 Name = Name,
                 Comment = Comment,

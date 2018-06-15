@@ -432,7 +432,7 @@ namespace WarehouseControlSystem.ViewModel
                                 sse.Selection = new List<SubSchemeSelect>();
                                 foreach (SearchResponse sr in list)
                                 {
-                                    SubSchemeSelect sss = new SubSchemeSelect()
+                                    SubSchemeSelect sss = new SubSchemeSelect
                                     {
                                         Section = sr.Section,
                                         Level = sr.Level,
