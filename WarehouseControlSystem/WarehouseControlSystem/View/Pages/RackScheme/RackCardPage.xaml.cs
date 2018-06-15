@@ -44,10 +44,9 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
         {
             base.OnAppearing();
             MessagingCenter.Subscribe<BinsViewModel>(this, "BinsIsLoaded", BinsIsLoaded);
-            model.State = ModelState.Loading;
-            model.LoadAnimation = true;
             model.LoadingText = AppResources.RackCardPage_LoadingText;
-            model.LoadBins();         
+            model.LoadBins();
+            model.State = ModelState.Loading;
         }
 
         protected override bool OnBackButtonPressed()
@@ -59,9 +58,9 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
 
         public void BinsIsLoaded(BinsViewModel bvm)
         {
-            model.LoadAnimation = false;
             model.State = ModelState.Normal;
             model.GetSearchText();
+            rackview.Update(model);
         }
 
         public void BinInfopanelItemTap(BinContentShortViewModel bcsvm)

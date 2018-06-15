@@ -584,24 +584,24 @@ namespace WarehouseControlSystem.Helpers.NAV
                         XNamespace myns = GetNameSpace();
                         string functionname = "ModifyZone";
                         XElement body =
-                        new XElement(myns + functionname,
-                        new XElement(myns + "locationCode", zone.LocationCode),
-                        new XElement(myns + "code", zone.Code),
-                        new XElement(myns + "prevCode", zone.PrevCode),
-                        new XElement(myns + "description", zone.Description),
-                        new XElement(myns + "binTypeCode", zone.BinTypeCode),
-                        new XElement(myns + "zoneRanking", zone.ZoneRanking),
-                        new XElement(myns + "crossDockBinZone", zone.CrossDockBinZone),
-                        new XElement(myns + "specialEquipmentCode", zone.SpecialEquipmentCode),
-                        new XElement(myns + "warehouseClassCode", zone.WarehouseClassCode),
-                        new XElement(myns + "hexColor", zone.HexColor),
-                        new XElement(myns + "planWidth", zone.PlanWidth),
-                        new XElement(myns + "planHeight", zone.PlanHeight),
-                        new XElement(myns + "left", zone.Left),
-                        new XElement(myns + "top", zone.Top),
-                        new XElement(myns + "width", zone.Width),
-                        new XElement(myns + "height", zone.Height),
-                        new XElement(myns + "schemeVisible", zone.SchemeVisible));
+                            new XElement(myns + functionname,
+                            new XElement(myns + "locationCode", zone.LocationCode),
+                            new XElement(myns + "code", zone.Code),
+                            new XElement(myns + "prevCode", zone.PrevCode),
+                            new XElement(myns + "description", zone.Description),
+                            new XElement(myns + "binTypeCode", zone.BinTypeCode),
+                            new XElement(myns + "zoneRanking", zone.ZoneRanking),
+                            new XElement(myns + "crossDockBinZone", zone.CrossDockBinZone),
+                            new XElement(myns + "specialEquipmentCode", zone.SpecialEquipmentCode),
+                            new XElement(myns + "warehouseClassCode", zone.WarehouseClassCode),
+                            new XElement(myns + "hexColor", zone.HexColor),
+                            new XElement(myns + "planWidth", zone.PlanWidth),
+                            new XElement(myns + "planHeight", zone.PlanHeight),
+                            new XElement(myns + "left", zone.Left),
+                            new XElement(myns + "top", zone.Top),
+                            new XElement(myns + "width", zone.Width),
+                            new XElement(myns + "height", zone.Height),
+                            new XElement(myns + "schemeVisible", zone.SchemeVisible));
                         XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
                         tcs.SetResult(0);
                     }
@@ -630,10 +630,10 @@ namespace WarehouseControlSystem.Helpers.NAV
                         XNamespace myns = GetNameSpace();
                         string functionname = "SetZoneVisible";
                         XElement body =
-                        new XElement(myns + functionname,
-                        new XElement(myns + "locationCode", zone.LocationCode),
-                        new XElement(myns + "code", zone.Code),
-                        new XElement(myns + "visible", zone.SchemeVisible));
+                            new XElement(myns + functionname,
+                            new XElement(myns + "locationCode", zone.LocationCode),
+                            new XElement(myns + "code", zone.Code),
+                            new XElement(myns + "visible", zone.SchemeVisible));
                         XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
                         tcs.SetResult(0);
                     }

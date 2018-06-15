@@ -640,10 +640,13 @@ namespace WarehouseControlSystem.ViewModel
                             if (!string.IsNullOrEmpty(Global.SearchRequest))
                             {
                                 bvm.ExcludeFromSearch = true;
+
                                 List<SearchResponse> list = Global.SearchResponses.FindAll(
-                                    x => x.ZoneCode == ZoneCode &&
+                                    x => 
+                                    x.ZoneCode == ZoneCode &&
                                     x.RackNo == RackNo &&
                                     x.BinCode == bvm.Code);
+
                                 if (list is List<SearchResponse>)
                                 {
                                     if (list.Count > 0)
@@ -758,7 +761,7 @@ namespace WarehouseControlSystem.ViewModel
                 bvm.LoadAnimation = true;
                 try
                 {
-                    List<BinContent> bincontent = await NAV.GetBinContentList(LocationCode, ZoneCode, bvm.Code, "", "", 1, int.MaxValue, ACD.Default);
+                    List<BinContent> bincontent = await NAV.GetBinContentList(LocationCode, ZoneCode, bvm.Code, "", "", 1, int.MaxValue, ACD.Default).ConfigureAwait(true);
                     if ((!IsDisposed) && (bincontent.Count > 0))
                     {
                         bvm.BinContent.Clear();

@@ -44,6 +44,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } string no;
+
         public string NoWarningText
         {
             get { return nowarningtext; }
@@ -69,6 +70,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } bool canchangelocationAndzone;
+
         public int Sections
         {
             get { return sections; }
@@ -88,6 +90,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } int sections;
+
         public int Levels
         {
             get { return levels; }
@@ -471,6 +474,8 @@ namespace WarehouseControlSystem.ViewModel
             LevelDepthSeparator = Settings.DefaultLevelDepthSeparator;
             CreateMode = createmode1;
             BinsViewModel = new BinsViewModel(navigation);
+            BinsViewModel.LocationCode = rack.LocationCode;
+            BinsViewModel.ZoneCode = rack.ZoneCode;
             TapCommand = new Command<object>(Tap);
             FillFields(Rack);
             CreateRackCommand = new Command(CreateRackInNAV);
@@ -801,8 +806,8 @@ namespace WarehouseControlSystem.ViewModel
         {
             if (!string.IsNullOrEmpty(Global.SearchRequest))
             {
-                SearchResult = Global.SearchRequest + " | "+AppResources.RackCardPage_Search_Finded+" "
-                   +AppResources.RackCardPage_Search_Bins +": " + BinsViewModel.SearchBinsQuantity.ToString();
+                SearchResult = Global.SearchRequest + " | " + AppResources.RackCardPage_Search_Finded + " "
+                   + AppResources.RackCardPage_Search_Bins + ": " + BinsViewModel.SearchBinsQuantity.ToString();
             }
             else
             {

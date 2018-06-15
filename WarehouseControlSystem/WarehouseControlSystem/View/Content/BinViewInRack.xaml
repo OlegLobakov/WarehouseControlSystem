@@ -18,13 +18,13 @@
                 </DataTrigger>
             </StackLayout.Triggers>
 
-            <Grid x:Name="grid" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="#e2dacf">
+            <Grid x:Name="grid" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="#e2dacf" Opacity="1">
                 <Grid.Triggers>
                     <DataTrigger Binding="{Binding Blocked}" TargetType="Grid" Value="true">
                         <Setter Property="BackgroundColor" Value="#ff9a99"/>
                     </DataTrigger>
                     <DataTrigger Binding="{Binding ExcludeFromSearch}" TargetType="Grid" Value="true">
-                        <Setter Property="Opacity" Value="0.3"/>
+                        <Setter Property="Opacity" Value="0.25"/>
                     </DataTrigger>
                     <DataTrigger Binding="{Binding ExcludeFromSearch}" TargetType="Grid" Value="false">
                         <Setter Property="Opacity" Value="1"/>

@@ -235,7 +235,7 @@ namespace WarehouseControlSystem.ViewModel.Base
         private void ChangeState(ModelState state)
         {
             IsLoadingState = false;
-            IsErrorState = false;
+            IsNormalState = false;
             IsErrorState = false;
             switch (state)
             {
