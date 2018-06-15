@@ -57,7 +57,6 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             MessagingCenter.Subscribe<RacksViewModel>(this, "UDSListIsLoaded", UDSListIsLoaded);
         }
 
-
         protected override void OnAppearing()
         {
             base.OnAppearing();
@@ -142,7 +141,6 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             hlv.ItemsSource = model.UserDefinedSelectionViewModels;
         }
 
-
         private void OnSearch(SearchViewModel svm)
         {
             System.Diagnostics.Debug.WriteLine(svm.ToString());
@@ -157,11 +155,13 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             model.UnSelectAll();
         }
 
-
         readonly Easing easing1 = Easing.Linear;
         readonly Easing easingParcking = Easing.CubicInOut;
 
-        double x = 0, y = 0, widthstep = 0, heightstep = 0;
+        double x = 0;
+        double y = 0;
+        double widthstep = 0;
+        double heightstep = 0;
 
         double leftborder = double.MaxValue;
         double topborder = double.MaxValue;
@@ -210,7 +210,6 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
                             bottomborder = Math.Max(lv.Y + lv.Height, bottomborder);
                             lv.Opacity = 0.5;
                         }
-
                         x += oldeTotalX;
                         y += oldeTotalY;
                         break;
@@ -251,7 +250,6 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
                     }
                 case GestureStatus.Completed:
                     {
-
                         x = 0;
                         y = 0;
                         oldeTotalX = 0;

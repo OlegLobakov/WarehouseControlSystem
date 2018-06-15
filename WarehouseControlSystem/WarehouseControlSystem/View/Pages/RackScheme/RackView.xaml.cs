@@ -24,7 +24,7 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
     {
         Label HeaderLabel;
 
-        public RackViewModel Model
+        public RackViewModel Model 
         {
             get
             {
@@ -40,7 +40,6 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             MessagingCenter.Subscribe<BinsViewModel>(this, "Update", Update);
             MessagingCenter.Subscribe<RackViewModel>(this, "Update", Update);
         }
-
 
         private void Update(BinsViewModel bvm)
         {
@@ -112,14 +111,11 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
                 grid.Children.Add(lb, j, 0);
             }
 
-
-
             for (int i = 1; i <= model.Levels; i++)
             {
                 for (int j = 1; j <= model.Sections; j++)
                 {
-                   
-                        BinViewModel finded = rvm.BinsViewModel.BinViewModels.Find(x => x.Level == i && x.Section == j);
+                    BinViewModel finded = rvm.BinsViewModel.BinViewModels.Find(x => x.Level == i && x.Section == j);
                     if (finded is BinViewModel)
                     {
                         if (rvm.CreateMode)
@@ -133,8 +129,7 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
                             grid.Children.Add(bev, finded.Section, finded.Section + finded.SectionSpan, finded.Level, finded.Level + finded.LevelSpan);
                         }
                     }
-                    
-                }
+                }    
             }
         }
 

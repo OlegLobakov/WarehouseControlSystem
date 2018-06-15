@@ -462,7 +462,6 @@ namespace WarehouseControlSystem.ViewModel
         public List<SubSchemeSelect> UDSSelects { get; set; } = new List<SubSchemeSelect>();
         public List<UserDefinedFunction> UserDefinedFunctions { get; set; } = new List<UserDefinedFunction>();
 
-
         public RackViewModel(INavigation navigation, Rack rack, bool createmode1) : base(navigation)
         {
             Rack = rack;
@@ -765,7 +764,6 @@ namespace WarehouseControlSystem.ViewModel
             BinsViewModel.BinTemplate = SelectedBinTemplate;
         }
 
-
         public async void SaveToNAVSchemeVisible()
         {
             if (IsSaveToNAVEnabled)
@@ -825,7 +823,6 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
-       
         public async void CreateRackInNAV()
         {
             if (RackOrientation == RackOrientationEnum.Undefined)
@@ -856,7 +853,7 @@ namespace WarehouseControlSystem.ViewModel
             try
             {
                 LoadingText = AppResources.RackNewPage_LoadingProgressRack + " " + newrack.No;
-                int rackexist = await NAV.GetRackCount(LocationCode, ZoneCode, No,false, ACD.Default);
+                int rackexist = await NAV.GetRackCount(LocationCode, ZoneCode, No, false, ACD.Default);
                 if (rackexist > 0)
                 {
                     if (ConflictRackChange)
@@ -887,7 +884,7 @@ namespace WarehouseControlSystem.ViewModel
                         if (binexist > 0)
                         {
                             if (ConflictBinChange)
-                            {                         
+                            {
                                 LoadingText = AppResources.RackNewPage_LoadingProgressModifyBin + " " + bmv.Bin.Code;
                                 bmv.Bin.PrevCode = bmv.Bin.Code;
                                 await NAV.ModifyBin(bmv.Bin, ACD.Default);
@@ -930,11 +927,6 @@ namespace WarehouseControlSystem.ViewModel
                 ErrorText = e.Message;
             }
         }
-
-        //public void Search()
-        //{
-        //    BinsViewModel.SearchByContentItemNo(SearchRequest);
-        //}
 
         #region User Defined Functions
         UserDefinedFunctionViewModel udfvmselected;
