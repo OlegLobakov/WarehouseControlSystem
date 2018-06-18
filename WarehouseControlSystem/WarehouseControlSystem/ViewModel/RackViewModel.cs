@@ -463,7 +463,7 @@ namespace WarehouseControlSystem.ViewModel
 
         public List<SubSchemeSelect> SubSchemeSelects { get; set; } = new List<SubSchemeSelect>();
         public List<SubSchemeSelect> UDSSelects { get; set; } = new List<SubSchemeSelect>();
-        public List<UserDefinedFunction> UserDefinedFunctions { get; set; } = new List<UserDefinedFunction>();
+        //public ObservableCollection<UserDefinedFunction> UserDefinedFunctions { get; set; } = new ObservableCollection<UserDefinedFunction>();
 
         public RackViewModel(INavigation navigation, Rack rack, bool createmode1) : base(navigation)
         {

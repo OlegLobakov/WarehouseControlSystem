@@ -69,15 +69,8 @@
                           ItemsSource="{Binding SelectedBinContent}" 
                           HasUnevenRows="True" 
                           ItemTapped="ListView_ItemTapped"
-                          IsVisible="False">
-                    <ListView.Triggers>
-                        <DataTrigger Binding="{Binding IsUserDefinedCommandsVisible}" TargetType="ListView" Value="true">
-                            <Setter Property="IsVisible" Value="false"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding IsUserDefinedCommandsVisible}" TargetType="ListView" Value="false">
-                            <Setter Property="IsVisible" Value="true"/>
-                        </DataTrigger>
-                    </ListView.Triggers>
+                          IsGroupingEnabled="false"
+                          IsVisible="{Binding IsContentVisible}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
@@ -109,19 +102,14 @@
                     </ListView.ItemTemplate>
                 </ListView>
 
-                <ListView Grid.Row="1" 
-                          ItemsSource="{Binding UserDefinedFunctions}" 
+                <ListView Grid.Row="1"
+                          ItemsSource="{Binding UserDefinedFunctions}"
                           ItemTapped="ListView_UserDefinedFunctionTapped"
+                          ItemSelected="udf_ItemSelected"
                           HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
-                          HasUnevenRows="True">
-                    <ListView.Triggers>
-                        <DataTrigger Binding="{Binding IsUserDefinedCommandsVisible}" TargetType="ListView" Value="true">
-                            <Setter Property="IsVisible" Value="true"  />
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding IsUserDefinedCommandsVisible}" TargetType="ListView" Value="false">
-                            <Setter Property="IsVisible" Value="false"  />
-                        </DataTrigger>
-                    </ListView.Triggers>
+                          x:Name="udf"
+                          IsGroupingEnabled="false"
+                          IsVisible="{Binding IsUserDefinedCommandsVisible}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>

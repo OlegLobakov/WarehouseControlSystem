@@ -148,6 +148,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } bool bintypesisenabled;
+
         public bool IsUserDefinedCommandsVisible
         {
             get { return isuserdefinedcommandsvisible; }
@@ -160,6 +161,19 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } bool isuserdefinedcommandsvisible;
+        public bool IsContentVisible
+        {
+            get { return iscontentvisible; }
+            set
+            {
+                if (iscontentvisible != value)
+                {
+                    iscontentvisible = value;
+                    OnPropertyChanged(nameof(IsContentVisible));
+                }
+            }
+        } bool iscontentvisible;
+
         public bool EditedBinCodeIsEnabled
         {
             get { return editedbincodeisenabled; }
@@ -367,6 +381,7 @@ namespace WarehouseControlSystem.ViewModel
             ContentViewCommand = new Command(ShowContent);
             FunctionsViewCommand = new Command(ShowFunctions);
 
+            IsContentVisible = true;
             State = ModelState.Undefined;
         }
 
@@ -589,11 +604,13 @@ namespace WarehouseControlSystem.ViewModel
         public void ShowContent()
         {
             IsUserDefinedCommandsVisible = false;
+            IsContentVisible = true;
         }
 
         public void ShowFunctions()
         {
             IsUserDefinedCommandsVisible = true;
+            IsContentVisible = false;
         }
 
         public async void CheckBins(AsyncCancelationDispatcher acd)

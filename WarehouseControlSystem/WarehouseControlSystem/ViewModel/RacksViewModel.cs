@@ -150,8 +150,8 @@ namespace WarehouseControlSystem.ViewModel
                             rvm.OnTap += Rvm_OnTap;
                             RackViewModels.Add(rvm);
                         }
-                        Rebuild(true);
                         UpdateMinSizes();
+                        Rebuild(true);
                     }
                     else
                     {
@@ -401,10 +401,8 @@ namespace WarehouseControlSystem.ViewModel
             {
                 return;
             }
-
             Zone.PlanWidth = PlanWidth;
             Zone.PlanHeight = PlanHeight;
-
             await NAV.ModifyZone(Zone, ACD.Default);
         }
 
@@ -428,6 +426,8 @@ namespace WarehouseControlSystem.ViewModel
                     ErrorText = e.Message;
                 }
             }
+
+            UpdateMinSizes();
         }
 
         public void UpdateMinSizes()
@@ -445,6 +445,7 @@ namespace WarehouseControlSystem.ViewModel
                     newminplanheight = rvm.Rack.Top + rvm.Rack.Height;
                 }
             }
+
             MinPlanWidth = newminplanwidth;
             MinPlanHeight = newminplanheight;
         }

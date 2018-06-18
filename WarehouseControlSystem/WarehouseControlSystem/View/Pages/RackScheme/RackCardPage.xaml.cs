@@ -33,11 +33,11 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
         {
             model = rvm;
             BindingContext = model;
+            model.State = ModelState.Normal;
             InitializeComponent();
 
             Title = AppResources.RackCardPage_Title + " " + model.No;
-
-            infopanel.BindingContext = model.BinsViewModel;
+            infopanel.UpdateBindingContext(model.BinsViewModel);
         }
 
         protected override void OnAppearing()
@@ -46,8 +46,7 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             MessagingCenter.Subscribe<BinsViewModel>(this, "BinsIsLoaded", BinsIsLoaded);
             model.LoadingText = AppResources.RackCardPage_LoadingText;
             model.LoadBins();
-            model.LoadUDF();
-            model.State = ModelState.Loading;
+            model.LoadUDF();          
         }
 
         protected override bool OnBackButtonPressed()
