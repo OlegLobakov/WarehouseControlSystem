@@ -36,7 +36,8 @@ namespace WarehouseControlSystem.View.Pages.Connections
 
         protected override void OnAppearing()
         {
-            base.OnAppearing();           
+            base.OnAppearing();
+            model.State = ViewModel.Base.ModelState.Normal;
         }
 
         protected override void OnDisappearing()

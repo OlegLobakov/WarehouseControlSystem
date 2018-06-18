@@ -454,6 +454,7 @@ namespace WarehouseControlSystem.ViewModel
             WarehouseClassCode = bin.WarehouseClassCode;
             SpecialEquipmentCode = bin.SpecialEquipmentCode;
             BlockMovement = bin.BlockMovement;
+            Blocked = BlockMovement > 0;
             SchemeVisible = bin.SchemeVisible;
             Default = bin.Default;
             Dedicated = bin.Dedicated;

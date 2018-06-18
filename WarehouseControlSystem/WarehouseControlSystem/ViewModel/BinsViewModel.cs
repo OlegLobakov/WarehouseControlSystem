@@ -84,7 +84,10 @@ namespace WarehouseControlSystem.ViewModel
                 if (bintemplate != value)
                 {
                     bintemplate = value;
-                    ChangeBinTemplate();
+                    if (value is BinTemplate)
+                    {
+                        ChangeBinTemplate();
+                    }
                     OnPropertyChanged(nameof(BinTemplate));
                 }
             }
@@ -94,6 +97,9 @@ namespace WarehouseControlSystem.ViewModel
         public ICommand CombineBinsCommand { protected set; get; }
         public ICommand DeleteBinsCommand { protected set; get; }
         public ICommand ShowBinOperationCommand { protected set; get; }
+
+        public ICommand ContentViewCommand { protected set; get; }
+        public ICommand FunctionsViewCommand { protected set; get; }
 
         public event Action<BinsViewModel> OnBinClick;
 
@@ -357,6 +363,10 @@ namespace WarehouseControlSystem.ViewModel
             CombineBinsCommand = new Command(CombineBins);
             DeleteBinsCommand = new Command(DeleteBins);
             ShowBinOperationCommand = new Command(ShowBinOperations);
+
+            ContentViewCommand = new Command(ShowContent);
+            FunctionsViewCommand = new Command(ShowFunctions);
+
             State = ModelState.Undefined;
         }
 
@@ -576,6 +586,16 @@ namespace WarehouseControlSystem.ViewModel
             Global.CompliantPlug = "";
         }
 
+        public void ShowContent()
+        {
+            IsUserDefinedCommandsVisible = false;
+        }
+
+        public void ShowFunctions()
+        {
+            IsUserDefinedCommandsVisible = true;
+        }
+
         public async void CheckBins(AsyncCancelationDispatcher acd)
         {
             try
@@ -625,7 +645,7 @@ namespace WarehouseControlSystem.ViewModel
             {
                 LoadedBinsQuantity = 0;
                 SearchBinsQuantity = 0;
-                List<Bin> bins = await NAV.GetBinList(LocationCode, ZoneCode, RackNo, "", 1, int.MaxValue, ACD.Default);
+                List<Bin> bins = await NAV.GetBinList(LocationCode, ZoneCode, RackNo, "", 1, int.MaxValue, ACD.Default).ConfigureAwait(true);
                 if (!IsDisposed)
                 {
                     if (bins.Count > 0)
@@ -678,7 +698,7 @@ namespace WarehouseControlSystem.ViewModel
             try
             {
                 UserDefinedFunctions.Clear();
-                List<UserDefinedFunction> list = await NAV.LoadUserDefinedFunctionList(LocationCode, ZoneCode, RackNo, ACD.Default);
+                List<UserDefinedFunction> list = await NAV.LoadUserDefinedFunctionList(LocationCode, ZoneCode, RackNo, ACD.Default).ConfigureAwait(true);
                 if (list is List<UserDefinedFunction>)
                 {
                     foreach (UserDefinedFunction udf in list)

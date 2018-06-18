@@ -404,7 +404,7 @@ namespace WarehouseControlSystem.ViewModel
                 if (selecteditem != value)
                 {
                     selecteditem = value;
-                    ChangeBinTemplate();                   
+                    ChangeBinTemplate(selecteditem);                   
                     OnPropertyChanged(nameof(SelectedBinTemplate));
                 }
             }
@@ -594,7 +594,7 @@ namespace WarehouseControlSystem.ViewModel
             IsBusy = true;
             try
             {
-                List<Location> locations = await NAV.GetLocationList("", false, 1, int.MaxValue, ACD.Default);
+                List<Location> locations = await NAV.GetLocationList("", false, 1, int.MaxValue, ACD.Default).ConfigureAwait(true);
                 if (!IsDisposed)
                 {
                     Locations.Clear();
@@ -616,7 +616,7 @@ namespace WarehouseControlSystem.ViewModel
                     BinsViewModel.BinTypesIsEnabled = bintypes.Count > 0;
                 }
 
-                List<WarehouseClass> warehouseclasses = await NAV.GetWarehouseClassList(1, int.MaxValue, ACD.Default);
+                List<WarehouseClass> warehouseclasses = await NAV.GetWarehouseClassList(1, int.MaxValue, ACD.Default).ConfigureAwait(true);
                 if (!IsDisposed)
                 {
                     BinsViewModel.WarehouseClasses.Clear();
@@ -627,7 +627,7 @@ namespace WarehouseControlSystem.ViewModel
                     BinsViewModel.WarehouseClassesIsEnabled = warehouseclasses.Count > 0;
                 }
 
-                List<SpecialEquipment> specialequipments = await NAV.GetSpecialEquipmentList(1, int.MaxValue, ACD.Default);
+                List<SpecialEquipment> specialequipments = await NAV.GetSpecialEquipmentList(1, int.MaxValue, ACD.Default).ConfigureAwait(true);
                 if (!IsDisposed)
                 {
                     BinsViewModel.SpecialEquipments.Clear();
@@ -640,7 +640,7 @@ namespace WarehouseControlSystem.ViewModel
 
                 if (ZoneCode != "")
                 {
-                    List<Zone> zones = await NAV.GetZoneList(LocationCode, "", false, 1, int.MaxValue, ACD.Default);
+                    List<Zone> zones = await NAV.GetZoneList(LocationCode, "", false, 1, int.MaxValue, ACD.Default).ConfigureAwait(true);
                     if (!IsDisposed)
                     {
                         Zones.Clear();
@@ -764,9 +764,9 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
-        public void ChangeBinTemplate()
+        public void ChangeBinTemplate(BinTemplate bt)
         {
-            BinsViewModel.BinTemplate = SelectedBinTemplate;
+            BinsViewModel.BinTemplate = bt;
         }
 
         public async void SaveToNAVSchemeVisible()
@@ -820,7 +820,7 @@ namespace WarehouseControlSystem.ViewModel
             NoWarningText = "";
             if ((LocationCode != "") && (ZoneCode != "") && (No != ""))
             {
-                int exist = await NAV.GetRackCount(LocationCode, ZoneCode, No, false, ACD.Default);
+                int exist = await NAV.GetRackCount(LocationCode, ZoneCode, No, false, ACD.Default).ConfigureAwait(true);
                 if (exist > 0)
                 {
                     NoWarningText = AppResources.RackNewPage_CodeAlreadyExist;
@@ -940,7 +940,7 @@ namespace WarehouseControlSystem.ViewModel
             udfvmselected = udfvm;
             if (!string.IsNullOrEmpty(udfvm.Confirm))
             {
-                State = ModelState.Error;
+                State = ModelState.Request;
                 ErrorText = udfvm.Confirm;
             }
             else
@@ -961,19 +961,22 @@ namespace WarehouseControlSystem.ViewModel
         {
             try
             {
-                BinViewModel bvm = BinsViewModel.BinViewModels.Find(x => x.Selected == true);
-                if (bvm is BinViewModel)
+                List<BinViewModel> list = BinsViewModel.BinViewModels.FindAll(x => x.Selected == true);
+                if (list is List<BinViewModel>)
                 {
                     State = ModelState.Loading;
                     LoadAnimation = true;
-                    string response = await NAV.RunFunction(udfvmselected.ID, bvm.LocationCode, bvm.ZoneCode, bvm.RackNo, bvm.Code, "", "", 0, ACD.Default);
-                    State = ModelState.Error;
-                    InfoText = response;
+                    foreach (BinViewModel bvm in list)
+                    {
+                        LoadingText = bvm.Code;
+                        string response = await NAV.RunFunction(udfvmselected.ID, bvm.LocationCode, bvm.ZoneCode, bvm.RackNo, bvm.Code, "", "", 0, ACD.Default).ConfigureAwait(true);
+                    }
+                    State = ModelState.Normal;
                 }
                 else
                 {
                     State = ModelState.Error;
-                    InfoText = AppResources.RackCardPage_Error_BinDidNotSelect;
+                    ErrorText = AppResources.RackCardPage_Error_BinDidNotSelect;
                 }
             }
             catch (OperationCanceledException e)

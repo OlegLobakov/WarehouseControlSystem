@@ -109,6 +109,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } bool udsisbeingran;
+
         public int UDSWidth
         {
             get { return udswidth; }

@@ -5,7 +5,12 @@
              xmlns:i18n="clr-namespace:WarehouseControlSystem;assembly=WarehouseControlSystem">
 
     <ContentView.Content>
-        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="{StaticResource PageHeaderBarBackgoundColor}">
+        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
+                     BackgroundColor="{Binding Color}" WidthRequest="{Binding UDSWidth}">
+            <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding TapCommand}"/>
+            </StackLayout.GestureRecognizers>
+            
             <StackLayout IsVisible="{Binding IsLoadingState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                 <StackLayout VerticalOptions="Center" HorizontalOptions="Center" Orientation="Vertical">
                     <ActivityIndicator IsRunning="{Binding LoadAnimation}" HeightRequest="50" WidthRequest="50"/>
@@ -14,9 +19,6 @@
             </StackLayout>
             <StackLayout IsVisible="{Binding IsNormalState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                 <Grid>
-                    <Grid.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding TapCommand}"/>
-                    </Grid.GestureRecognizers>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
@@ -35,31 +37,7 @@
                 </Grid>
             </StackLayout>
             <StackLayout IsVisible="{Binding IsErrorState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="1*"/>
-                        <RowDefinition Height="4*"/>
-                        <RowDefinition Height="1*"/>
-                    </Grid.RowDefinitions>
-                    <Label Grid.Row="0" Text="{i18n:Translate StateContainer_Error}" 
-                           FontSize="Large" HorizontalOptions="Center"
-                           TextColor="Black"
-                           VerticalOptions="Center"/>
-                    <ScrollView Orientation="Vertical" Grid.Row="1" >
-                        <StackLayout>
-                            <Label Text="{Binding ErrorText}" FontSize="Large" 
-                                   TextColor="Black"
-                                   HorizontalOptions="FillAndExpand" 
-                                   VerticalOptions="FillAndExpand" 
-                                   HorizontalTextAlignment="Center"
-                                   VerticalTextAlignment="Center"/>
-                        </StackLayout>
-                    </ScrollView>
-                    <Button Grid.Row="2" Text="OK" FontSize="Large" 
-                            Command="{Binding ErrorOKCommand}" 
-                            TextColor="Black"
-                            BackgroundColor="White"/>
-                </Grid>
+                <Label Text="Error" HorizontalOptions="CenterAndExpand" VerticalOptions="Center"/>
             </StackLayout>
         </StackLayout>
     </ContentView.Content>

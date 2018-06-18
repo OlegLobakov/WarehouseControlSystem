@@ -109,10 +109,13 @@
                     </AbsoluteLayout>
                     <ScrollView Grid.Row="2" HeightRequest="{Binding UDSPanelHeight}" IsVisible="{Binding IsVisibleUDS}" 
                                 Orientation="Horizontal" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-                        <hs:HorizontalListView  x:Name="hlv" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Padding="2">
+                        <hs:HorizontalListView  x:Name="hlv" 
+                                                HorizontalOptions="FillAndExpand" 
+                                                VerticalOptions="FillAndExpand" 
+                                                Padding="2">
                             <hs:HorizontalListView.ItemTemplate>
                                 <DataTemplate>
-                                    <components:UserDefinedSelectionView/>
+                                    <components:UserDefinedSelectionView WidthRequest="{Binding UDSPanelHeight}" />
                                 </DataTemplate>
                             </hs:HorizontalListView.ItemTemplate>
                         </hs:HorizontalListView>

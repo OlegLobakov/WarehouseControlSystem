@@ -48,7 +48,7 @@ namespace WarehouseControlSystem.View.Content
 
         private void ListView_UserDefinedFunctionTapped(object sender, ItemTappedEventArgs e)
         {
-            UserDefinedFunctionViewModel udfvm = (UserDefinedFunctionViewModel)e.Item;
+            UserDefinedFunctionViewModel udfvm = (UserDefinedFunctionViewModel)e.Group;
             BinsViewModel bvm = (BinsViewModel)BindingContext;
             if (UserDefinedFunctionTap is Action<UserDefinedFunctionViewModel>)
             {

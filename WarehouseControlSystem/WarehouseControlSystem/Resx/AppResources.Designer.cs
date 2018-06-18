@@ -430,6 +430,15 @@ namespace WarehouseControlSystem.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Functions.
+        /// </summary>
+        internal static string BinInfoPanelRackCard_Functions {
+            get {
+                return ResourceManager.GetString("BinInfoPanelRackCard_Functions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bin Description.
         /// </summary>
         internal static string BinTemplatesPage_GridColumnBinDescr {

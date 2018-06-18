@@ -58,6 +58,7 @@ namespace WarehouseControlSystem.ViewModel
         public bool IsSelectedList { get { return SelectedViewModels.Count > 0; } }
 
         public ObservableCollection<UserDefinedSelectionViewModel> UserDefinedSelectionViewModels { get; set; }
+
         public bool IsVisibleUDS
         {
             get { return isvisibleUDS; }
@@ -70,6 +71,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } bool isvisibleUDS;
+
         public int UDSPanelHeight
         {
             get { return udspanelheight; }
@@ -273,7 +275,7 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
-        private async void RunUDS(UserDefinedSelectionViewModel udsvm)
+        public async void RunUDS(UserDefinedSelectionViewModel udsvm)
         {
             if (NotNetOrConnection)
             {

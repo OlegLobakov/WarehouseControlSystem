@@ -48,8 +48,7 @@ namespace WarehouseControlSystem.ViewModel.Base
                     OnPropertyChanged(nameof(State));
                 }
             }
-        }
-        ModelState state1;
+        } ModelState state1;
 
         public bool IsLoadingState
         {
@@ -89,6 +88,21 @@ namespace WarehouseControlSystem.ViewModel.Base
                 }
             }
         }  bool iserrorstate;
+
+        public bool IsRequestState
+        {
+            get { return isrequeststate; }
+            set
+            {
+                if (isrequeststate != value)
+                {
+                    isrequeststate = value;
+                    OnPropertyChanged(nameof(IsRequestState));
+                }
+            }
+        }
+        bool isrequeststate;
+
 
         public bool Selected
         {
@@ -237,6 +251,8 @@ namespace WarehouseControlSystem.ViewModel.Base
             IsLoadingState = false;
             IsNormalState = false;
             IsErrorState = false;
+            IsRequestState = false;
+
             switch (state)
             {
                 case ModelState.Undefined:
@@ -249,6 +265,9 @@ namespace WarehouseControlSystem.ViewModel.Base
                     break;
                 case ModelState.Error:
                     IsErrorState = true;
+                    break;
+                case ModelState.Request:
+                    IsRequestState = true;
                     break;
                 default:
                     throw new InvalidOperationException("Impossible value");

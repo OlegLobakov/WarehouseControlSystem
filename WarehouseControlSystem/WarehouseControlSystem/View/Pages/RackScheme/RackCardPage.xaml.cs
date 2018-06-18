@@ -46,6 +46,7 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             MessagingCenter.Subscribe<BinsViewModel>(this, "BinsIsLoaded", BinsIsLoaded);
             model.LoadingText = AppResources.RackCardPage_LoadingText;
             model.LoadBins();
+            model.LoadUDF();
             model.State = ModelState.Loading;
         }
 

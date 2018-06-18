@@ -130,7 +130,7 @@
                                                 IsEnabled="{Binding BinTemplatesIsLoaded}" 
                                                 VerticalOptions="Start" 
                                                 ItemDisplayBinding="{Binding Code}"
-                                                SelectedItem="{Binding SelectedBinTemplate, Mode=OneWayToSource}"/>
+                                                SelectedItem="{Binding SelectedBinTemplate, Mode=TwoWay}"/>
                                         </StackLayout>
                                         <StackLayout Grid.Row="2" Orientation="Vertical">
                                             <Button Text="{i18n:Translate RackNewPage_CreateNewTemplate}"/>

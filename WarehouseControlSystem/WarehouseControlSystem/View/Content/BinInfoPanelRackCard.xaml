@@ -10,19 +10,33 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <StackLayout Grid.Row="0" Orientation="Horizontal">
-                <Label Text="{i18n:Translate BinInfoPanelRackCard_BinCode}" Margin="10,0,0,0"  VerticalOptions="Center"/>
-                <Entry Text="{Binding Code}" 
-                       HorizontalOptions="FillAndExpand" VerticalOptions="Center" x:Name="singlebinentry" Margin="10,0,0,0" 
-                       IsEnabled="false"/>
-            </StackLayout>
-            <Grid Grid.Row="1">
+            <Grid Grid.Row="0" ColumnSpacing="0" RowSpacing="0" HeightRequest="40">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Switch Grid.Column="1" IsToggled="{Binding IsUserDefinedCommandsVisible, Mode=TwoWay}"/>
+                <Button Grid.Column="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
+                        Text="{i18n:Translate BinInfoPanelRackCard_Content}" BackgroundColor="Transparent"
+                        Command="{Binding ContentViewCommand}">
+                    <Button.Triggers>
+                        <DataTrigger Binding="{Binding IsUserDefinedCommandsVisible}" TargetType="Button" Value="false">
+                            <Setter Property="BackgroundColor" Value="{StaticResource PageHeaderBarBackgoundColor}"/>
+                            <Setter Property="TextColor" Value="White"/>
+                        </DataTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
+                        Text="{i18n:Translate BinInfoPanelRackCard_Functions}" BackgroundColor="Transparent"
+                        Command="{Binding FunctionsViewCommand}">
+                    <Button.Triggers>
+                        <DataTrigger Binding="{Binding IsUserDefinedCommandsVisible}" TargetType="Button" Value="true">
+                            <Setter Property="BackgroundColor" Value="{StaticResource PageHeaderBarBackgoundColor}"/>
+                            <Setter Property="TextColor" Value="White"/>
+                        </DataTrigger>
+                    </Button.Triggers>
+                </Button>
             </Grid>
+
             <Grid Grid.Row="2">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>

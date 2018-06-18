@@ -76,7 +76,7 @@
                 <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1*"/>
-                        <RowDefinition Height="4*"/>
+                        <RowDefinition Height="5*"/>
                         <RowDefinition Height="1*"/>
                     </Grid.RowDefinitions>
                     <Label Grid.Row="0" Text="{i18n:Translate StateContainer_Error}" 
@@ -99,31 +99,39 @@
                             BackgroundColor="White"/>
                 </Grid>
             </StackLayout>
+            <StackLayout IsVisible="{Binding IsRequestState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="5*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <ScrollView Orientation="Vertical" Grid.Row="1" >
+                        <StackLayout>
+                            <Label Text="{Binding ErrorText}" FontSize="Large" 
+                                   TextColor="Black"
+                                   HorizontalOptions="FillAndExpand" 
+                                   VerticalOptions="FillAndExpand" 
+                                   HorizontalTextAlignment="Center"
+                                   VerticalTextAlignment="Center"/>
+                        </StackLayout>
+                    </ScrollView>
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" Text="OK" FontSize="Large" 
+                            Clicked="Button_Clicked_OkMessage" 
+                            TextColor="Black"
+                            BackgroundColor="White"/>
+                        <Button Grid.Column="1" Text="Cancel" FontSize="Large" 
+                            Clicked="Button_Clicked_CancelMessage" 
+                            TextColor="Black"
+                            BackgroundColor="White"/>
+                    </Grid>
+                </Grid>
+            </StackLayout>
         </StackLayout>
-
-        <!--<sc:StateContainer State="{Binding State}" OnAfterStateSet="AfterStateSet">
-            <sc:StateCondition State="Warning">
-                <StackLayout HorizontalOptions="Center" VerticalOptions="Center" Orientation="Vertical">
-                    <Label Text="{Binding InfoText}" 
-                           HorizontalOptions="Center" VerticalOptions="Center" 
-                           TextColor="Black" FontSize="Large"></Label>
-                    <Label Text=" "/>
-                    <Label Text=" "/>
-                    <Button Text="{i18n:Translate GlobalButtonOK}" Command="{Binding WarningOKCommand}"/>
-                </StackLayout>
-            </sc:StateCondition>
-            <sc:StateCondition State="Request">
-                <StackLayout Orientation="Vertical" HorizontalOptions="Center" VerticalOptions="Center">
-
-                    <Label Text="{Binding RequestMessageText}" FontSize="Large" HorizontalOptions="CenterAndExpand"/>
-                    <Label Text=" "/>
-                    <Label Text=" "/>
-                    <StackLayout Orientation="Horizontal">
-                        <Button Text="{i18n:Translate RackNewPage_ButtonsOK}" Clicked="Button_Clicked_OkMessage" WidthRequest="150" Margin="20"/>
-                        <Button Text="{i18n:Translate RackNewPage_ButtonsCancel}" Clicked="Button_Clicked_CancelMessage" WidthRequest="150" Margin="20"/>
-                    </StackLayout>
-                </StackLayout>
-            </sc:StateCondition>
-        </sc:StateContainer>-->
     </ContentPage.Content>
 </ContentPage>

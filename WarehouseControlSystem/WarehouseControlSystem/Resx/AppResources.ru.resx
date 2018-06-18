@@ -1358,4 +1358,7 @@
   <data name="NewZonePage_Color_White" xml:space="preserve">
     <value>Белый</value>
   </data>
+  <data name="BinInfoPanelRackCard_Functions" xml:space="preserve">
+    <value>Функции</value>
+  </data>
 </root>

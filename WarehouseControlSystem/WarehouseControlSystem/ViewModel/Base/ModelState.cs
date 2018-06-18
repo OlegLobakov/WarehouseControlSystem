@@ -9,6 +9,7 @@ namespace WarehouseControlSystem.ViewModel.Base
         Undefined,
         Loading,
         Normal,
-        Error
+        Error,
+        Request
     }
 }
