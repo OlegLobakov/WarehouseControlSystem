@@ -30,7 +30,7 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <Label Grid.Row="0" x:Name="codelabel"    Text="{Binding Code}"     
-                       FontSize="Large"    
+                       FontSize="Large"   
                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
                        HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
                        TextColor="White" Margin="10,5,0,0">
@@ -42,7 +42,7 @@
                     </Label>
 
                     <Label Grid.Row="1" x:Name="namelabel"    Text="{Binding Name}"     
-                       FontSize="Default"   
+                       FontSize="Default" FontAttributes="Bold"
                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
                        HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
                        TextColor="White" Margin="10,0,0,0">

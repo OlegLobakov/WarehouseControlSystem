@@ -40,7 +40,7 @@
                     </Label>
 
                     <Label Grid.Row="1" x:Name="namelabel" Text="{Binding Description}" 
-                       HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
+                       HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" FontAttributes="Bold"
                        HorizontalTextAlignment="Start" VerticalTextAlignment="Center" TextColor="White" Margin="10,0,0,0">
                         <Label.Triggers>
                             <DataTrigger Binding="{Binding Color}" TargetType="Label" Value="{StaticResource SchemeBlockWhiteColor}">

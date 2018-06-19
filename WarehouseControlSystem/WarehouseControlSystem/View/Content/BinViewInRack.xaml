@@ -39,7 +39,13 @@
                 <Label Grid.Row="0" x:Name="codelabel" Text="{Binding Code}" 
                        FontSize="Small" 
                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
-                       HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="7,2,0,0"/>
+                       HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="7,2,0,0">
+                    <Label.Triggers>
+                        <DataTrigger Binding="{Binding IsSearchQuantityVisible}" TargetType="Label" Value="true">
+                            <Setter Property="TextColor" Value="White"  />
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
 
                 <ActivityIndicator Grid.Row="2" IsVisible="{Binding LoadAnimation}" IsRunning="{Binding LoadAnimation}" HeightRequest="30" WidthRequest="30" HorizontalOptions="Center" VerticalOptions="Center"/>
 
