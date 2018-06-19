@@ -76,7 +76,7 @@
                         <Button Grid.Column="2" Text="{i18n:Translate FindPage_Reset}"
                                 Margin="20,10,20,10"
                                 BorderWidth="0" BorderRadius="0" 
-                                BackgroundColor="White" Command="{Binding ClearCommand}"/>
+                                BackgroundColor="White" Clicked="Button_Clicked"/>
                     </Grid>
                 </Grid>
             </StackLayout>

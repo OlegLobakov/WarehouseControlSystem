@@ -34,7 +34,19 @@ namespace WarehouseControlSystem.ViewModel
         public Zone Zone { get; set; }
 
         public RackViewModel SelectedRackViewModel { get; set; }
-        public ObservableCollection<RackViewModel> RackViewModels { get; set; }
+        public ObservableCollection<RackViewModel> RackViewModels
+        {
+            get { return rackviewmodels; }
+            set
+            {
+                if (rackviewmodels != value)
+                {
+                    rackviewmodels = value;
+                    OnPropertyChanged(nameof(RackViewModels));
+                }
+            }
+        }  ObservableCollection<RackViewModel> rackviewmodels;
+
         public ObservableCollection<RackViewModel> SelectedViewModels { get; set; }
 
         public bool IsEditMode
@@ -188,12 +200,15 @@ namespace WarehouseControlSystem.ViewModel
                 {
                     if (racks.Count > 0)
                     {
-                        State = ModelState.Normal;
+                        ObservableCollection<RackViewModel> nlist = new ObservableCollection<RackViewModel>();
                         foreach (Rack rack in racks)
                         {
                             RackViewModel rvm = new RackViewModel(Navigation, rack, false);
-                            RackViewModels.Add(rvm);
+                            nlist.Add(rvm);
                         }
+
+                        RackViewModels = nlist;
+                        State = ModelState.Normal;
                     }
                     else
                     {
@@ -282,11 +297,10 @@ namespace WarehouseControlSystem.ViewModel
                 return;
             }
 
-            udsvm.State = ModelState.Loading;
-            LoadAnimation = true;
             try
             {
-                List<UserDefinedSelectionResult> list = await NAV.RunUDS(Zone.LocationCode, Zone.Code, udsvm.ID, ACD.Default);
+                udsvm.State = ModelState.Loading;
+                List<UserDefinedSelectionResult> list = await NAV.RunUDS(Zone.LocationCode, Zone.Code, udsvm.ID, ACD.Default).ConfigureAwait(true);
                 if (list is List<UserDefinedSelectionResult>)
                 {
                     foreach (RackViewModel rvm in RackViewModels)
@@ -297,6 +311,7 @@ namespace WarehouseControlSystem.ViewModel
                     foreach (UserDefinedSelectionResult udsr in list)
                     {
                         RackViewModel rvm = RackViewModels.ToList().Find(x => x.No == udsr.RackNo);
+
                         if (rvm is RackViewModel)
                         {
                             SubSchemeSelect sss = new SubSchemeSelect()
@@ -325,8 +340,6 @@ namespace WarehouseControlSystem.ViewModel
                 System.Diagnostics.Debug.WriteLine(e.Message);
             }
             udsvm.State = ModelState.Normal;
-
-            LoadAnimation = false;
         }
 
         public override void Rebuild(bool recreate)

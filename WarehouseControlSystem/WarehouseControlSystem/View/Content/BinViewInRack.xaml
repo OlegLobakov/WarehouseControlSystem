@@ -18,7 +18,7 @@
                 </DataTrigger>
             </StackLayout.Triggers>
 
-            <Grid x:Name="grid" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="#e2dacf" Opacity="1">
+            <Grid x:Name="grid" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="{Binding Color}" Opacity="1">
                 <Grid.Triggers>
                     <DataTrigger Binding="{Binding Blocked}" TargetType="Grid" Value="true">
                         <Setter Property="BackgroundColor" Value="#ff9a99"/>
@@ -34,6 +34,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Label Grid.Row="0" x:Name="codelabel" Text="{Binding Code}" 
                        FontSize="Small" 
@@ -56,6 +57,10 @@
                         </OnPlatform>
                     </Image.Source>
                 </Image>
+
+                <Label Grid.Row="3" Text="{Binding SearchQuantity}" Margin="10" HorizontalOptions="End" 
+                       TextColor="White"
+                       IsVisible="{Binding IsSearchQuantityVisible}"></Label>
             </Grid>
         </StackLayout>
   </ContentView.Content>

@@ -42,7 +42,6 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <!--<Entry Grid.Column="4" x:Name="searchentry" HorizontalOptions="FillAndExpand" Text="{Binding SearchRequest}" Margin="5"></Entry>-->
                         <Label Grid.Column="4" Text="{Binding SearchResult}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                                HorizontalTextAlignment="End" VerticalTextAlignment="Center" Margin="10" TextColor="White"/>
                     </Grid>
@@ -64,7 +63,9 @@
                                 <rv:RackView x:Name="rackview"/>
                             </ScrollView>
                         </Grid>
-                        <vc:BinInfoPanelRackCard Grid.Column="1" x:Name="infopanel" 
+
+                        <vc:BinInfoPanelRackCard Grid.Column="1"
+                               BindingContext="{Binding BinsViewModel}"                  
                                IsVisible="{Binding IsSelectedBins}"
                                BinContentTap="BinInfopanelItemTap"
                                UserDefinedFunctionTap="UserDefinedFunctionTap"/>
@@ -72,6 +73,7 @@
 
                 </Grid>
             </StackLayout>
+            
             <StackLayout IsVisible="{Binding IsErrorState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                 <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                     <Grid.RowDefinitions>

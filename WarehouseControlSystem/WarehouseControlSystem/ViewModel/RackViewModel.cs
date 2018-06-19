@@ -90,7 +90,6 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } int sections;
-
         public int Levels
         {
             get { return levels; }
@@ -157,7 +156,6 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } string racksectionseparator;
-
         public string SectionLevelSeparator
         {
             get { return sectionlevelseparator; }
@@ -171,7 +169,6 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } string sectionlevelseparator;
-
         public string LevelDepthSeparator
         {
             get { return leveldepthseparator; }
@@ -199,7 +196,6 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } bool reverssectionnumbering;
-
         public bool ReversLevelNumbering
         {
             get { return reverslevelbering; }
@@ -213,7 +209,6 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } bool reverslevelbering;
-
         public bool ReversDepthNumbering
         {
             get { return reversdepthnumbering; }
@@ -241,7 +236,6 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } int numberingsectionbegin = 1;
-
         public int NumberingLevelBegin
         {
             get { return numberinglevelbegin; }
@@ -255,7 +249,6 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } int numberinglevelbegin = 1;
-
         public int NumberingDepthBegin
         {
             get { return numberingdepthbegin; }
@@ -339,8 +332,19 @@ namespace WarehouseControlSystem.ViewModel
         public ICommand TapCommand { protected set; get; }
         public event Action<RackViewModel> OnTap;
 
-        public BinsViewModel BinsViewModel { get; set; }
-      
+        public BinsViewModel BinsViewModel
+        {
+            get { return binsviewmodel; }
+            set
+            {
+                if (binsviewmodel != value)
+                {
+                    binsviewmodel = value;
+                    OnPropertyChanged(nameof(BinsViewModel));
+                }
+            }
+        } BinsViewModel binsviewmodel;
+
         public ICommand CreateRackCommand { protected set; get; }
 
         public bool LocationsIsLoaded
@@ -463,7 +467,6 @@ namespace WarehouseControlSystem.ViewModel
 
         public List<SubSchemeSelect> SubSchemeSelects { get; set; } = new List<SubSchemeSelect>();
         public List<SubSchemeSelect> UDSSelects { get; set; } = new List<SubSchemeSelect>();
-        //public ObservableCollection<UserDefinedFunction> UserDefinedFunctions { get; set; } = new ObservableCollection<UserDefinedFunction>();
 
         public RackViewModel(INavigation navigation, Rack rack, bool createmode1) : base(navigation)
         {
@@ -670,6 +673,7 @@ namespace WarehouseControlSystem.ViewModel
 
         public void LoadBins()
         {
+            BinsViewModel.LinkToRackViewModel = this;
             BinsViewModel.LoadBins(ACD);
         }
 
@@ -799,6 +803,7 @@ namespace WarehouseControlSystem.ViewModel
 
         public void LoadUDF()
         {
+            BinsViewModel.LinkToRackViewModel = this;
             BinsViewModel.LoadUDF(ACD);
         }
 
@@ -935,6 +940,7 @@ namespace WarehouseControlSystem.ViewModel
 
         #region User Defined Functions
         UserDefinedFunctionViewModel udfvmselected;
+
         public void RunUserDefineFunction(UserDefinedFunctionViewModel udfvm)
         {
             udfvmselected = udfvm;
@@ -1024,6 +1030,7 @@ namespace WarehouseControlSystem.ViewModel
 
         public void CancelAsync()
         {
+            BinsViewModel.CancelAsync();
             ACD.CancelAll();
         }
 

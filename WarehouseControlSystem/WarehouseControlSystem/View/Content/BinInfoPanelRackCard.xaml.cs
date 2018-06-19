@@ -36,12 +36,6 @@ namespace WarehouseControlSystem.View.Content
             InitializeComponent();
         }
 
-        public void UpdateBindingContext(BinsViewModel bvm)
-        {
-            BindingContext = bvm;
-            //udf.ItemsSource = bvm.UserDefinedFunctions;
-        }
-
         private void ListView_ItemTapped(object sender, ItemTappedEventArgs e)
         {
             BinContentShortViewModel bcsvm = (BinContentShortViewModel)e.Item;
@@ -57,19 +51,6 @@ namespace WarehouseControlSystem.View.Content
             if (e.Item is UserDefinedFunctionViewModel)
             {
                 UserDefinedFunctionViewModel udfvm = (UserDefinedFunctionViewModel)e.Item;
-                BinsViewModel bvm = (BinsViewModel)BindingContext;
-                if (UserDefinedFunctionTap is Action<UserDefinedFunctionViewModel>)
-                {
-                    UserDefinedFunctionTap(udfvm);
-                }
-            }
-        }
-
-        private void udf_ItemSelected(object sender, SelectedItemChangedEventArgs e)
-        {
-            if (e.SelectedItem is UserDefinedFunctionViewModel)
-            {
-                UserDefinedFunctionViewModel udfvm = (UserDefinedFunctionViewModel)e.SelectedItem;
                 BinsViewModel bvm = (BinsViewModel)BindingContext;
                 if (UserDefinedFunctionTap is Action<UserDefinedFunctionViewModel>)
                 {

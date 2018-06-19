@@ -105,8 +105,33 @@ namespace WarehouseControlSystem.ViewModel
 
         public List<BinViewModel> BinViewModels { get; set; } = new List<BinViewModel>();
 
-        public ObservableCollection<BinContentShortViewModel> SelectedBinContent { get; set; } = new ObservableCollection<BinContentShortViewModel>();
-        public ObservableCollection<UserDefinedFunctionViewModel> UserDefinedFunctions { get; set; } = new ObservableCollection<UserDefinedFunctionViewModel>();
+        public ObservableCollection<BinContentShortViewModel> SelectedBinContent
+        {
+            get { return selectedbincontent; }
+            set
+            {
+                if (selectedbincontent != value)
+                {
+                    selectedbincontent = value;
+                    OnPropertyChanged(nameof(SelectedBinContent));
+                }
+            }
+        } ObservableCollection<BinContentShortViewModel> selectedbincontent;
+        public ObservableCollection<UserDefinedFunctionViewModel> UserDefinedFunctions
+        {
+            get { return userdefinedfunctions; }
+            set
+            {
+                if (userdefinedfunctions != value)
+                {
+                    userdefinedfunctions = value;
+                    OnPropertyChanged(nameof(UserDefinedFunctions));
+                }
+            }
+        } ObservableCollection<UserDefinedFunctionViewModel> userdefinedfunctions;
+
+
+        public RackViewModel LinkToRackViewModel { get; set; }
 
         public ObservableCollection<string> BinTypes { get; set; } = new ObservableCollection<string>();
         public ObservableCollection<string> SpecialEquipments { get; set; } = new ObservableCollection<string>();
@@ -373,6 +398,10 @@ namespace WarehouseControlSystem.ViewModel
 
         public BinsViewModel(INavigation navigation) : base(navigation)
         {
+            //UserDefinedFunctions = new ObservableCollection<UserDefinedFunctionViewModel>();
+            SelectedBinContent = new ObservableCollection<BinContentShortViewModel>();
+            UserDefinedFunctions = new ObservableCollection<UserDefinedFunctionViewModel>();
+
             BlockBinsCommand = new Command(BlockBins);
             CombineBinsCommand = new Command(CombineBins);
             DeleteBinsCommand = new Command(DeleteBins);
@@ -609,8 +638,8 @@ namespace WarehouseControlSystem.ViewModel
 
         public void ShowFunctions()
         {
-            IsUserDefinedCommandsVisible = true;
             IsContentVisible = false;
+            IsUserDefinedCommandsVisible = true;
         }
 
         public async void CheckBins(AsyncCancelationDispatcher acd)
@@ -672,24 +701,46 @@ namespace WarehouseControlSystem.ViewModel
                         {
                             BinViewModel bvm = new BinViewModel(Navigation, bin);
                             bvm.IsContent = !bin.Empty;
+                            bvm.Color = Color.FromHex("#e2dacf");
                             bvm.OnTap += Bvm_OnTap;
                         
-                            if (!string.IsNullOrEmpty(Global.SearchRequest))
+                            if (Global.SearchResponses is List<SearchResponse>)
                             {
-                                bvm.ExcludeFromSearch = true;
-
-                                List<SearchResponse> list = Global.SearchResponses.FindAll(
-                                    x => 
-                                    x.ZoneCode == ZoneCode &&
-                                    x.RackNo == RackNo &&
-                                    x.BinCode == bvm.Code);
-
-                                if (list is List<SearchResponse>)
+                                if (Global.SearchResponses.Count > 0)
                                 {
-                                    if (list.Count > 0)
+                                    bvm.ExcludeFromSearch = true;
+
+                                    List<SearchResponse> list = Global.SearchResponses.FindAll(
+                                        x =>
+                                        x.ZoneCode == ZoneCode &&
+                                        x.RackNo == RackNo &&
+                                        x.BinCode == bvm.Code);
+
+                                    if (list is List<SearchResponse>)
                                     {
-                                        bvm.ExcludeFromSearch = false;
-                                        SearchBinsQuantity++;
+                                        if (list.Count > 0)
+                                        {
+                                            bvm.ExcludeFromSearch = false;
+                                            SearchBinsQuantity++;
+                                        }
+                                    }
+                                }
+                            }
+
+                            if (LinkToRackViewModel is RackViewModel)
+                            {
+                                if (LinkToRackViewModel.UDSSelects.Count > 0)
+                                {
+                                    SubSchemeSelect sss = LinkToRackViewModel.UDSSelects.Find(
+                                      x => x.Section == bvm.Section &&
+                                      x.Level == bvm.Level &&
+                                      x.Depth == bvm.Depth);
+
+                                    if (sss is SubSchemeSelect)
+                                    {
+                                        bvm.Color = Color.FromHex(sss.HexColor);
+                                        bvm.SearchQuantity = sss.Value;
+                                        bvm.IsSearchQuantityVisible = true;
                                     }
                                 }
                             }
@@ -714,15 +765,18 @@ namespace WarehouseControlSystem.ViewModel
         {
             try
             {
-                UserDefinedFunctions.Clear();
                 List<UserDefinedFunction> list = await NAV.LoadUserDefinedFunctionList(LocationCode, ZoneCode, RackNo, ACD.Default).ConfigureAwait(true);
                 if (list is List<UserDefinedFunction>)
                 {
+                    ObservableCollection<UserDefinedFunctionViewModel> nlist = new ObservableCollection<UserDefinedFunctionViewModel>();
+
                     foreach (UserDefinedFunction udf in list)
                     {
                         UserDefinedFunctionViewModel udfvm = new UserDefinedFunctionViewModel(Navigation, udf);
-                        UserDefinedFunctions.Add(udfvm);
+                        nlist.Add(udfvm);
                     }
+
+                    UserDefinedFunctions = nlist;
                 }
             }
             catch (OperationCanceledException e)
@@ -736,7 +790,6 @@ namespace WarehouseControlSystem.ViewModel
                 ErrorText = e.ToString();
             }
         }
-
         public void UnSelect()
         {
             List<BinViewModel> selectedlist = BinViewModels.FindAll(x => x.Selected == true);
@@ -786,13 +839,18 @@ namespace WarehouseControlSystem.ViewModel
             bvm.Dedicated = BinTemplate.Dedicated;
         }
 
+        public void CancelAsync()
+        {
+            ACD.CancelAll();
+        }
+
         private async void Bvm_OnTap(BinViewModel bvm)
         {
             bvm.Selected = !bvm.Selected;
 
             BinViewModel selectedbvm = BinViewModels.Find(x => x.Selected == true);
             IsSelectedBins = selectedbvm is BinViewModel;
-        
+
             if (bvm.IsContent)
             {
                 bvm.LoadAnimation = true;
@@ -820,17 +878,20 @@ namespace WarehouseControlSystem.ViewModel
                 bvm.LoadAnimation = false;
             }
 
-            SelectedBinContent.Clear();
             List<BinViewModel> list = BinViewModels.FindAll(x => x.Selected == true);
             if (list is List<BinViewModel>)
-            {
+            { 
+                ObservableCollection<BinContentShortViewModel> nlist = new ObservableCollection<BinContentShortViewModel>();
+                
                 foreach (BinViewModel bvm1 in list)
                 {
                     foreach (BinContentShortViewModel bcsvm in bvm1.BinContent)
                     {
-                        SelectedBinContent.Add(bcsvm);
+                        nlist.Add(bcsvm);
                     }
                 }
+
+                SelectedBinContent = nlist;
                 EditedBinCodeIsEnabled = list.Count == 1;
             }
             else

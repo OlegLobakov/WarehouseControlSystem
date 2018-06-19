@@ -7,7 +7,6 @@
         <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Padding="5" WidthRequest="300">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0" ColumnSpacing="0" RowSpacing="0" HeightRequest="40">
@@ -19,12 +18,13 @@
                         Text="{i18n:Translate BinInfoPanelRackCard_Content}" BackgroundColor="Transparent"
                         Command="{Binding ContentViewCommand}">
                     <Button.Triggers>
-                        <DataTrigger Binding="{Binding IsUserDefinedCommandsVisible}" TargetType="Button" Value="false">
+                        <DataTrigger Binding="{Binding IsContentVisible}" TargetType="Button" Value="true">
                             <Setter Property="BackgroundColor" Value="{StaticResource PageHeaderBarBackgoundColor}"/>
                             <Setter Property="TextColor" Value="White"/>
                         </DataTrigger>
                     </Button.Triggers>
                 </Button>
+
                 <Button Grid.Column="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
                         Text="{i18n:Translate BinInfoPanelRackCard_Functions}" BackgroundColor="Transparent"
                         Command="{Binding FunctionsViewCommand}">
@@ -37,103 +37,72 @@
                 </Button>
             </Grid>
 
-            <Grid Grid.Row="2">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
 
-                <Label Grid.Row="0" Text="{i18n:Translate BinInfoPanelRackCard_Content}" FontSize="Medium" Margin="10,3,3,3">
-                    <Label.Triggers>
-                        <DataTrigger Binding="{Binding IsUserDefinedCommandsVisible}" TargetType="Label" Value="true">
-                            <Setter Property="IsVisible" Value="false"  />
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding IsUserDefinedCommandsVisible}" TargetType="Label" Value="false">
-                            <Setter Property="IsVisible" Value="true"  />
-                        </DataTrigger>
-                    </Label.Triggers>
-                </Label>
-
-                <Label Grid.Row="0" Text="{i18n:Translate BinInfoPanelRackCard_Commands}" FontSize="Medium" Margin="10,3,3,3">
-                    <Label.Triggers>
-                        <DataTrigger Binding="{Binding IsUserDefinedCommandsVisible}" TargetType="Label" Value="true">
-                            <Setter Property="IsVisible" Value="true"  />
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding IsUserDefinedCommandsVisible}" TargetType="Label" Value="false">
-                            <Setter Property="IsVisible" Value="false"  />
-                        </DataTrigger>
-                    </Label.Triggers>
-                </Label>
-
-                <ListView Grid.Row="1" 
-                          ItemsSource="{Binding SelectedBinContent}" 
-                          HasUnevenRows="True" 
-                          ItemTapped="ListView_ItemTapped"
-                          IsGroupingEnabled="false"
-                          IsVisible="{Binding IsContentVisible}">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ViewCell>
-                                <StackLayout Padding="0,1,0,1" BackgroundColor="LightGray">
-                                    <Grid BackgroundColor="White" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" x:Name="grid">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>
-                                        </Grid.RowDefinitions>
-                                        <Label  Grid.Column="0" Grid.Row="0" Text="{Binding ItemNo}" Margin="10,3,0,3"         
+            <ListView Grid.Row="1"
+                      ItemsSource="{Binding SelectedBinContent}"   
+                      HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"                 
+                      HasUnevenRows="True" 
+                      ItemTapped="ListView_ItemTapped"
+                      IsVisible="{Binding IsContentVisible}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Padding="0,1,0,1" BackgroundColor="LightGray">
+                                <Grid BackgroundColor="White" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" x:Name="grid">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Label  Grid.Column="0" Grid.Row="0" Text="{Binding ItemNo}" Margin="10,3,0,3"         
                                             HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                                             HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
 
-                                        <Label  Grid.Column="0" Grid.Row="1" Text="{Binding Description}" Margin="10,3,0,3"  
+                                    <Label  Grid.Column="0" Grid.Row="1" Text="{Binding Description}" Margin="10,3,0,3"  
                                             HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                                             HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
 
-                                        <Label  Grid.Column="1" Grid.Row="0" Text="{Binding Quantity}" Margin="10,0,10,0"  
+                                    <Label  Grid.Column="1" Grid.Row="0" Text="{Binding Quantity}" Margin="10,0,10,0"  
                                             HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                                             HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
-                                    </Grid>
-                                </StackLayout>
-                            </ViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                                </Grid>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
 
-                <ListView Grid.Row="1"
-                          ItemsSource="{Binding UserDefinedFunctions}"
-                          ItemTapped="ListView_UserDefinedFunctionTapped"
-                          ItemSelected="udf_ItemSelected"
-                          HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
-                          x:Name="udf"
-                          IsGroupingEnabled="false"
-                          IsVisible="{Binding IsUserDefinedCommandsVisible}">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ViewCell>
-                                <StackLayout Padding="0,1,0,1" BackgroundColor="LightGray">
-                                    <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" x:Name="grid"
+            <ListView Grid.Row="1" 
+                      ItemsSource="{Binding UserDefinedFunctions}"
+                      ItemTapped="ListView_UserDefinedFunctionTapped"
+                      HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                      IsVisible="{Binding IsUserDefinedCommandsVisible}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Padding="0,1,0,1" BackgroundColor="LightGray">
+                                <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" x:Name="grid"
                                       BackgroundColor="White">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>
-                                        </Grid.RowDefinitions>
-                                        <Label  Grid.Row="0" Text="{Binding Name}" Margin="10,3,0,3" FontSize="Large"       
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Label  Grid.Row="0" Text="{Binding Name}" Margin="10,3,0,3" FontSize="Large"       
                                             HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                                             HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
 
-                                        <Label  Grid.Row="1" Text="{Binding Detail}" Margin="10,3,0,3"  FontSize="Small"
+                                    <Label  Grid.Row="1" Text="{Binding Detail}" Margin="10,3,0,3"  FontSize="Small"
                                             HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                                             HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
-                                    </Grid>
-                                </StackLayout>
-                            </ViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </Grid>
+                                </Grid>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </Grid>
     </ContentView.Content>
 </ContentView>

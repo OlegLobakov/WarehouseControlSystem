@@ -184,6 +184,35 @@ namespace WarehouseControlSystem.ViewModel
             }
         } int quantity;
 
+        public int SearchQuantity
+        {
+            get { return searchquantity; }
+            set
+            {
+                if (searchquantity != value)
+                {
+                    searchquantity = value;
+                    OnPropertyChanged("SearchQuantity");
+                }
+            }
+        }
+        int searchquantity;
+
+        public bool IsSearchQuantityVisible
+        {
+            get { return issearchquantityvisible; }
+            set
+            {
+                if (issearchquantityvisible != value)
+                {
+                    issearchquantityvisible = value;
+                    OnPropertyChanged("IsSearchQuantityVisible");
+                }
+            }
+        }
+        bool issearchquantityvisible;
+
+
         public int BlockMovement
         {
             get { return blockmovement; }

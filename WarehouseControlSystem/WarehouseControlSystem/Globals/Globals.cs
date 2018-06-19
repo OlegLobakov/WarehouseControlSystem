@@ -47,6 +47,7 @@ namespace WarehouseControlSystem
         public static List<SearchResponse> SearchResponses { get; set; } = new List<SearchResponse>();
         public static string SearchLocationCode { get; set; } = "";
         public static string SearchRequest { get; set; }
+        public static string CurrentLocationName { get; set; } = "";
 
         public static CultureInfo Culture { get; set; }
 

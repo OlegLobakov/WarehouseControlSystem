@@ -72,5 +72,11 @@ namespace WarehouseControlSystem.View.Pages.Find
         {
             model.Search(entry.Text);
         }
+
+        private void Button_Clicked(object sender, EventArgs e)
+        {
+            entry.Text = "";
+            model.Clear();
+        }
     }
 }

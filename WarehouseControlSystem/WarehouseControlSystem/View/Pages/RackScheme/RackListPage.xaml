@@ -26,101 +26,103 @@
                     <Label Text="{Binding LoadingText}" FontSize="Small"/>
                 </StackLayout>
             </StackLayout>
-            <StackLayout IsVisible="{Binding IsNormalState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <Grid Grid.Row="0" HeightRequest="70" BackgroundColor="White" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" x:Name="grid">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="2*"/>
-                            <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="1*"/>
-                        </Grid.ColumnDefinitions>
 
-                        <Label  Grid.Column="0" Text="{i18n:Translate RackListPage_FieldNo}" Margin="10,0,0,0"         
+            <Grid  IsVisible="{Binding IsNormalState}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" HeightRequest="70" BackgroundColor="White" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" x:Name="grid">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label  Grid.Column="0" Text="{i18n:Translate RackListPage_FieldNo}" Margin="10,0,0,0"         
                                             HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                                             HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
 
-                        <Label  Grid.Column="1" Text="{i18n:Translate RackListPage_FieldComment}" Margin="10,0,0,0"  
+                    <Label  Grid.Column="1" Text="{i18n:Translate RackListPage_FieldComment}" Margin="10,0,0,0"  
                                             HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                                             HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
 
-                        <Label  Grid.Column="2" Text="{i18n:Translate RackListPage_FieldSchemeVisible}" Margin="10,0,0,0"  
+                    <Label  Grid.Column="2" Text="{i18n:Translate RackListPage_FieldSchemeVisible}" Margin="10,0,0,0"  
                                             HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                                             HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
 
-                        <Label  Grid.Column="3" Text="{i18n:Translate RackListPage_FieldSections}" Margin="10,0,20,0"  
+                    <Label  Grid.Column="3" Text="{i18n:Translate RackListPage_FieldSections}" Margin="10,0,20,0"  
                                             HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                                             HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
 
-                        <Label  Grid.Column="4" Text="{i18n:Translate RackListPage_FieldLevels}" Margin="10,0,20,0"  
+                    <Label  Grid.Column="4" Text="{i18n:Translate RackListPage_FieldLevels}" Margin="10,0,20,0"  
                                             HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                                             HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
-                    </Grid>
-                    <ListView Grid.Row="1" RowHeight="70" ItemsSource="{Binding RackViewModels}" SelectedItem="{Binding SelectedRackViewModel,Mode=TwoWay}">
+                </Grid>
+                
+                <ListView Grid.Row="1" RowHeight="70" ItemsSource="{Binding RackViewModels}" 
+                              SelectedItem="{Binding SelectedRackViewModel,Mode=TwoWay}">
 
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <ViewCell>
-                                    <ViewCell.ContextActions>
-                                        <MenuItem Text="Edit"
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <ViewCell.ContextActions>
+                                    <MenuItem Text="Edit"
                                             Command="{Binding Path=BindingContext.EditRackCommand, Source={x:Reference Name=ThisPage}}" 
                                             CommandParameter="{Binding .}" />
-                                        <MenuItem Text="Delete" IsDestructive="True"
+                                    <MenuItem Text="Delete" IsDestructive="True"
                                             Command="{Binding Path=BindingContext.DeleteRackCommand, Source={x:Reference Name=ThisPage}}" 
                                             CommandParameter="{Binding .}"  />
-                                    </ViewCell.ContextActions>
+                                </ViewCell.ContextActions>
 
-                                    <StackLayout Padding="0,1,0,1" BackgroundColor="LightGray" HeightRequest="70">
-                                        <Grid BackgroundColor="White" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" x:Name="grid">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="1*"/>
-                                                <ColumnDefinition Width="2*"/>
-                                                <ColumnDefinition Width="1*"/>
-                                                <ColumnDefinition Width="1*"/>
-                                                <ColumnDefinition Width="1*"/>
-                                                <ColumnDefinition Width="1*"/>
-                                            </Grid.ColumnDefinitions>
+                                <StackLayout Padding="0,1,0,1" BackgroundColor="LightGray" HeightRequest="70">
+                                    <Grid BackgroundColor="White" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" x:Name="grid">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="1*"/>
+                                            <ColumnDefinition Width="2*"/>
+                                            <ColumnDefinition Width="1*"/>
+                                            <ColumnDefinition Width="1*"/>
+                                            <ColumnDefinition Width="1*"/>
+                                            <ColumnDefinition Width="1*"/>
+                                        </Grid.ColumnDefinitions>
 
-                                            <Label  Grid.Column="0" Text="{Binding No}" Margin="10,0,0,0"         
+                                        <Label  Grid.Column="0" Text="{Binding No}" Margin="10,0,0,0"         
                                             HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                                             HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
 
-                                            <Label  Grid.Column="1" Text="{Binding Comment}" Margin="10,0,0,0"  
+                                        <Label  Grid.Column="1" Text="{Binding Comment}" Margin="10,0,0,0"  
                                             HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                                             HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
 
-                                            <Switch Grid.Column="2"  
+                                        <Switch Grid.Column="2"  
                                                 IsToggled="{Binding SchemeVisible, Mode=TwoWay}"
                                                 HorizontalOptions="FillAndExpand" VerticalOptions="Center"/>
 
-                                            <Label  Grid.Column="3" Text="{Binding Sections}" Margin="10,0,20,0"  
+                                        <Label  Grid.Column="3" Text="{Binding Sections}" Margin="10,0,20,0"  
                                             HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                                             HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
 
-                                            <Label  Grid.Column="4" Text="{Binding Levels}" Margin="10,0,20,0"  
+                                        <Label  Grid.Column="4" Text="{Binding Levels}" Margin="10,0,20,0"  
                                             HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                                             HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
 
-                                            <ActivityIndicator  Grid.Column="5" IsRunning="{Binding IsBeenSavingToNAV}" 
+                                        <ActivityIndicator  Grid.Column="5" IsRunning="{Binding IsBeenSavingToNAV}" 
                                                                 IsVisible="{Binding IsBeenSavingToNAV}" 
                                                                 VerticalOptions="Center" 
                                                                 HorizontalOptions="Center"/>
 
-                                        </Grid>
+                                    </Grid>
 
-                                    </StackLayout>
-                                </ViewCell>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                </Grid>
-            </StackLayout>
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+            
             <StackLayout IsVisible="{Binding IsErrorState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                 <Grid>
                     <Grid.RowDefinitions>

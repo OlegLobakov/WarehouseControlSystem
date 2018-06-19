@@ -81,7 +81,6 @@
                                         HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                                         HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
 
-
                                     <Image Grid.Column="2" IsVisible="{Binding Connected}" Margin="20,0,0,0" HorizontalOptions="StartAndExpand" VerticalOptions="FillAndExpand">
                                         <Image.Source>
                                             <OnPlatform x:TypeArguments="FileImageSource">

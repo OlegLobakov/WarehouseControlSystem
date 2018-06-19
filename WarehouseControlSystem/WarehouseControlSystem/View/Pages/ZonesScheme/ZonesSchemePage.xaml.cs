@@ -51,6 +51,7 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
             abslayout.GestureRecognizers.Add(PanGesture);
 
             Title = AppResources.ZoneSchemePage_Title + " - " + location.Name;
+            Global.CurrentLocationName = location.Name;
 
             MessagingCenter.Subscribe<ZonesViewModel>(this, "Rebuild", Rebuild);
             MessagingCenter.Subscribe<ZonesViewModel>(this, "Reshape", Reshape);

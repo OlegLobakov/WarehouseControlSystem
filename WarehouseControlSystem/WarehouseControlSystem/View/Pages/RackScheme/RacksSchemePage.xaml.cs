@@ -19,7 +19,7 @@ using WarehouseControlSystem.Resx;
 using WarehouseControlSystem.Model.NAV;
 using WarehouseControlSystem.ViewModel;
 using WarehouseControlSystem.View.Pages.Find;
-using System.Collections.ObjectModel;
+
 
 namespace WarehouseControlSystem.View.Pages.RackScheme
 {
@@ -35,6 +35,7 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
         PanGestureRecognizer PanGesture;
 
         private readonly RacksViewModel model;
+
         public RacksSchemePage(Zone zone)
         {
             model = new RacksViewModel(Navigation, zone);
@@ -50,7 +51,8 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             PanGesture = new PanGestureRecognizer();
             abslayout.GestureRecognizers.Add(PanGesture);
 
-            Title = AppResources.ZoneSchemePage_Title +" "+ Global.SearchLocationCode + " | " + AppResources.RackSchemePage_Title + " - " + zone.Description;
+            Title = AppResources.ZoneSchemePage_Title +" "+ Global.CurrentLocationName+" | " + AppResources.RackSchemePage_Title + " - " + zone.Description;
+
             MessagingCenter.Subscribe<RacksViewModel>(this, "Rebuild", Rebuild);
             MessagingCenter.Subscribe<RacksViewModel>(this, "Reshape", Reshape);
             MessagingCenter.Subscribe<RacksViewModel>(this, "UDSRunIsDone", UDSRunIsDone);
