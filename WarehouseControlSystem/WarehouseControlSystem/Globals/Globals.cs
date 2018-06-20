@@ -56,7 +56,13 @@ namespace WarehouseControlSystem
         public static void Init()
         {
             LoadParameters();
+            SetDefaultColors();
+            SetDefaultOrientations();
+            SetDefaultCreditials();
+        }
 
+        private static void SetDefaultColors()
+        {
             Color whitecolor = (Color)Application.Current.Resources["SchemeBlockWhiteColor"];
 
             Colors.Add(new ColorPick
@@ -127,7 +133,10 @@ namespace WarehouseControlSystem
                 Name = AppResources.Colors_Gray3,
                 Color = Color.FromHex("#666666")
             });
+        }
 
+        private static void SetDefaultOrientations()
+        {
             OrientationList.Add(new RackOrientationPick
             {
                 RackOrientation = RackOrientationEnum.Undefined,
@@ -157,7 +166,10 @@ namespace WarehouseControlSystem
                 RackOrientation = RackOrientationEnum.VerticalDown,
                 Name = AppResources.RackNewPage_OrientationRackVD
             });
+        }
 
+        private static void SetDefaultCreditials()
+        {
             CreditialList.Add(
                 ClientCredentialTypeEnum.Basic
             );

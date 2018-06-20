@@ -95,55 +95,16 @@ namespace WarehouseControlSystem.ViewModel
                 State = ModelState.Loading;
                 PlanWidth = await NAV.GetPlanWidth(ACD.Default).ConfigureAwait(true);
                 PlanHeight = await NAV.GetPlanHeight(ACD.Default).ConfigureAwait(true);
-                if (PlanWidth == 0)
-                {
-                    PlanWidth = 20;
-                }
-                if (PlanHeight == 0)
-                {
-                    PlanHeight = 10;
-                }
+                CheckPlanSizes();
                 List<Location> list = await NAV.GetLocationList("", true, 1, int.MaxValue, ACD.Default).ConfigureAwait(true); 
                 if ((list is List<Location>) && (!IsDisposed))
                 {
                     if (list.Count > 0)
                     {
                         ClearAll();
-                        int deftop = 1;
-                        int defleft = 1;
-                        int defwidth = Math.Max(1, (PlanWidth - 6) / 5);
-                        int defheight = Math.Max(1, (PlanHeight - 5) / 4);
-
                         foreach (Location location in list)
                         {
-                            if (location.Width == 0)
-                            {
-                                location.Left = defleft;
-                                location.Width = defwidth;
-                                location.Height = defheight;
-                                location.Top = deftop;
-
-                                defleft = defleft + defwidth + 1;
-                                if (defleft > (PlanWidth - defwidth))
-                                {
-                                    defleft = 1;
-                                    deftop = deftop + defheight + 1;
-                                }
-
-                                if (deftop > (PlanHeight - defheight))
-                                {
-                                    deftop = 1;
-                                }
-
-                                if (location.Left + location.Width > PlanWidth)
-                                {
-                                    PlanWidth += location.Left + location.Width - PlanWidth;
-                                }
-                                if (location.Top + location.Height > PlanHeight)
-                                {
-                                    PlanHeight += location.Top + location.Height - PlanHeight;
-                                }
-                            }
+                            SetDefaultSizes(location);
                             LocationViewModel lvm = new LocationViewModel(Navigation, location);
                             lvm.OnTap += Lvm_OnTap;
                             LocationViewModels.Add(lvm);
@@ -175,6 +136,60 @@ namespace WarehouseControlSystem.ViewModel
                 System.Diagnostics.Debug.WriteLine(e.Message);
                 State = ModelState.Error;
                 ErrorText = AppResources.Error_LoadLocation + Environment.NewLine + e.Message;
+            }
+        }
+
+        int defaulttop;
+        int defaultleft;
+        int defaultwidth;
+        int defaultheight; 
+
+        private void CheckPlanSizes()
+        {
+            if (PlanWidth == 0)
+            {
+                PlanWidth = 20;
+            }
+            if (PlanHeight == 0)
+            {
+                PlanHeight = 10;
+            }
+
+            defaulttop = 1;
+            defaultleft = 1;
+            defaultwidth = Math.Max(1, (PlanWidth - 6) / 5);
+            defaultheight = Math.Max(1, (PlanHeight - 5) / 4);
+        }
+
+        private void SetDefaultSizes(Location location)
+        {
+            if (location.Width == 0)
+            {
+                location.Left = defaulttop;
+                location.Width = defaultwidth;
+                location.Height = defaultheight;
+                location.Top = defaulttop;
+
+                defaultleft = defaultleft + defaultwidth + 1;
+                if (defaultleft > (PlanWidth - defaultwidth))
+                {
+                    defaultleft = 1;
+                    defaulttop = defaulttop + defaultheight + 1;
+                }
+
+                if (defaulttop > (PlanHeight - defaultheight))
+                {
+                    defaulttop = 1;
+                }
+
+                if (location.Left + location.Width > PlanWidth)
+                {
+                    PlanWidth += location.Left + location.Width - PlanWidth;
+                }
+                if (location.Top + location.Height > PlanHeight)
+                {
+                    PlanHeight += location.Top + location.Height - PlanHeight;
+                }
             }
         }
 

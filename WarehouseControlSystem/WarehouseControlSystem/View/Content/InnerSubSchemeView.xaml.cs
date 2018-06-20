@@ -119,80 +119,88 @@ namespace WarehouseControlSystem.View.Content
             {
                 foreach (SubSchemeElement element in SubSchemeElements)
                 {
-                    if ((element.Width <= 0) || (element.Height <= 0) || (element.Left > PlanWidth) || (element.Top > PlanHeight))
+                    AddToScheme(element);
+                    ShowSelection(element);
+                }
+            }
+        }
+
+        private void AddToScheme(SubSchemeElement element)
+        {
+            if ((element.Width <= 0) || (element.Height <= 0) || (element.Left > PlanWidth) || (element.Top > PlanHeight))
+            {
+                return;
+            }
+
+            Color color1 = Color.FromHex(element.HexColor);
+            if (color1 == (Color)Application.Current.Resources["SchemeBlockWhiteColor"])
+            {
+                color1 = (Color)Application.Current.Resources["SchemeBlockWhiteColorDark"];
+            }
+
+            int left = Math.Max(0, Math.Min(PlanWidth, element.Left));
+            int right = Math.Min(PlanWidth, element.Left + element.Width);
+            int top = Math.Max(0, Math.Min(PlanHeight, element.Top));
+            int bottom = Math.Min(PlanHeight, element.Top + element.Height);
+
+            maingrid.Children.Add(
+                new BoxView()
+                {
+                    Opacity = 0.7,
+                    BackgroundColor = color1
+                }, left, right, top, bottom);
+        }
+
+        private void ShowSelection(SubSchemeElement element)
+        {
+            if (element.Selection is List<SubSchemeSelect>)
+            {
+                foreach (SubSchemeSelect sss in element.Selection)
+                {
+                    int selectLeft = 0;
+                    int selectTop = 0;
+                    switch (element.RackOrientation)
+                    {
+                        case RackOrientationEnum.Undefined:
+                            break;
+                        case RackOrientationEnum.HorizontalLeft:
+                            {
+                                selectLeft = element.Left + sss.Section;
+                                selectTop = element.Top + sss.Depth - 1;
+                                break;
+                            }
+                        case RackOrientationEnum.HorizontalRight:
+                            {
+                                selectLeft = element.Left + element.Width - sss.Section;
+                                selectTop = element.Top + sss.Depth - 1;
+                                break;
+                            }
+                        case RackOrientationEnum.VerticalDown:
+                            {
+                                selectLeft = element.Left + sss.Depth - 1;
+                                selectTop = element.Top + element.Height - sss.Section;
+                                break;
+                            }
+                        case RackOrientationEnum.VerticalUp:
+                            {
+                                selectLeft = element.Left + sss.Depth - 1;
+                                selectTop = element.Top + sss.Section - 1;
+                                break;
+                            }
+                        default:
+                            throw new InvalidOperationException("Impossible value");
+                    }
+
+                    if ((selectLeft < 0) || (selectTop < 0) || (selectLeft > PlanWidth) || (selectTop > PlanHeight))
                     {
                         break;
                     }
 
-                    Color color1 = Color.FromHex(element.HexColor);
-                    if (color1 == (Color)Application.Current.Resources["SchemeBlockWhiteColor"])
-                    {
-                        color1 = (Color)Application.Current.Resources["SchemeBlockWhiteColorDark"];
-                    }
-
-                    int left = Math.Max(0, Math.Min(PlanWidth, element.Left));
-                    int right = Math.Min(PlanWidth, element.Left + element.Width);
-                    int top = Math.Max(0, Math.Min(PlanHeight, element.Top));
-                    int bottom = Math.Min(PlanHeight, element.Top + element.Height);
-
                     maingrid.Children.Add(
                         new BoxView()
                         {
-                            Opacity = 0.7,
-                            BackgroundColor = color1
-                        }, left, right, top, bottom);
-
-                    if (element.Selection is List<SubSchemeSelect>)
-                    {
-                        foreach (SubSchemeSelect sss in element.Selection)
-                        {
-                            int selectLeft = 0;
-                            int selectTop = 0;
-                            switch (element.RackOrientation)
-                            {
-                                case RackOrientationEnum.Undefined:
-                                    break;
-                                case RackOrientationEnum.HorizontalLeft:
-                                    {
-                                        selectLeft = element.Left + sss.Section;
-                                        selectTop = element.Top + sss.Depth - 1;
-                                        break;
-                                    }
-                                case RackOrientationEnum.HorizontalRight:
-                                    {
-                                        selectLeft = element.Left + element.Width - sss.Section;
-                                        selectTop = element.Top + sss.Depth - 1;
-                                        break;
-                                    }
-                                case RackOrientationEnum.VerticalDown:
-                                    {
-                                        selectLeft = element.Left + sss.Depth - 1;
-                                        selectTop = element.Top + element.Height - sss.Section;
-                                        break;
-                                    }
-                                case RackOrientationEnum.VerticalUp:
-                                    {
-                                        selectLeft = element.Left + sss.Depth - 1;
-                                        selectTop = element.Top + sss.Section - 1;
-                                        break;
-                                    }
-                                default:
-                                    throw new InvalidOperationException("Impossible value");
-                            }
-
-                            if ((selectLeft < 0) || (selectTop < 0) || (selectLeft > PlanWidth) || (selectTop > PlanHeight))
-                            {
-                                break;
-                            }
-
-                            maingrid.Children.Add(
-                                new BoxView()
-                                {
-                                    BackgroundColor = Color.Red
-                                }, selectLeft, selectTop);
-
-                        }
-                    }
+                            BackgroundColor = Color.Red
+                        }, selectLeft, selectTop);
                 }
             }
         }

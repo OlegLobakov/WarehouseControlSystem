@@ -1373,105 +1373,65 @@ namespace WarehouseControlSystem.Helpers.NAV
                 switch (currentatribute.Name.LocalName)
                 {
                     case "LocationCode":
-                        {
-                            bin.LocationCode = currentatribute.Value;
-                            break;
-                        }
+                        bin.LocationCode = currentatribute.Value;
+                        break;
                     case "ZoneCode":
-                        {
-                            bin.ZoneCode = currentatribute.Value;
-                            break;
-                        }
+                        bin.ZoneCode = currentatribute.Value;
+                        break;
                     case "Code":
-                        {
-                            bin.Code = currentatribute.Value;
-                            break;
-                        }
+                        bin.Code = currentatribute.Value;
+                        break;
                     case "Description":
-                        {
-                            bin.Description = currentatribute.Value;
-                            break;
-                        }
+                        bin.Description = currentatribute.Value;
+                        break;
                     case "BinType":
-                        {
-                            bin.BinType = currentatribute.Value;
-                            break;
-                        }
+                        bin.BinType = currentatribute.Value;
+                        break;
                     case "Empty":
-                        {
-                            bin.Empty = StringToBool(currentatribute.Value);
-                            break;
-                        }
+                        bin.Empty = StringToBool(currentatribute.Value);
+                        break;
                     case "BlockMovement":
-                        {
-                            bin.BlockMovement = StringToInt(currentatribute.Value);
-                            break;
-                        }
+                        bin.BlockMovement = StringToInt(currentatribute.Value);
+                        break;
                     case "RackNo":
-                        {
-                            bin.RackNo = currentatribute.Value;
-                            break;
-                        }
+                        bin.RackNo = currentatribute.Value;
+                        break;
                     case "Section":
-                        {
-                            bin.Section = StringToInt(currentatribute.Value);
-                            break;
-                        }
+                        bin.Section = StringToInt(currentatribute.Value);
+                        break;
                     case "Level":
-                        {
-                            bin.Level = StringToInt(currentatribute.Value);
-                            break;
-                        }
+                        bin.Level = StringToInt(currentatribute.Value);
+                        break;
                     case "Depth":
-                        {
-                            bin.Depth = StringToInt(currentatribute.Value);
-                            break;
-                        }
+                        bin.Depth = StringToInt(currentatribute.Value);
+                        break;
                     case "LevelSpan":
-                        {
-                            bin.LevelSpan = StringToInt(currentatribute.Value);
-                            break;
-                        }
+                        bin.LevelSpan = StringToInt(currentatribute.Value);
+                        break;
                     case "SectionSpan":
-                        {
-                            bin.SectionSpan = StringToInt(currentatribute.Value);
-                            break;
-                        }
+                        bin.SectionSpan = StringToInt(currentatribute.Value);
+                        break;
                     case "DepthSpan":
-                        {
-                            bin.DepthSpan = StringToInt(currentatribute.Value);
-                            break;
-                        }
+                        bin.DepthSpan = StringToInt(currentatribute.Value);
+                        break;
                     case "BinRanking":
-                        {
-                            bin.BinRanking = StringToInt(currentatribute.Value);
-                            break;
-                        }
+                        bin.BinRanking = StringToInt(currentatribute.Value);
+                        break;
                     case "MaximumCubage":
-                        {
-                            bin.MaximumCubage = StringToDec(currentatribute.Value);
-                            break;
-                        }
+                        bin.MaximumCubage = StringToDec(currentatribute.Value);
+                        break;
                     case "MaximumWeight":
-                        {
-                            bin.MaximumWeight = StringToDec(currentatribute.Value);
-                            break;
-                        }
+                        bin.MaximumWeight = StringToDec(currentatribute.Value);
+                        break;
                     case "AdjustmentBin":
-                        {
-                            bin.AdjustmentBin = StringToBool(currentatribute.Value);
-                            break;
-                        }
+                        bin.AdjustmentBin = StringToBool(currentatribute.Value);
+                        break;
                     case "SpecialEquipmentCode":
-                        {
-                            bin.SpecialEquipmentCode = currentatribute.Value;
-                            break;
-                        }
+                        bin.SpecialEquipmentCode = currentatribute.Value;
+                        break;
                     case "WarehouseClassCode":
-                        {
-                            bin.WarehouseClassCode = currentatribute.Value;
-                            break;
-                        }
+                        bin.WarehouseClassCode = currentatribute.Value;
+                        break;
                     default:
                         throw new InvalidOperationException("Impossible value GetBinFromXML > Name: " + currentatribute.Name.LocalName);
                 }
