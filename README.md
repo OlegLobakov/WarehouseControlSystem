@@ -37,9 +37,14 @@ Let's make changes on the fly:
 [https://www.touchtheerp.com](https://www.touchtheerp.com)
 
 ## Demo
-
+### Intro
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=kHZm8fLu6Fg" target="_blank"><img src="http://img.youtube.com/vi/kHZm8fLu6Fg/0.jpg" 
-alt="IMAGE ALT TEXT HERE" width="480" height="360" border="10" />
+alt="IMAGE ALT TEXT HERE" width="480" height="320" border="10" />
+</a>
+
+### User Defined Search Functions
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=Hkiv8lzFFmo" target="_blank"><img src="http://img.youtube.com/vi/Hkiv8lzFFmo/0.jpg" 
+alt="User Defined Search Functions" width="480" height="320" border="10" />
 </a>
 
 ## Requirements
