@@ -17,9 +17,7 @@ namespace WarehouseControlSystem.View.Pages.Base
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class SchemeContentPage : ContentPage
 	{
-
-        // UNDER Construction
-
+        ////UNDER CONSTRUCTION
         //List<ContentView> Views { get; set; } = new List<ContentView>();
 
         //MovingActionTypeEnum MovingAction = MovingActionTypeEnum.None;
@@ -40,13 +38,13 @@ namespace WarehouseControlSystem.View.Pages.Base
 
         //public PlanBaseViewModel PlanBaseViewModel { get; private set; }
 
-        public SchemeContentPage()
-        {
-            InitializeComponent();
+        //public SchemeContentPage()
+        //{
+        //    InitializeComponent();
 
-            TapGesture = new TapGestureRecognizer();            
-            PanGesture = new PanGestureRecognizer();
-        }
+        //    TapGesture = new TapGestureRecognizer();
+        //    PanGesture = new PanGestureRecognizer();
+        //}
 
         //private async void OnPaned(object sender, PanUpdatedEventArgs e)
         //{

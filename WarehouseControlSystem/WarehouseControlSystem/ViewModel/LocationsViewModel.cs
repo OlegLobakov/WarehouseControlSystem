@@ -35,19 +35,6 @@ namespace WarehouseControlSystem.ViewModel
         public ObservableCollection<LocationViewModel> LocationViewModels { get; set; } = new ObservableCollection<LocationViewModel>();
         public ObservableCollection<LocationViewModel> SelectedViewModels { get; set; } = new ObservableCollection<LocationViewModel>();
 
-        public bool IsEditMode
-        {
-            get { return iseditmode; }
-            set
-            {
-                if (iseditmode != value)
-                {
-                    iseditmode = value;
-                    OnPropertyChanged("IsEditMode");
-                }
-            }
-        } bool iseditmode;
-
         public ICommand ListLocationsCommand { protected set; get; }
         public ICommand NewLocationCommand { protected set; get; }
         public ICommand EditLocationCommand { protected set; get; }
@@ -450,7 +437,6 @@ namespace WarehouseControlSystem.ViewModel
 
         public override void DisposeModel()
         {
-            //ClearAll();
             base.DisposeModel();
         }
     }

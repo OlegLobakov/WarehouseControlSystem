@@ -195,6 +195,20 @@ namespace WarehouseControlSystem.ViewModel.Base
             }
         } string requesmessagettext;
 
+        public bool IsEditMode
+        {
+            get { return iseditmode; }
+            set
+            {
+                if (iseditmode != value)
+                {
+                    iseditmode = value;
+                    OnPropertyChanged("IsEditMode");
+                }
+            }
+        }
+        bool iseditmode;
+
         public ICommand ErrorOKCommand { protected set; get; }
 
         public ICommand OKCommand { protected set; get; }

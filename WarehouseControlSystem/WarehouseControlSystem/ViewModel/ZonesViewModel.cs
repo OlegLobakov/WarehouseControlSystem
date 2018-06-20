@@ -34,23 +34,6 @@ namespace WarehouseControlSystem.ViewModel
         public ObservableCollection<ZoneViewModel> ZoneViewModels { get; set; }
         public ObservableCollection<ZoneViewModel> SelectedViewModels { get; set; }
 
-        public bool IsEditMode
-        {
-            get { return iseditmode; }
-            set
-            {
-                if (iseditmode != value)
-                {
-                    iseditmode = value;
-                    foreach (ZoneViewModel zvm in ZoneViewModels)
-                    {
-                        zvm.IsEditMode = value;
-                    }
-                    OnPropertyChanged("IsEditMode");
-                }
-            }
-        } bool iseditmode;
-
         public ICommand ListZonesCommand { protected set; get; }
         public ICommand NewZoneCommand { protected set; get; }
         public ICommand EditZoneCommand { protected set; get; }
@@ -401,6 +384,14 @@ namespace WarehouseControlSystem.ViewModel
             }
             MinPlanWidth = newminplanwidth;
             MinPlanHeight = newminplanheight;
+        }
+
+        public void SetEditModeForItems(bool iseditmode)
+        {
+            foreach (ZoneViewModel zvm in ZoneViewModels)
+            {
+                zvm.IsEditMode = iseditmode;
+            }
         }
 
         public override void DisposeModel()

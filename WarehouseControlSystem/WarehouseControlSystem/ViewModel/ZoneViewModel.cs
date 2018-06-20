@@ -101,19 +101,6 @@ namespace WarehouseControlSystem.ViewModel
             }
         } int binquantity;
 
-        public bool IsEditMode
-        {
-            get { return iseditmode; }
-            set
-            {
-                if (iseditmode != value)
-                {
-                    iseditmode = value;
-                    OnPropertyChanged("IsEditMode");
-                }
-            }
-        } bool iseditmode;
-
         public ICommand TapCommand { protected set; get; }
         public event Action<ZoneViewModel> OnTap;
 

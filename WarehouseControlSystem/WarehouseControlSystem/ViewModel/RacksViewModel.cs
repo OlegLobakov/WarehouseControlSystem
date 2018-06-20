@@ -49,19 +49,6 @@ namespace WarehouseControlSystem.ViewModel
 
         public ObservableCollection<RackViewModel> SelectedViewModels { get; set; }
 
-        public bool IsEditMode
-        {
-            get { return iseditmode; }
-            set
-            {
-                if (iseditmode != value)
-                {
-                    iseditmode = value;
-                    OnPropertyChanged("IsEditMode");
-                }
-            }
-        } bool iseditmode;
-
         public ICommand RackListCommand { protected set; get; }
         public ICommand NewRackCommand { protected set; get; }
         public ICommand EditRackCommand { protected set; get; }

@@ -175,19 +175,6 @@ namespace WarehouseControlSystem.ViewModel
 
         public List<SubSchemeElement> SubSchemeElements { get; set; } = new List<SubSchemeElement>();
 
-        public bool IsEditMode
-        {
-            get { return iseditmode; }
-            set
-            {
-                if (iseditmode != value)
-                {
-                    iseditmode = value;
-                    OnPropertyChanged("IsEditMode");
-                }
-            }
-        } bool iseditmode;
-
         public bool ZonesIsLoaded
         {
             get { return zonesisloaded; }

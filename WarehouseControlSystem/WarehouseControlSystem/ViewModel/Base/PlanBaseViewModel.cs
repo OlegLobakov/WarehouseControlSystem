@@ -89,8 +89,14 @@ namespace WarehouseControlSystem.ViewModel.Base
             }
         } int minwidth;
 
+
         public virtual void Rebuild(bool recreate)
         {
+        }
+
+        public virtual void SaveChanges()
+        {
+
         }
 
         public PlanBaseViewModel(INavigation navigation) : base(navigation)

@@ -29,7 +29,7 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <Label Grid.Row="0" x:Name="codelabel" Text="{Binding Code}" FontSize="17" 
+                    <!--<Label Grid.Row="0" x:Name="codelabel" Text="{Binding Code}" FontSize="17" 
                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
                        HorizontalTextAlignment="Start" VerticalTextAlignment="Center" TextColor="White" Margin="10,5,0,0">
                         <Label.Triggers>
@@ -37,11 +37,11 @@
                                 <Setter Property="TextColor" Value="Black"/>
                             </DataTrigger>
                         </Label.Triggers>
-                    </Label>
+                    </Label>-->
 
-                    <Label Grid.Row="1" x:Name="namelabel" Text="{Binding Description}" 
+                    <Label Grid.Row="0" x:Name="namelabel" Text="{Binding Description}"  FontSize="Medium" 
                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" FontAttributes="Bold"
-                       HorizontalTextAlignment="Start" VerticalTextAlignment="Center" TextColor="White" Margin="10,0,0,0">
+                       HorizontalTextAlignment="Start" VerticalTextAlignment="Center" TextColor="White" Margin="10">
                         <Label.Triggers>
                             <DataTrigger Binding="{Binding Color}" TargetType="Label" Value="{StaticResource SchemeBlockWhiteColor}">
                                 <Setter Property="TextColor" Value="Black"/>

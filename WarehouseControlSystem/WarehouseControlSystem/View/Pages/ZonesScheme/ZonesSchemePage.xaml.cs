@@ -57,6 +57,7 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
             MessagingCenter.Subscribe<ZonesViewModel>(this, "Reshape", Reshape);
 
             model.IsEditMode = false;
+            model.SetEditModeForItems(model.IsEditMode);
         }
 
         protected override void OnAppearing()
@@ -288,6 +289,7 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
             if (model.IsEditMode)
             {
                 model.IsEditMode = false;
+                model.SetEditModeForItems(model.IsEditMode);
                 abslayout.BackgroundColor = Color.White;
                 model.SaveLocationParams();
             }
@@ -295,6 +297,7 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
             {
                 abslayout.BackgroundColor = Color.LightGray;
                 model.IsEditMode = true;
+                model.SetEditModeForItems(model.IsEditMode);
             }
         }
     }
