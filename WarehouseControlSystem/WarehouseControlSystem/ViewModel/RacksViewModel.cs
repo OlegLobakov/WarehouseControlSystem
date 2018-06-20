@@ -124,7 +124,6 @@ namespace WarehouseControlSystem.ViewModel
 
             State = ModelState.Undefined;
             IsEditMode = false;
-
         }
 
         public void ClearAll()
@@ -182,7 +181,6 @@ namespace WarehouseControlSystem.ViewModel
                 State = ModelState.Error;
                 ErrorText = AppResources.Error_LoadRacks;
             }
-
         }
 
         public async void LoadAll()
@@ -266,7 +264,6 @@ namespace WarehouseControlSystem.ViewModel
                 State = ModelState.Error;
                 ErrorText = e.ToString();
             }
-
         }
 
         private async void Rvm_OnTap(RackViewModel rvm)
