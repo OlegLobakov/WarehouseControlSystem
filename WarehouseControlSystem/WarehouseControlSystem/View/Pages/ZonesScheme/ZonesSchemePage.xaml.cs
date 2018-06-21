@@ -33,11 +33,11 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
         TapGestureRecognizer TapGesture;
         PanGestureRecognizer PanGesture;
 
-        private readonly ZonesViewModel model;
+        private readonly ZonesPlanViewModel model;
 
         public ZonesSchemePage(Location location)
         {
-            model = new ZonesViewModel(Navigation, location);
+            model = new ZonesPlanViewModel(Navigation, location);
             BindingContext = model;
             InitializeComponent();
 
@@ -53,8 +53,8 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
             Title = AppResources.ZoneSchemePage_Title + " - " + location.Name;
             Global.CurrentLocationName = location.Name;
 
-            MessagingCenter.Subscribe<ZonesViewModel>(this, "Rebuild", Rebuild);
-            MessagingCenter.Subscribe<ZonesViewModel>(this, "Reshape", Reshape);
+            MessagingCenter.Subscribe<ZonesPlanViewModel>(this, "Rebuild", Rebuild);
+            MessagingCenter.Subscribe<ZonesPlanViewModel>(this, "Reshape", Reshape);
 
             model.IsEditMode = false;
             model.SetEditModeForItems(model.IsEditMode);
@@ -81,20 +81,17 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
 
         private void StackLayout_SizeChanged(object sender, EventArgs e)
         {
-            StackLayout al = (StackLayout)sender;
-            model.ScreenWidth = al.Width;
-            model.ScreenHeight = al.Height;
+            StackLayout sl = (StackLayout)sender;
+            model.SetScreenSizes(sl.Width, sl.Height, false);
         }
 
         private void Abslayout_SizeChanged(object sender, EventArgs e)
         {
             AbsoluteLayout al = (AbsoluteLayout)sender;
-            model.ScreenWidth = al.Width;
-            model.ScreenHeight = al.Height;
-            model.Rebuild(false);
+            model.SetScreenSizes(al.Width, al.Height, true);
         }
 
-        private void Rebuild(ZonesViewModel lmv)
+        private void Rebuild(ZonesPlanViewModel lmv)
         {
             SelectedViews.Clear();
             abslayout.Children.Clear();
@@ -109,7 +106,7 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
             }
         }
 
-        private void Reshape(ZonesViewModel rsmv)
+        private void Reshape(ZonesPlanViewModel rsmv)
         {
             foreach (ZoneView lv in Views)
             {

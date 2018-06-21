@@ -703,47 +703,10 @@ namespace WarehouseControlSystem.ViewModel
                             bvm.IsContent = !bin.Empty;
                             bvm.Color = Color.FromHex("#e2dacf");
                             bvm.OnTap += Bvm_OnTap;
-                        
-                            if (Global.SearchResponses is List<SearchResponse>)
-                            {
-                                if (Global.SearchResponses.Count > 0)
-                                {
-                                    bvm.ExcludeFromSearch = true;
 
-                                    List<SearchResponse> list = Global.SearchResponses.FindAll(
-                                        x =>
-                                        x.ZoneCode == ZoneCode &&
-                                        x.RackNo == RackNo &&
-                                        x.BinCode == bvm.Code);
+                            ExistInSearch(bvm);
+                            ExistInUDS(bvm);
 
-                                    if (list is List<SearchResponse>)
-                                    {
-                                        if (list.Count > 0)
-                                        {
-                                            bvm.ExcludeFromSearch = false;
-                                            SearchBinsQuantity++;
-                                        }
-                                    }
-                                }
-                            }
-
-                            if (LinkToRackViewModel is RackViewModel)
-                            {
-                                if (LinkToRackViewModel.UDSSelects.Count > 0)
-                                {
-                                    SubSchemeSelect sss = LinkToRackViewModel.UDSSelects.Find(
-                                      x => x.Section == bvm.Section &&
-                                      x.Level == bvm.Level &&
-                                      x.Depth == bvm.Depth);
-
-                                    if (sss is SubSchemeSelect)
-                                    {
-                                        bvm.Color = Color.FromHex(sss.HexColor);
-                                        bvm.SearchQuantity = sss.Value;
-                                        bvm.IsSearchQuantityVisible = true;
-                                    }
-                                }
-                            }
                             BinViewModels.Add(bvm);
                         }
                     }
@@ -761,6 +724,53 @@ namespace WarehouseControlSystem.ViewModel
                 ErrorText = e.Message;
             }
         }
+
+        private void ExistInSearch(BinViewModel bvm)
+        {
+            if (Global.SearchResponses is List<SearchResponse>)
+            {
+                if (Global.SearchResponses.Count > 0)
+                {
+                    bvm.ExcludeFromSearch = true;
+
+                    List<SearchResponse> list = Global.SearchResponses.FindAll(
+                        x =>
+                        x.ZoneCode == ZoneCode &&
+                        x.RackNo == RackNo &&
+                        x.BinCode == bvm.Code);
+
+                    if (list is List<SearchResponse>)
+                    {
+                        if (list.Count > 0)
+                        {
+                            bvm.ExcludeFromSearch = false;
+                            SearchBinsQuantity++;
+                        }
+                    }
+                }
+            }
+        }
+        private void ExistInUDS(BinViewModel bvm)
+        {
+            if (LinkToRackViewModel is RackViewModel)
+            {
+                if (LinkToRackViewModel.UDSSelects.Count > 0)
+                {
+                    SubSchemeSelect sss = LinkToRackViewModel.UDSSelects.Find(
+                      x => x.Section == bvm.Section &&
+                      x.Level == bvm.Level &&
+                      x.Depth == bvm.Depth);
+
+                    if (sss is SubSchemeSelect)
+                    {
+                        bvm.Color = Color.FromHex(sss.HexColor);
+                        bvm.SearchQuantity = sss.Value;
+                        bvm.IsSearchQuantityVisible = true;
+                    }
+                }
+            }
+        }
+
         public async void LoadUDF(AsyncCancelationDispatcher acd)
         {
             try

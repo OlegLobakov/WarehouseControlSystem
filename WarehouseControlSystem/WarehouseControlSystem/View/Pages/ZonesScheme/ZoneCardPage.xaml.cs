@@ -23,10 +23,10 @@ using WarehouseControlSystem.ViewModel.Base;
 namespace WarehouseControlSystem.View.Pages.ZonesScheme
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class NewZonePage : ContentPage
+    public partial class ZoneCardPage : ContentPage
     {
         private readonly ZoneViewModel model;
-        public NewZonePage(ZoneViewModel zvm)
+        public ZoneCardPage(ZoneViewModel zvm)
         {
             model = zvm;
             BindingContext = model;

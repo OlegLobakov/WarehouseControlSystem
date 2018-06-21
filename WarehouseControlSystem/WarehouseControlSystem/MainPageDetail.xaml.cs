@@ -66,7 +66,7 @@ namespace WarehouseControlSystem
             Location location = new Location();
             LocationViewModel lvm = new LocationViewModel(Navigation, location);
             lvm.CreateMode = true;
-            await Navigation.PushAsync(new LocationNewPage(lvm));
+            await Navigation.PushAsync(new LocationCardPage(lvm));
         }
 
         private async void AddZoneTaped()
@@ -75,7 +75,7 @@ namespace WarehouseControlSystem
             ZoneViewModel zvm = new ZoneViewModel(Navigation, zone);
             zvm.CreateMode = true;
             zvm.CanChangeLocationCode = true;
-            await Navigation.PushAsync(new NewZonePage(zvm));
+            await Navigation.PushAsync(new ZoneCardPage(zvm));
         }
 
         private async void AddRackTaped()

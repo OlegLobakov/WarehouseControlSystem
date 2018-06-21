@@ -34,11 +34,11 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
         TapGestureRecognizer TapGesture;
         PanGestureRecognizer PanGesture;
 
-        private readonly RacksViewModel model;
+        private readonly RacksPlanViewModel model;
 
         public RacksSchemePage(Zone zone)
         {
-            model = new RacksViewModel(Navigation, zone);
+            model = new RacksPlanViewModel(Navigation, zone);
             BindingContext = model;
             InitializeComponent();
 
@@ -53,10 +53,10 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
 
             Title = AppResources.ZoneSchemePage_Title +" "+ Global.CurrentLocationName+" | " + AppResources.RackSchemePage_Title + " - " + zone.Description;
 
-            MessagingCenter.Subscribe<RacksViewModel>(this, "Rebuild", Rebuild);
-            MessagingCenter.Subscribe<RacksViewModel>(this, "Reshape", Reshape);
-            MessagingCenter.Subscribe<RacksViewModel>(this, "UDSRunIsDone", UDSRunIsDone);
-            MessagingCenter.Subscribe<RacksViewModel>(this, "UDSListIsLoaded", UDSListIsLoaded);
+            MessagingCenter.Subscribe<RacksPlanViewModel>(this, "Rebuild", Rebuild);
+            MessagingCenter.Subscribe<RacksPlanViewModel>(this, "Reshape", Reshape);
+            MessagingCenter.Subscribe<RacksPlanViewModel>(this, "UDSRunIsDone", UDSRunIsDone);
+            MessagingCenter.Subscribe<RacksPlanViewModel>(this, "UDSListIsLoaded", UDSListIsLoaded);
         }
 
         protected override void OnAppearing()
@@ -82,32 +82,29 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
         protected override bool OnBackButtonPressed()
         {
             model.DisposeModel();
-            MessagingCenter.Unsubscribe<RacksViewModel>(this, "Rebuild");
-            MessagingCenter.Unsubscribe<RacksViewModel>(this, "Reshape");
-            MessagingCenter.Unsubscribe<RacksViewModel>(this, "UDSRunIsDone");
-            MessagingCenter.Unsubscribe<RacksViewModel>(this, "UDSListIsLoaded");
+            MessagingCenter.Unsubscribe<RacksPlanViewModel>(this, "Rebuild");
+            MessagingCenter.Unsubscribe<RacksPlanViewModel>(this, "Reshape");
+            MessagingCenter.Unsubscribe<RacksPlanViewModel>(this, "UDSRunIsDone");
+            MessagingCenter.Unsubscribe<RacksPlanViewModel>(this, "UDSListIsLoaded");
             base.OnBackButtonPressed();
             return false;
         }
 
         private void StackLayout_SizeChanged(object sender, EventArgs e)
         {
-            StackLayout al = (StackLayout)sender;
-            model.ScreenWidth = al.Width;
-            model.ScreenHeight = al.Height;
-            model.UDSPanelHeight = (int)Math.Round(al.Height / 5.5);
+            StackLayout sl = (StackLayout)sender;
+            model.SetScreenSizes(sl.Width, sl.Height, false);
+            model.UDSPanelHeight = (int)Math.Round(sl.Height / 5.5);
         }
 
         private void Abslayout_SizeChanged(object sender, EventArgs e)
         {
             AbsoluteLayout al = (AbsoluteLayout)sender;
-            model.ScreenWidth = al.Width;
-            model.ScreenHeight = al.Height;
             model.UDSPanelHeight = (int)Math.Round(al.Height / 5.5);
-            model.Rebuild(false);
+            model.SetScreenSizes(al.Width, al.Height, true);
         }
 
-        private void Rebuild(RacksViewModel rsmv)
+        private void Rebuild(RacksPlanViewModel rsmv)
         {
             SelectedViews.Clear();
             abslayout.Children.Clear();
@@ -122,7 +119,7 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             }
         }
 
-        private void Reshape(RacksViewModel rsmv)
+        private void Reshape(RacksPlanViewModel rsmv)
         {
             foreach (RackSchemeView rsv in Views)
             {
@@ -130,7 +127,7 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             }
         }
 
-        private void UDSRunIsDone(RacksViewModel zmv)
+        private void UDSRunIsDone(RacksPlanViewModel zmv)
         {
             foreach (RackSchemeView lv in Views)
             {
@@ -138,7 +135,7 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             }
         }
 
-        private void UDSListIsLoaded(RacksViewModel rvm)
+        private void UDSListIsLoaded(RacksPlanViewModel rvm)
         {
             hlv.ItemsSource = model.UserDefinedSelectionViewModels;
         }

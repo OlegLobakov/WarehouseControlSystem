@@ -30,10 +30,10 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
         TapGestureRecognizer TapGesture;
         PanGestureRecognizer PanGesture;
 
-        private readonly LocationsViewModel model;
+        private readonly LocationsPlanViewModel model;
         public LocationsSchemePage()
         {
-            model = new LocationsViewModel(Navigation);
+            model = new LocationsPlanViewModel(Navigation);
             BindingContext = model;
             InitializeComponent();
 
@@ -46,8 +46,8 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
             PanGesture = new PanGestureRecognizer();
             abslayout.GestureRecognizers.Add(PanGesture);
 
-            MessagingCenter.Subscribe<LocationsViewModel>(this, "Rebuild", Rebuild);
-            MessagingCenter.Subscribe<LocationsViewModel>(this, "Reshape", Reshape);
+            MessagingCenter.Subscribe<LocationsPlanViewModel>(this, "Rebuild", Rebuild);
+            MessagingCenter.Subscribe<LocationsPlanViewModel>(this, "Reshape", Reshape);
         }
 
         protected override void OnAppearing()
@@ -71,19 +71,16 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
         private void StackLayout_SizeChanged(object sender, EventArgs e)
         {
             StackLayout sl = (StackLayout)sender;
-            model.ScreenWidth = sl.Width;
-            model.ScreenHeight = sl.Height;
+            model.SetScreenSizes(sl.Width, sl.Height, false);
         }
 
         private void Abslayout_SizeChanged(object sender, EventArgs e)
         {
             AbsoluteLayout al = (AbsoluteLayout)sender;
-            model.ScreenWidth = al.Width;
-            model.ScreenHeight = al.Height;
-            model.Rebuild(false);
+            model.SetScreenSizes(al.Width, al.Height, true);
         }
 
-        private void Rebuild(LocationsViewModel lmv)
+        private void Rebuild(LocationsPlanViewModel lmv)
         {
             abslayout.Children.Clear();
             SelectedViews.Clear();
@@ -98,7 +95,7 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
             }
         }
 
-        private void Reshape(LocationsViewModel rsmv)
+        private void Reshape(LocationsPlanViewModel rsmv)
         {
             foreach (LocationView lv in Views)
             {

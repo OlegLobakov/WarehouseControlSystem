@@ -58,11 +58,17 @@
     <Compile Update="View\Content\InnerSubSchemeView.xaml.cs">
       <DependentUpon>InnerSubSchemeView.xaml</DependentUpon>
     </Compile>
+    <Compile Update="View\Pages\LocationsScheme\LocationCardPage.xaml.cs">
+      <DependentUpon>LocationCardPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="View\Pages\RackScheme\RackCardPage.xaml.cs">
       <DependentUpon>RackCardPage.xaml</DependentUpon>
     </Compile>
     <Compile Update="View\Pages\RackScheme\RackSchemeView.xaml.cs">
       <DependentUpon>RackSchemeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="View\Pages\ZonesScheme\ZoneCardPage.xaml.cs">
+      <DependentUpon>ZoneCardPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 

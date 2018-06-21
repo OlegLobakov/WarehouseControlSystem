@@ -29,19 +29,14 @@ using System.Threading;
 
 namespace WarehouseControlSystem.ViewModel
 {
-    public class LocationsViewModel : PlanBaseViewModel
+    public class LocationsViewModel : BaseViewModel
     {
-        public LocationViewModel SelectedLocationViewModel { get; set; }
         public ObservableCollection<LocationViewModel> LocationViewModels { get; set; } = new ObservableCollection<LocationViewModel>();
-        public ObservableCollection<LocationViewModel> SelectedViewModels { get; set; } = new ObservableCollection<LocationViewModel>();
-
+        
         public ICommand ListLocationsCommand { protected set; get; }
         public ICommand NewLocationCommand { protected set; get; }
         public ICommand EditLocationCommand { protected set; get; }
         public ICommand DeleteLocationCommand { protected set; get; }
-
-        public bool IsSelectedList { get { return SelectedViewModels.Count > 0; } }
-
 
         public LocationsViewModel(INavigation navigation) : base(navigation)
         {
@@ -62,122 +57,11 @@ namespace WarehouseControlSystem.ViewModel
 
         public void ClearAll()
         {
-            SelectedViewModels.Clear();
             foreach (LocationViewModel lvm in LocationViewModels)
             {
                 lvm.DisposeModel();
             }
             LocationViewModels.Clear();
-        }
-
-        public async void Load()
-        {
-            if (NotNetOrConnection)
-            {
-                return;
-            }
-
-            try
-            {
-                State = ModelState.Loading;
-                PlanWidth = await NAV.GetPlanWidth(ACD.Default).ConfigureAwait(true);
-                PlanHeight = await NAV.GetPlanHeight(ACD.Default).ConfigureAwait(true);
-                CheckPlanSizes();
-                List<Location> list = await NAV.GetLocationList("", true, 1, int.MaxValue, ACD.Default).ConfigureAwait(true); 
-                if ((list is List<Location>) && (!IsDisposed))
-                {
-                    if (list.Count > 0)
-                    {
-                        ClearAll();
-                        foreach (Location location in list)
-                        {
-                            SetDefaultSizes(location);
-                            LocationViewModel lvm = new LocationViewModel(Navigation, location);
-                            lvm.OnTap += Lvm_OnTap;
-                            LocationViewModels.Add(lvm);
-                        }
-                        State = ModelState.Normal;
-                        UpdateMinSizes();
-                        Rebuild(true);
-                    }
-                    else
-                    {
-                        State = ModelState.Error;
-                        ErrorText = "No Data";
-                    }
-                }
-            }
-            catch (OperationCanceledException e)
-            {
-                System.Diagnostics.Debug.WriteLine(e.Message);
-                ErrorText = e.Message;
-            }
-            catch (NAVErrorException e)
-            {
-                System.Diagnostics.Debug.WriteLine(e.Message);
-                State = ModelState.Error;
-                ErrorText = AppResources.Error_LoadLocation + Environment.NewLine + e.Message;
-            }
-            catch (Exception e)
-            {
-                System.Diagnostics.Debug.WriteLine(e.Message);
-                State = ModelState.Error;
-                ErrorText = AppResources.Error_LoadLocation + Environment.NewLine + e.Message;
-            }
-        }
-
-        int defaulttop;
-        int defaultleft;
-        int defaultwidth;
-        int defaultheight; 
-
-        private void CheckPlanSizes()
-        {
-            if (PlanWidth == 0)
-            {
-                PlanWidth = 20;
-            }
-            if (PlanHeight == 0)
-            {
-                PlanHeight = 10;
-            }
-
-            defaulttop = 1;
-            defaultleft = 1;
-            defaultwidth = Math.Max(1, (PlanWidth - 6) / 5);
-            defaultheight = Math.Max(1, (PlanHeight - 5) / 4);
-        }
-
-        private void SetDefaultSizes(Location location)
-        {
-            if (location.Width == 0)
-            {
-                location.Left = defaulttop;
-                location.Width = defaultwidth;
-                location.Height = defaultheight;
-                location.Top = defaulttop;
-
-                defaultleft = defaultleft + defaultwidth + 1;
-                if (defaultleft > (PlanWidth - defaultwidth))
-                {
-                    defaultleft = 1;
-                    defaulttop = defaulttop + defaultheight + 1;
-                }
-
-                if (defaulttop > (PlanHeight - defaultheight))
-                {
-                    defaulttop = 1;
-                }
-
-                if (location.Left + location.Width > PlanWidth)
-                {
-                    PlanWidth += location.Left + location.Width - PlanWidth;
-                }
-                if (location.Top + location.Height > PlanHeight)
-                {
-                    PlanHeight += location.Top + location.Height - PlanHeight;
-                }
-            }
         }
 
         public async void LoadAll()
@@ -224,96 +108,6 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
         
-
-        public override void Rebuild(bool recreate)
-        {
-            if ((ScreenWidth == 0) || (ScreenHeight == 0))
-            {
-                return;
-            }
-
-            double widthstep = (ScreenWidth / PlanWidth);
-            double heightstep = (ScreenHeight / PlanHeight);
-            foreach (LocationViewModel lvm in LocationViewModels)
-            {
-                lvm.Left = lvm.Location.Left * widthstep;
-                lvm.Top = lvm.Location.Top * heightstep;
-                lvm.Width = lvm.Location.Width * widthstep;
-                lvm.Height = lvm.Location.Height * heightstep;
-            }
-            if (recreate)
-            {
-                MessagingCenter.Send(this, "Rebuild");
-            }
-            else
-            {
-                MessagingCenter.Send(this, "Reshape");
-            }
-        }
-
-        private async void Lvm_OnTap(LocationViewModel tappedlvm)
-        {
-            if (!IsEditMode)
-            {
-                Global.SearchLocationCode = tappedlvm.Code;
-                try
-                {
-                    ZonesSchemePage zsp = new ZonesSchemePage(tappedlvm.Location);
-                    await Navigation.PushAsync(zsp);
-                }
-                catch (Exception e)
-                {
-                    System.Diagnostics.Debug.WriteLine(e.Message);
-                }
-            }
-            else
-            {
-                foreach (LocationViewModel lvm in LocationViewModels)
-                {
-                    if (lvm != tappedlvm)
-                    {
-                        lvm.Selected = false;
-                        lvm.EditMode = SchemeElementEditMode.None;
-                    }
-                }
-
-                if (tappedlvm.Selected)
-                {
-                    switch (tappedlvm.EditMode)
-                    {
-                        case SchemeElementEditMode.None:
-                            break;
-
-                        case SchemeElementEditMode.Move:
-                            tappedlvm.EditMode = SchemeElementEditMode.Resize;
-                            break;
-
-                        case SchemeElementEditMode.Resize:
-                            tappedlvm.Selected = false;
-                            tappedlvm.EditMode = SchemeElementEditMode.None;
-                            break;
-                        default:
-                            throw new InvalidOperationException("LocationsViewModel Lvm_OnTap Impossible Value ");
-                    }
-                }
-                else
-                {
-                    tappedlvm.Selected = true;
-                    tappedlvm.EditMode = SchemeElementEditMode.Move;
-                }
-
-                SelectedViewModels = new ObservableCollection<LocationViewModel>(LocationViewModels.ToList().FindAll(x => x.Selected == true));
-            }
-        }
-
-        public void UnSelectAll()
-        {
-            foreach (LocationViewModel lvm in LocationViewModels)
-            {
-                lvm.Selected = false;
-            }
-        }
-
         public async void ListLocations()
         {
             LocationListPage llp = new LocationListPage();
@@ -323,12 +117,12 @@ namespace WarehouseControlSystem.ViewModel
         public async void NewLocation()
         {
             Location newLocation = new Location();
-            SelectedLocationViewModel = new LocationViewModel(Navigation, newLocation)
+            LocationViewModel lvm = new LocationViewModel(Navigation, newLocation)
             {
                 CreateMode = true
             };
-            LocationViewModels.Add(SelectedLocationViewModel);
-            LocationNewPage lnp = new LocationNewPage(SelectedLocationViewModel);
+            LocationViewModels.Add(lvm);
+            LocationCardPage lnp = new LocationCardPage(lvm);
             await Navigation.PushAsync(lnp);
         }
 
@@ -338,7 +132,7 @@ namespace WarehouseControlSystem.ViewModel
             if (lvm is LocationViewModel)
             {
                 lvm.CreateMode = false;
-                LocationNewPage lnp = new LocationNewPage(lvm);
+                LocationCardPage lnp = new LocationCardPage(lvm);
                 await Navigation.PushAsync(lnp);
             }
         }
@@ -369,70 +163,6 @@ namespace WarehouseControlSystem.ViewModel
                 LoadAnimation = false;
             }
 
-        }
-
-
-        public async void SaveLocationChangesAsync()
-        {
-            if (NotNetOrConnection)
-            {
-                return;
-            }
-
-            List<LocationViewModel> list = LocationViewModels.ToList().FindAll(x => x.Selected == true);
-            foreach (LocationViewModel lvm in list)
-            {
-                try
-                {
-                    await NAV.ModifyLocation(lvm.Location, ACD.Default);
-                }
-                catch (Exception e)
-                {
-                    System.Diagnostics.Debug.WriteLine(e.Message);
-                    ErrorText = e.Message;
-                }
-            }
-            UpdateMinSizes();
-        }
-
-        public async void SaveSchemeParams()
-        {
-            if (NotNetOrConnection)
-            {
-                return;
-            }
-
-            try
-            {
-                await NAV.SetPlanWidth(PlanWidth, ACD.Default);
-                await NAV.SetPlanHeight(PlanHeight, ACD.Default);
-            }
-            catch (Exception e)
-            {
-                System.Diagnostics.Debug.WriteLine(e.Message);
-                ErrorText = e.Message;
-            }
-            UpdateMinSizes();
-        }
-
-        public void UpdateMinSizes()
-        {
-            int newminplanwidth = 0;
-            int newminplanheight = 0;
-
-            foreach (LocationViewModel lvm in LocationViewModels)
-            {
-                if (lvm.Location.Left + lvm.Location.Width > newminplanwidth)
-                {
-                    newminplanwidth = lvm.Location.Left + lvm.Location.Width;
-                }
-                if (lvm.Location.Top + lvm.Location.Height > newminplanheight)
-                {
-                    newminplanheight = lvm.Location.Top + lvm.Location.Height;
-                }
-            }
-            MinPlanWidth = newminplanwidth;
-            MinPlanHeight = newminplanheight;
         }
 
         public override void DisposeModel()

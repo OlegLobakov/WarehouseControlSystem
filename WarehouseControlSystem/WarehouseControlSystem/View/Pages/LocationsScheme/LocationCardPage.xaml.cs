@@ -20,11 +20,11 @@ using WarehouseControlSystem.ViewModel;
 namespace WarehouseControlSystem.View.Pages.LocationsScheme
 { 
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class LocationNewPage : ContentPage
+	public partial class LocationCardPage : ContentPage
 	{
         private readonly LocationViewModel model;
 
-        public LocationNewPage(LocationViewModel lvm)
+        public LocationCardPage(LocationViewModel lvm)
         {
             model = lvm;
             BindingContext = model;

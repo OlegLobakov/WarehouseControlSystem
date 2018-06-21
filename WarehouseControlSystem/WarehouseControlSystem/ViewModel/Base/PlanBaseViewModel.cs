@@ -16,11 +16,11 @@ namespace WarehouseControlSystem.ViewModel.Base
                 if (screenwidth != value)
                 {
                     screenwidth = value;
+                    CalcValues(false);
                     OnPropertyChanged(nameof(ScreenWidth));
                 }
             }
-        }
-        double screenwidth;
+        } double screenwidth;
 
         public double ScreenHeight
         {
@@ -30,6 +30,7 @@ namespace WarehouseControlSystem.ViewModel.Base
                 if (screenheight != value)
                 {
                     screenheight = value;
+                    CalcValues(false);
                     OnPropertyChanged(nameof(ScreenHeight));
                 }
             }
@@ -43,7 +44,7 @@ namespace WarehouseControlSystem.ViewModel.Base
                 if (planheight != value)
                 {
                     planheight = value;
-                    Rebuild(false);
+                    CalcValues(true);
                     OnPropertyChanged(nameof(PlanHeight));
                 }
             }
@@ -57,11 +58,38 @@ namespace WarehouseControlSystem.ViewModel.Base
                 if (planwidth != value)
                 {
                     planwidth = value;
-                    Rebuild(false);
+                    CalcValues(true);
                     OnPropertyChanged(nameof(PlanWidth));
                 }
             }
         } int planwidth;
+
+        public double WidthStep
+        {
+            get { return widthstep; }
+            set
+            {
+                if (widthstep != value)
+                {
+                    widthstep = value;
+                    OnPropertyChanged(nameof(WidthStep));
+                }
+            }
+        }
+        double widthstep;
+
+        public double HeightStep
+        {
+            get { return heightstep; }
+            set
+            {
+                if (heightstep != value)
+                {
+                    heightstep = value;
+                    OnPropertyChanged(nameof(HeightStep));
+                }
+            }
+        } double heightstep;
 
         public int MinPlanHeight
         {
@@ -89,6 +117,46 @@ namespace WarehouseControlSystem.ViewModel.Base
             }
         } int minwidth;
 
+        public bool CanRebuildInterface
+        {
+            get { return canrebuildinterface; }
+            set
+            {
+                if (canrebuildinterface != value)
+                {
+                    canrebuildinterface = value;
+                    OnPropertyChanged(nameof(CanRebuildInterface));
+                }
+            }
+        } bool canrebuildinterface;
+
+        private void CalcValues(bool rebuild)
+        {
+            if ((PlanWidth > 0) && (PlanHeight > 0) && (ScreenWidth > 0) && (ScreenHeight > 0))
+            {
+                WidthStep = (ScreenWidth / PlanWidth);
+                HeightStep = (ScreenHeight / PlanHeight);
+                CanRebuildInterface = true;
+                if (rebuild)
+                {
+                    Rebuild(false);
+                }
+            }
+            else
+            {
+                CanRebuildInterface = false;
+            }
+        }
+
+        public void SetScreenSizes(double width, double height, bool rebuild)
+        {
+            ScreenWidth = width;
+            ScreenHeight = height;
+            if (rebuild)
+            {
+                Rebuild(false);
+            }
+        }
 
         public virtual void Rebuild(bool recreate)
         {
@@ -96,7 +164,6 @@ namespace WarehouseControlSystem.ViewModel.Base
 
         public virtual void SaveChanges()
         {
-
         }
 
         public PlanBaseViewModel(INavigation navigation) : base(navigation)
