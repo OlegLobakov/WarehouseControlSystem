@@ -48,63 +48,17 @@ namespace WarehouseControlSystem.Helpers.NAV
             }
         }
 
-        /// <summary>
-        /// Unused
-        /// </summary>
-        /// <param name="functionname"></param>
-        /// <param name="body"></param>
-        /// <param name="myns"></param>
-        /// <param name="cts"></param>
-        /// <returns></returns>
-        private static Task<int> GetIntFromNAV(string functionname, XElement body, XNamespace myns, CancellationTokenSource cts)
+        private static async void GetIntFromNAV(TaskCompletionSource<int> tcs, string functionname, XElement body, XNamespace myns, CancellationTokenSource cts)
         {
-            var tcs = new TaskCompletionSource<int>();
-            Task.Run(async () =>
+            try
             {
-                try
-                {
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
-                    tcs.SetResult(StringToInt(soapbodynode.Value));
-                }
-                catch (Exception e)
-                {
-                    tcs.SetException(e);
-                }
-            });
-            return tcs.Task;
-        }
-
-        /// <summary>
-        /// Unused
-        /// </summary>
-        /// <param name="cts"></param>
-        /// <returns></returns>
-        public static Task<int> GetPlanWidthNew(CancellationTokenSource cts)
-        {
-            var tcs = new TaskCompletionSource<int>();
-            if (IsConnectionFaild())
-            {
-                tcs.SetResult(0);
-                return tcs.Task;
+                XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
+                tcs.SetResult(StringToInt(soapbodynode.Value));
             }
-
-            XNamespace myns = GetNameSpace();
-            string functionname = "GetPlanWidth";
-            XElement body = new XElement(myns + functionname);
-
-            Task.Run(async () =>
-                {
-                    try
-                    {
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
-                        tcs.SetResult(StringToInt(soapbodynode.Value));
-                    }
-                    catch (Exception e)
-                    {
-                        tcs.SetException(e);
-                    }
-                });
-            return tcs.Task;
+            catch (Exception e)
+            {
+                tcs.SetException(e);
+            }
         }
 
         public static Task<int> GetPlanWidth(CancellationTokenSource cts)
@@ -120,19 +74,7 @@ namespace WarehouseControlSystem.Helpers.NAV
             string functionname = "GetPlanWidth";
             XElement body = new XElement(myns + functionname);
 
-            Task.Run(async () =>
-                {
-                    try
-                    {
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
-                        tcs.SetResult(StringToInt(soapbodynode.Value));
-                    }
-                    catch (Exception e)
-                    {
-                        tcs.SetException(e);
-                    }
-                });
-
+            Task.Run(() => GetIntFromNAV(tcs, functionname, body, myns, cts));
             return tcs.Task;
         }
         public static Task<int> GetPlanHeight(CancellationTokenSource cts)
@@ -149,21 +91,9 @@ namespace WarehouseControlSystem.Helpers.NAV
             string functionname = "GetPlanHeight";
             XElement body = new XElement(myns + functionname);
 
-            Task.Run(async () =>
-                {
-                    try
-                    {
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
-                        tcs.SetResult(StringToInt(soapbodynode.Value));
-                    }
-                    catch (Exception e)
-                    {
-                        tcs.SetException(e);
-                    }
-                });
+            Task.Run(() => GetIntFromNAV(tcs, functionname, body, myns, cts));
             return tcs.Task;
         }
-
         public static Task<int> SetPlanWidth(int value, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<int>();
@@ -179,19 +109,7 @@ namespace WarehouseControlSystem.Helpers.NAV
             XElement body = new XElement(myns + functionname,
                 new XElement(myns + "value", value));
 
-            Task.Run(async () =>
-            {
-                try
-                {
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
-                    int rv = StringToInt(soapbodynode.Value);
-                    tcs.SetResult(rv);
-                }
-                catch (Exception e)
-                {
-                    tcs.SetException(e);
-                }
-            });
+            Task.Run(() => GetIntFromNAV(tcs, functionname, body, myns, cts));
 
             return tcs.Task;
         }
@@ -209,18 +127,7 @@ namespace WarehouseControlSystem.Helpers.NAV
             XElement body = new XElement(myns + functionname,
                 new XElement(myns + "value", value));
 
-            Task.Run(async () =>
-                {
-                    try
-                    {
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
-                        tcs.SetResult(StringToInt(soapbodynode.Value));
-                    }
-                    catch (Exception e)
-                    {
-                        tcs.SetException(e);
-                    }
-                });
+            Task.Run(() => GetIntFromNAV(tcs, functionname, body, myns, cts));
 
             return tcs.Task;
         }
@@ -237,19 +144,42 @@ namespace WarehouseControlSystem.Helpers.NAV
             string functionname = "APIVersion";
             XElement body = new XElement(myns + functionname);
 
-            Task.Run(async () =>
-                {
-                    try
-                    {
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
-                        tcs.SetResult(StringToInt(soapbodynode.Value));
-                    }
-                    catch (Exception e)
-                    {
-                        tcs.SetException(e);
-                    }
-                });
+            Task.Run(() => GetIntFromNAV(tcs, functionname, body, myns, cts));
             return tcs.Task;
+        }
+
+
+        public static XElement[] PositionCount(XNamespace myns, int position, int count)
+        {
+            return new XElement[]
+            {
+              new XElement(myns + "entriesPosition", position),
+              new XElement(myns + "entriesCount", count),
+              new XElement(myns + "responseDocument", "")
+            };
+        }
+
+        public static XElement[] SetLocationParams(XNamespace myns, Location location)
+        {
+            return new XElement[]
+            {
+                new XElement(myns + "name", location.Name),
+                new XElement(myns + "address", location.Address),
+                new XElement(myns + "phoneNo", location.PhoneNo),
+                new XElement(myns + "hexColor", location.HexColor),
+                new XElement(myns + "planWidth", location.PlanWidth),
+                new XElement(myns + "planHeight", location.PlanHeight),
+                new XElement(myns + "left", location.Left),
+                new XElement(myns + "top", location.Top),
+                new XElement(myns + "width", location.Width),
+                new XElement(myns + "height", location.Height),
+                new XElement(myns + "schemeVisible", location.SchemeVisible),
+                new XElement(myns + "binMandatory", location.BinMandatory),
+                new XElement(myns + "requireReceive", location.RequireReceive),
+                new XElement(myns + "requireShipment", location.RequireShipment),
+                new XElement(myns + "requirePick", location.RequirePick),
+                new XElement(myns + "requirePutaway", location.RequirePutaway)
+            };
         }
 
         #region Location
@@ -268,38 +198,11 @@ namespace WarehouseControlSystem.Helpers.NAV
             XElement body =
                 new XElement(myns + functionname,
                     new XElement(myns + "code", location.Code),
-                    new XElement(myns + "name", location.Name),
-                    new XElement(myns + "address", location.Address),
-                    new XElement(myns + "phoneNo", location.PhoneNo),
-                    new XElement(myns + "hexColor", location.HexColor),
-                    new XElement(myns + "planWidth", location.PlanWidth),
-                    new XElement(myns + "planHeight", location.PlanHeight),
-                    new XElement(myns + "left", location.Left),
-                    new XElement(myns + "top", location.Top),
-                    new XElement(myns + "width", location.Width),
-                    new XElement(myns + "height", location.Height),
-                    new XElement(myns + "schemeVisible", location.SchemeVisible),
-                    new XElement(myns + "binMandatory", location.BinMandatory),
-                    new XElement(myns + "requireReceive", location.RequireReceive),
-                    new XElement(myns + "requireShipment", location.RequireShipment),
-                    new XElement(myns + "requirePick", location.RequirePick),
-                    new XElement(myns + "requirePutaway", location.RequirePutaway));
+                    SetLocationParams(myns, location));
 
-            Task.Run(async () =>
-                {
-                    try
-                    {
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
-                        tcs.SetResult(0);
-                    }
-                    catch (Exception e)
-                    {
-                        tcs.SetException(e);
-                    }
-                });
+            Task.Run(() => GetIntFromNAV(tcs, functionname, body, myns, cts));
             return tcs.Task;
         }
-
         public static Task<int> ModifyLocation(Location location, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<int>();
@@ -315,35 +218,9 @@ namespace WarehouseControlSystem.Helpers.NAV
                 new XElement(myns + functionname,
                     new XElement(myns + "code", location.Code),
                     new XElement(myns + "prevCode", location.PrevCode),
-                    new XElement(myns + "name", location.Name),
-                    new XElement(myns + "address", location.Address),
-                    new XElement(myns + "phoneNo", location.PhoneNo),
-                    new XElement(myns + "hexColor", location.HexColor),
-                    new XElement(myns + "planWidth", location.PlanWidth),
-                    new XElement(myns + "planHeight", location.PlanHeight),
-                    new XElement(myns + "left", location.Left),
-                    new XElement(myns + "top", location.Top),
-                    new XElement(myns + "width", location.Width),
-                    new XElement(myns + "height", location.Height),
-                    new XElement(myns + "schemeVisible", location.SchemeVisible),
-                    new XElement(myns + "binMandatory", location.BinMandatory),
-                    new XElement(myns + "requireReceive", location.RequireReceive),
-                    new XElement(myns + "requireShipment", location.RequireShipment),
-                    new XElement(myns + "requirePick", location.RequirePick),
-                    new XElement(myns + "requirePutaway", location.RequirePutaway));
+                    SetLocationParams(myns, location));
 
-            Task.Run(async () =>
-                {
-                    try
-                    {
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
-                        tcs.SetResult(0);
-                    }
-                    catch (Exception e)
-                    {
-                        tcs.SetException(e);
-                    }
-                });
+            Task.Run(() => GetIntFromNAV(tcs, functionname, body, myns, cts));
 
             return tcs.Task;
         }
@@ -363,18 +240,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                 new XElement(myns + "code", location.Code),
                 new XElement(myns + "visible", location.SchemeVisible.ToString()));
 
-            Task.Run(async () =>
-                {
-                    try
-                    {
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
-                        tcs.SetResult(0);
-                    }
-                    catch (Exception e)
-                    {
-                        tcs.SetException(e);
-                    }
-                });
+            Task.Run(() => GetIntFromNAV(tcs, functionname, body, myns, cts));
 
             return tcs.Task;
         }
@@ -393,18 +259,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                 new XElement(myns + functionname,
                     new XElement(myns + "name", locationcode));
 
-            Task.Run(async () =>
-            {
-                try
-                {
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
-                    tcs.SetResult(0);
-                }
-                catch (Exception e)
-                {
-                    tcs.SetException(e);
-                }
-            });
+            Task.Run(() => GetIntFromNAV(tcs, functionname, body, myns, cts));
             return tcs.Task;
         }
         public static Task<int> GetLocationCount(string codefilter, bool onlyvisibled, CancellationTokenSource cts)
@@ -423,20 +278,10 @@ namespace WarehouseControlSystem.Helpers.NAV
                     new XElement(myns + "codeFilter", codefilter),
                     new XElement(myns + "onlyVisibled", onlyvisibled.ToString()));
 
-            Task.Run(async () =>
-            {
-                try
-                {
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
-                    tcs.SetResult(StringToInt(soapbodynode.Value));
-                }
-                catch (Exception e)
-                {
-                    tcs.SetException(e);
-                }
-            });
+            Task.Run(() => GetIntFromNAV(tcs, functionname, body, myns, cts));
             return tcs.Task;
         }
+
         public static Task<List<Location>> GetLocationList(string codefilter, bool onlyvisibled, int position, int count, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<List<Location>>();
@@ -448,13 +293,12 @@ namespace WarehouseControlSystem.Helpers.NAV
 
             XNamespace myns = GetNameSpace();
             string functionname = "GetLocationList";
+
             XElement body =
                 new XElement(myns + functionname,
-                new XElement(myns + "codeFilter", codefilter),
-                new XElement(myns + "onlyVisibled", onlyvisibled.ToString()),
-                new XElement(myns + "entriesPosition", position),
-                new XElement(myns + "entriesCount", count),
-                new XElement(myns + "responseDocument", ""));
+                    new XElement(myns + "codeFilter", codefilter),
+                    new XElement(myns + "onlyVisibled", onlyvisibled.ToString()),
+                    PositionCount(myns, position, count));
 
             Task.Run(async () =>
                 {
@@ -483,118 +327,114 @@ namespace WarehouseControlSystem.Helpers.NAV
             Location location = new Location();
             foreach (XAttribute currentatribute in currentnode.Attributes())
             {
-                switch (currentatribute.Name.LocalName)
-                {
-                    case "Code":
-                        {
-                            location.Code = currentatribute.Value;
-                            location.PrevCode = location.Code;
-                            break;
-                        }
-                    case "Name":
-                        {
-                            location.Name = currentatribute.Value;
-                            break;
-                        }
-                    case "Address":
-                        {
-                            location.Address = currentatribute.Value;
-                            break;
-                        }
-                    case "PhoneNo":
-                        {
-                            location.PhoneNo = currentatribute.Value;
-                            break;
-                        }
-                    case "HexColor":
-                        {
-                            location.HexColor = currentatribute.Value;
-                            break;
-                        }
-                    case "Left":
-                        {
-                            location.Left = StringToInt(currentatribute.Value);
-                            break;
-                        }
-                    case "Top":
-                        {
-                            location.Top = StringToInt(currentatribute.Value);
-                            break;
-                        }
-                    case "Width":
-                        {
-                            location.Width = StringToInt(currentatribute.Value);
-                            break;
-                        }
-                    case "Height":
-                        {
-                            location.Height = StringToInt(currentatribute.Value);
-                            break;
-                        }
-                    case "PlanWidth":
-                        {
-                            location.PlanWidth = StringToInt(currentatribute.Value);
-                            break;
-                        }
-                    case "PlanHeight":
-                        {
-                            location.PlanHeight = StringToInt(currentatribute.Value);
-                            break;
-                        }
-                    case "BinMandatory":
-                        {
-                            location.BinMandatory = StringToBool(currentatribute.Value);
-                            break;
-                        }
-                    case "RequireReceive":
-                        {
-                            location.RequireReceive = StringToBool(currentatribute.Value);
-                            break;
-                        }
-                    case "RequireShipment":
-                        {
-                            location.RequireShipment = StringToBool(currentatribute.Value);
-                            break;
-                        }
-                    case "RequirePick":
-                        {
-                            location.RequirePick = StringToBool(currentatribute.Value);
-                            break;
-                        }
-                    case "RequirePutaway":
-                        {
-                            location.RequirePutaway = StringToBool(currentatribute.Value);
-                            break;
-                        }
-                    case "UseAsInTransit":
-                        {
-                            location.Transit = StringToBool(currentatribute.Value);
-                            break;
-                        }
-                    case "ZoneQuantity":
-                        {
-                            location.ZoneQuantity = StringToInt(currentatribute.Value);
-                            break;
-                        }
-                    case "BinQuantity":
-                        {
-                            location.BinQuantity = StringToInt(currentatribute.Value);
-                            break;
-                        }
-                    case "SchemeVisible":
-                        {
-                            location.SchemeVisible = StringToBool(currentatribute.Value);
-                            break;
-                        }
-                    default:
-                        throw new InvalidOperationException("Impossible value GetLocationFromXML > Name: " + currentatribute.Name.LocalName);
-                }
+                GetLocationFromXML1(location, currentatribute);
+                GetLocationFromXML2(location, currentatribute);
+                GetLocationFromXML3(location, currentatribute);
             }
             return location;
+        }
+        private static void GetLocationFromXML1(Location location, XAttribute currentatribute)
+        {
+            switch (currentatribute.Name.LocalName)
+            {
+                case "Code":
+                    location.Code = currentatribute.Value;
+                    location.PrevCode = location.Code;
+                    break;
+                case "Name":
+                    location.Name = currentatribute.Value;
+                    break;
+                case "Address":
+                    location.Address = currentatribute.Value;
+                    break;
+                case "PhoneNo":
+                    location.PhoneNo = currentatribute.Value;
+                    break;
+                case "HexColor":
+                    location.HexColor = currentatribute.Value;
+                    break;
+            }
+        }
+        private static void GetLocationFromXML2(Location location, XAttribute currentatribute)
+        {
+            switch (currentatribute.Name.LocalName)
+            {
+                case "Left":
+                    location.Left = StringToInt(currentatribute.Value);
+                    break;
+                case "Top":
+                    location.Top = StringToInt(currentatribute.Value);
+                    break;
+                case "Width":
+                    location.Width = StringToInt(currentatribute.Value);
+                    break;
+                case "Height":
+                    location.Height = StringToInt(currentatribute.Value);
+                    break;
+                case "PlanWidth":
+                    location.PlanWidth = StringToInt(currentatribute.Value);
+                    break;
+                case "PlanHeight":
+                    location.PlanHeight = StringToInt(currentatribute.Value);
+                    break;
+            }
+        }
+        private static void GetLocationFromXML3(Location location, XAttribute currentatribute)
+        {
+            switch (currentatribute.Name.LocalName)
+            {
+                case "BinMandatory":
+                    location.BinMandatory = StringToBool(currentatribute.Value);
+                    break;
+                case "RequireReceive":
+                    location.RequireReceive = StringToBool(currentatribute.Value);
+                    break;
+                case "RequireShipment":
+                    location.RequireShipment = StringToBool(currentatribute.Value);
+                    break;
+                case "RequirePick":
+                    location.RequirePick = StringToBool(currentatribute.Value);
+                    break;
+                case "RequirePutaway":
+                    location.RequirePutaway = StringToBool(currentatribute.Value);
+                    break;
+                case "UseAsInTransit":
+                    location.Transit = StringToBool(currentatribute.Value);
+                    break;
+                case "ZoneQuantity":
+                    location.ZoneQuantity = StringToInt(currentatribute.Value);
+                    break;
+                case "BinQuantity":
+                    location.BinQuantity = StringToInt(currentatribute.Value);
+                    break;
+                case "SchemeVisible":
+                    location.SchemeVisible = StringToBool(currentatribute.Value);
+                    break;
+            }
         }
         #endregion
 
         #region Zone
+        public static XElement[] SetZoneParams(XNamespace myns, Zone zone)
+        {
+            return new XElement[]
+            {
+                new XElement(myns + "description", zone.Description),
+                new XElement(myns + "binTypeCode", zone.BinTypeCode),
+                new XElement(myns + "zoneRanking", zone.ZoneRanking),
+                new XElement(myns + "crossDockBinZone", zone.CrossDockBinZone),
+                new XElement(myns + "specialEquipmentCode", zone.SpecialEquipmentCode),
+                new XElement(myns + "warehouseClassCode", zone.WarehouseClassCode),
+                new XElement(myns + "hexColor", zone.HexColor),
+                new XElement(myns + "planWidth", zone.PlanWidth),
+                new XElement(myns + "planHeight", zone.PlanHeight),
+                new XElement(myns + "left", zone.Left),
+                new XElement(myns + "top", zone.Top),
+                new XElement(myns + "width", zone.Width),
+                new XElement(myns + "height", zone.Height),
+                new XElement(myns + "schemeVisible", zone.SchemeVisible)
+            };
+        }
         public static Task<int> CreateZone(Zone zone, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<int>();
@@ -610,37 +450,11 @@ namespace WarehouseControlSystem.Helpers.NAV
                 new XElement(myns + functionname,
                 new XElement(myns + "locationCode", zone.LocationCode),
                 new XElement(myns + "code", zone.Code),
-                new XElement(myns + "description", zone.Description),
-                new XElement(myns + "binTypeCode", zone.BinTypeCode),
-                new XElement(myns + "zoneRanking", zone.ZoneRanking),
-                new XElement(myns + "crossDockBinZone", zone.CrossDockBinZone),
-                new XElement(myns + "specialEquipmentCode", zone.SpecialEquipmentCode),
-                new XElement(myns + "warehouseClassCode", zone.WarehouseClassCode),
-                new XElement(myns + "hexColor", zone.HexColor),
-                new XElement(myns + "planWidth", zone.PlanWidth),
-                new XElement(myns + "planHeight", zone.PlanHeight),
-                new XElement(myns + "left", zone.Left),
-                new XElement(myns + "top", zone.Top),
-                new XElement(myns + "width", zone.Width),
-                new XElement(myns + "height", zone.Height),
-                new XElement(myns + "schemeVisible", zone.SchemeVisible));
+                SetZoneParams(myns, zone));
 
-            Task.Run(async () =>
-            {
-                try
-                {
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
-                    tcs.SetResult(0);
-                }
-                catch (Exception e)
-                {
-                    tcs.SetException(e);
-                }
-            });
-
+            Task.Run(() => GetIntFromNAV(tcs, functionname, body, myns, cts));
             return tcs.Task;
         }
-
         public static Task<int> ModifyZone(Zone zone, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<int>();
@@ -657,33 +471,9 @@ namespace WarehouseControlSystem.Helpers.NAV
                 new XElement(myns + "locationCode", zone.LocationCode),
                 new XElement(myns + "code", zone.Code),
                 new XElement(myns + "prevCode", zone.PrevCode),
-                new XElement(myns + "description", zone.Description),
-                new XElement(myns + "binTypeCode", zone.BinTypeCode),
-                new XElement(myns + "zoneRanking", zone.ZoneRanking),
-                new XElement(myns + "crossDockBinZone", zone.CrossDockBinZone),
-                new XElement(myns + "specialEquipmentCode", zone.SpecialEquipmentCode),
-                new XElement(myns + "warehouseClassCode", zone.WarehouseClassCode),
-                new XElement(myns + "hexColor", zone.HexColor),
-                new XElement(myns + "planWidth", zone.PlanWidth),
-                new XElement(myns + "planHeight", zone.PlanHeight),
-                new XElement(myns + "left", zone.Left),
-                new XElement(myns + "top", zone.Top),
-                new XElement(myns + "width", zone.Width),
-                new XElement(myns + "height", zone.Height),
-                new XElement(myns + "schemeVisible", zone.SchemeVisible));
+                SetZoneParams(myns, zone));
 
-            Task.Run(async () =>
-                {
-                    try
-                    {
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
-                        tcs.SetResult(0);
-                    }
-                    catch (Exception e)
-                    {
-                        tcs.SetException(e);
-                    }
-                });
+            Task.Run(() => GetIntFromNAV(tcs, functionname, body, myns, cts));
             return tcs.Task;
         }
         public static Task<int> SetZoneVisible(Zone zone, CancellationTokenSource cts)
@@ -703,22 +493,9 @@ namespace WarehouseControlSystem.Helpers.NAV
                 new XElement(myns + "code", zone.Code),
                 new XElement(myns + "visible", zone.SchemeVisible));
 
-            Task.Run(async () =>
-                {
-                    try
-                    {
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
-                        tcs.SetResult(0);
-                    }
-                    catch (Exception e)
-                    {
-                        System.Diagnostics.Debug.WriteLine(e.Message);
-                        tcs.SetException(e);
-                    }
-                });
+            Task.Run(() => GetIntFromNAV(tcs, functionname, body, myns, cts));
             return tcs.Task;
         }
-
         public static Task<int> DeleteZone(Zone zone, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<int>();
@@ -734,19 +511,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                     new XElement(myns + "locationCode", zone.LocationCode),
                     new XElement(myns + "code", zone.Code));
 
-            Task.Run(async () =>
-                {
-                    try
-                    {
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
-                        tcs.SetResult(0);
-                    }
-                    catch (Exception e)
-                    {
-                        System.Diagnostics.Debug.WriteLine(e.Message);
-                        tcs.SetException(e);
-                    }
-                });
+            Task.Run(() => GetIntFromNAV(tcs, functionname, body, myns, cts));
             return tcs.Task;
         }
         public static Task<int> GetZoneCount(string locationfilter, string codefilter, bool onlyvisibled, CancellationTokenSource cts)
@@ -765,19 +530,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                             new XElement(myns + "locationFilter", locationfilter),
                             new XElement(myns + "codeFilter", codefilter),
                             new XElement(myns + "onlyVisibled", onlyvisibled));
-            Task.Run(async () =>
-            {
-                try
-                {
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
-                    tcs.SetResult(StringToInt(soapbodynode.Value));
-                }
-                catch (Exception e)
-                {
-                    System.Diagnostics.Debug.WriteLine(e.Message);
-                    tcs.SetException(e);
-                }
-            });
+            Task.Run(() => GetIntFromNAV(tcs, functionname, body, myns, cts));
             return tcs.Task;
         }
         public static Task<List<Zone>> GetZoneList(string locationfilter, string codefilter, bool onlyvisibled, int position, int count, CancellationTokenSource cts)
@@ -796,9 +549,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                     new XElement(myns + "locationFilter", locationfilter),
                     new XElement(myns + "codeFilter", codefilter),
                     new XElement(myns + "onlyVisibled", onlyvisibled),
-                    new XElement(myns + "entriesPosition", position),
-                    new XElement(myns + "entriesCount", count),
-                    new XElement(myns + "responseDocument", ""));
+                    PositionCount(myns, position, count));
 
             Task.Run(async () =>
                 {
@@ -828,103 +579,101 @@ namespace WarehouseControlSystem.Helpers.NAV
             Zone zone = new Zone();
             foreach (XAttribute currentatribute in currentnode.Attributes())
             {
-                switch (currentatribute.Name.LocalName)
-                {
-                    case "LocationCode":
-                        {
-                            zone.LocationCode = currentatribute.Value;
-                            break;
-                        }
-                    case "Code":
-                        {
-                            zone.Code = currentatribute.Value;
-                            zone.PrevCode = zone.Code;
-                            break;
-                        }
-                    case "Description":
-                        {
-                            zone.Description = currentatribute.Value;
-                            break;
-                        }
-                    case "BinTypeCode":
-                        {
-                            zone.BinTypeCode = currentatribute.Value;
-                            break;
-                        }
-                    case "CrossDockBinZone":
-                        {
-                            zone.CrossDockBinZone = StringToBool(currentatribute.Value);
-                            break;
-                        }
-                    case "HexColor":
-                        {
-                            zone.HexColor = currentatribute.Value;
-                            break;
-                        }
-                    case "Left":
-                        {
-                            zone.Left = StringToInt(currentatribute.Value);
-                            break;
-                        }
-                    case "Top":
-                        {
-                            zone.Top = StringToInt(currentatribute.Value);
-                            break;
-                        }
-                    case "Width":
-                        {
-                            zone.Width = StringToInt(currentatribute.Value);
-                            break;
-                        }
-                    case "Height":
-                        {
-                            zone.Height = StringToInt(currentatribute.Value);
-                            break;
-                        }
-                    case "PlanWidth":
-                        {
-                            zone.PlanWidth = StringToInt(currentatribute.Value);
-                            break;
-                        }
-                    case "PlanHeight":
-                        {
-                            zone.PlanHeight = StringToInt(currentatribute.Value);
-                            break;
-                        }
-                    case "SpecialEquipmentCode":
-                        {
-                            zone.SpecialEquipmentCode = currentatribute.Value;
-                            break;
-                        }
-                    case "WarehouseClassCode":
-                        {
-                            zone.WarehouseClassCode = currentatribute.Value;
-                            break;
-                        }
-                    case "BinQuantity":
-                        {
-                            zone.BinQuantity = StringToInt(currentatribute.Value);
-                            break;
-                        }
-                    case "RackQuantity":
-                        {
-                            zone.RackQuantity = StringToInt(currentatribute.Value);
-                            break;
-                        }
-                    case "SchemeVisible":
-                        {
-                            zone.SchemeVisible = StringToBool(currentatribute.Value);
-                            break;
-                        }
-                    default:
-                        throw new InvalidOperationException("Impossible value GetZoneFromXML > Name: " + currentatribute.Name.LocalName);
-                }
+                GetZoneFromXML1(zone, currentatribute);
+                GetZoneFromXML2(zone, currentatribute);
+                GetZoneFromXML3(zone, currentatribute);
             }
             return zone;
+        }
+        private static void GetZoneFromXML1(Zone zone, XAttribute currentatribute)
+        {
+            switch (currentatribute.Name.LocalName)
+            {
+                case "LocationCode":
+                    zone.LocationCode = currentatribute.Value;
+                    break;
+                case "Code":
+                    zone.Code = currentatribute.Value;
+                    zone.PrevCode = zone.Code;
+                    break;
+                case "Description":
+                    zone.Description = currentatribute.Value;
+                    break;
+                case "BinTypeCode":
+                    zone.BinTypeCode = currentatribute.Value;
+                    break;
+                case "CrossDockBinZone":
+                    zone.CrossDockBinZone = StringToBool(currentatribute.Value);
+                    break;
+                case "HexColor":
+                    zone.HexColor = currentatribute.Value;
+                    break;
+            }
+        }
+        private static void GetZoneFromXML2(Zone zone, XAttribute currentatribute)
+        {
+            switch (currentatribute.Name.LocalName)
+            {
+                case "Left":
+                    zone.Left = StringToInt(currentatribute.Value);
+                    break;
+                case "Top":
+                    zone.Top = StringToInt(currentatribute.Value);
+                    break;
+                case "Width":
+                    zone.Width = StringToInt(currentatribute.Value);
+                    break;
+                case "Height":
+                    zone.Height = StringToInt(currentatribute.Value);
+                    break;
+                case "PlanWidth":
+                    zone.PlanWidth = StringToInt(currentatribute.Value);
+                    break;
+                case "PlanHeight":
+                    zone.PlanHeight = StringToInt(currentatribute.Value);
+                    break;
+            }
+        }
+        private static void GetZoneFromXML3(Zone zone, XAttribute currentatribute)
+        {
+            switch (currentatribute.Name.LocalName)
+            {
+                case "SpecialEquipmentCode":
+
+                    zone.SpecialEquipmentCode = currentatribute.Value;
+                    break;
+                case "WarehouseClassCode":
+                    zone.WarehouseClassCode = currentatribute.Value;
+                    break;
+                case "BinQuantity":
+                    zone.BinQuantity = StringToInt(currentatribute.Value);
+                    break;
+                case "RackQuantity":
+                    zone.RackQuantity = StringToInt(currentatribute.Value);
+                    break;
+                case "SchemeVisible":
+                    zone.SchemeVisible = StringToBool(currentatribute.Value);
+                    break;
+            }
         }
         #endregion
 
         #region Rack
+        public static XElement[] SetRackParams(XNamespace myns, Rack rack)
+        {
+            return new XElement[]
+            {
+                new XElement(myns + "sections", rack.Sections),
+                new XElement(myns + "levels", rack.Levels),
+                new XElement(myns + "depth", rack.Depth),
+                new XElement(myns + "left", rack.Left),
+                new XElement(myns + "top", rack.Top),
+                new XElement(myns + "width", rack.Width),
+                new XElement(myns + "height", rack.Height),
+                new XElement(myns + "rackOrientation", (int)rack.RackOrientation),
+                new XElement(myns + "schemeVisible", rack.SchemeVisible)
+             };
+        }
         public static Task<int> CreateRack(Rack rack, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<int>();
@@ -941,29 +690,9 @@ namespace WarehouseControlSystem.Helpers.NAV
                 new XElement(myns + "locationCode", rack.LocationCode),
                 new XElement(myns + "zoneCode", rack.ZoneCode),
                 new XElement(myns + "no", rack.No),
-                new XElement(myns + "sections", rack.Sections),
-                new XElement(myns + "levels", rack.Levels),
-                new XElement(myns + "depth", rack.Depth),
-                new XElement(myns + "left", rack.Left),
-                new XElement(myns + "top", rack.Top),
-                new XElement(myns + "width", rack.Width),
-                new XElement(myns + "height", rack.Height),
-                new XElement(myns + "rackOrientation", (int)rack.RackOrientation),
-                new XElement(myns + "schemeVisible", rack.SchemeVisible));
+                SetRackParams(myns,rack));
 
-            Task.Run(async () =>
-                {
-                    try
-                    {
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
-                        tcs.SetResult(0);
-                    }
-                    catch (Exception e)
-                    {
-                        System.Diagnostics.Debug.WriteLine(e.Message);
-                        tcs.SetException(e);
-                    }
-                });
+            Task.Run(() => GetIntFromNAV(tcs, functionname, body, myns, cts));
             return tcs.Task;
         }
         public static Task<int> ModifyRack(Rack rack, CancellationTokenSource cts)
@@ -983,29 +712,9 @@ namespace WarehouseControlSystem.Helpers.NAV
                 new XElement(myns + "zoneCode", rack.ZoneCode),
                 new XElement(myns + "no", rack.No),
                 new XElement(myns + "prevNo", rack.PrevNo),
-                new XElement(myns + "sections", rack.Sections),
-                new XElement(myns + "levels", rack.Levels),
-                new XElement(myns + "depth", rack.Depth),
-                new XElement(myns + "left", rack.Left),
-                new XElement(myns + "top", rack.Top),
-                new XElement(myns + "width", rack.Width),
-                new XElement(myns + "height", rack.Height),
-                new XElement(myns + "rackOrientation", (int)rack.RackOrientation),
-                new XElement(myns + "schemeVisible", rack.SchemeVisible));
+                SetRackParams(myns, rack));
 
-            Task.Run(async () =>
-                {
-                    try
-                    {
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
-                        tcs.SetResult(0);
-                    }
-                    catch (Exception e)
-                    {
-                        System.Diagnostics.Debug.WriteLine(e.Message);
-                        tcs.SetException(e);
-                    }
-                });
+            Task.Run(() => GetIntFromNAV(tcs, functionname, body, myns, cts));
             return tcs.Task;
         }
         public static Task<int> DeleteRack(Rack rack, CancellationTokenSource cts)
@@ -1025,20 +734,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                 new XElement(myns + "zoneCode", rack.ZoneCode),
                 new XElement(myns + "no", rack.No));
 
-            Task.Run(async () =>
-                {
-                    try
-                    {
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
-                        tcs.SetResult(0);
-                    }
-                    catch (Exception e)
-                    {
-                        System.Diagnostics.Debug.WriteLine(e.Message);
-                        tcs.SetException(e);
-                    }
-                });
-
+            Task.Run(() => GetIntFromNAV(tcs, functionname, body, myns, cts));
             return tcs.Task;
         }
         public static Task<int> SetRackVisible(Rack rack, CancellationTokenSource cts)
@@ -1059,20 +755,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                     new XElement(myns + "no", rack.No),
                     new XElement(myns + "visible", rack.SchemeVisible));
 
-            Task.Run(async () =>
-                {
-                    try
-                    {
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
-                        tcs.SetResult(0);
-                    }
-                    catch (Exception e)
-                    {
-                        System.Diagnostics.Debug.WriteLine(e.Message);
-                        tcs.SetException(e);
-                    }
-                });
-
+            Task.Run(() => GetIntFromNAV(tcs, functionname, body, myns, cts));
             return tcs.Task;
         }
         public static Task<int> GetRackCount(string locationfilter, string codefilter, string nofilter, bool onlyvisibled, CancellationTokenSource cts)
@@ -1093,20 +776,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                     new XElement(myns + "nOFilter", nofilter),
                     new XElement(myns + "onlyVisibled", onlyvisibled));
 
-            Task.Run(async () =>
-                {
-                    try
-                    {
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
-                        tcs.SetResult(StringToInt(soapbodynode.Value));
-                    }
-                    catch (Exception e)
-                    {
-                        System.Diagnostics.Debug.WriteLine(e.Message);
-                        tcs.SetException(e);
-                    }
-                });
-
+            Task.Run(() => GetIntFromNAV(tcs, functionname, body, myns, cts));
             return tcs.Task;
         }
         public static Task<List<Rack>> GetRackList(string locationfilter, string zonefilter, bool onlyvisibled, int position, int count, CancellationTokenSource cts)
@@ -1125,9 +795,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                     new XElement(myns + "locationCodeFilter", locationfilter),
                     new XElement(myns + "zoneCodeFilter", zonefilter),
                     new XElement(myns + "onlyVisibled", onlyvisibled),
-                    new XElement(myns + "entriesPosition", position),
-                    new XElement(myns + "entriesCount", count),
-                    new XElement(myns + "responseDocument", ""));
+                    PositionCount(myns, position, count));
 
             Task.Run(async () =>
                 {
@@ -1158,81 +826,71 @@ namespace WarehouseControlSystem.Helpers.NAV
             Rack rack = new Rack();
             foreach (XAttribute currentatribute in currentnode.Attributes())
             {
-                switch (currentatribute.Name.LocalName)
-                {
-                    case "LocationCode":
-                        {
-                            rack.LocationCode = currentatribute.Value;
-                            break;
-                        }
-                    case "ZoneCode":
-                        {
-                            rack.ZoneCode = currentatribute.Value;
-                            break;
-                        }
-                    case "No":
-                        {
-                            rack.No = currentatribute.Value;
-                            rack.PrevNo = rack.No;
-                            break;
-                        }
-                    case "Sections":
-                        {
-                            rack.Sections = StringToInt(currentatribute.Value);
-                            break;
-                        }
-                    case "Levels":
-                        {
-                            rack.Levels = StringToInt(currentatribute.Value);
-                            break;
-                        }
-                    case "Depth":
-                        {
-                            rack.Depth = StringToInt(currentatribute.Value);
-                            break;
-                        }
-                    case "Left":
-                        {
-                            rack.Left = StringToInt(currentatribute.Value);
-                            break;
-                        }
-                    case "Top":
-                        {
-                            rack.Top = StringToInt(currentatribute.Value);
-                            break;
-                        }
-                    case "SchemeVisible":
-                        {
-                            rack.SchemeVisible = StringToBool(currentatribute.Value);
-                            break;
-                        }
-                    case "RackOrientation":
-                        {
-                            int i = StringToInt(currentatribute.Value);
-                            switch (i)
-                            {
-                                case 0:
-                                    rack.RackOrientation = RackOrientationEnum.HorizontalLeft;
-                                    break;
-                                case 1:
-                                    rack.RackOrientation = RackOrientationEnum.HorizontalRight;
-                                    break;
-                                case 2:
-                                    rack.RackOrientation = RackOrientationEnum.VerticalUp;
-                                    break;
-                                case 3:
-                                    rack.RackOrientation = RackOrientationEnum.VerticalDown;
-                                    break;
-                                default:
-                                    throw new InvalidOperationException("Impossible value");
-                            }
-                            break;
-                        }
-                    default:
-                        throw new InvalidOperationException("Impossible value GetRackFromXML > Name: " + currentatribute.Name.LocalName);
-                }
+                GetRackFromXML1(rack, currentatribute);
+                GetRackFromXML2(rack, currentatribute);                
             }
             return rack;
+        }
+        private static void GetRackFromXML1(Rack rack, XAttribute currentatribute)
+        {
+            switch (currentatribute.Name.LocalName)
+            {
+                case "LocationCode":
+                    rack.LocationCode = currentatribute.Value;
+                    break;
+                case "ZoneCode":
+                    rack.ZoneCode = currentatribute.Value;
+                    break;
+                case "No":
+                    rack.No = currentatribute.Value;
+                    rack.PrevNo = rack.No;
+                    break;
+                case "Sections":
+                    rack.Sections = StringToInt(currentatribute.Value);
+                    break;
+                case "Levels":
+                    rack.Levels = StringToInt(currentatribute.Value);
+                    break;
+                case "Depth":
+                    rack.Depth = StringToInt(currentatribute.Value);
+                    break;
+            }
+        }
+        private static void GetRackFromXML2(Rack rack, XAttribute currentatribute)
+        {
+            switch (currentatribute.Name.LocalName)
+            {
+                case "Left":
+
+                    rack.Left = StringToInt(currentatribute.Value);
+                    break;
+                case "Top":
+                    rack.Top = StringToInt(currentatribute.Value);
+                    break;
+                case "SchemeVisible":
+                    rack.SchemeVisible = StringToBool(currentatribute.Value);
+                    break;
+                case "RackOrientation":
+                    int i = StringToInt(currentatribute.Value);
+                    switch (i)
+                    {
+                        case 0:
+                            rack.RackOrientation = RackOrientationEnum.HorizontalLeft;
+                            break;
+                        case 1:
+                            rack.RackOrientation = RackOrientationEnum.HorizontalRight;
+                            break;
+                        case 2:
+                            rack.RackOrientation = RackOrientationEnum.VerticalUp;
+                            break;
+                        case 3:
+                            rack.RackOrientation = RackOrientationEnum.VerticalDown;
+                            break;
+                        default:
+                            throw new InvalidOperationException("Impossible value");
+                    }
+                    break;
+            }
         }
         #endregion
 
@@ -1260,20 +918,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                 new XElement(myns + "levelSpan", bin.LevelSpan),
                 new XElement(myns + "depthSpan", bin.DepthSpan));
 
-            Task.Run(async () =>
-                {
-                    try
-                    {
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
-                        tcs.SetResult(0);
-                    }
-                    catch (Exception e)
-                    {
-                        System.Diagnostics.Debug.WriteLine(e.Message);
-                        tcs.SetException(e);
-                    }
-                });
-
+            Task.Run(() => GetIntFromNAV(tcs, functionname, body, myns, cts));
             return tcs.Task;
         }
         public static Task<int> ModifyBin(Bin bin, CancellationTokenSource cts)
@@ -1307,19 +952,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                     new XElement(myns + "warehouseClassCode", bin.WarehouseClassCode),
                     new XElement(myns + "specialEquipmentCode", bin.SpecialEquipmentCode));
 
-            Task.Run(async () =>
-                {
-                    try
-                    {
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
-                        tcs.SetResult(0);
-                    }
-                    catch (Exception e)
-                    {
-                        System.Diagnostics.Debug.WriteLine(e.Message);
-                        tcs.SetException(e);
-                    }
-                });
+            Task.Run(() => GetIntFromNAV(tcs, functionname, body, myns, cts));
 
             return tcs.Task;
         }
@@ -1341,20 +974,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                 new XElement(myns + "rackCodeFilter", bin.PrevCode),
                 new XElement(myns + "code", bin.RackNo));
 
-            Task.Run(async () =>
-                {
-                    try
-                    {
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
-                        tcs.SetResult(0);
-                    }
-                    catch (Exception e)
-                    {
-                        System.Diagnostics.Debug.WriteLine(e.Message);
-                        tcs.SetException(e);
-                    }
-                });
-
+            Task.Run(() => GetIntFromNAV(tcs, functionname, body, myns, cts));
             return tcs.Task;
         }
         public static Task<int> GetBinCount(string locationfilter, string codefilter, string rackcodefilter, string bincodefilter, CancellationTokenSource cts)
@@ -1375,20 +995,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                 new XElement(myns + "rackCodeFilter", rackcodefilter),
                 new XElement(myns + "binCodeFilter", bincodefilter));
 
-            Task.Run(async () =>
-                {
-                    try
-                    {
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
-                        tcs.SetResult(StringToInt(soapbodynode.Value));
-                    }
-                    catch (Exception e)
-                    {
-                        System.Diagnostics.Debug.WriteLine(e.Message);
-                        tcs.SetException(e);
-                    }
-                });
-
+            Task.Run(() => GetIntFromNAV(tcs, functionname, body, myns, cts));
             return tcs.Task;
         }
         public static Task<List<Bin>> GetBinList(string locationfilter, string codefilter, string rackcodefilter, string bincodefilter, int position, int count, CancellationTokenSource cts)
@@ -1408,9 +1015,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                     new XElement(myns + "zoneCodeFilter", codefilter),
                     new XElement(myns + "rackCodeFilter", rackcodefilter),
                     new XElement(myns + "binCodeFilter", bincodefilter),
-                    new XElement(myns + "entriesPosition", position),
-                    new XElement(myns + "entriesCount", count),
-                    new XElement(myns + "responseDocument", ""));
+                    PositionCount(myns, position, count));
 
             Task.Run(async () =>
                 {
@@ -1440,76 +1045,101 @@ namespace WarehouseControlSystem.Helpers.NAV
             Bin bin = new Bin();
             foreach (XAttribute currentatribute in currentnode.Attributes())
             {
-                switch (currentatribute.Name.LocalName)
-                {
-                    case "LocationCode":
-                        bin.LocationCode = currentatribute.Value;
-                        break;
-                    case "ZoneCode":
-                        bin.ZoneCode = currentatribute.Value;
-                        break;
-                    case "Code":
-                        bin.Code = currentatribute.Value;
-                        break;
-                    case "Description":
-                        bin.Description = currentatribute.Value;
-                        break;
-                    case "BinType":
-                        bin.BinType = currentatribute.Value;
-                        break;
-                    case "Empty":
-                        bin.Empty = StringToBool(currentatribute.Value);
-                        break;
-                    case "BlockMovement":
-                        bin.BlockMovement = StringToInt(currentatribute.Value);
-                        break;
-                    case "RackNo":
-                        bin.RackNo = currentatribute.Value;
-                        break;
-                    case "Section":
-                        bin.Section = StringToInt(currentatribute.Value);
-                        break;
-                    case "Level":
-                        bin.Level = StringToInt(currentatribute.Value);
-                        break;
-                    case "Depth":
-                        bin.Depth = StringToInt(currentatribute.Value);
-                        break;
-                    case "LevelSpan":
-                        bin.LevelSpan = StringToInt(currentatribute.Value);
-                        break;
-                    case "SectionSpan":
-                        bin.SectionSpan = StringToInt(currentatribute.Value);
-                        break;
-                    case "DepthSpan":
-                        bin.DepthSpan = StringToInt(currentatribute.Value);
-                        break;
-                    case "BinRanking":
-                        bin.BinRanking = StringToInt(currentatribute.Value);
-                        break;
-                    case "MaximumCubage":
-                        bin.MaximumCubage = StringToDec(currentatribute.Value);
-                        break;
-                    case "MaximumWeight":
-                        bin.MaximumWeight = StringToDec(currentatribute.Value);
-                        break;
-                    case "AdjustmentBin":
-                        bin.AdjustmentBin = StringToBool(currentatribute.Value);
-                        break;
-                    case "SpecialEquipmentCode":
-                        bin.SpecialEquipmentCode = currentatribute.Value;
-                        break;
-                    case "WarehouseClassCode":
-                        bin.WarehouseClassCode = currentatribute.Value;
-                        break;
-                    default:
-                        throw new InvalidOperationException("Impossible value GetBinFromXML > Name: " + currentatribute.Name.LocalName);
-                }
+                GetBinFromXML1(bin, currentatribute);
             }
             return bin;
         }
+        private static void GetBinFromXML1(Bin bin, XAttribute currentatribute)
+        {
+            switch (currentatribute.Name.LocalName)
+            {
+                case "LocationCode":
+                    bin.LocationCode = currentatribute.Value;
+                    break;
+                case "ZoneCode":
+                    bin.ZoneCode = currentatribute.Value;
+                    break;
+                case "Code":
+                    bin.Code = currentatribute.Value;
+                    break;
+                case "Description":
+                    bin.Description = currentatribute.Value;
+                    break;
+                case "BinType":
+                    bin.BinType = currentatribute.Value;
+                    break;
+                case "Empty":
+                    bin.Empty = StringToBool(currentatribute.Value);
+                    break;
+                case "BlockMovement":
+                    bin.BlockMovement = StringToInt(currentatribute.Value);
+                    break;
+                case "RackNo":
+                    bin.RackNo = currentatribute.Value;
+                    break;
+                case "Section":
+                    bin.Section = StringToInt(currentatribute.Value);
+                    break;
+                case "Level":
+                    bin.Level = StringToInt(currentatribute.Value);
+                    break;
+                case "Depth":
+                    bin.Depth = StringToInt(currentatribute.Value);
+                    break;
+            }
+        }
+        private static void GetBinFromXML2(Bin bin, XAttribute currentatribute)
+        {
+            switch (currentatribute.Name.LocalName)
+            {
+                case "LevelSpan":
+                    bin.LevelSpan = StringToInt(currentatribute.Value);
+                    break;
+                case "SectionSpan":
+                    bin.SectionSpan = StringToInt(currentatribute.Value);
+                    break;
+                case "DepthSpan":
+                    bin.DepthSpan = StringToInt(currentatribute.Value);
+                    break;
+                case "BinRanking":
+                    bin.BinRanking = StringToInt(currentatribute.Value);
+                    break;
+                case "MaximumCubage":
+                    bin.MaximumCubage = StringToDec(currentatribute.Value);
+                    break;
+                case "MaximumWeight":
+                    bin.MaximumWeight = StringToDec(currentatribute.Value);
+                    break;
+                case "AdjustmentBin":
+                    bin.AdjustmentBin = StringToBool(currentatribute.Value);
+                    break;
+                case "SpecialEquipmentCode":
+                    bin.SpecialEquipmentCode = currentatribute.Value;
+                    break;
+                case "WarehouseClassCode":
+                    bin.WarehouseClassCode = currentatribute.Value;
+                    break;
+            }
+        }
         #endregion
         #region BinTemplate
+        public static XElement[] SetBinTemplateParams(XNamespace myns, BinTemplate bintemplate)
+        {
+            return new XElement[]
+            {
+                new XElement(myns + "zoneCode", bintemplate.ZoneCode),
+                new XElement(myns + "code", bintemplate.Code),
+                new XElement(myns + "description", bintemplate.Description),
+                new XElement(myns + "binTypeCode", bintemplate.BinTypeCode),
+                new XElement(myns + "warehouseClassCode", bintemplate.WarehouseClassCode),
+                new XElement(myns + "blockMovement", bintemplate.BlockMovement),
+                new XElement(myns + "specialEquipmentCode", bintemplate.SpecialEquipmentCode),
+                new XElement(myns + "binRanking", bintemplate.BinRanking),
+                new XElement(myns + "maximumCubage", bintemplate.MaximumCubage),
+                new XElement(myns + "maximumWeight", bintemplate.MaximumWeight),
+                new XElement(myns + "dedicated1", bintemplate.Dedicated)
+            };
+        }
         public static Task<int> CreateBinTemplate(BinTemplate bintemplate, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<int>();
@@ -1524,31 +1154,9 @@ namespace WarehouseControlSystem.Helpers.NAV
             XElement body =
                 new XElement(myns + functionname,
                     new XElement(myns + "locationCode", bintemplate.LocationCode),
-                    new XElement(myns + "zoneCode", bintemplate.ZoneCode),
-                    new XElement(myns + "code", bintemplate.Code),
-                    new XElement(myns + "description", bintemplate.Description),
-                    new XElement(myns + "binTypeCode", bintemplate.BinTypeCode),
-                    new XElement(myns + "warehouseClassCode", bintemplate.WarehouseClassCode),
-                    new XElement(myns + "blockMovement", bintemplate.BlockMovement),
-                    new XElement(myns + "specialEquipmentCode", bintemplate.SpecialEquipmentCode),
-                    new XElement(myns + "binRanking", bintemplate.BinRanking),
-                    new XElement(myns + "maximumCubage", bintemplate.MaximumCubage),
-                    new XElement(myns + "maximumWeight", bintemplate.MaximumWeight),
-                    new XElement(myns + "dedicated1", bintemplate.Dedicated));
+                    SetBinTemplateParams(myns, bintemplate));
 
-            Task.Run(async () =>
-                {
-                    try
-                    {
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
-                        tcs.SetResult(0);
-                    }
-                    catch (Exception e)
-                    {
-                        System.Diagnostics.Debug.WriteLine(e.Message);
-                        tcs.SetException(e);
-                    }
-                });
+            Task.Run(() => GetIntFromNAV(tcs, functionname, body, myns, cts));
             return tcs.Task;
         }
         public static Task<int> ModifyBinTemplate(BinTemplate bintemplate, CancellationTokenSource cts)
@@ -1566,31 +1174,9 @@ namespace WarehouseControlSystem.Helpers.NAV
             XElement body =
                 new XElement(myns + functionname,
                 new XElement(myns + "locationCode", bintemplate.LocationCode),
-                new XElement(myns + "zoneCode", bintemplate.ZoneCode),
-                new XElement(myns + "code", bintemplate.Code),
-                new XElement(myns + "description", bintemplate.Description),
-                new XElement(myns + "binTypeCode", bintemplate.BinTypeCode),
-                new XElement(myns + "warehouseClassCode", bintemplate.WarehouseClassCode),
-                new XElement(myns + "blockMovement", bintemplate.BlockMovement),
-                new XElement(myns + "specialEquipmentCode", bintemplate.SpecialEquipmentCode),
-                new XElement(myns + "binRanking", bintemplate.BinRanking),
-                new XElement(myns + "maximumCubage", bintemplate.MaximumCubage),
-                new XElement(myns + "maximumWeight", bintemplate.MaximumWeight),
-                new XElement(myns + "dedicated1", bintemplate.Dedicated));
+                SetBinTemplateParams(myns, bintemplate));
 
-            Task.Run(async () =>
-                {
-                    try
-                    {
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
-                        tcs.SetResult(0);
-                    }
-                    catch (Exception e)
-                    {
-                        System.Diagnostics.Debug.WriteLine(e.Message);
-                        tcs.SetException(e);
-                    }
-                });
+            Task.Run(() => GetIntFromNAV(tcs, functionname, body, myns, cts));
             return tcs.Task;
         }
         public static Task<int> DeleteBinTemplate(BinTemplate bintemplate, CancellationTokenSource cts)
@@ -1609,20 +1195,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                 new XElement(myns + functionname,
                 new XElement(myns + "code", bintemplate.Code));
 
-            Task.Run(async () =>
-                {
-                    try
-                    {
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
-                        tcs.SetResult(0);
-                    }
-                    catch (Exception e)
-                    {
-                        System.Diagnostics.Debug.WriteLine(e.Message);
-                        tcs.SetException(e);
-                    }
-                });
-
+            Task.Run(() => GetIntFromNAV(tcs, functionname, body, myns, cts));
             return tcs.Task;
         }
         public static Task<int> GetBinTemplateCount(CancellationTokenSource cts)
@@ -1637,20 +1210,7 @@ namespace WarehouseControlSystem.Helpers.NAV
             string functionname = "GetBinTemplateCount";
                 XElement body = new XElement(myns + functionname);
 
-            Task.Run(async () =>
-                {
-                    try
-                    {
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
-                        tcs.SetResult(StringToInt(soapbodynode.Value));
-                    }
-                    catch (Exception e)
-                    {
-                        System.Diagnostics.Debug.WriteLine(e.Message);
-                        tcs.SetException(e);
-                    }
-                });
-
+            Task.Run(() => GetIntFromNAV(tcs, functionname, body, myns, cts));
             return tcs.Task;
         }
         public static Task<List<BinTemplate>> GetBinTemplateList(int position, int count, CancellationTokenSource cts)
@@ -1666,9 +1226,7 @@ namespace WarehouseControlSystem.Helpers.NAV
             string functionname = "GetBinTemplateList";
             XElement body =
                 new XElement(myns + functionname,
-                    new XElement(myns + "entriesPosition", position),
-                    new XElement(myns + "entriesCount", count),
-                    new XElement(myns + "responseDocument", ""));
+                    PositionCount(myns, position, count));
 
             Task.Run(async () =>
                     {
@@ -1699,76 +1257,61 @@ namespace WarehouseControlSystem.Helpers.NAV
             BinTemplate bintemplate = new BinTemplate();
             foreach (XAttribute currentatribute in currentnode.Attributes())
             {
-                switch (currentatribute.Name.LocalName)
-                {
-                    case "Code":
-                        {
-                            bintemplate.Code = currentatribute.Value;
-                            break;
-                        }
-                    case "Description":
-                        {
-                            bintemplate.Description = currentatribute.Value;
-                            break;
-                        }
-                    case "LocationCode":
-                        {
-                            bintemplate.LocationCode = currentatribute.Value;
-                            break;
-                        }
-                    case "ZoneCode":
-                        {
-                            bintemplate.ZoneCode = currentatribute.Value;
-                            break;
-                        }
-                    case "BinTypeCode":
-                        {
-                            bintemplate.BinTypeCode = currentatribute.Value;
-                            break;
-                        }
-                    case "BlockMovement":
-                        {
-                            bintemplate.BlockMovement = StringToInt(currentatribute.Value);
-                            break;
-                        }
-                    case "BinDescription":
-                        {
-                            bintemplate.BinDescription = currentatribute.Value;
-                            break;
-                        }
-                    case "MaximumCubage":
-                        {
-                            bintemplate.MaximumCubage = StringToDec(currentatribute.Value);
-                            break;
-                        }
-                    case "MaximumWeight":
-                        {
-                            bintemplate.MaximumWeight = StringToDec(currentatribute.Value);
-                            break;
-                        }
-                    case "SpecialEquipmentCode":
-                        {
-                            bintemplate.SpecialEquipmentCode = currentatribute.Value;
-                            break;
-                        }
-                    case "WarehouseClassCode":
-                        {
-                            bintemplate.WarehouseClassCode = currentatribute.Value;
-                            break;
-                        }
-                    case "BinRanking":
-                        {
-                            bintemplate.BinRanking = StringToInt(currentatribute.Value);
-                            break;
-                        }
-                    case "Dedicated":
-                        {
-                            bintemplate.Dedicated = StringToBool(currentatribute.Value);
-                            break;
-                        }
-                }
+                GetBinTemplateFromXML1(bintemplate, currentatribute);
+                GetBinTemplateFromXML2(bintemplate, currentatribute);
             }
             return bintemplate;
+        }
+        private static void GetBinTemplateFromXML1(BinTemplate bintemplate, XAttribute currentatribute)
+        {
+            switch (currentatribute.Name.LocalName)
+            {
+                case "Code":
+                    bintemplate.Code = currentatribute.Value;
+                    break;
+                case "Description":
+                    bintemplate.Description = currentatribute.Value;
+                    break;
+                case "LocationCode":
+                    bintemplate.LocationCode = currentatribute.Value;
+                    break;
+                case "ZoneCode":
+                    bintemplate.ZoneCode = currentatribute.Value;
+                    break;
+                case "BinTypeCode":
+                    bintemplate.BinTypeCode = currentatribute.Value;
+                    break;
+                case "BlockMovement":
+                    bintemplate.BlockMovement = StringToInt(currentatribute.Value);
+                    break;
+            }
+        }
+        private static void GetBinTemplateFromXML2(BinTemplate bintemplate, XAttribute currentatribute)
+        {
+            switch (currentatribute.Name.LocalName)
+            {
+                case "BinDescription":
+                    bintemplate.BinDescription = currentatribute.Value;
+                    break;
+                case "MaximumCubage":
+                    bintemplate.MaximumCubage = StringToDec(currentatribute.Value);
+                    break;
+                case "MaximumWeight":
+                    bintemplate.MaximumWeight = StringToDec(currentatribute.Value);
+                    break;
+                case "SpecialEquipmentCode":
+                    bintemplate.SpecialEquipmentCode = currentatribute.Value;
+                    break;
+                case "WarehouseClassCode":
+                    bintemplate.WarehouseClassCode = currentatribute.Value;
+                    break;
+                case "BinRanking":
+                    bintemplate.BinRanking = StringToInt(currentatribute.Value);
+                    break;
+                case "Dedicated":
+                    bintemplate.Dedicated = StringToBool(currentatribute.Value);
+                    break;
+            }
         }
         #endregion
         #region BinType
@@ -1785,20 +1328,7 @@ namespace WarehouseControlSystem.Helpers.NAV
             string functionname = "GetBinTypeCount";
             XElement body = new XElement(myns + functionname);
 
-            Task.Run(async () =>
-                {
-                    try
-                    {
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
-                        int rv = StringToInt(soapbodynode.Value);
-                        tcs.SetResult(rv);
-                    }
-                    catch (Exception e)
-                    {
-                        tcs.SetException(e);
-                    }
-                });
-
+            Task.Run(() => GetIntFromNAV(tcs, functionname, body, myns, cts));
             return tcs.Task;
         }
         public static Task<List<BinType>> GetBinTypeList(int position, int count, CancellationTokenSource cts)
@@ -1813,9 +1343,7 @@ namespace WarehouseControlSystem.Helpers.NAV
             string functionname = "GetBinTypeList";
             XElement body =
                 new XElement(myns + functionname,
-                    new XElement(myns + "entriesPosition", position),
-                    new XElement(myns + "entriesCount", count),
-                    new XElement(myns + "responseDocument", ""));
+                    PositionCount(myns, position, count));
 
             Task.Run(async () =>
                 {
@@ -1849,35 +1377,23 @@ namespace WarehouseControlSystem.Helpers.NAV
                 switch (currentatribute.Name.LocalName)
                 {
                     case "Code":
-                        {
-                            bintype.Code = currentatribute.Value;
-                            break;
-                        }
+                        bintype.Code = currentatribute.Value;
+                        break;
                     case "Description":
-                        {
-                            bintype.Description = currentatribute.Value;
-                            break;
-                        }
+                        bintype.Description = currentatribute.Value;
+                        break;
                     case "Pick":
-                        {
-                            bintype.Pick = StringToBool(currentatribute.Value);
-                            break;
-                        }
+                        bintype.Pick = StringToBool(currentatribute.Value);
+                        break;
                     case "PutAway":
-                        {
-                            bintype.PutAway = StringToBool(currentatribute.Value);
-                            break;
-                        }
+                        bintype.PutAway = StringToBool(currentatribute.Value);
+                        break;
                     case "Receive":
-                        {
-                            bintype.Receive = StringToBool(currentatribute.Value);
-                            break;
-                        }
+                        bintype.Receive = StringToBool(currentatribute.Value);
+                        break;
                     case "Ship":
-                        {
-                            bintype.Ship = StringToBool(currentatribute.Value);
-                            break;
-                        }
+                        bintype.Ship = StringToBool(currentatribute.Value);
+                        break;
                 }
             }
             return bintype;
@@ -1902,20 +1418,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                     new XElement(myns + "itemNoFilter", itemNoFilter),
                     new XElement(myns + "variantCodeFilter", variantCodeFilter));
 
-            Task.Run(async () =>
-                {
-                    try
-                    {
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
-                        int rv = StringToInt(soapbodynode.Value);
-                        tcs.SetResult(rv);
-                    }
-                    catch (Exception e)
-                    {
-                        System.Diagnostics.Debug.WriteLine(e.Message);
-                        tcs.SetException(e);
-                    }
-                });
+            Task.Run(() => GetIntFromNAV(tcs, functionname, body, myns, cts));
             return tcs.Task;
         }
         public static Task<List<BinContent>> GetBinContentList(string locationCodeFilter, string zoneCodeFilter, string binCodeFiler, string itemNoFilter, string variantCodeFilter, int position, int count, CancellationTokenSource cts)
@@ -1935,9 +1438,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                     new XElement(myns + "binCodeFilter", binCodeFiler),
                     new XElement(myns + "itemNoFilter", itemNoFilter),
                     new XElement(myns + "variantCodeFilter", variantCodeFilter),
-                    new XElement(myns + "entriesPosition", position),
-                    new XElement(myns + "entriesCount", count),
-                    new XElement(myns + "responseDocument", ""));
+                    PositionCount(myns, position, count));
 
             Task.Run(async () =>
                 {
@@ -1968,86 +1469,67 @@ namespace WarehouseControlSystem.Helpers.NAV
             BinContent bincontent = new BinContent();
             foreach (XAttribute currentatribute in currentnode.Attributes())
             {
-                switch (currentatribute.Name.LocalName)
-                {
-                    case "LocationCode":
-                        {
-                            bincontent.LocationCode = currentatribute.Value;
-                            break;
-                        }
-                    case "ZoneCode":
-                        {
-                            bincontent.ZoneCode = currentatribute.Value;
-                            break;
-                        }
-                    case "BinCode":
-                        {
-                            bincontent.BinCode = currentatribute.Value;
-                            break;
-                        }
-                    case "BinType":
-                        {
-                            bincontent.BinType = currentatribute.Value;
-                            break;
-                        }
-                    case "BlockMovement":
-                        {
-                            bincontent.BlockMovement = StringToInt(currentatribute.Value);
-                            break;
-                        }
-                    case "ItemNo":
-                        {
-                            bincontent.ItemNo = currentatribute.Value;
-                            break;
-                        }
-                    case "VariantCode":
-                        {
-                            bincontent.VariantCode = currentatribute.Value;
-                            break;
-                        }
-                    case "Description":
-                        {
-                            bincontent.Description = currentatribute.Value;
-                            break;
-                        }
-                    case "NegAdjmtQty":
-                        {
-                            bincontent.NegAdjmtQty = StringToDec(currentatribute.Value);
-                            break;
-                        }
-                    case "PickQty":
-                        {
-                            bincontent.PickQty = StringToDec(currentatribute.Value);
-                            break;
-                        }
-                    case "PosAdjmtQty":
-                        {
-                            bincontent.PosAdjmtQty = StringToDec(currentatribute.Value);
-                            break;
-                        }
-                    case "PutawayQty":
-                        {
-                            bincontent.PutawayQty = StringToDec(currentatribute.Value);
-                            break;
-                        }
-                    case "Quantity":
-                        {
-                            bincontent.Quantity = StringToDec(currentatribute.Value);
-                            break;
-                        }
-                    case "QuantityBase":
-                        {
-                            bincontent.QuantityBase = StringToDec(currentatribute.Value);
-                            break;
-                        }
-                    case "UnitofMeasureCode":
-                        {
-                            bincontent.UnitofMeasureCode = currentatribute.Value;
-                            break;
-                        }
-                }
+                GetBinContentFromXML1(bincontent, currentatribute);
+                GetBinContentFromXML2(bincontent, currentatribute);
             }
             return bincontent;
+        }
+        private static void GetBinContentFromXML1(BinContent bincontent, XAttribute currentatribute)
+        {
+            switch (currentatribute.Name.LocalName)
+            {
+                case "LocationCode":
+                    bincontent.LocationCode = currentatribute.Value;
+                    break;
+                case "ZoneCode":
+                    bincontent.ZoneCode = currentatribute.Value;
+                    break;
+                case "BinCode":
+                    bincontent.BinCode = currentatribute.Value;
+                    break;
+                case "BinType":
+                    bincontent.BinType = currentatribute.Value;
+                    break;
+                case "BlockMovement":
+                    bincontent.BlockMovement = StringToInt(currentatribute.Value);
+                    break;
+                case "ItemNo":
+                    bincontent.ItemNo = currentatribute.Value;
+                    break;
+                case "VariantCode":
+                    bincontent.VariantCode = currentatribute.Value;
+                    break;
+            }
+        }
+        private static void GetBinContentFromXML2(BinContent bincontent, XAttribute currentatribute)
+        {
+            switch (currentatribute.Name.LocalName)
+            {
+                case "Description":
+                    bincontent.Description = currentatribute.Value;
+                    break;
+                case "NegAdjmtQty":
+                    bincontent.NegAdjmtQty = StringToDec(currentatribute.Value);
+                    break;
+                case "PickQty":
+                    bincontent.PickQty = StringToDec(currentatribute.Value);
+                    break;
+                case "PosAdjmtQty":
+                    bincontent.PosAdjmtQty = StringToDec(currentatribute.Value);
+                    break;
+                case "PutawayQty":
+                    bincontent.PutawayQty = StringToDec(currentatribute.Value);
+                    break;
+                case "Quantity":
+                    bincontent.Quantity = StringToDec(currentatribute.Value);
+                    break;
+                case "QuantityBase":
+                    bincontent.QuantityBase = StringToDec(currentatribute.Value);
+                    break;
+                case "UnitofMeasureCode":
+                    bincontent.UnitofMeasureCode = currentatribute.Value;
+                    break;
+            }
         }
         #endregion
 
@@ -2068,20 +1550,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                     new XElement(myns + "itemNoFilter", itemNoFilter),
                     new XElement(myns + "variantCodeFilter", variantCodeFilter));
 
-            Task.Run(async () =>
-                {
-                    try
-                    {
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
-                        int rv = StringToInt(soapbodynode.Value);
-                        tcs.SetResult(rv);
-                    }
-                    catch (Exception e)
-                    {
-                        System.Diagnostics.Debug.WriteLine(e.Message);
-                        tcs.SetException(e);
-                    }
-                });
+            Task.Run(() => GetIntFromNAV(tcs, functionname, body, myns, cts));
             return tcs.Task;
         }
         public static Task<List<ItemIdentifier>> GetItemIdentifierList(string barCodeCodeFilter, string itemNoFilter, string variantCodeFilter, int position, int count, CancellationTokenSource cts)
@@ -2100,9 +1569,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                     new XElement(myns + "barCodeFilter", barCodeCodeFilter),
                     new XElement(myns + "itemNoFilter", itemNoFilter),
                     new XElement(myns + "variantCodeFilter", variantCodeFilter),
-                    new XElement(myns + "entriesPosition", position),
-                    new XElement(myns + "entriesCount", count),
-                    new XElement(myns + "responseDocument", ""));
+                    PositionCount(myns, position, count));
 
             Task.Run(async () =>
             {
@@ -2136,25 +1603,17 @@ namespace WarehouseControlSystem.Helpers.NAV
                 switch (currentatribute.Name.LocalName)
                 {
                     case "BarCode":
-                        {
-                            itemidentifier.BarCode = currentatribute.Value;
-                            break;
-                        }
+                        itemidentifier.BarCode = currentatribute.Value;
+                        break;
                     case "ItemNo":
-                        {
-                            itemidentifier.ItemNo = currentatribute.Value;
-                            break;
-                        }
+                        itemidentifier.ItemNo = currentatribute.Value;
+                        break;
                     case "VariantCode":
-                        {
-                            itemidentifier.VariantCode = currentatribute.Value;
-                            break;
-                        }
+                        itemidentifier.VariantCode = currentatribute.Value;
+                        break;
                     case "UoM":
-                        {
-                            itemidentifier.UoM = currentatribute.Value;
-                            break;
-                        }
+                        itemidentifier.UoM = currentatribute.Value;
+                        break;
                 }
             }
             return itemidentifier;
@@ -2175,21 +1634,7 @@ namespace WarehouseControlSystem.Helpers.NAV
             string functionname = "GetWarehouseClassCount";
             XElement body = new XElement(myns + functionname);
 
-            Task.Run(async () =>
-                {
-                    try
-                    {
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
-                        int rv = StringToInt(soapbodynode.Value);
-                        tcs.SetResult(rv);
-                    }
-                    catch (Exception e)
-                    {
-                        System.Diagnostics.Debug.WriteLine(e.Message);
-                        tcs.SetException(e);
-                    }
-                });
-
+            Task.Run(() => GetIntFromNAV(tcs, functionname, body, myns, cts));
             return tcs.Task;
         }
         public static Task<List<WarehouseClass>> GetWarehouseClassList(int position, int count, CancellationTokenSource cts)
@@ -2204,9 +1649,7 @@ namespace WarehouseControlSystem.Helpers.NAV
             string functionname = "GetWarehouseClassList";
             XElement body =
                 new XElement(myns + functionname,
-                    new XElement(myns + "entriesPosition", position),
-                    new XElement(myns + "entriesCount", count),
-                    new XElement(myns + "responseDocument", ""));
+                    PositionCount(myns, position, count));
 
             Task.Run(async () =>
                 {
@@ -2240,15 +1683,11 @@ namespace WarehouseControlSystem.Helpers.NAV
                 switch (currentatribute.Name.LocalName)
                 {
                     case "Code":
-                        {
-                            warehouseclass.Code = currentatribute.Value;
-                            break;
-                        }
+                        warehouseclass.Code = currentatribute.Value;
+                        break;
                     case "Description":
-                        {
-                            warehouseclass.Description = currentatribute.Value;
-                            break;
-                        }
+                        warehouseclass.Description = currentatribute.Value;
+                        break;
                 }
             }
             return warehouseclass;
@@ -2268,21 +1707,7 @@ namespace WarehouseControlSystem.Helpers.NAV
             string functionname = "GetSpecialEquipmentCount";
             XElement body = new XElement(myns + functionname);
 
-            Task.Run(async () =>
-                {
-                    try
-                    {
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
-                        int rv = StringToInt(soapbodynode.Value);
-                        tcs.SetResult(rv);
-                    }
-                    catch (Exception e)
-                    {
-                        System.Diagnostics.Debug.WriteLine(e.Message);
-                        tcs.SetException(e);
-                    }
-                });
-
+            Task.Run(() => GetIntFromNAV(tcs, functionname, body, myns, cts));
             return tcs.Task;
         }
         public static Task<List<SpecialEquipment>> GetSpecialEquipmentList(int position, int count, CancellationTokenSource cts)
@@ -2298,9 +1723,7 @@ namespace WarehouseControlSystem.Helpers.NAV
             string functionname = "GetSpecialEquipmentList";
             XElement body =
                 new XElement(myns + functionname,
-                    new XElement(myns + "entriesPosition", position),
-                    new XElement(myns + "entriesCount", count),
-                    new XElement(myns + "responseDocument", ""));
+                    PositionCount(myns, position, count));
 
             Task.Run(async () =>
                 {
@@ -2334,15 +1757,11 @@ namespace WarehouseControlSystem.Helpers.NAV
                 switch (currentatribute.Name.LocalName)
                 {
                     case "Code":
-                        {
-                            specialequipment.Code = currentatribute.Value;
-                            break;
-                        }
+                        specialequipment.Code = currentatribute.Value;
+                        break;
                     case "Description":
-                        {
-                            specialequipment.Description = currentatribute.Value;
-                            break;
-                        }
+                        specialequipment.Description = currentatribute.Value;
+                        break;
                 }
             }
             return specialequipment;
@@ -2367,21 +1786,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                     new XElement(myns + "binCodeFilter", binCodeFilter),
                     new XElement(myns + "itemNoFilter", itemNoFilter),
                     new XElement(myns + "variantCodeFilter", variantCodeFilter));
-            Task.Run(async () =>
-                {
-                    try
-                    {
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
-                        int rv = StringToInt(soapbodynode.Value);
-                        tcs.SetResult(rv);
-                    }
-                    catch (Exception e)
-                    {
-                        System.Diagnostics.Debug.WriteLine(e.Message);
-                        tcs.SetException(e);
-                    }
-                });
-
+            Task.Run(() => GetIntFromNAV(tcs, functionname, body, myns, cts));
             return tcs.Task;
         }
         public static Task<List<WarehouseEntry>> GetWarehouseEntryList(string locationCodeFilter, string zoneCodeFilter, string binCodeFilter, string itemNoFilter, string variantCodeFilter, int position, int count, CancellationTokenSource cts)
@@ -2437,65 +1842,41 @@ namespace WarehouseControlSystem.Helpers.NAV
                 switch (currentatribute.Name.LocalName)
                 {
                     case "LocationCode":
-                        {
-                            we.LocationCode = currentatribute.Value;
-                            break;
-                        }
+                        we.LocationCode = currentatribute.Value;
+                        break;
                     case "ZoneCode":
-                        {
-                            we.ZoneCode = currentatribute.Value;
-                            break;
-                        }
+                        we.ZoneCode = currentatribute.Value;
+                        break;
                     case "BinCode":
-                        {
-                            we.BinCode = currentatribute.Value;
-                            break;
-                        }
+                        we.BinCode = currentatribute.Value;
+                        break;
                     case "ItemNo":
-                        {
-                            we.ItemNo = currentatribute.Value;
-                            break;
-                        }
+                        we.ItemNo = currentatribute.Value;
+                        break;
                     case "VariantCode":
-                        {
-                            we.VariantCode = currentatribute.Value;
-                            break;
-                        }
+                        we.VariantCode = currentatribute.Value;
+                        break;
                     case "Description":
-                        {
-                            we.Description = currentatribute.Value;
-                            break;
-                        }
+                        we.Description = currentatribute.Value;
+                        break;
                     case "EntryType":
-                        {
-                            we.EntryType = StringToInt(currentatribute.Value);
-                            break;
-                        }
+                        we.EntryType = StringToInt(currentatribute.Value);
+                        break;
                     case "RegisteringDate":
-                        {
-                            we.RegisteringDate = currentatribute.Value;
-                            break;
-                        }
+                        we.RegisteringDate = currentatribute.Value;
+                        break;
                     case "SourceNo":
-                        {
-                            we.SourceNo = currentatribute.Value;
-                            break;
-                        }
+                        we.SourceNo = currentatribute.Value;
+                        break;
                     case "Quantity":
-                        {
-                            we.Quantity = StringToDec(currentatribute.Value);
-                            break;
-                        }
+                        we.Quantity = StringToDec(currentatribute.Value);
+                        break;
                     case "QuantityBase":
-                        {
-                            we.QuantityBase = StringToDec(currentatribute.Value);
-                            break;
-                        }
+                        we.QuantityBase = StringToDec(currentatribute.Value);
+                        break;
                     case "UnitofMeasureCode":
-                        {
-                            we.UnitofMeasureCode = currentatribute.Value;
-                            break;
-                        }
+                        we.UnitofMeasureCode = currentatribute.Value;
+                        break;
                 }
             }
             return we;
@@ -2833,40 +2214,26 @@ namespace WarehouseControlSystem.Helpers.NAV
                 switch (currentatribute.Name.LocalName)
                 {
                     case "Z":
-                        {
-                            searchresponse.ZoneCode = currentatribute.Value;
-                            break;
-                        }
+                        searchresponse.ZoneCode = currentatribute.Value;
+                        break;
                     case "B":
-                        {
-                            searchresponse.BinCode = currentatribute.Value;
-                            break;
-                        }
+                        searchresponse.BinCode = currentatribute.Value;
+                        break;
                     case "R":
-                        {
-                            searchresponse.RackNo = currentatribute.Value;
-                            break;
-                        }
+                        searchresponse.RackNo = currentatribute.Value;
+                        break;
                     case "S":
-                        {
-                            searchresponse.Section = StringToInt(currentatribute.Value);
-                            break;
-                        }
+                        searchresponse.Section = StringToInt(currentatribute.Value);
+                        break;
                     case "L":
-                        {
-                            searchresponse.Level = StringToInt(currentatribute.Value);
-                            break;
-                        }
+                        searchresponse.Level = StringToInt(currentatribute.Value);
+                        break;
                     case "D":
-                        {
-                            searchresponse.Depth = StringToInt(currentatribute.Value);
-                            break;
-                        }
+                        searchresponse.Depth = StringToInt(currentatribute.Value);
+                        break;
                     case "Q":
-                        {
-                            searchresponse.QuantityBase = (int)Math.Round(StringToDec(currentatribute.Value));
-                            break;
-                        }
+                        searchresponse.QuantityBase = (int)Math.Round(StringToDec(currentatribute.Value));
+                        break;
                 }
             }
             return searchresponse;
