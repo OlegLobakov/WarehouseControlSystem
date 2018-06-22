@@ -17,6 +17,7 @@
   
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/5a2e4b96023944f7bcb4615d49081186)](https://www.codacy.com/app/OlegLobakov/WarehouseControlSystem?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=OlegLobakov/WarehouseControlSystem&amp;utm_campaign=Badge_Grade)
 [![CodeFactor](https://www.codefactor.io/repository/github/oleglobakov/warehousecontrolsystem/badge)](https://www.codefactor.io/repository/github/oleglobakov/warehousecontrolsystem)
+[![BCH compliance](https://bettercodehub.com/edge/badge/OlegLobakov/WarehouseControlSystem?branch=master)](https://bettercodehub.com/)
   
 </p>
 
