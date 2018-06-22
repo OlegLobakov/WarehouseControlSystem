@@ -126,104 +126,38 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
-        int defaulttop;
-        int defaultleft;
-        int defaultwidth;
-        int defaultheight; 
-
-        private void CheckPlanSizes()
-        {
-            if (PlanWidth == 0)
-            {
-                PlanWidth = 20;
-            }
-            if (PlanHeight == 0)
-            {
-                PlanHeight = 10;
-            }
-
-            defaulttop = 1;
-            defaultleft = 1;
-            defaultwidth = Math.Max(1, (PlanWidth - 6) / 5);
-            defaultheight = Math.Max(1, (PlanHeight - 5) / 4);
-        }
-
         private void SetDefaultSizes(Location location)
         {
             if (location.Width == 0)
             {
-                location.Left = defaulttop;
-                location.Width = defaultwidth;
-                location.Height = defaultheight;
-                location.Top = defaulttop;
+                location.Left = DefaultLeft;
+                location.Width = DefaultWidth;
+                location.Height = DefaultHeight;
+                location.Top = DefaultTop;
 
-                defaultleft = defaultleft + defaultwidth + 1;
-                if (defaultleft > (PlanWidth - defaultwidth))
+                DefaultLeft = DefaultLeft + DefaultWidth + 1;
+                if (DefaultLeft > (PlanWidth - DefaultWidth))
                 {
-                    defaultleft = 1;
-                    defaulttop = defaulttop + defaultheight + 1;
+                    DefaultLeft = 1;
+                    DefaultTop = DefaultTop + DefaultHeight + 1;
                 }
 
-                if (defaulttop > (PlanHeight - defaultheight))
+                if (DefaultTop > (PlanHeight - DefaultHeight))
                 {
-                    defaulttop = 1;
-                }
-
-                if (location.Left + location.Width > PlanWidth)
-                {
-                    PlanWidth += location.Left + location.Width - PlanWidth;
-                }
-                if (location.Top + location.Height > PlanHeight)
-                {
-                    PlanHeight += location.Top + location.Height - PlanHeight;
+                    DefaultTop = 1;
                 }
             }
+
+            if (location.Left + location.Width > PlanWidth)
+            {
+                PlanWidth += location.Left + location.Width - PlanWidth;
+            }
+            if (location.Top + location.Height > PlanHeight)
+            {
+                PlanHeight += location.Top + location.Height - PlanHeight;
+            }
+
         }
-
-        public async void LoadAll()
-        {
-            if (NotNetOrConnection)
-            {
-                return;
-            }
-
-            try
-            {
-                State = ModelState.Loading;
-                List<Location> list = await NAV.GetLocationList("", false, 1, int.MaxValue, ACD.Default).ConfigureAwait(true);
-                if ((!IsDisposed) && (list is List<Location>))
-                {
-                    if (list.Count > 0)
-                    {
-                        ClearAll();
-                        foreach (Location location in list)
-                        {
-                            LocationViewModel lvm = new LocationViewModel(Navigation, location);
-                            LocationViewModels.Add(lvm);
-                        }
-                        State = ModelState.Normal;
-                    }
-                    else
-                    {
-                        State = ModelState.Error;
-                        ErrorText = "No Data";
-                    }
-                }
-            }
-            catch (OperationCanceledException e)
-            {
-                System.Diagnostics.Debug.WriteLine(e.Message);
-                ErrorText = e.Message;
-            }
-            catch (Exception e)
-            {
-                System.Diagnostics.Debug.WriteLine(e.Message);
-                ErrorText = e.Message;
-                State = ModelState.Error;
-                ErrorText = AppResources.Error_LoadLocationList;
-            }
-        }
-        
 
         public override void Rebuild(bool recreate)
         {

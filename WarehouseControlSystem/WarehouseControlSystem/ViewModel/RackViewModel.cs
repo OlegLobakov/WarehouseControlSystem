@@ -835,24 +835,8 @@ namespace WarehouseControlSystem.ViewModel
 
         public async void CreateRackInNAV()
         {
-            if (RackOrientation == RackOrientationEnum.Undefined)
+            if (!CanSave())
             {
-                State = ModelState.Error;
-                ErrorText = AppResources.RackNewPage_Error_RackOrientationNeeded;
-                return;
-            }
-
-            if (SelectedBinTemplate == null)
-            {
-                State = ModelState.Error;
-                ErrorText = AppResources.RackNewPage_Error_BinTemplateIsNeeded;
-                return;
-            }
-
-            if (string.IsNullOrEmpty(No))
-            {
-                State = ModelState.Error;
-                ErrorText = AppResources.RackNewPage_Error_NoNeeded;
                 return;
             }
 
@@ -936,6 +920,32 @@ namespace WarehouseControlSystem.ViewModel
                 State = ModelState.Error;
                 ErrorText = e.Message;
             }
+        }
+
+        private bool CanSave()
+        {
+            if (RackOrientation == RackOrientationEnum.Undefined)
+            {
+                State = ModelState.Error;
+                ErrorText = AppResources.RackNewPage_Error_RackOrientationNeeded;
+                return false;
+            }
+
+            if (SelectedBinTemplate == null)
+            {
+                State = ModelState.Error;
+                ErrorText = AppResources.RackNewPage_Error_BinTemplateIsNeeded;
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(No))
+            {
+                State = ModelState.Error;
+                ErrorText = AppResources.RackNewPage_Error_NoNeeded;
+                return false;
+            }
+
+            return true;
         }
 
         #region User Defined Functions

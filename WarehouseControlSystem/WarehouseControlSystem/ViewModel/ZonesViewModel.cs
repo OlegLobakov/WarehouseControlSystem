@@ -26,39 +26,10 @@ using WarehouseControlSystem.View.Pages.RackScheme;
 
 namespace WarehouseControlSystem.ViewModel
 {
-    public class ZonesViewModel : BaseViewModel
-    {
-        public Location Location { get; set; }
-
-        public ObservableCollection<ZoneViewModel> ZoneViewModels { get; set; }
-
-        public ICommand ListZonesCommand { protected set; get; }
-        public ICommand NewZoneCommand { protected set; get; }
-        public ICommand EditZoneCommand { protected set; get; }
-        public ICommand DeleteZoneCommand { protected set; get; }
-
-        public ZonesViewModel(INavigation navigation, Location location) : base(navigation)
+    public class ZonesViewModel : ZonesPlanViewModel
+    {   
+        public ZonesViewModel(INavigation navigation, Location location) : base(navigation, location)
         {
-            Location = location;
-            ZoneViewModels = new ObservableCollection<ZoneViewModel>();
-
-            ListZonesCommand = new Command(ListZones);
-            NewZoneCommand = new Command(NewZone);
-            EditZoneCommand = new Command(EditZone);
-            DeleteZoneCommand = new Command(DeleteZone);
-
-            IsEditMode = true;
-            Title = AppResources.ZoneListPage_Title + " - " + location.Code;
-            State = ModelState.Undefined;
-        }
-
-        public void ClearAll()
-        {
-            foreach (ZoneViewModel zvm in ZoneViewModels)
-            {
-                zvm.DisposeModel();
-            }
-            ZoneViewModels.Clear();
         }
 
         public async void LoadAll()
@@ -100,71 +71,6 @@ namespace WarehouseControlSystem.ViewModel
                 State = ModelState.Error;
                 ErrorText = AppResources.Error_LoadZoneList;
             }
-        }
-
-        public async void ListZones()
-        {
-            ZoneListPage zlp = new ZoneListPage(Location);
-            await Navigation.PushAsync(zlp);
-        }
-
-        public async void NewZone()
-        {
-            Zone zone = new Zone()
-            {
-                LocationCode = Location.Code
-            };
-            ZoneViewModel zvm = new ZoneViewModel(Navigation, zone)
-            {
-                CreateMode = true
-            };
-            zvm.CanChangeLocationCode = false;
-            ZoneCardPage nzp = new ZoneCardPage(zvm);
-            await Navigation.PushAsync(nzp);
-        }
-
-        public async void EditZone(object obj)
-        {
-            if (obj is ZoneViewModel)
-            {
-                ZoneViewModel zvm = (ZoneViewModel)obj;
-                zvm.CreateMode = false;
-                ZoneCardPage nzp = new ZoneCardPage(zvm);
-                await Navigation.PushAsync(nzp);
-            }
-        }
-
-        public async void DeleteZone(object obj)
-        {
-            if (NotNetOrConnection)
-            {
-                return;
-            }
-
-            try
-            {
-                ZoneViewModel zvm = (ZoneViewModel)obj;
-                State = ModelState.Loading;
-                await NAV.DeleteZone(zvm.Zone, ACD.Default);
-                ZoneViewModels.Remove(zvm);
-            }
-            catch (Exception e)
-            {
-                System.Diagnostics.Debug.WriteLine(e.Message);
-                ErrorText = e.Message;
-                State = ModelState.Error;
-            }
-            finally
-            {
-                State = ModelState.Normal;
-                LoadAnimation = false;
-            }
-        }
-
-        public override void DisposeModel()
-        {
-            ClearAll();
-            base.DisposeModel();
         }
     }
 }

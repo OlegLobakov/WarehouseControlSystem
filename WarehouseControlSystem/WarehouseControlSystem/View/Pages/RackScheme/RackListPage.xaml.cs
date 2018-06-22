@@ -22,11 +22,11 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
     public partial class RackListPage : ContentPage
     {
         Zone Zone;
-        private readonly RacksPlanViewModel model;
+        private readonly RacksViewModel model;
         public RackListPage(Zone zone)
         {
             Zone = zone;
-            model = new RacksPlanViewModel(Navigation, Zone);
+            model = new RacksViewModel(Navigation, Zone);
             BindingContext = model;
             InitializeComponent();
             Title = AppResources.ZoneSchemePage_Title + " - " + Zone.LocationCode + " | " + AppResources.RackSchemePage_Title + " - " + Zone.Code;

@@ -29,66 +29,55 @@ using System.Threading;
 
 namespace WarehouseControlSystem.ViewModel
 {
-    public class RacksViewModel : BaseViewModel
+    public class RacksViewModel : RacksPlanViewModel
     {
-        public Zone Zone { get; set; }
-
-        public ObservableCollection<RackViewModel> RackViewModels { get; set; }
-
-        public ICommand NewRackCommand { protected set; get; }
-        public ICommand EditRackCommand { protected set; get; }
-        public ICommand DeleteRackCommand { protected set; get; }
-
-
-        public RacksViewModel(INavigation navigation, Zone zone) : base(navigation)
+        public RacksViewModel(INavigation navigation, Zone zone) : base(navigation, zone)
         {
-            Zone = zone;
-            RackViewModels = new ObservableCollection<RackViewModel>();
-
-            NewRackCommand = new Command(NewRack);
-            EditRackCommand = new Command(EditRack);
-            DeleteRackCommand = new Command(DeleteRack);
-
-            State = ModelState.Undefined;
-            IsEditMode = false;
         }
 
-        public void ClearAll()
+        public async void LoadAll()
         {
-            foreach (RackViewModel lvm in RackViewModels)
+            if (NotNetOrConnection)
             {
-                lvm.DisposeModel();
+                return;
             }
-            RackViewModels.Clear();
-        }
 
-        public async void NewRack()
-        {
-            Rack newrack = new Rack
+            try
             {
-                Sections = Settings.DefaultRackSections,
-                Levels = Settings.DefaultRackLevels,
-                Depth = Settings.DefaultRackDepth,
-                SchemeVisible = true,
-            };
-            RackViewModel rvm = new RackViewModel(Navigation, newrack, true)
+                State = ModelState.Loading;
+                List<Rack> racks = await NAV.GetRackList(Zone.LocationCode, Zone.Code, false, 1, int.MaxValue, ACD.Default);
+                if ((!IsDisposed) && (racks is List<Rack>))
+                {
+                    if (racks.Count > 0)
+                    {
+                        ObservableCollection<RackViewModel> nlist = new ObservableCollection<RackViewModel>();
+                        foreach (Rack rack in racks)
+                        {
+                            RackViewModel rvm = new RackViewModel(Navigation, rack, false);
+                            nlist.Add(rvm);
+                        }
+
+                        RackViewModels = nlist;
+                        State = ModelState.Normal;
+                    }
+                    else
+                    {
+                        State = ModelState.Error;
+                        ErrorText = "No Data";
+                    }
+                }
+            }
+            catch (OperationCanceledException e)
             {
-                LocationCode = Zone.LocationCode,
-                ZoneCode = Zone.Code,
-                CanChangeLocationAndZone = false
-            };
-            RackNewPage rnp = new RackNewPage(rvm);
-            await Navigation.PushAsync(rnp);
-        }
+                System.Diagnostics.Debug.WriteLine(e.Message);
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.Message);
+                State = ModelState.Error;
+                ErrorText = AppResources.Error_LoadRacksList;
+            }
 
-        public void EditRack(object obj)
-        {
-            System.Diagnostics.Debug.WriteLine(obj.ToString());
-        }
-
-        public void DeleteRack(object obj)
-        {
-            System.Diagnostics.Debug.WriteLine(obj.ToString());
         }
 
         public override void DisposeModel()

@@ -170,51 +170,6 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
-        public async void LoadAll()
-        {
-            if (NotNetOrConnection)
-            {
-                return;
-            }
-
-            try
-            {
-                State = ModelState.Loading;
-                List<Rack> racks = await NAV.GetRackList(Zone.LocationCode, Zone.Code, false, 1, int.MaxValue, ACD.Default);
-                if ((!IsDisposed) && (racks is List<Rack>))
-                {
-                    if (racks.Count > 0)
-                    {
-                        ObservableCollection<RackViewModel> nlist = new ObservableCollection<RackViewModel>();
-                        foreach (Rack rack in racks)
-                        {
-                            RackViewModel rvm = new RackViewModel(Navigation, rack, false);
-                            nlist.Add(rvm);
-                        }
-
-                        RackViewModels = nlist;
-                        State = ModelState.Normal;
-                    }
-                    else
-                    {
-                        State = ModelState.Error;
-                        ErrorText = "No Data";
-                    }
-                }
-            }
-            catch (OperationCanceledException e)
-            {
-                System.Diagnostics.Debug.WriteLine(e.Message);
-            }
-            catch (Exception e)
-            {
-                System.Diagnostics.Debug.WriteLine(e.Message);
-                State = ModelState.Error;
-                ErrorText = AppResources.Error_LoadRacksList;
-            }
-
-        }
-
         public async void LoadUDS()
         {
             if (NotNetOrConnection)

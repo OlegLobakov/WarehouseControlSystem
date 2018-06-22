@@ -166,6 +166,28 @@ namespace WarehouseControlSystem.ViewModel.Base
         {
         }
 
+        public int DefaultTop { get; set; }
+        public int DefaultLeft { get; set; }
+        public int DefaultWidth { get; set; }
+        public int DefaultHeight { get; set; }
+
+        public void CheckPlanSizes()
+        {
+            if (PlanWidth == 0)
+            {
+                PlanWidth = 20;
+            }
+            if (PlanHeight == 0)
+            {
+                PlanHeight = 10;
+            }
+
+            DefaultTop = 1;
+            DefaultLeft = 1;
+            DefaultWidth = Math.Max(1, (PlanWidth - 6) / 5);
+            DefaultHeight = Math.Max(1, (PlanHeight - 5) / 4);
+        }
+
         public PlanBaseViewModel(INavigation navigation) : base(navigation)
         {
         }

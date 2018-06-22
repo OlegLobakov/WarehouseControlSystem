@@ -126,49 +126,38 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
-        int defaulttop;
-        int defaultleft;
-        int defaultwidth;
-        int defaultheight;
-        private void CheckPlanSizes()
-        {
-            if (PlanWidth == 0)
-            {
-                PlanWidth = 20;
-            }
-            if (PlanHeight == 0)
-            {
-                PlanHeight = 10;
-            }
-
-            defaulttop = 1;
-            defaultleft = 1;
-            defaultwidth = Math.Max(1, (PlanWidth - 6) / 5);
-            defaultheight = Math.Max(1, (PlanHeight - 5) / 4);
-        }
-
         private void SetDefaultSizes(Zone zone)
         {
             if (zone.Width == 0)
             {
-                zone.Left = defaultleft;
-                zone.Width = defaultwidth;
-                zone.Height = defaultheight;
-                zone.Top = defaulttop;
+                zone.Left = DefaultLeft;
+                zone.Width = DefaultWidth;
+                zone.Height = DefaultHeight;
+                zone.Top = DefaultTop;
 
-                defaultleft = defaultleft + defaultwidth + 1;
-                if (defaultleft > (PlanWidth - defaultwidth))
+                DefaultLeft = DefaultLeft + DefaultWidth + 1;
+                if (DefaultLeft > (PlanWidth - DefaultWidth))
                 {
-                    defaultleft = 1;
-                    defaulttop = defaulttop + defaultheight + 1;
+                    DefaultLeft = 1;
+                    DefaultTop = DefaultTop + DefaultHeight + 1;
                 }
 
-                if (defaulttop > (PlanHeight - defaultheight))
+                if (DefaultTop > (PlanHeight - DefaultHeight))
                 {
-                    defaulttop = 1;
+                    DefaultTop = 1;
                 }
             }
+
+            if (zone.Left + zone.Width > PlanWidth)
+            {
+                PlanWidth += zone.Left + zone.Width - PlanWidth;
+            }
+            if (zone.Top + zone.Height > PlanHeight)
+            {
+                PlanHeight += zone.Top + zone.Height - PlanHeight;
+            }
         }
+
         private async void Zvm_OnTap(ZoneViewModel zvm)
         {
             if (!IsEditMode)

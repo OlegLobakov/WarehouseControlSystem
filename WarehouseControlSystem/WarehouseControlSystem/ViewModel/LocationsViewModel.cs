@@ -29,39 +29,10 @@ using System.Threading;
 
 namespace WarehouseControlSystem.ViewModel
 {
-    public class LocationsViewModel : BaseViewModel
+    public class LocationsViewModel : LocationsPlanViewModel
     {
-        public ObservableCollection<LocationViewModel> LocationViewModels { get; set; } = new ObservableCollection<LocationViewModel>();
-        
-        public ICommand ListLocationsCommand { protected set; get; }
-        public ICommand NewLocationCommand { protected set; get; }
-        public ICommand EditLocationCommand { protected set; get; }
-        public ICommand DeleteLocationCommand { protected set; get; }
-
         public LocationsViewModel(INavigation navigation) : base(navigation)
         {
-            ListLocationsCommand = new Command(ListLocations);
-            NewLocationCommand = new Command(NewLocation);
-            EditLocationCommand = new Command(EditLocation);
-            DeleteLocationCommand = new Command(DeleteLocation);
-
-            IsEditMode = true;
-            Title = AppResources.LocationsSchemePage_Title;
-            if (Global.CurrentConnection != null)
-            {
-                Title = Global.CurrentConnection.Name + " | " + AppResources.LocationsSchemePage_Title;
-            }
-            State = ModelState.Undefined;
-            IsEditMode = false;
-        }
-
-        public void ClearAll()
-        {
-            foreach (LocationViewModel lvm in LocationViewModels)
-            {
-                lvm.DisposeModel();
-            }
-            LocationViewModels.Clear();
         }
 
         public async void LoadAll()
@@ -106,68 +77,6 @@ namespace WarehouseControlSystem.ViewModel
                 State = ModelState.Error;
                 ErrorText = AppResources.Error_LoadLocationList;
             }
-        }
-        
-        public async void ListLocations()
-        {
-            LocationListPage llp = new LocationListPage();
-            await Navigation.PushAsync(llp);
-        }
-
-        public async void NewLocation()
-        {
-            Location newLocation = new Location();
-            LocationViewModel lvm = new LocationViewModel(Navigation, newLocation)
-            {
-                CreateMode = true
-            };
-            LocationViewModels.Add(lvm);
-            LocationCardPage lnp = new LocationCardPage(lvm);
-            await Navigation.PushAsync(lnp);
-        }
-
-        public async void EditLocation(object obj)
-        {
-            LocationViewModel lvm = (LocationViewModel)obj;
-            if (lvm is LocationViewModel)
-            {
-                lvm.CreateMode = false;
-                LocationCardPage lnp = new LocationCardPage(lvm);
-                await Navigation.PushAsync(lnp);
-            }
-        }
-
-        public async void DeleteLocation(object obj)
-        {
-            if (NotNetOrConnection)
-            {
-                return;
-            }
-
-            try
-            {
-                LocationViewModel lvm = (LocationViewModel)obj;
-                State = ModelState.Loading;
-                await NAV.DeleteLocation(lvm.Location.Code, ACD.Default);
-                LocationViewModels.Remove(lvm);
-            }
-            catch (Exception e)
-            {
-                System.Diagnostics.Debug.WriteLine(e.Message);
-                ErrorText = e.Message;
-                State = ModelState.Error;
-            }
-            finally
-            {
-                State = ModelState.Normal;
-                LoadAnimation = false;
-            }
-
-        }
-
-        public override void DisposeModel()
-        {
-            base.DisposeModel();
-        }
+        }      
     }
 }
