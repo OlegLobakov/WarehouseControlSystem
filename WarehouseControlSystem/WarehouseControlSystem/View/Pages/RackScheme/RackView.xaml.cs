@@ -54,6 +54,34 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             grid.Children.Clear();
             grid.RowDefinitions.Clear();
             grid.ColumnDefinitions.Clear();
+
+            CreateGrid();
+            CreateLabels();
+
+            for (int i = 1; i <= model.Levels; i++)
+            {
+                for (int j = 1; j <= model.Sections; j++)
+                {
+                    BinViewModel finded = rvm.BinsViewModel.BinViewModels.Find(x => x.Level == i && x.Section == j);
+                    if (finded is BinViewModel)
+                    {
+                        if (rvm.CreateMode)
+                        {
+                            BinView bev = new BinView(finded);
+                            grid.Children.Add(bev, finded.Section, finded.Section + finded.SectionSpan, finded.Level, finded.Level + finded.LevelSpan);
+                        }
+                        else
+                        {
+                            BinViewInRack bev = new BinViewInRack(finded);
+                            grid.Children.Add(bev, finded.Section, finded.Section + finded.SectionSpan, finded.Level, finded.Level + finded.LevelSpan);
+                        }
+                    }
+                }    
+            }
+        }
+
+        private void CreateGrid()
+        {
             grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(25, GridUnitType.Absolute) });
             for (int i = 1; i <= Model.Levels; i++)
             {
@@ -78,7 +106,10 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             HeaderLabel.FontAttributes = FontAttributes.Bold;
 
             grid.Children.Add(HeaderLabel, 0, 0);
+        }
 
+        private void CreateLabels()
+        {
             for (int i = 1; i <= model.Levels; i++)
             {
                 Label lb = new Label()
@@ -107,32 +138,10 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
                     TextColor = Color.White,
                     FontAttributes = FontAttributes.Bold
                 };
-                lb.Text = j.ToString();              
+                lb.Text = j.ToString();
                 grid.Children.Add(lb, j, 0);
             }
-
-            for (int i = 1; i <= model.Levels; i++)
-            {
-                for (int j = 1; j <= model.Sections; j++)
-                {
-                    BinViewModel finded = rvm.BinsViewModel.BinViewModels.Find(x => x.Level == i && x.Section == j);
-                    if (finded is BinViewModel)
-                    {
-                        if (rvm.CreateMode)
-                        {
-                            BinView bev = new BinView(finded);
-                            grid.Children.Add(bev, finded.Section, finded.Section + finded.SectionSpan, finded.Level, finded.Level + finded.LevelSpan);
-                        }
-                        else
-                        {
-                            BinViewInRack bev = new BinViewInRack(finded);
-                            grid.Children.Add(bev, finded.Section, finded.Section + finded.SectionSpan, finded.Level, finded.Level + finded.LevelSpan);
-                        }
-                    }
-                }    
-            }
         }
-
         public void SetHeaderLabel(string text)
         {
             if (HeaderLabel is Label)

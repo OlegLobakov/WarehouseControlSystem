@@ -134,22 +134,12 @@ namespace WarehouseControlSystem.ViewModel
             try
             {
                 State = ModelState.Loading;
-                List<Rack> Racks = await NAV.GetRackList(Zone.LocationCode, Zone.Code, true, 1, int.MaxValue, ACD.Default);
-                if ((!IsDisposed) && (Racks is List<Rack>))
+                List<Rack> racks = await NAV.GetRackList(Zone.LocationCode, Zone.Code, true, 1, int.MaxValue, ACD.Default);
+                if ((!IsDisposed) && (racks is List<Rack>))
                 {
-                    if (Racks.Count > 0)
+                    if (racks.Count > 0)
                     {
-                        RackViewModels.Clear();
-                        SelectedViewModels.Clear();
-                        State = ModelState.Normal;
-                        foreach (Rack rack in Racks)
-                        {
-                            RackViewModel rvm = new RackViewModel(Navigation, rack, false);
-                            rvm.OnTap += Rvm_OnTap;
-                            RackViewModels.Add(rvm);
-                        }
-                        UpdateMinSizes();
-                        Rebuild(true);
+                        FillModel(racks);
                     }
                     else
                     {
@@ -168,6 +158,21 @@ namespace WarehouseControlSystem.ViewModel
                 State = ModelState.Error;
                 ErrorText = AppResources.Error_LoadRacks;
             }
+        }
+
+        private void FillModel(List<Rack> racks)
+        {
+            RackViewModels.Clear();
+            SelectedViewModels.Clear();
+            State = ModelState.Normal;
+            foreach (Rack rack in racks)
+            {
+                RackViewModel rvm = new RackViewModel(Navigation, rack, false);
+                rvm.OnTap += Rvm_OnTap;
+                RackViewModels.Add(rvm);
+            }
+            UpdateMinSizes();
+            Rebuild(true);
         }
 
         public async void LoadUDS()

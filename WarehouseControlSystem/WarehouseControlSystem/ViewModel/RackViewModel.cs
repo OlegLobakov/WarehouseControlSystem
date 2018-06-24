@@ -408,7 +408,7 @@ namespace WarehouseControlSystem.ViewModel
                 if (selecteditem != value)
                 {
                     selecteditem = value;
-                    ChangeBinTemplate(selecteditem);                   
+                    ChangeBinTemplate(selecteditem);
                     OnPropertyChanged(nameof(SelectedBinTemplate));
                 }
             }
@@ -450,7 +450,7 @@ namespace WarehouseControlSystem.ViewModel
                     OnPropertyChanged(nameof(ConflictRackChange));
                 }
             }
-        }  bool conflictrackchange;
+        } bool conflictrackchange;
 
         public string SearchResult
         {
@@ -592,67 +592,19 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
-        public async void Load()
+        public void Load()
         {
             IsBusy = true;
             try
             {
-                List<Location> locations = await NAV.GetLocationList("", false, 1, int.MaxValue, ACD.Default).ConfigureAwait(true);
-                if (!IsDisposed)
-                {
-                    Locations.Clear();
-                    foreach (Location location in locations)
-                    {
-                        Locations.Add(location);
-                    }
-                    LocationsIsLoaded = CanChangeLocationAndZone && locations.Count > 0;
-                }
-
-                List<BinType> bintypes = await NAV.GetBinTypeList(1, int.MaxValue, ACD.Default);
-                if (!IsDisposed)
-                {
-                    BinsViewModel.BinTypes.Clear();
-                    foreach (BinType bt in bintypes)
-                    {
-                        BinsViewModel.BinTypes.Add(bt.Code);
-                    }
-                    BinsViewModel.BinTypesIsEnabled = bintypes.Count > 0;
-                }
-
-                List<WarehouseClass> warehouseclasses = await NAV.GetWarehouseClassList(1, int.MaxValue, ACD.Default).ConfigureAwait(true);
-                if (!IsDisposed)
-                {
-                    BinsViewModel.WarehouseClasses.Clear();
-                    foreach (WarehouseClass wc in warehouseclasses)
-                    {
-                        BinsViewModel.WarehouseClasses.Add(wc.Code);
-                    }
-                    BinsViewModel.WarehouseClassesIsEnabled = warehouseclasses.Count > 0;
-                }
-
-                List<SpecialEquipment> specialequipments = await NAV.GetSpecialEquipmentList(1, int.MaxValue, ACD.Default).ConfigureAwait(true);
-                if (!IsDisposed)
-                {
-                    BinsViewModel.SpecialEquipments.Clear();
-                    foreach (SpecialEquipment se in specialequipments)
-                    {
-                        BinsViewModel.SpecialEquipments.Add(se.Code);
-                    }
-                    BinsViewModel.SpecialEquipmentsIsEnabled = specialequipments.Count > 0;
-                }
+                LoadLocationsList();
+                LoadBinTypesList();
+                LoadWarehouseClassesList();
+                LoadSpecialEquipmentsList();
 
                 if (ZoneCode != "")
                 {
-                    List<Zone> zones = await NAV.GetZoneList(LocationCode, "", false, 1, int.MaxValue, ACD.Default).ConfigureAwait(true);
-                    if (!IsDisposed)
-                    {
-                        Zones.Clear();
-                        foreach (Zone zone in zones)
-                        {
-                            Zones.Add(zone);
-                        }
-                        ZonesIsLoaded = CanChangeLocationAndZone && zones.Count > 0;
-                    }
+                    LoadZonesList();
                 }
 
                 ReloadBinTemplates();
@@ -668,6 +620,72 @@ namespace WarehouseControlSystem.ViewModel
             {
                 System.Diagnostics.Debug.WriteLine(e.Message);
                 ErrorText = e.Message;
+            }
+        }
+
+        private async void LoadLocationsList()
+        {
+            List<Location> locations = await NAV.GetLocationList("", false, 1, int.MaxValue, ACD.Default).ConfigureAwait(true);
+            if (!IsDisposed)
+            {
+                Locations.Clear();
+                foreach (Location location in locations)
+                {
+                    Locations.Add(location);
+                }
+                LocationsIsLoaded = CanChangeLocationAndZone && locations.Count > 0;
+            }
+        }
+        private async void LoadBinTypesList()
+        {
+            List<BinType> bintypes = await NAV.GetBinTypeList(1, int.MaxValue, ACD.Default).ConfigureAwait(true);
+            if (!IsDisposed)
+            {
+                BinsViewModel.BinTypes.Clear();
+                foreach (BinType bt in bintypes)
+                {
+                    BinsViewModel.BinTypes.Add(bt.Code);
+                }
+                BinsViewModel.BinTypesIsEnabled = bintypes.Count > 0;
+            }
+        }
+        private async void LoadWarehouseClassesList()
+        {
+            List<WarehouseClass> warehouseclasses = await NAV.GetWarehouseClassList(1, int.MaxValue, ACD.Default).ConfigureAwait(true);
+            if (!IsDisposed)
+            {
+                BinsViewModel.WarehouseClasses.Clear();
+                foreach (WarehouseClass wc in warehouseclasses)
+                {
+                    BinsViewModel.WarehouseClasses.Add(wc.Code);
+                }
+                BinsViewModel.WarehouseClassesIsEnabled = warehouseclasses.Count > 0;
+            }
+        }
+        private async void LoadSpecialEquipmentsList()
+        {
+            List<SpecialEquipment> specialequipments = await NAV.GetSpecialEquipmentList(1, int.MaxValue, ACD.Default).ConfigureAwait(true);
+            if (!IsDisposed)
+            {
+                BinsViewModel.SpecialEquipments.Clear();
+                foreach (SpecialEquipment se in specialequipments)
+                {
+                    BinsViewModel.SpecialEquipments.Add(se.Code);
+                }
+                BinsViewModel.SpecialEquipmentsIsEnabled = specialequipments.Count > 0;
+            }
+        }
+        private async void LoadZonesList()
+        {
+            List<Zone> zones = await NAV.GetZoneList(LocationCode, "", false, 1, int.MaxValue, ACD.Default).ConfigureAwait(true);
+            if (!IsDisposed)
+            {
+                Zones.Clear();
+                foreach (Zone zone in zones)
+                {
+                    Zones.Add(zone);
+                }
+                ZonesIsLoaded = CanChangeLocationAndZone && zones.Count > 0;
             }
         }
 

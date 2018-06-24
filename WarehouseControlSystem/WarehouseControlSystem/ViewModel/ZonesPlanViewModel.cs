@@ -95,17 +95,7 @@ namespace WarehouseControlSystem.ViewModel
                 {
                     if (zones.Count > 0)
                     {
-                        ClearAll();
-                        foreach (Zone zone in zones)
-                        {
-                            SetDefaultSizes(zone);
-                            ZoneViewModel zvm = new ZoneViewModel(Navigation, zone);
-                            zvm.OnTap += Zvm_OnTap;
-                            ZoneViewModels.Add(zvm);
-                        }                 
-                        State = ModelState.Normal;
-                        UpdateMinSizes();
-                        Rebuild(true);
+                        FillModel(zones);
                     }
                     else
                     {
@@ -124,6 +114,21 @@ namespace WarehouseControlSystem.ViewModel
                 State = ModelState.Error;
                 ErrorText = AppResources.Error_LoadZones;
             }
+        }
+
+        private void FillModel(List<Zone> zones)
+        {
+            ClearAll();
+            foreach (Zone zone in zones)
+            {
+                SetDefaultSizes(zone);
+                ZoneViewModel zvm = new ZoneViewModel(Navigation, zone);
+                zvm.OnTap += Zvm_OnTap;
+                ZoneViewModels.Add(zvm);
+            }
+            State = ModelState.Normal;
+            UpdateMinSizes();
+            Rebuild(true);
         }
 
         private void SetDefaultSizes(Zone zone)

@@ -39,108 +39,9 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             BindingContext = model;
             InitializeComponent();
 
-            if ((model.RackOrientation == RackOrientationEnum.HorizontalLeft || model.RackOrientation == RackOrientationEnum.HorizontalRight))
-            {
-                for (int i = 1; i <= model.Sections + 1; i++)
-                {
-                    grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-                }
-            }
-
-            if ((model.RackOrientation == RackOrientationEnum.VerticalUp || model.RackOrientation == RackOrientationEnum.VerticalDown))
-            {
-                for (int i = 1; i <= model.Sections + 1; i++)
-                {
-                    grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
-                }
-            }
-
-            Label lb = new Label
-            {
-                BackgroundColor = Color.FromHex("#3d567c"),
-                HorizontalOptions = LayoutOptions.FillAndExpand,
-                VerticalOptions = LayoutOptions.FillAndExpand,
-                HorizontalTextAlignment = TextAlignment.Center,
-                VerticalTextAlignment = TextAlignment.Center,
-                TextColor = Color.White,
-            };
-
-            lb.Text = model.No;
-            lb.SetBinding(Label.FontSizeProperty, new Binding("SchemeFontSize"));
-
-            if (model.RackOrientation == RackOrientationEnum.HorizontalLeft || model.RackOrientation == RackOrientationEnum.VerticalUp)
-            {
-                grid.Children.Add(lb, 0, 0);
-            }
-
-            if (model.RackOrientation == RackOrientationEnum.HorizontalRight)
-            {
-                grid.Children.Add(lb, model.Sections,0);
-            }
-
-            if (model.RackOrientation == RackOrientationEnum.VerticalDown)
-            {
-                grid.Children.Add(lb, 0, model.Sections);
-            }
-
-            for (int i = 1; i <= model.Sections; i++)
-            {
-                Label label1 = new Label
-                {
-                    BackgroundColor = Color.FromHex("#dbe1eb"),
-                    HorizontalOptions = LayoutOptions.FillAndExpand,
-                    VerticalOptions = LayoutOptions.FillAndExpand,
-                    HorizontalTextAlignment = TextAlignment.Center,
-                    VerticalTextAlignment = TextAlignment.Center,
-                };
-
-                if (model.SubSchemeSelects is List<SubSchemeSelect>)
-                {
-                    List<SubSchemeSelect> list = model.SubSchemeSelects.FindAll(x => x.Section == i);
-
-                    if (list is List<SubSchemeSelect>)
-                    {
-                        if (list.Count > 0)
-                        {
-                            label1.BackgroundColor = Color.Red;
-                            label1.TextColor = Color.White;
-                        }
-
-                        int quantity = 0;
-
-                        foreach (SubSchemeSelect sss in list)
-                        {
-                            quantity += sss.Value;
-                        }
-
-                        if (quantity != 0)
-                        {
-                            label1.SetBinding(Label.FontSizeProperty, new Binding("SchemeFontSize"));
-                            label1.Text = quantity.ToString();
-                        }
-                    }
-                }
-
-                if (model.RackOrientation == RackOrientationEnum.HorizontalLeft)
-                {
-                    grid.Children.Add(label1, i, 0);
-                }
-
-                if (model.RackOrientation == RackOrientationEnum.HorizontalRight)
-                {
-                    grid.Children.Add(label1, i - 1, 0);
-                }
-
-                if (model.RackOrientation == RackOrientationEnum.VerticalUp)
-                {
-                    grid.Children.Add(label1, 0, i);
-                }
-
-                if (model.RackOrientation == RackOrientationEnum.VerticalDown)
-                {
-                    grid.Children.Add(label1, 0, i - 1);
-                }
-            }
+            CreateSections();
+            CreateLabel();
+            FillSections();
         }
 
         public void UpdateUDS()
@@ -208,6 +109,114 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
                 udslabels.Add(label1);
             }
 
+        }
+
+        private void CreateSections()
+        {
+            if ((model.RackOrientation == RackOrientationEnum.HorizontalLeft || model.RackOrientation == RackOrientationEnum.HorizontalRight))
+            {
+                for (int i = 1; i <= model.Sections + 1; i++)
+                {
+                    grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+                }
+            }
+
+            if ((model.RackOrientation == RackOrientationEnum.VerticalUp || model.RackOrientation == RackOrientationEnum.VerticalDown))
+            {
+                for (int i = 1; i <= model.Sections + 1; i++)
+                {
+                    grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+                }
+            }
+        }
+
+        private void CreateLabel()
+        {
+            Label lb = new Label
+            {
+                BackgroundColor = Color.FromHex("#3d567c"),
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                VerticalOptions = LayoutOptions.FillAndExpand,
+                HorizontalTextAlignment = TextAlignment.Center,
+                VerticalTextAlignment = TextAlignment.Center,
+                TextColor = Color.White,
+            };
+
+            lb.Text = model.No;
+            lb.SetBinding(Label.FontSizeProperty, new Binding("SchemeFontSize"));
+
+            if (model.RackOrientation == RackOrientationEnum.HorizontalLeft || model.RackOrientation == RackOrientationEnum.VerticalUp)
+            {
+                grid.Children.Add(lb, 0, 0);
+            }
+
+            if (model.RackOrientation == RackOrientationEnum.HorizontalRight)
+            {
+                grid.Children.Add(lb, model.Sections, 0);
+            }
+
+            if (model.RackOrientation == RackOrientationEnum.VerticalDown)
+            {
+                grid.Children.Add(lb, 0, model.Sections);
+            }
+        }
+
+        private void FillSections()
+        {
+            for (int i = 1; i <= model.Sections; i++)
+            {
+                Label label1 = new Label
+                {
+                    BackgroundColor = Color.FromHex("#dbe1eb"),
+                    HorizontalOptions = LayoutOptions.FillAndExpand,
+                    VerticalOptions = LayoutOptions.FillAndExpand,
+                    HorizontalTextAlignment = TextAlignment.Center,
+                    VerticalTextAlignment = TextAlignment.Center,
+                };
+
+                if (model.SubSchemeSelects is List<SubSchemeSelect>)
+                {
+                    List<SubSchemeSelect> list = model.SubSchemeSelects.FindAll(x => x.Section == i);
+
+                    if (list is List<SubSchemeSelect>)
+                    {
+                        if (list.Count > 0)
+                        {
+                            label1.BackgroundColor = Color.Red;
+                            label1.TextColor = Color.White;
+                        }
+
+                        int quantity = 0;
+
+                        foreach (SubSchemeSelect sss in list)
+                        {
+                            quantity += sss.Value;
+                        }
+
+                        if (quantity != 0)
+                        {
+                            label1.SetBinding(Label.FontSizeProperty, new Binding("SchemeFontSize"));
+                            label1.Text = quantity.ToString();
+                        }
+                    }
+                }
+
+                switch (model.RackOrientation)
+                {
+                    case RackOrientationEnum.HorizontalLeft:
+                        grid.Children.Add(label1, i, 0);
+                        break;
+                    case RackOrientationEnum.HorizontalRight:
+                        grid.Children.Add(label1, i - 1, 0);
+                        break;
+                    case RackOrientationEnum.VerticalUp:
+                        grid.Children.Add(label1, 0, i);
+                        break;
+                    case RackOrientationEnum.VerticalDown:
+                        grid.Children.Add(label1, 0, i - 1);
+                        break;
+                }
+            }
         }
 
         protected override void OnSizeAllocated(double width, double height)

@@ -55,8 +55,8 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
         protected override bool OnBackButtonPressed()
         {
             MessagingCenter.Unsubscribe<RackViewModel>(this, "ZonesIsLoaded");
-            MessagingCenter.Unsubscribe<RackViewModel>(this, "LocationsIsLoaded");            
-            model.DisposeModel();
+            MessagingCenter.Unsubscribe<RackViewModel>(this, "LocationsIsLoaded");
+            model.CancelAsync();
             base.OnBackButtonPressed();
             return false;
         }

@@ -399,21 +399,11 @@ namespace WarehouseControlSystem.ViewModel
                     SubSchemeElements.Clear();
                     foreach (Rack rack in racks)
                     {
-                        SubSchemeElement sse = new SubSchemeElement()
-                        {
-                            Left = rack.Left,
-                            Top = rack.Top,
-                            Height = rack.Height,
-                            Width = rack.Width,
-                            HexColor = ColorToHex(Color.Gray),
-                            RackOrientation = rack.RackOrientation
-                        };
+                        SubSchemeElement sse = CreateSSE(rack);
 
                         if (Global.SearchResponses is List<SearchResponse>)
                         {
-                            List<SearchResponse> list = Global.SearchResponses.FindAll(
-                                x => x.ZoneCode == Code &&
-                                x.RackNo == rack.No);
+                            List<SearchResponse> list = Global.SearchResponses.FindAll(x => x.ZoneCode == Code && x.RackNo == rack.No);
                             if (list is List<SearchResponse>)
                             {
                                 sse.Selection = new List<SubSchemeSelect>();
@@ -444,6 +434,18 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
+        private SubSchemeElement CreateSSE(Rack rack)
+        {
+            return new SubSchemeElement()
+            {
+                Left = rack.Left,
+                Top = rack.Top,
+                Height = rack.Height,
+                Width = rack.Width,
+                HexColor = ColorToHex(Color.Gray),
+                RackOrientation = rack.RackOrientation
+            };
+        }
 
         private async void SaveToNAVSchemeVisible()
         {

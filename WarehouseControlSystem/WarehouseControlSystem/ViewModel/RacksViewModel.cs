@@ -50,15 +50,7 @@ namespace WarehouseControlSystem.ViewModel
                 {
                     if (racks.Count > 0)
                     {
-                        ObservableCollection<RackViewModel> nlist = new ObservableCollection<RackViewModel>();
-                        foreach (Rack rack in racks)
-                        {
-                            RackViewModel rvm = new RackViewModel(Navigation, rack, false);
-                            nlist.Add(rvm);
-                        }
-
-                        RackViewModels = nlist;
-                        State = ModelState.Normal;
+                        FillModel(racks);
                     }
                     else
                     {
@@ -78,6 +70,18 @@ namespace WarehouseControlSystem.ViewModel
                 ErrorText = AppResources.Error_LoadRacksList;
             }
 
+        }
+
+        private void FillModel(List<Rack> racks)
+        {
+            ObservableCollection<RackViewModel> nlist = new ObservableCollection<RackViewModel>();
+            foreach (Rack rack in racks)
+            {
+                RackViewModel rvm = new RackViewModel(Navigation, rack, false);
+                nlist.Add(rvm);
+            }
+            RackViewModels = nlist;
+            State = ModelState.Normal;
         }
 
         public override void DisposeModel()

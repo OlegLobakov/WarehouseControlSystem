@@ -88,17 +88,7 @@ namespace WarehouseControlSystem.ViewModel
                 {
                     if (list.Count > 0)
                     {
-                        ClearAll();
-                        foreach (Location location in list)
-                        {
-                            SetDefaultSizes(location);
-                            LocationViewModel lvm = new LocationViewModel(Navigation, location);
-                            lvm.OnTap += Lvm_OnTap;
-                            LocationViewModels.Add(lvm);
-                        }
-                        State = ModelState.Normal;
-                        UpdateMinSizes();
-                        Rebuild(true);
+                        FillModel(list);
                     }
                     else
                     {
@@ -124,6 +114,21 @@ namespace WarehouseControlSystem.ViewModel
                 State = ModelState.Error;
                 ErrorText = AppResources.Error_LoadLocation + Environment.NewLine + e.Message;
             }
+        }
+
+        private void FillModel(List<Location> list)
+        {
+            ClearAll();
+            foreach (Location location in list)
+            {
+                SetDefaultSizes(location);
+                LocationViewModel lvm = new LocationViewModel(Navigation, location);
+                lvm.OnTap += Lvm_OnTap;
+                LocationViewModels.Add(lvm);
+            }
+            State = ModelState.Normal;
+            UpdateMinSizes();
+            Rebuild(true);
         }
 
         private void SetDefaultSizes(Location location)

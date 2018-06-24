@@ -837,16 +837,19 @@ namespace WarehouseControlSystem.ViewModel
 
         public void FillBinFromTemplate(BinViewModel bvm)
         {
-            bvm.LocationCode = BinTemplate.LocationCode;
-            bvm.BinType = BinTemplate.BinTypeCode;
-            bvm.Description = BinTemplate.BinDescription;
-            bvm.WarehouseClassCode = BinTemplate.WarehouseClassCode;
-            bvm.BlockMovement = BinTemplate.BlockMovement;
-            bvm.SpecialEquipmentCode = BinTemplate.SpecialEquipmentCode;
-            bvm.BinRanking = BinTemplate.BinRanking;
-            bvm.MaximumCubage = BinTemplate.MaximumCubage;
-            bvm.MaximumWeight = BinTemplate.MaximumWeight;
-            bvm.Dedicated = BinTemplate.Dedicated;
+            if (BinTemplate is BinTemplate)
+            {
+                bvm.LocationCode = BinTemplate.LocationCode;
+                bvm.BinType = BinTemplate.BinTypeCode;
+                bvm.Description = BinTemplate.BinDescription;
+                bvm.WarehouseClassCode = BinTemplate.WarehouseClassCode;
+                bvm.BlockMovement = BinTemplate.BlockMovement;
+                bvm.SpecialEquipmentCode = BinTemplate.SpecialEquipmentCode;
+                bvm.BinRanking = BinTemplate.BinRanking;
+                bvm.MaximumCubage = BinTemplate.MaximumCubage;
+                bvm.MaximumWeight = BinTemplate.MaximumWeight;
+                bvm.Dedicated = BinTemplate.Dedicated;
+            }
         }
 
         public void CancelAsync()

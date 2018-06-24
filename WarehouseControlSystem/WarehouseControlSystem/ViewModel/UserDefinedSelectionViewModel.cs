@@ -20,45 +20,8 @@ using System.Windows.Input;
 
 namespace WarehouseControlSystem.ViewModel
 {
-    public class UserDefinedSelectionViewModel : BaseViewModel
+    public class UserDefinedSelectionViewModel : UserDefinedViewModel
     {
-        public int ID
-        {
-            get { return id; }
-            set
-            {
-                if (id != value)
-                {
-                    id = value;
-                    OnPropertyChanged(nameof(ID));
-                }
-            }
-        } int id;
-        public string Name
-        {
-            get { return name; }
-            set
-            {
-                if (name != value)
-                {
-                    name = value;
-                    OnPropertyChanged(nameof(Name));
-                }
-            }
-        } string name;
-        public string Detail
-        {
-            get { return detail; }
-            set
-            {
-                if (detail != value)
-                {
-                    detail = value;
-                    OnPropertyChanged(nameof(Detail));
-                }
-            }
-        } string detail;
-
         public int Value
         {
             get { return value1; }

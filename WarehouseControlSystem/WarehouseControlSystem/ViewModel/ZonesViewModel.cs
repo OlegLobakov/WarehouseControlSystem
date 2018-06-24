@@ -47,13 +47,7 @@ namespace WarehouseControlSystem.ViewModel
                 {
                     if (zones.Count > 0)
                     {
-                        ClearAll();
-                        foreach (Zone zone in zones)
-                        {
-                            ZoneViewModel zvm = new ZoneViewModel(Navigation, zone);
-                            ZoneViewModels.Add(zvm);
-                        }
-                        State = ModelState.Normal;
+                        FillModel(zones);
                     }
                     else
                     {
@@ -71,6 +65,17 @@ namespace WarehouseControlSystem.ViewModel
                 State = ModelState.Error;
                 ErrorText = AppResources.Error_LoadZoneList;
             }
+        }
+
+        private void FillModel(List<Zone> zones)
+        {
+            ClearAll();
+            foreach (Zone zone in zones)
+            {
+                ZoneViewModel zvm = new ZoneViewModel(Navigation, zone);
+                ZoneViewModels.Add(zvm);
+            }
+            State = ModelState.Normal;
         }
     }
 }

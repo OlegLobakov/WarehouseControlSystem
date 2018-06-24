@@ -50,13 +50,7 @@ namespace WarehouseControlSystem.ViewModel
                 {
                     if (list.Count > 0)
                     {
-                        ClearAll();
-                        foreach (Location location in list)
-                        {
-                            LocationViewModel lvm = new LocationViewModel(Navigation, location);
-                            LocationViewModels.Add(lvm);
-                        }
-                        State = ModelState.Normal;
+                        FillModel(list);
                     }
                     else
                     {
@@ -77,6 +71,17 @@ namespace WarehouseControlSystem.ViewModel
                 State = ModelState.Error;
                 ErrorText = AppResources.Error_LoadLocationList;
             }
-        }      
+        }
+
+        private void FillModel(List<Location> list)
+        {
+            ClearAll();
+            foreach (Location location in list)
+            {
+                LocationViewModel lvm = new LocationViewModel(Navigation, location);
+                LocationViewModels.Add(lvm);
+            }
+            State = ModelState.Normal;
+        }
     }
 }

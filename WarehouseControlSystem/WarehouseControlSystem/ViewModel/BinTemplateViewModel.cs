@@ -293,53 +293,12 @@ namespace WarehouseControlSystem.ViewModel
             try
             {
                 State = ModelState.Loading;
-                List<BinType> loadedbintypes = await NAV.GetBinTypeList(1, int.MaxValue, ACD.Default);
-                if ((!IsDisposed) && (loadedbintypes is List<BinType>))
-                {
-                    BinTypes.Clear();
-                    foreach (BinType bintype in loadedbintypes)
-                    {
-                        BinTypes.Add(bintype);
-                    }
-                    BinType finded = BinTypes.Find(x => x.Code == BinTypeCode);
-                    if (finded is BinType)
-                    {
-                        SelectedBinType = finded;
-                    }
-                }
-
-
-                List<Location> loadedlocations = await NAV.GetLocationList("", false, 1, int.MaxValue, ACD.Default);
-                if ((!IsDisposed) && (loadedlocations is List<Location>))
-                {
-                    Locations.Clear();
-                    foreach (Location location in loadedlocations)
-                    {
-                        Locations.Add(location);
-                    }
-                    Location finded = Locations.Find(x => x.Code == LocationCode);
-                    if (finded is Location)
-                    {
-                        SelectedLocation = finded;
-                    }
-                }
+                LoadBinTypesList();
+                LoadLocationsList();
 
                 if (LocationCode != "")
                 {
-                    List<Zone> list = await NAV.GetZoneList(LocationCode, "", false, 1, int.MaxValue, ACD.Default);
-                    if ((!IsDisposed) && (list is List<Zone>))
-                    {
-                        Zones.Clear();
-                        foreach (Zone zone in list)
-                        {
-                            Zones.Add(zone);
-                        }
-                        Zone finded = Zones.Find(x => x.Code == ZoneCode);
-                        if (finded is Zone)
-                        {
-                            SelectedZone = finded;
-                        }
-                    }
+                    LoadZonesList();
                 }
             }
             catch (OperationCanceledException e)
@@ -355,6 +314,59 @@ namespace WarehouseControlSystem.ViewModel
             State = ModelState.Normal;
         }
 
+        private async void LoadBinTypesList()
+        {
+            List<BinType> loadedbintypes = await NAV.GetBinTypeList(1, int.MaxValue, ACD.Default).ConfigureAwait(true);
+            if ((!IsDisposed) && (loadedbintypes is List<BinType>))
+            {
+                BinTypes.Clear();
+                foreach (BinType bintype in loadedbintypes)
+                {
+                    BinTypes.Add(bintype);
+                }
+                BinType finded = BinTypes.Find(x => x.Code == BinTypeCode);
+                if (finded is BinType)
+                {
+                    SelectedBinType = finded;
+                }
+            }
+        }
+
+        private async void LoadLocationsList()
+        {
+            List<Location> loadedlocations = await NAV.GetLocationList("", false, 1, int.MaxValue, ACD.Default).ConfigureAwait(true);
+            if ((!IsDisposed) && (loadedlocations is List<Location>))
+            {
+                Locations.Clear();
+                foreach (Location location in loadedlocations)
+                {
+                    Locations.Add(location);
+                }
+                Location finded = Locations.Find(x => x.Code == LocationCode);
+                if (finded is Location)
+                {
+                    SelectedLocation = finded;
+                }
+            }
+        }
+
+        private async void LoadZonesList()
+        {
+            List<Zone> list = await NAV.GetZoneList(LocationCode, "", false, 1, int.MaxValue, ACD.Default).ConfigureAwait(true);
+            if ((!IsDisposed) && (list is List<Zone>))
+            {
+                Zones.Clear();
+                foreach (Zone zone in list)
+                {
+                    Zones.Add(zone);
+                }
+                Zone finded = Zones.Find(x => x.Code == ZoneCode);
+                if (finded is Zone)
+                {
+                    SelectedZone = finded;
+                }
+            }
+        }
         public async void UpdateLocation(Location location)
         {
             if (NotNetOrConnection)
