@@ -44,12 +44,12 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             MessagingCenter.Subscribe<RackViewModel>(this, "LocationsIsLoaded", LocationsIsLoaded);
         }
 
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
             base.OnAppearing();
-            model.Load();
             rackview.Update(model);
             model.State = ViewModel.Base.ModelState.Normal;
+            await model.Load();
         }
       
         protected override bool OnBackButtonPressed()
@@ -97,14 +97,14 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             }
         }
 
-        private void CodeEntryChanged(object sender, TextChangedEventArgs e)
+        private async void CodeEntryChanged(object sender, TextChangedEventArgs e)
         {
             Entry entry = (Entry)sender;
             if (entry.Text is string)
             {
                 entry.Text = entry.Text.ToUpper();
             }
-            model.CheckNo();
+            await model.CheckNo();
         }
 
         private void ToolbarItem_Clicked(object sender, EventArgs e)
@@ -124,11 +124,11 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
         }
         
 
-        private void PickerLocation(object sender, EventArgs e)
+        private async void PickerLocation(object sender, EventArgs e)
         {
             var picker = (Picker)sender;
             int selectedIndex = picker.SelectedIndex;
-            model.SetLocation((Location)picker.SelectedItem);
+            await model.SetLocation((Location)picker.SelectedItem);
         }
 
         private void PickerZone(object sender, EventArgs e)

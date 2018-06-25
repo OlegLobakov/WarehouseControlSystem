@@ -207,8 +207,8 @@ namespace WarehouseControlSystem.ViewModel
             EditMode = SchemeElementEditMode.None;
             TapCommand = new Command<object>(Tap);
 
-            OKCommand = new Command(OK);
-            CancelCommand = new Command(Cancel);
+            OKCommand = new Command(async () => await OK());
+            CancelCommand = new Command(async () => await Cancel());
             CancelChangesCommand = new Command(CancelChanges);
 
             State = ModelState.Undefined;
@@ -256,7 +256,7 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
-        public async void OK()
+        public async Task OK()
         {
             if (NotNetOrConnection)
             {
@@ -305,7 +305,7 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
-        public async void Cancel()
+        public async Task Cancel()
         {
             await Navigation.PopAsync();
         }
@@ -315,7 +315,7 @@ namespace WarehouseControlSystem.ViewModel
             FillFields(Zone);
         }
 
-        public async void CheckZoneCode()
+        public async Task CheckZoneCode()
         {
             if (CreateMode)
             {
@@ -331,7 +331,7 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
-        public async void Load()
+        public async Task Load()
         {
             if (NotNetOrConnection)
             {
@@ -382,7 +382,7 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
-        public async void LoadRacks()
+        public async Task LoadRacks()
         {
             if (IsEditMode)
             {
@@ -447,7 +447,7 @@ namespace WarehouseControlSystem.ViewModel
             };
         }
 
-        private async void SaveToNAVSchemeVisible()
+        private async Task SaveToNAVSchemeVisible()
         {
             if (IsSaveToNAVEnabled)
             {
@@ -461,7 +461,7 @@ namespace WarehouseControlSystem.ViewModel
                     IsBeenSavingToNAV = true;
                     Zone zone = new Zone();
                     SaveFields(zone);
-                    await NAV.SetZoneVisible(zone, ACD.Default);
+                    await NAV.SetZoneVisible(zone, ACD.Default).ConfigureAwait(true);
                 }
                 catch (Exception e)
                 {

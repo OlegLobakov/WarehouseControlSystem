@@ -16,6 +16,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using WarehouseControlSystem.Model;
 using WarehouseControlSystem.ViewModel;
+using System.Threading.Tasks;
 
 namespace WarehouseControlSystem.View.Pages.LocationsScheme
 {
@@ -50,12 +51,12 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
             MessagingCenter.Subscribe<LocationsPlanViewModel>(this, "Reshape", Reshape);
         }
 
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         { 
             base.OnAppearing();
             PanGesture.PanUpdated += OnPaned;
             TapGesture.Tapped += GridTapped;
-            model.Load();
+            await model.Load();
         }
 
         protected override void OnDisappearing()
@@ -66,6 +67,15 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
             Views.Clear();
             abslayout.Children.Clear();
             base.OnDisappearing();
+        }
+
+        protected override bool OnBackButtonPressed()
+        {
+            model.DisposeModel();
+            MessagingCenter.Unsubscribe<LocationsPlanViewModel>(this, "Rebuild");
+            MessagingCenter.Unsubscribe<LocationsPlanViewModel>(this, "Reshape");
+            base.OnBackButtonPressed();
+            return false;
         }
 
         private void StackLayout_SizeChanged(object sender, EventArgs e)
@@ -241,7 +251,7 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
                             }
                             lv.Opacity = 1;
                         }
-                        model.SaveLocationChangesAsync();
+                        await model.SaveLocationChangesAsync();
                         MovingAction = MovingActionTypeEnum.None;
                         break;
                     }
@@ -255,7 +265,7 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
             }
         }
 
-        private void ToolbarItem_Clicked(object sender, EventArgs e)
+        private async void ToolbarItem_Clicked(object sender, EventArgs e)
         {
             GridTapped(null, new EventArgs());
 
@@ -263,7 +273,7 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
             {
                 abslayout.BackgroundColor = Color.White;
                 model.IsEditMode = false;
-                model.SaveSchemeParams();
+                await model.SaveSchemeParams();
             }
             else
             {

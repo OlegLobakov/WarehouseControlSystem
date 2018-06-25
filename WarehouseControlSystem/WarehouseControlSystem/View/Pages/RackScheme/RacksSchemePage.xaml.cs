@@ -59,13 +59,13 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             MessagingCenter.Subscribe<RacksPlanViewModel>(this, "UDSListIsLoaded", UDSListIsLoaded);
         }
 
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
             base.OnAppearing();
             PanGesture.PanUpdated += OnPaned;
             TapGesture.Tapped += GridTapped;
-            model.Load();
-            model.LoadUDS();
+            await model.Load();
+            await model.LoadUDS();
         }
 
         protected override void OnDisappearing()
@@ -273,7 +273,7 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
                             rv.TranslationY = 0;
                         }
 
-                        model.SaveRacksChangesAsync();
+                        await model.SaveRacksChangesAsync();
                         MovingAction = MovingActionTypeEnum.None;
                         break;
                     }
@@ -287,7 +287,7 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             }
         }
 
-        private void ToolbarItem_Clicked(object sender, EventArgs e)
+        private async void ToolbarItem_Clicked(object sender, EventArgs e)
         {
             GridTapped(null, new EventArgs());
 
@@ -295,7 +295,7 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             {
                 model.IsEditMode = false;
                 abslayout.BackgroundColor = Color.White;
-                model.SaveZoneParams();
+                await model.SaveZoneParams();
             }
             else
             {

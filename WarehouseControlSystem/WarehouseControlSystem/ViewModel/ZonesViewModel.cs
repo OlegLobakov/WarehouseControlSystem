@@ -23,6 +23,7 @@ using WarehouseControlSystem.Resx;
 using System.Windows.Input;
 using WarehouseControlSystem.View.Pages.ZonesScheme;
 using WarehouseControlSystem.View.Pages.RackScheme;
+using System.Threading.Tasks;
 
 namespace WarehouseControlSystem.ViewModel
 {
@@ -32,7 +33,7 @@ namespace WarehouseControlSystem.ViewModel
         {
         }
 
-        public async void LoadAll()
+        public async Task LoadAll()
         {
             if (NotNetOrConnection)
             {

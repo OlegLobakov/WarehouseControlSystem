@@ -53,14 +53,14 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
             return false;
         }
 
-        private void Entry_TextChanged(object sender, TextChangedEventArgs e)
+        private async void Entry_TextChanged(object sender, TextChangedEventArgs e)
         {
             Entry entry = (Entry)sender;
             if (entry.Text is string)
             {
                 entry.Text = entry.Text.ToUpper();
             }
-            model.CheckLocationCode();
+            await model.CheckLocationCode();
         }
 
         private void colorpicker_SelectedIndexChanged(object sender, EventArgs e)

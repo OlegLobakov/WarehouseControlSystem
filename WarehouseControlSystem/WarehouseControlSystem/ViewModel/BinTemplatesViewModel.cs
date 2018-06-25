@@ -41,14 +41,14 @@ namespace WarehouseControlSystem.ViewModel
         public BinTemplatesViewModel(INavigation navigation) : base(navigation)
         {
             BinTemplates = new ObservableCollection<BinTemplateViewModel>();
-            NewCommand = new Command(NewTemplate);
-            DeleteCommand = new Command<object>(DeleteTemplate);
+            NewCommand = new Command(async () => await NewTemplate());
+            DeleteCommand = new Command<object>(async (x) => await DeleteTemplate(x));
             EditCommand = new Command<object>(EditTemplate);
             CopyCommand = new Command<object>(CopyTemplate);
             State = ModelState.Undefined;
         }
 
-        public async void Load()
+        public async Task Load()
         {
             if (NotNetOrConnection)
             {
@@ -83,7 +83,7 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
-        public async void NewTemplate()
+        public async Task NewTemplate()
         {
             BinTemplate newbt = new BinTemplate();
             BinTemplateViewModel btvm = new BinTemplateViewModel(Navigation, newbt)
@@ -94,7 +94,7 @@ namespace WarehouseControlSystem.ViewModel
             await Navigation.PushAsync(nbtp);
         }
 
-        public async void DeleteTemplate(object sender)
+        public async Task DeleteTemplate(object sender)
         {
             if (NotNetOrConnection)
             {
@@ -105,7 +105,7 @@ namespace WarehouseControlSystem.ViewModel
             {
                 BinTemplateViewModel btvm = (BinTemplateViewModel)sender;
                 State = ModelState.Loading;
-                await NAV.DeleteBinTemplate(btvm.BinTemplate, ACD.Default);
+                await NAV.DeleteBinTemplate(btvm.BinTemplate, ACD.Default).ConfigureAwait(true);
                 if (!IsDisposed)
                 {
                     BinTemplates.Remove(btvm);

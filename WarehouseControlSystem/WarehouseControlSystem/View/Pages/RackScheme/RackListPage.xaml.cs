@@ -32,10 +32,10 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             Title = AppResources.ZoneSchemePage_Title + " - " + Zone.LocationCode + " | " + AppResources.RackSchemePage_Title + " - " + Zone.Code;
         }
 
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
             base.OnAppearing();
-            model.LoadAll();
+            await model.LoadAll();
         }
     }
 }

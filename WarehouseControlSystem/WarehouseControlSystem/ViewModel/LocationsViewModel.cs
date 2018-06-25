@@ -35,7 +35,7 @@ namespace WarehouseControlSystem.ViewModel
         {
         }
 
-        public async void LoadAll()
+        public async Task LoadAll()
         {
             if (NotNetOrConnection)
             {

@@ -21,7 +21,7 @@ using WarehouseControlSystem.Resx;
 using WarehouseControlSystem.ViewModel.Base;
 using Xamarin.Forms;
 using WarehouseControlSystem.Model;
-using System.Threading;
+using System.Threading.Tasks;
 
 namespace WarehouseControlSystem.ViewModel
 {
@@ -534,7 +534,7 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
-        public void Renumbering()
+        public async void Renumbering()
         {
             if (CreateMode)
             {
@@ -588,26 +588,26 @@ namespace WarehouseControlSystem.ViewModel
                     }
                 }
 
-                BinsViewModel.CheckBins(ACD);
+                await BinsViewModel.CheckBins(ACD);
             }
         }
 
-        public void Load()
+        public async Task Load()
         {
             IsBusy = true;
             try
             {
-                LoadLocationsList();
-                LoadBinTypesList();
-                LoadWarehouseClassesList();
-                LoadSpecialEquipmentsList();
+                await LoadLocationsList();
+                await LoadBinTypesList();
+                await LoadWarehouseClassesList();
+                await LoadSpecialEquipmentsList();
 
                 if (ZoneCode != "")
                 {
-                    LoadZonesList();
+                    await LoadZonesList();
                 }
 
-                ReloadBinTemplates();
+                await ReloadBinTemplates();
                 MessagingCenter.Send<RackViewModel>(this, "LocationsIsLoaded");
                 IsBusy = false;
             }
@@ -623,7 +623,7 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
-        private async void LoadLocationsList()
+        private async Task LoadLocationsList()
         {
             List<Location> locations = await NAV.GetLocationList("", false, 1, int.MaxValue, ACD.Default).ConfigureAwait(true);
             if (!IsDisposed)
@@ -636,7 +636,7 @@ namespace WarehouseControlSystem.ViewModel
                 LocationsIsLoaded = CanChangeLocationAndZone && locations.Count > 0;
             }
         }
-        private async void LoadBinTypesList()
+        private async Task LoadBinTypesList()
         {
             List<BinType> bintypes = await NAV.GetBinTypeList(1, int.MaxValue, ACD.Default).ConfigureAwait(true);
             if (!IsDisposed)
@@ -649,7 +649,7 @@ namespace WarehouseControlSystem.ViewModel
                 BinsViewModel.BinTypesIsEnabled = bintypes.Count > 0;
             }
         }
-        private async void LoadWarehouseClassesList()
+        private async Task LoadWarehouseClassesList()
         {
             List<WarehouseClass> warehouseclasses = await NAV.GetWarehouseClassList(1, int.MaxValue, ACD.Default).ConfigureAwait(true);
             if (!IsDisposed)
@@ -662,7 +662,7 @@ namespace WarehouseControlSystem.ViewModel
                 BinsViewModel.WarehouseClassesIsEnabled = warehouseclasses.Count > 0;
             }
         }
-        private async void LoadSpecialEquipmentsList()
+        private async Task LoadSpecialEquipmentsList()
         {
             List<SpecialEquipment> specialequipments = await NAV.GetSpecialEquipmentList(1, int.MaxValue, ACD.Default).ConfigureAwait(true);
             if (!IsDisposed)
@@ -675,7 +675,7 @@ namespace WarehouseControlSystem.ViewModel
                 BinsViewModel.SpecialEquipmentsIsEnabled = specialequipments.Count > 0;
             }
         }
-        private async void LoadZonesList()
+        private async Task LoadZonesList()
         {
             List<Zone> zones = await NAV.GetZoneList(LocationCode, "", false, 1, int.MaxValue, ACD.Default).ConfigureAwait(true);
             if (!IsDisposed)
@@ -689,13 +689,13 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
-        public void LoadBins()
+        public async void LoadBins()
         {
             BinsViewModel.LinkToRackViewModel = this;
-            BinsViewModel.LoadBins(ACD);
+            await BinsViewModel.LoadBins(ACD);
         }
 
-        public async void SetLocation(Location location)
+        public async Task SetLocation(Location location)
         {
             if (CanChangeLocationAndZone)
             {
@@ -712,9 +712,9 @@ namespace WarehouseControlSystem.ViewModel
                         Zones.Add(zone);
                     }
                     ZonesIsLoaded = CanChangeLocationAndZone && zones.Count > 0;
-                    ReloadBinTemplates();
+                    await ReloadBinTemplates();
                     MessagingCenter.Send<RackViewModel>(this, "ZonesIsLoaded");
-                    CheckNo();
+                    await CheckNo();
                 }
                 catch (OperationCanceledException e)
                 {
@@ -728,17 +728,17 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
-        public void SetZone(Zone zone)
+        public async void SetZone(Zone zone)
         {
             if (CanChangeLocationAndZone)
             {
                 ZoneCode = zone.Code;
-                CheckNo();
-                ReloadBinTemplates();
+                await CheckNo();
+                await ReloadBinTemplates();
             }
         }
 
-        public async void ReloadBinTemplates()
+        public async Task ReloadBinTemplates()
         {
             BinTemplatesIsLoaded = false;
             try
@@ -791,7 +791,7 @@ namespace WarehouseControlSystem.ViewModel
             BinsViewModel.BinTemplate = bt;
         }
 
-        public async void SaveToNAVSchemeVisible()
+        public async Task SaveToNAVSchemeVisible()
         {
             if (IsSaveToNAVEnabled)
             {
@@ -819,10 +819,10 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
-        public void LoadUDF()
+        public async Task LoadUDF()
         {
             BinsViewModel.LinkToRackViewModel = this;
-            BinsViewModel.LoadUDF(ACD);
+            await BinsViewModel.LoadUDF(ACD);
         }
 
         public void GetSearchText()
@@ -838,7 +838,7 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
-        public async void CheckNo()
+        public async Task CheckNo()
         {
             NoWarningText = "";
             if ((LocationCode != "") && (ZoneCode != "") && (No != ""))
@@ -969,7 +969,7 @@ namespace WarehouseControlSystem.ViewModel
         #region User Defined Functions
         UserDefinedFunctionViewModel udfvmselected;
 
-        public void RunUserDefineFunction(UserDefinedFunctionViewModel udfvm)
+        public async void RunUserDefineFunction(UserDefinedFunctionViewModel udfvm)
         {
             udfvmselected = udfvm;
             if (!string.IsNullOrEmpty(udfvm.Confirm))
@@ -979,19 +979,19 @@ namespace WarehouseControlSystem.ViewModel
             }
             else
             {
-                RunUDF();
+                await RunUDF();
             }
         }
-        public void RunUserDefineFunctionOK()
+        public async void RunUserDefineFunctionOK()
         {
-            RunUDF();
+            await RunUDF();
         }
         public void RunUserDefineFunctionCancel()
         {
             State = ModelState.Normal;
         }
 
-        public async void RunUDF()
+        public async Task RunUDF()
         {
             try
             {

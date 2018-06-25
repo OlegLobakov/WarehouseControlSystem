@@ -91,8 +91,8 @@ namespace WarehouseControlSystem.ViewModel
             SelectedViewModels = new ObservableCollection<RackViewModel>();
             UserDefinedSelectionViewModels = new ObservableCollection<UserDefinedSelectionViewModel>();
 
-            RackListCommand = new Command(RackList);
-            NewRackCommand = new Command(NewRack);
+            RackListCommand = new Command(async () => await RackList());
+            NewRackCommand = new Command(async () => await NewRack());
             EditRackCommand = new Command(EditRack);
             DeleteRackCommand = new Command(DeleteRack);
 
@@ -124,7 +124,7 @@ namespace WarehouseControlSystem.ViewModel
             SelectedRackViewModel = null;
         }
 
-        public async void Load()
+        public async Task Load()
         {
             if (NotNetOrConnection)
             {
@@ -175,7 +175,7 @@ namespace WarehouseControlSystem.ViewModel
             Rebuild(true);
         }
 
-        public async void LoadUDS()
+        public async Task LoadUDS()
         {
             if (NotNetOrConnection)
             {
@@ -320,13 +320,13 @@ namespace WarehouseControlSystem.ViewModel
             SelectedViewModels.Clear();
         }
 
-        public async void RackList()
+        public async Task RackList()
         {
             RackListPage rlp = new RackListPage(Zone);
             await Navigation.PushAsync(rlp);
         }
 
-        public async void NewRack()
+        public async Task NewRack()
         {
             Rack newrack = new Rack
             {
@@ -355,7 +355,7 @@ namespace WarehouseControlSystem.ViewModel
             System.Diagnostics.Debug.WriteLine(obj.ToString());
         }
 
-        public async void SaveZoneParams()
+        public async Task SaveZoneParams()
         {
             if (NotNetOrConnection)
             {
@@ -366,7 +366,7 @@ namespace WarehouseControlSystem.ViewModel
             await NAV.ModifyZone(Zone, ACD.Default);
         }
 
-        public async void SaveRacksChangesAsync()
+        public async Task SaveRacksChangesAsync()
         {
             if (NotNetOrConnection)
             {

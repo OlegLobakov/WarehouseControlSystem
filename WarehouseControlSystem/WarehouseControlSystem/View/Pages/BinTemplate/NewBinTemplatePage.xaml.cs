@@ -37,10 +37,10 @@ namespace WarehouseControlSystem.View.Pages.BinTemplate
             Title = AppResources.NewBinTemplatePage_Title;
         }
 
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
             base.OnAppearing();
-            model.Update();
+            await model.Update();
         }
 
         protected override bool OnBackButtonPressed()
@@ -50,14 +50,14 @@ namespace WarehouseControlSystem.View.Pages.BinTemplate
             return false;
         }
 
-        private void PickerSelection1(object sender, EventArgs e)
+        private async void PickerSelection1(object sender, EventArgs e)
         {
             var picker = (Picker)sender;
             int selectedIndex = picker.SelectedIndex;
             if (selectedIndex >= 0)
             {
                 Location selected = (Location)picker.SelectedItem;
-                model.UpdateLocation(selected);
+                await model.UpdateLocation(selected);
             }
         }
         private void PickerSelection2(object sender, EventArgs e)

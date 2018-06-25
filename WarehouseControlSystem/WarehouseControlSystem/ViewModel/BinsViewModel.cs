@@ -642,7 +642,7 @@ namespace WarehouseControlSystem.ViewModel
             IsUserDefinedCommandsVisible = true;
         }
 
-        public async void CheckBins(AsyncCancelationDispatcher acd)
+        public async Task CheckBins(AsyncCancelationDispatcher acd)
         {
             try
             {
@@ -684,7 +684,7 @@ namespace WarehouseControlSystem.ViewModel
                 ErrorText = e.Message;
             }
         }
-        public async void LoadBins(AsyncCancelationDispatcher acd)
+        public async Task LoadBins(AsyncCancelationDispatcher acd)
         {
             BinViewModelsDispose();
             try
@@ -771,7 +771,7 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
-        public async void LoadUDF(AsyncCancelationDispatcher acd)
+        public async Task LoadUDF(AsyncCancelationDispatcher acd)
         {
             try
             {

@@ -48,7 +48,7 @@ namespace WarehouseControlSystem.Helpers.NAV
             }
         }
 
-        private static async void GetIntFromNAV(TaskCompletionSource<int> tcs, string functionname, XElement body, XNamespace myns, CancellationTokenSource cts)
+        private static async Task GetIntFromNAV(TaskCompletionSource<int> tcs, string functionname, XElement body, XNamespace myns, CancellationTokenSource cts)
         {
             try
             {

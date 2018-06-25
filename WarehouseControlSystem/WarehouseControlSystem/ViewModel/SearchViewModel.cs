@@ -20,7 +20,7 @@ using Xamarin.Forms;
 using WarehouseControlSystem.Helpers.NAV;
 using System.Windows.Input;
 using WarehouseControlSystem.Resx;
-using System.Threading;
+using System.Threading.Tasks;
 
 namespace WarehouseControlSystem.ViewModel
 {
@@ -75,7 +75,7 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
-        public async void Search(string request)
+        public async Task Search(string request)
         {
             if (request.Length < 4)
             {

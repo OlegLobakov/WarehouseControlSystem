@@ -280,7 +280,7 @@ namespace WarehouseControlSystem.ViewModel
             SaveFields(Global.TestConnection);
             try
             {
-                await NAV.TestConnection(ACD.Default);
+                await NAV.TestConnection(ACD.Default).ConfigureAwait(true);
                 Verified = true;
                 Connection.Verified = true;
                 State = ModelState.Normal;

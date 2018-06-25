@@ -23,6 +23,7 @@ using WarehouseControlSystem.Resx;
 using System.Windows.Input;
 using WarehouseControlSystem.View.Pages.ZonesScheme;
 using WarehouseControlSystem.View.Pages.RackScheme;
+using System.Threading.Tasks;
 
 namespace WarehouseControlSystem.ViewModel
 {
@@ -48,10 +49,10 @@ namespace WarehouseControlSystem.ViewModel
             ZoneViewModels = new ObservableCollection<ZoneViewModel>();
             SelectedViewModels = new ObservableCollection<ZoneViewModel>();
 
-            ListZonesCommand = new Command(ListZones);
-            NewZoneCommand = new Command(NewZone);
-            EditZoneCommand = new Command(EditZone);
-            DeleteZoneCommand = new Command(DeleteZone);
+            ListZonesCommand = new Command(async () => await ListZones());
+            NewZoneCommand = new Command(async () => await NewZone());
+            EditZoneCommand = new Command(async (x) => await EditZone(x));
+            DeleteZoneCommand = new Command(async (x) => await DeleteZone(x));
 
             IsEditMode = true;
             Title = AppResources.ZoneListPage_Title + " - " + location.Code;
@@ -79,7 +80,7 @@ namespace WarehouseControlSystem.ViewModel
             ZoneViewModels.Clear();
         }
 
-        public async void Load()
+        public async Task Load()
         {
             if (NotNetOrConnection)
             {
@@ -242,13 +243,13 @@ namespace WarehouseControlSystem.ViewModel
             SelectedViewModels.Clear();
         }
 
-        public async void ListZones()
+        public async Task ListZones()
         {
             ZoneListPage zlp = new ZoneListPage(Location);
             await Navigation.PushAsync(zlp);
         }
 
-        public async void NewZone()
+        public async Task NewZone()
         {
             Zone zone = new Zone()
             {
@@ -263,7 +264,7 @@ namespace WarehouseControlSystem.ViewModel
             await Navigation.PushAsync(nzp);
         }
 
-        public async void EditZone(object obj)
+        public async Task EditZone(object obj)
         {
             if (obj is ZoneViewModel)
             {
@@ -274,7 +275,7 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
-        public async void DeleteZone(object obj)
+        public async Task DeleteZone(object obj)
         {
             if (NotNetOrConnection)
             {
@@ -301,7 +302,7 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
-        public async void SaveLocationParams()
+        public async Task SaveLocationParams()
         {
             if (NotNetOrConnection)
             {
@@ -313,7 +314,7 @@ namespace WarehouseControlSystem.ViewModel
             await NAV.ModifyLocation(Location, ACD.Default);
         }
 
-        public async void SaveZonesChangesAsync()
+        public async Task SaveZonesChangesAsync()
         {
             if (NotNetOrConnection)
             {

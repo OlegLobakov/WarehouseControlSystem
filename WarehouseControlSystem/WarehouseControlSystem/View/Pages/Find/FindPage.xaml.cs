@@ -63,14 +63,14 @@ namespace WarehouseControlSystem.View.Pages.Find
         }
 
 
-        public void ButtonFindClick(object sender, EventArgs e)
+        public async void ButtonFindClick(object sender, EventArgs e)
         {
-            model.Search(entry.Text);
+            await model.Search(entry.Text);
         }
 
-        private void entry_Completed(object sender, EventArgs e)
+        private async void entry_Completed(object sender, EventArgs e)
         {
-            model.Search(entry.Text);
+            await model.Search(entry.Text);
         }
 
         private void Button_Clicked(object sender, EventArgs e)

@@ -343,7 +343,7 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
-        public async void CheckLocationCode()
+        public async Task CheckLocationCode()
         {
             if (CreateMode)
             {
@@ -386,7 +386,7 @@ namespace WarehouseControlSystem.ViewModel
             return tcs.Task;
         }
 
-        public async void LoadZones()
+        public async Task LoadZones()
         {
             if (IsEditMode)
             {

@@ -31,10 +31,10 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
             Title = AppResources.ZoneListPage_Title;
         }
 
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
             base.OnAppearing();
-            model.LoadAll();
+            await model.LoadAll();
         }
 
         protected override void OnDisappearing()

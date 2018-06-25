@@ -34,10 +34,10 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
             Title = AppResources.LocationListPage_Title;
         }
 
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
             base.OnAppearing();
-            model.LoadAll();
+            await model.LoadAll();
         }
     }
 }

@@ -45,10 +45,10 @@ namespace WarehouseControlSystem.ViewModel
 
         public LocationsPlanViewModel(INavigation navigation) : base(navigation)
         {
-            ListLocationsCommand = new Command(ListLocations);
-            NewLocationCommand = new Command(NewLocation);
-            EditLocationCommand = new Command(EditLocation);
-            DeleteLocationCommand = new Command(DeleteLocation);
+            ListLocationsCommand = new Command(async () => await ListLocations());
+            NewLocationCommand = new Command(async () => await NewLocation());
+            EditLocationCommand = new Command(async (x) => await EditLocation(x));
+            DeleteLocationCommand = new Command(async (x) => await DeleteLocation(x));
 
             IsEditMode = true;
             Title = AppResources.LocationsSchemePage_Title;
@@ -70,7 +70,7 @@ namespace WarehouseControlSystem.ViewModel
             LocationViewModels.Clear();
         }
 
-        public async void Load()
+        public async Task Load()
         {
             if (NotNetOrConnection)
             {
@@ -252,13 +252,13 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
-        public async void ListLocations()
+        public async Task ListLocations()
         {
             LocationListPage llp = new LocationListPage();
             await Navigation.PushAsync(llp);
         }
 
-        public async void NewLocation()
+        public async Task NewLocation()
         {
             Location newLocation = new Location();
             SelectedLocationViewModel = new LocationViewModel(Navigation, newLocation)
@@ -270,7 +270,7 @@ namespace WarehouseControlSystem.ViewModel
             await Navigation.PushAsync(lnp);
         }
 
-        public async void EditLocation(object obj)
+        public async Task EditLocation(object obj)
         {
             LocationViewModel lvm = (LocationViewModel)obj;
             if (lvm is LocationViewModel)
@@ -281,7 +281,7 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
-        public async void DeleteLocation(object obj)
+        public async Task DeleteLocation(object obj)
         {
             if (NotNetOrConnection)
             {
@@ -306,11 +306,10 @@ namespace WarehouseControlSystem.ViewModel
                 State = ModelState.Normal;
                 LoadAnimation = false;
             }
-
         }
 
 
-        public async void SaveLocationChangesAsync()
+        public async Task SaveLocationChangesAsync()
         {
             if (NotNetOrConnection)
             {
@@ -333,7 +332,7 @@ namespace WarehouseControlSystem.ViewModel
             UpdateMinSizes();
         }
 
-        public async void SaveSchemeParams()
+        public async Task SaveSchemeParams()
         {
             if (NotNetOrConnection)
             {

@@ -38,14 +38,14 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             MessagingCenter.Subscribe<BinsViewModel>(this, "BinsIsLoaded", BinsIsLoaded);
         }
 
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
             base.OnAppearing();
             
             model.State = ModelState.Loading;
             model.LoadingText = AppResources.RackCardPage_LoadingText;           
             model.LoadBins();
-            model.LoadUDF();
+            await model.LoadUDF();
         }
 
         protected override bool OnBackButtonPressed()

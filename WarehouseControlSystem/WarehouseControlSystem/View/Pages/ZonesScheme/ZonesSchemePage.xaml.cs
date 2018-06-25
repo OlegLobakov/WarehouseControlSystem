@@ -60,12 +60,12 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
             model.SetEditModeForItems(model.IsEditMode);
         }
 
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
             base.OnAppearing();
             PanGesture.PanUpdated += OnPaned;
             TapGesture.Tapped += GridTapped;
-            model.Load();
+            await model.Load();
         }
 
         protected override void OnDisappearing()
@@ -77,6 +77,15 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
             Views.Clear();
             abslayout.Children.Clear();
             base.OnDisappearing();
+        }
+
+        protected override bool OnBackButtonPressed()
+        {
+            model.DisposeModel();
+            MessagingCenter.Unsubscribe<ZonesPlanViewModel>(this, "Rebuild");
+            MessagingCenter.Unsubscribe<ZonesPlanViewModel>(this, "Reshape");
+            base.OnBackButtonPressed();
+            return false;
         }
 
         private void StackLayout_SizeChanged(object sender, EventArgs e)
@@ -258,7 +267,7 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
                             }
                             zv.Opacity = 1;
                         }
-                        model.SaveZonesChangesAsync();
+                        await model.SaveZonesChangesAsync();
                         MovingAction = MovingActionTypeEnum.None;
                         break;
                     }
@@ -279,7 +288,7 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
             await Navigation.PushAsync(fp);
         }
 
-        private void ToolbarItem_Clicked(object sender, EventArgs e)
+        private async void ToolbarItem_Clicked(object sender, EventArgs e)
         {
             GridTapped(null, new EventArgs());
 
@@ -288,7 +297,7 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
                 model.IsEditMode = false;
                 model.SetEditModeForItems(model.IsEditMode);
                 abslayout.BackgroundColor = Color.White;
-                model.SaveLocationParams();
+                await model.SaveLocationParams();
             }
             else
             {

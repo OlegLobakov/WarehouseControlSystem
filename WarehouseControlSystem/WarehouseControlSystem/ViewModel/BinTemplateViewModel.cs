@@ -190,9 +190,10 @@ namespace WarehouseControlSystem.ViewModel
         public BinTemplateViewModel(INavigation navigation, BinTemplate bintemplate) : base(navigation)
         {
             FillFields(bintemplate);
-            OKCommand = new Command(OK);
-            CancelCommand = new Command(Cancel);
+            OKCommand = new Command(async () => await OK());
+            CancelCommand = new Command(async () => await Cancel());
             CancelChangesCommand = new Command(CancelChanges);
+
             BinTypes = new List<BinType>();
             Locations = new List<Location>();
             Zones = new List<Zone>();
@@ -231,7 +232,7 @@ namespace WarehouseControlSystem.ViewModel
             bintemplate.Dedicated = Dedicated;
         }
 
-        public async void OK()
+        public async Task OK()
         {
 
             if (NotNetOrConnection)
@@ -242,38 +243,30 @@ namespace WarehouseControlSystem.ViewModel
             if (CheckFields())
             {
                 SaveFields(BinTemplate);
-                if (CreateMode)
+
+                try
                 {
-                    try
+                    if (CreateMode)
                     {
                         await NAV.CreateBinTemplate(BinTemplate, ACD.Default);
                         await Navigation.PopAsync();
                     }
-                    catch (Exception e)
-                    {
-                        System.Diagnostics.Debug.WriteLine(e.Message);
-                        State = ModelState.Error;
-                        ErrorText = e.Message;
-                    }
-                }
-                else
-                {
-                    try
+                    else
                     {
                         await NAV.ModifyBinTemplate(BinTemplate, ACD.Default);
                         await Navigation.PopAsync();
                     }
-                    catch (Exception e)
-                    {
-                        System.Diagnostics.Debug.WriteLine(e.Message);
-                        State = ModelState.Error;
-                        ErrorText = e.Message;
-                    }
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine(e.Message);
+                    State = ModelState.Error;
+                    ErrorText = e.Message;
                 }
             }
         }
 
-        public async void Cancel()
+        public async Task Cancel()
         {
             await Navigation.PopAsync();
         }
@@ -283,7 +276,7 @@ namespace WarehouseControlSystem.ViewModel
             FillFields(BinTemplate);
         }
 
-        public async void Update()
+        public async Task Update()
         {
             if (NotNetOrConnection)
             {
@@ -293,12 +286,12 @@ namespace WarehouseControlSystem.ViewModel
             try
             {
                 State = ModelState.Loading;
-                LoadBinTypesList();
-                LoadLocationsList();
+                await LoadBinTypesList();
+                await LoadLocationsList();
 
                 if (LocationCode != "")
                 {
-                    LoadZonesList();
+                    await LoadZonesList();
                 }
             }
             catch (OperationCanceledException e)
@@ -314,7 +307,7 @@ namespace WarehouseControlSystem.ViewModel
             State = ModelState.Normal;
         }
 
-        private async void LoadBinTypesList()
+        private async Task LoadBinTypesList()
         {
             List<BinType> loadedbintypes = await NAV.GetBinTypeList(1, int.MaxValue, ACD.Default).ConfigureAwait(true);
             if ((!IsDisposed) && (loadedbintypes is List<BinType>))
@@ -332,7 +325,7 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
-        private async void LoadLocationsList()
+        private async Task LoadLocationsList()
         {
             List<Location> loadedlocations = await NAV.GetLocationList("", false, 1, int.MaxValue, ACD.Default).ConfigureAwait(true);
             if ((!IsDisposed) && (loadedlocations is List<Location>))
@@ -350,7 +343,7 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
-        private async void LoadZonesList()
+        private async Task LoadZonesList()
         {
             List<Zone> list = await NAV.GetZoneList(LocationCode, "", false, 1, int.MaxValue, ACD.Default).ConfigureAwait(true);
             if ((!IsDisposed) && (list is List<Zone>))
@@ -367,7 +360,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         }
-        public async void UpdateLocation(Location location)
+        public async Task UpdateLocation(Location location)
         {
             if (NotNetOrConnection)
             {

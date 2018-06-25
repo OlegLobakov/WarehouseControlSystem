@@ -25,7 +25,7 @@ using System;
 using WarehouseControlSystem.Helpers.NAV;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Threading;
+using System.Threading.Tasks;
 using System.Collections.Generic;
 
 namespace WarehouseControlSystem
@@ -40,28 +40,28 @@ namespace WarehouseControlSystem
             BindingContext = this;
         }
 
-        private async void LocationsTaped()
+        private async Task LocationsTaped()
         {
             await Navigation.PushAsync(new LocationsSchemePage());
         }
 
-        private async void AboutTaped()
+        private async Task AboutTaped()
         {
             await Navigation.PushAsync(new AboutPage());
         }
 
-        private async void ConnectionsTaped()
+        private async Task ConnectionsTaped()
         {
             ConnectionsPage cp = new ConnectionsPage();
             await Navigation.PushAsync(cp);
         }
 
-        private async void OptionsTaped()
+        private async Task OptionsTaped()
         {
             await Navigation.PushAsync(new ParametersPage());
         }
 
-        private async void AddLocation()
+        private async Task AddLocation()
         {
             Location location = new Location();
             LocationViewModel lvm = new LocationViewModel(Navigation, location);
@@ -69,7 +69,7 @@ namespace WarehouseControlSystem
             await Navigation.PushAsync(new LocationCardPage(lvm));
         }
 
-        private async void AddZoneTaped()
+        private async Task AddZoneTaped()
         {
             Zone zone = new Zone();
             ZoneViewModel zvm = new ZoneViewModel(Navigation, zone);
@@ -78,7 +78,7 @@ namespace WarehouseControlSystem
             await Navigation.PushAsync(new ZoneCardPage(zvm));
         }
 
-        private async void AddRackTaped()
+        private async Task AddRackTaped()
         {
             Rack newrack = new Rack();
             newrack.Sections = Settings.DefaultRackSections;
