@@ -190,8 +190,8 @@ namespace WarehouseControlSystem.ViewModel
         public BinTemplateViewModel(INavigation navigation, BinTemplate bintemplate) : base(navigation)
         {
             FillFields(bintemplate);
-            OKCommand = new Command(async () => await OK());
-            CancelCommand = new Command(async () => await Cancel());
+            OKCommand = new Command(async () => await OK().ConfigureAwait(false));
+            CancelCommand = new Command(async () => await Cancel().ConfigureAwait(false));
             CancelChangesCommand = new Command(CancelChanges);
 
             BinTypes = new List<BinType>();
@@ -248,12 +248,12 @@ namespace WarehouseControlSystem.ViewModel
                 {
                     if (CreateMode)
                     {
-                        await NAV.CreateBinTemplate(BinTemplate, ACD.Default);
+                        await NAV.CreateBinTemplate(BinTemplate, ACD.Default).ConfigureAwait(true);
                         await Navigation.PopAsync();
                     }
                     else
                     {
-                        await NAV.ModifyBinTemplate(BinTemplate, ACD.Default);
+                        await NAV.ModifyBinTemplate(BinTemplate, ACD.Default).ConfigureAwait(true);
                         await Navigation.PopAsync();
                     }
                 }
@@ -286,12 +286,12 @@ namespace WarehouseControlSystem.ViewModel
             try
             {
                 State = ModelState.Loading;
-                await LoadBinTypesList();
-                await LoadLocationsList();
+                await LoadBinTypesList().ConfigureAwait(true);
+                await LoadLocationsList().ConfigureAwait(true);
 
                 if (LocationCode != "")
                 {
-                    await LoadZonesList();
+                    await LoadZonesList().ConfigureAwait(true);
                 }
             }
             catch (OperationCanceledException e)
@@ -373,7 +373,7 @@ namespace WarehouseControlSystem.ViewModel
                 ZoneCode = "";
                 try
                 {
-                    List<Zone> list = await NAV.GetZoneList(location.Code, "", false, 1, int.MaxValue, ACD.Default);
+                    List<Zone> list = await NAV.GetZoneList(location.Code, "", false, 1, int.MaxValue, ACD.Default).ConfigureAwait(true);
                     if (!IsDisposed)
                     {
                         if (list is List<Zone>)

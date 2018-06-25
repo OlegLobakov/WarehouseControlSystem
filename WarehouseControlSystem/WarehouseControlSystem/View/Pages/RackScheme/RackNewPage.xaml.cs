@@ -131,10 +131,10 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             await model.SetLocation((Location)picker.SelectedItem);
         }
 
-        private void PickerZone(object sender, EventArgs e)
+        private async void PickerZone(object sender, EventArgs e)
         {
             var picker = (Picker)sender;
-            model.SetZone((Zone)picker.SelectedItem);
+            await model.SetZone((Zone)picker.SelectedItem);
         }
 
         private void Slider_SectionsValueChanged(object sender, ValueChangedEventArgs e)

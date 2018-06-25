@@ -91,8 +91,8 @@ namespace WarehouseControlSystem.ViewModel
             SelectedViewModels = new ObservableCollection<RackViewModel>();
             UserDefinedSelectionViewModels = new ObservableCollection<UserDefinedSelectionViewModel>();
 
-            RackListCommand = new Command(async () => await RackList());
-            NewRackCommand = new Command(async () => await NewRack());
+            RackListCommand = new Command(async () => await RackList().ConfigureAwait(false));
+            NewRackCommand = new Command(async () => await NewRack().ConfigureAwait(false));
             EditRackCommand = new Command(EditRack);
             DeleteRackCommand = new Command(DeleteRack);
 
@@ -134,7 +134,7 @@ namespace WarehouseControlSystem.ViewModel
             try
             {
                 State = ModelState.Loading;
-                List<Rack> racks = await NAV.GetRackList(Zone.LocationCode, Zone.Code, true, 1, int.MaxValue, ACD.Default);
+                List<Rack> racks = await NAV.GetRackList(Zone.LocationCode, Zone.Code, true, 1, int.MaxValue, ACD.Default).ConfigureAwait(true);
                 if ((!IsDisposed) && (racks is List<Rack>))
                 {
                     if (racks.Count > 0)
@@ -185,7 +185,7 @@ namespace WarehouseControlSystem.ViewModel
             try
             {
                 UserDefinedSelectionViewModels.Clear();
-                List<UserDefinedSelection> list = await NAV.LoadUDS(Zone.LocationCode, Zone.Code, ACD.Default);
+                List<UserDefinedSelection> list = await NAV.LoadUDS(Zone.LocationCode, Zone.Code, ACD.Default).ConfigureAwait(true);
                 if (list is List<UserDefinedSelection>)
                 {
                     foreach (UserDefinedSelection uds in list)
@@ -363,7 +363,7 @@ namespace WarehouseControlSystem.ViewModel
             }
             Zone.PlanWidth = PlanWidth;
             Zone.PlanHeight = PlanHeight;
-            await NAV.ModifyZone(Zone, ACD.Default);
+            await NAV.ModifyZone(Zone, ACD.Default).ConfigureAwait(true);
         }
 
         public async Task SaveRacksChangesAsync()
@@ -378,7 +378,7 @@ namespace WarehouseControlSystem.ViewModel
             {
                 try
                 {
-                    await NAV.ModifyRack(rvm.Rack, ACD.Default);
+                    await NAV.ModifyRack(rvm.Rack, ACD.Default).ConfigureAwait(true);
                 }
                 catch (Exception e)
                 {

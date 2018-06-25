@@ -49,10 +49,10 @@ namespace WarehouseControlSystem.ViewModel
             ZoneViewModels = new ObservableCollection<ZoneViewModel>();
             SelectedViewModels = new ObservableCollection<ZoneViewModel>();
 
-            ListZonesCommand = new Command(async () => await ListZones());
-            NewZoneCommand = new Command(async () => await NewZone());
-            EditZoneCommand = new Command(async (x) => await EditZone(x));
-            DeleteZoneCommand = new Command(async (x) => await DeleteZone(x));
+            ListZonesCommand = new Command(async () => await ListZones().ConfigureAwait(false));
+            NewZoneCommand = new Command(async () => await NewZone().ConfigureAwait(false));
+            EditZoneCommand = new Command(async (x) => await EditZone(x).ConfigureAwait(false));
+            DeleteZoneCommand = new Command(async (x) => await DeleteZone(x).ConfigureAwait(false));
 
             IsEditMode = true;
             Title = AppResources.ZoneListPage_Title + " - " + location.Code;
@@ -286,7 +286,7 @@ namespace WarehouseControlSystem.ViewModel
             {
                 ZoneViewModel zvm = (ZoneViewModel)obj;
                 State = ModelState.Loading;
-                await NAV.DeleteZone(zvm.Zone, ACD.Default);
+                await NAV.DeleteZone(zvm.Zone, ACD.Default).ConfigureAwait(true);
                 ZoneViewModels.Remove(zvm);
             }
             catch (Exception e)
@@ -311,7 +311,7 @@ namespace WarehouseControlSystem.ViewModel
 
             Location.PlanWidth = PlanWidth;
             Location.PlanHeight = PlanHeight;
-            await NAV.ModifyLocation(Location, ACD.Default);
+            await NAV.ModifyLocation(Location, ACD.Default).ConfigureAwait(true);
         }
 
         public async Task SaveZonesChangesAsync()
@@ -326,7 +326,7 @@ namespace WarehouseControlSystem.ViewModel
             {
                 try
                 {
-                    await NAV.ModifyZone(zvm.Zone, ACD.Default);
+                    await NAV.ModifyZone(zvm.Zone, ACD.Default).ConfigureAwait(true);
                 }
                 catch (Exception e)
                 {

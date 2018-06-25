@@ -481,7 +481,7 @@ namespace WarehouseControlSystem.ViewModel
             BinsViewModel.ZoneCode = rack.ZoneCode;
             TapCommand = new Command<object>(Tap);
             FillFields(Rack);
-            CreateRackCommand = new Command(CreateRackInNAV);
+            CreateRackCommand = new Command(async () => await CreateRackInNAV().ConfigureAwait(true));
             State = ModelState.Undefined;
             Changed = false;
             GetSearchSelection();
@@ -588,7 +588,7 @@ namespace WarehouseControlSystem.ViewModel
                     }
                 }
 
-                await BinsViewModel.CheckBins(ACD);
+                await BinsViewModel.CheckBins(ACD).ConfigureAwait(true);
             }
         }
 
@@ -597,17 +597,17 @@ namespace WarehouseControlSystem.ViewModel
             IsBusy = true;
             try
             {
-                await LoadLocationsList();
-                await LoadBinTypesList();
-                await LoadWarehouseClassesList();
-                await LoadSpecialEquipmentsList();
+                await LoadLocationsList().ConfigureAwait(true);
+                await LoadBinTypesList().ConfigureAwait(true);
+                await LoadWarehouseClassesList().ConfigureAwait(true);
+                await LoadSpecialEquipmentsList().ConfigureAwait(true);
 
                 if (ZoneCode != "")
                 {
-                    await LoadZonesList();
+                    await LoadZonesList().ConfigureAwait(true);
                 }
 
-                await ReloadBinTemplates();
+                await ReloadBinTemplates().ConfigureAwait(true);
                 MessagingCenter.Send<RackViewModel>(this, "LocationsIsLoaded");
                 IsBusy = false;
             }
@@ -689,10 +689,10 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
-        public async void LoadBins()
+        public async Task LoadBins()
         {
             BinsViewModel.LinkToRackViewModel = this;
-            await BinsViewModel.LoadBins(ACD);
+            await BinsViewModel.LoadBins(ACD).ConfigureAwait(true);
         }
 
         public async Task SetLocation(Location location)
@@ -705,16 +705,16 @@ namespace WarehouseControlSystem.ViewModel
                 {
                     ZoneCode = "";
                     ZonesIsLoaded = false;
-                    List<Zone> zones = await NAV.GetZoneList(location.Code, "", false, 1, int.MaxValue, ACD.Default);
+                    List<Zone> zones = await NAV.GetZoneList(location.Code, "", false, 1, int.MaxValue, ACD.Default).ConfigureAwait(true);
                     Zones.Clear();
                     foreach (Zone zone in zones)
                     {
                         Zones.Add(zone);
                     }
                     ZonesIsLoaded = CanChangeLocationAndZone && zones.Count > 0;
-                    await ReloadBinTemplates();
+                    await ReloadBinTemplates().ConfigureAwait(true);
                     MessagingCenter.Send<RackViewModel>(this, "ZonesIsLoaded");
-                    await CheckNo();
+                    await CheckNo().ConfigureAwait(true);
                 }
                 catch (OperationCanceledException e)
                 {
@@ -728,13 +728,13 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
-        public async void SetZone(Zone zone)
+        public async Task SetZone(Zone zone)
         {
             if (CanChangeLocationAndZone)
             {
                 ZoneCode = zone.Code;
-                await CheckNo();
-                await ReloadBinTemplates();
+                await CheckNo().ConfigureAwait(true);
+                await ReloadBinTemplates().ConfigureAwait(true);
             }
         }
 
@@ -743,7 +743,7 @@ namespace WarehouseControlSystem.ViewModel
             BinTemplatesIsLoaded = false;
             try
             {
-                List<BinTemplate> bintemplates = await NAV.GetBinTemplateList(1, int.MaxValue, ACD.Default);
+                List<BinTemplate> bintemplates = await NAV.GetBinTemplateList(1, int.MaxValue, ACD.Default).ConfigureAwait(true);
                 if (!IsDisposed)
                 {
                     BinTemplates.Clear();
@@ -822,7 +822,7 @@ namespace WarehouseControlSystem.ViewModel
         public async Task LoadUDF()
         {
             BinsViewModel.LinkToRackViewModel = this;
-            await BinsViewModel.LoadUDF(ACD);
+            await BinsViewModel.LoadUDF(ACD).ConfigureAwait(true);
         }
 
         public void GetSearchText()
@@ -851,7 +851,7 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
-        public async void CreateRackInNAV()
+        public async Task CreateRackInNAV()
         {
             if (!CanSave())
             {
@@ -865,13 +865,13 @@ namespace WarehouseControlSystem.ViewModel
             try
             {
                 LoadingText = AppResources.RackNewPage_LoadingProgressRack + " " + newrack.No;
-                int rackexist = await NAV.GetRackCount(LocationCode, ZoneCode, No, false, ACD.Default);
+                int rackexist = await NAV.GetRackCount(LocationCode, ZoneCode, No, false, ACD.Default).ConfigureAwait(true);
                 if (rackexist > 0)
                 {
                     if (ConflictRackChange)
                     {
                         newrack.PrevNo = newrack.No;
-                        await NAV.ModifyRack(newrack, ACD.Default);
+                        await NAV.ModifyRack(newrack, ACD.Default).ConfigureAwait(true);
                     }
                     else
                     {
@@ -881,7 +881,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
                 else
                 {
-                    await NAV.CreateRack(newrack, ACD.Default);
+                    await NAV.CreateRack(newrack, ACD.Default).ConfigureAwait(true);
                 }
 
                 bool errorsexist = false;
@@ -892,14 +892,14 @@ namespace WarehouseControlSystem.ViewModel
                         bmv.SaveFields();
                         LoadingText = AppResources.RackNewPage_LoadingProgressBin + " " + bmv.Bin.Code;
 
-                        int binexist = await NAV.GetBinCount(LocationCode, "", "", bmv.Bin.Code, ACD.Default);
+                        int binexist = await NAV.GetBinCount(LocationCode, "", "", bmv.Bin.Code, ACD.Default).ConfigureAwait(true);
                         if (binexist > 0)
                         {
                             if (ConflictBinChange)
                             {
                                 LoadingText = AppResources.RackNewPage_LoadingProgressModifyBin + " " + bmv.Bin.Code;
                                 bmv.Bin.PrevCode = bmv.Bin.Code;
-                                await NAV.ModifyBin(bmv.Bin, ACD.Default);
+                                await NAV.ModifyBin(bmv.Bin, ACD.Default).ConfigureAwait(true);
                             }
                             else
                             {
@@ -909,7 +909,7 @@ namespace WarehouseControlSystem.ViewModel
                         else
                         {
                             LoadingText = AppResources.RackNewPage_LoadingProgressBin + " " + bmv.Bin.Code;
-                            await NAV.CreateBin(BinsViewModel.BinTemplate, bmv.Bin, ACD.Default);
+                            await NAV.CreateBin(BinsViewModel.BinTemplate, bmv.Bin, ACD.Default).ConfigureAwait(true);
                         }
                     }
                     catch (Exception e)
@@ -969,7 +969,7 @@ namespace WarehouseControlSystem.ViewModel
         #region User Defined Functions
         UserDefinedFunctionViewModel udfvmselected;
 
-        public async void RunUserDefineFunction(UserDefinedFunctionViewModel udfvm)
+        public async Task RunUserDefineFunction(UserDefinedFunctionViewModel udfvm)
         {
             udfvmselected = udfvm;
             if (!string.IsNullOrEmpty(udfvm.Confirm))
@@ -979,13 +979,14 @@ namespace WarehouseControlSystem.ViewModel
             }
             else
             {
-                await RunUDF();
+                await RunUDF().ConfigureAwait(true);
             }
         }
-        public async void RunUserDefineFunctionOK()
+        public async Task RunUserDefineFunctionOK()
         {
-            await RunUDF();
+            await RunUDF().ConfigureAwait(true);
         }
+
         public void RunUserDefineFunctionCancel()
         {
             State = ModelState.Normal;

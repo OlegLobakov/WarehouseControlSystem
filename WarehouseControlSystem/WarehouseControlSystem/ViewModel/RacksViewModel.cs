@@ -45,7 +45,7 @@ namespace WarehouseControlSystem.ViewModel
             try
             {
                 State = ModelState.Loading;
-                List<Rack> racks = await NAV.GetRackList(Zone.LocationCode, Zone.Code, false, 1, int.MaxValue, ACD.Default);
+                List<Rack> racks = await NAV.GetRackList(Zone.LocationCode, Zone.Code, false, 1, int.MaxValue, ACD.Default).ConfigureAwait(true);
                 if ((!IsDisposed) && (racks is List<Rack>))
                 {
                     if (racks.Count > 0)

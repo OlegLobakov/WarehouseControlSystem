@@ -650,7 +650,7 @@ namespace WarehouseControlSystem.ViewModel
                 foreach (BinViewModel bvm in list)
                 {
                     bvm.IsChecked = false;
-                    List<Bin> binsexist = await NAV.GetBinList(LocationCode, "", "", bvm.Code, 1, int.MaxValue, ACD.Default);
+                    List<Bin> binsexist = await NAV.GetBinList(LocationCode, "", "", bvm.Code, 1, int.MaxValue, ACD.Default).ConfigureAwait(true);
                     if (binsexist.Count > 0)
                     {
                         bvm.IsExist = true;

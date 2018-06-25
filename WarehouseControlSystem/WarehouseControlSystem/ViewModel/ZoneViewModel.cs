@@ -207,8 +207,8 @@ namespace WarehouseControlSystem.ViewModel
             EditMode = SchemeElementEditMode.None;
             TapCommand = new Command<object>(Tap);
 
-            OKCommand = new Command(async () => await OK());
-            CancelCommand = new Command(async () => await Cancel());
+            OKCommand = new Command(async () => await OK().ConfigureAwait(false));
+            CancelCommand = new Command(async () => await Cancel().ConfigureAwait(false));
             CancelChangesCommand = new Command(CancelChanges);
 
             State = ModelState.Undefined;
@@ -270,7 +270,7 @@ namespace WarehouseControlSystem.ViewModel
                 try
                 {
                     IsBeenSavingToNAV = true;
-                    await NAV.CreateZone(Zone, ACD.Default);
+                    await NAV.CreateZone(Zone, ACD.Default).ConfigureAwait(true);
                     await Navigation.PopAsync();
                 }
                 catch (Exception e)
@@ -289,7 +289,7 @@ namespace WarehouseControlSystem.ViewModel
                 try
                 {
                     IsBeenSavingToNAV = true;
-                    await NAV.ModifyZone(Zone, ACD.Default);
+                    await NAV.ModifyZone(Zone, ACD.Default).ConfigureAwait(true);
                     await Navigation.PopAsync();
                 }
                 catch (Exception e)
@@ -322,7 +322,7 @@ namespace WarehouseControlSystem.ViewModel
                 CodeWarningText = "";
                 if ((LocationCode != "") && (Code != ""))
                 {
-                    int exist = await NAV.GetZoneCount(LocationCode, Code, false, ACD.Default);
+                    int exist = await NAV.GetZoneCount(LocationCode, Code, false, ACD.Default).ConfigureAwait(true);
                     if (exist > 0)
                     {
                         CodeWarningText = AppResources.NewZonePage_CodeAlreadyExist;
@@ -343,7 +343,7 @@ namespace WarehouseControlSystem.ViewModel
                 if (CanChangeLocationCode)
                 {
                     LocationsIsBeingLoaded = true;
-                    List<Location> locations = await NAV.GetLocationList("", false, 1, int.MaxValue, ACD.Default);
+                    List<Location> locations = await NAV.GetLocationList("", false, 1, int.MaxValue, ACD.Default).ConfigureAwait(true);
                     Locations.Clear();
                     foreach (Location location in locations)
                     {
@@ -354,7 +354,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
 
                 BinTypesIsBeingLoaded = true;
-                List<BinType> bintypes = await NAV.GetBinTypeList(1, int.MaxValue, ACD.Default);
+                List<BinType> bintypes = await NAV.GetBinTypeList(1, int.MaxValue, ACD.Default).ConfigureAwait(true);
                 BinTypes.Clear();
                 foreach (BinType bt in bintypes)
                 {
@@ -393,7 +393,7 @@ namespace WarehouseControlSystem.ViewModel
             RacksIsBeingLoaded = true;
             try
             {
-                List<Rack> racks = await NAV.GetRackList(LocationCode, Code, true, 1, int.MaxValue, ACD.Default);
+                List<Rack> racks = await NAV.GetRackList(LocationCode, Code, true, 1, int.MaxValue, ACD.Default).ConfigureAwait(true);
                 if (!IsDisposed)
                 {
                     SubSchemeElements.Clear();

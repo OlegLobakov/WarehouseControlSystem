@@ -45,10 +45,10 @@ namespace WarehouseControlSystem.ViewModel
 
         public LocationsPlanViewModel(INavigation navigation) : base(navigation)
         {
-            ListLocationsCommand = new Command(async () => await ListLocations());
-            NewLocationCommand = new Command(async () => await NewLocation());
-            EditLocationCommand = new Command(async (x) => await EditLocation(x));
-            DeleteLocationCommand = new Command(async (x) => await DeleteLocation(x));
+            ListLocationsCommand = new Command(async () => await ListLocations().ConfigureAwait(false));
+            NewLocationCommand = new Command(async () => await NewLocation().ConfigureAwait(false));
+            EditLocationCommand = new Command(async (x) => await EditLocation(x).ConfigureAwait(false));
+            DeleteLocationCommand = new Command(async (x) => await DeleteLocation(x).ConfigureAwait(false));
 
             IsEditMode = true;
             Title = AppResources.LocationsSchemePage_Title;
@@ -292,7 +292,7 @@ namespace WarehouseControlSystem.ViewModel
             {
                 LocationViewModel lvm = (LocationViewModel)obj;
                 State = ModelState.Loading;
-                await NAV.DeleteLocation(lvm.Location.Code, ACD.Default);
+                await NAV.DeleteLocation(lvm.Location.Code, ACD.Default).ConfigureAwait(true);
                 LocationViewModels.Remove(lvm);
             }
             catch (Exception e)
@@ -321,7 +321,7 @@ namespace WarehouseControlSystem.ViewModel
             {
                 try
                 {
-                    await NAV.ModifyLocation(lvm.Location, ACD.Default);
+                    await NAV.ModifyLocation(lvm.Location, ACD.Default).ConfigureAwait(true);
                 }
                 catch (Exception e)
                 {
@@ -341,8 +341,8 @@ namespace WarehouseControlSystem.ViewModel
 
             try
             {
-                await NAV.SetPlanWidth(PlanWidth, ACD.Default);
-                await NAV.SetPlanHeight(PlanHeight, ACD.Default);
+                await NAV.SetPlanWidth(PlanWidth, ACD.Default).ConfigureAwait(true);
+                await NAV.SetPlanHeight(PlanHeight, ACD.Default).ConfigureAwait(true);
             }
             catch (Exception e)
             {

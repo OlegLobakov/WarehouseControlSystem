@@ -41,8 +41,8 @@ namespace WarehouseControlSystem.ViewModel
         public BinTemplatesViewModel(INavigation navigation) : base(navigation)
         {
             BinTemplates = new ObservableCollection<BinTemplateViewModel>();
-            NewCommand = new Command(async () => await NewTemplate());
-            DeleteCommand = new Command<object>(async (x) => await DeleteTemplate(x));
+            NewCommand = new Command(async () => await NewTemplate().ConfigureAwait(false));
+            DeleteCommand = new Command<object>(async (x) => await DeleteTemplate(x).ConfigureAwait(false));
             EditCommand = new Command<object>(EditTemplate);
             CopyCommand = new Command<object>(CopyTemplate);
             State = ModelState.Undefined;

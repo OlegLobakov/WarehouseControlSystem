@@ -22,6 +22,7 @@ using WarehouseControlSystem.Helpers.NAV;
 using System.Threading;
 using WarehouseControlSystem.View.Pages.Find;
 using WarehouseControlSystem.ViewModel.Base;
+using System.Threading.Tasks;
 
 namespace WarehouseControlSystem.View.Pages.RackScheme
 {
@@ -44,7 +45,7 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             
             model.State = ModelState.Loading;
             model.LoadingText = AppResources.RackCardPage_LoadingText;           
-            model.LoadBins();
+            await model.LoadBins();
             await model.LoadUDF();
         }
 
@@ -67,14 +68,14 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             Global.CompliantPlug = bcsvm.ToString();
         }
 
-        public void UserDefinedFunctionTap(UserDefinedFunctionViewModel udfvm)
+        public async Task UserDefinedFunctionTap(UserDefinedFunctionViewModel udfvm)
         {
-            model.RunUserDefineFunction(udfvm);
+            await model.RunUserDefineFunction(udfvm);
         }
 
-        private void Button_Clicked_OkMessage(object sender, EventArgs e)
+        private async void Button_Clicked_OkMessage(object sender, EventArgs e)
         {
-            model.RunUserDefineFunctionOK();
+            await model.RunUserDefineFunctionOK();
         }
 
         private void Button_Clicked_CancelMessage(object sender, EventArgs e)
