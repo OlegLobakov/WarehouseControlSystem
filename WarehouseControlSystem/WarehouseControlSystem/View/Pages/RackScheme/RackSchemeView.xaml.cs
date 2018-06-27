@@ -82,23 +82,7 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
                     }
                 }
 
-                switch (model.RackOrientation)
-                {
-                    case RackOrientationEnum.HorizontalLeft:
-                        grid.Children.Add(label1, i, 0);
-                        break;
-                    case RackOrientationEnum.HorizontalRight:
-                        grid.Children.Add(label1, i - 1, 0);
-                        break;
-                    case RackOrientationEnum.VerticalUp:
-                        grid.Children.Add(label1, 0, i);
-                        break;
-                    case RackOrientationEnum.VerticalDown:
-                        grid.Children.Add(label1, 0, i - 1);
-                        break;
-                    default:
-                        throw new InvalidOperationException("Impossible value");
-                }
+                AddToGrid(model, label1, i);
                 udslabels.Add(label1);
             }
 
@@ -200,21 +184,25 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
                     }
                 }
 
-                switch (model.RackOrientation)
-                {
-                    case RackOrientationEnum.HorizontalLeft:
-                        grid.Children.Add(label1, i, 0);
-                        break;
-                    case RackOrientationEnum.HorizontalRight:
-                        grid.Children.Add(label1, i - 1, 0);
-                        break;
-                    case RackOrientationEnum.VerticalUp:
-                        grid.Children.Add(label1, 0, i);
-                        break;
-                    case RackOrientationEnum.VerticalDown:
-                        grid.Children.Add(label1, 0, i - 1);
-                        break;
-                }
+                AddToGrid(model, label1, i);
+            }
+        }
+        private void AddToGrid(RackViewModel model, Label label1, int i)
+        {
+            switch (model.RackOrientation)
+            {
+                case RackOrientationEnum.HorizontalLeft:
+                    grid.Children.Add(label1, i, 0);
+                    break;
+                case RackOrientationEnum.HorizontalRight:
+                    grid.Children.Add(label1, i - 1, 0);
+                    break;
+                case RackOrientationEnum.VerticalUp:
+                    grid.Children.Add(label1, 0, i);
+                    break;
+                case RackOrientationEnum.VerticalDown:
+                    grid.Children.Add(label1, 0, i - 1);
+                    break;
             }
         }
 

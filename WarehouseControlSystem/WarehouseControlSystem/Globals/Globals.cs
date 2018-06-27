@@ -72,6 +72,14 @@ namespace WarehouseControlSystem
                 Color = whitecolor
             });
 
+            SetDefaultBlueColors();
+            SetDefaultGreenColors();
+            SetDefaultRedColors();
+            SetDefaultGrayColors();
+        }
+
+        private static void SetDefaultBlueColors()
+        {
             Colors.Add(new ColorPick
             {
                 HexColor = "#4775a3",
@@ -85,7 +93,9 @@ namespace WarehouseControlSystem
                 Name = AppResources.NewZonePage_Color_BlueLight,
                 Color = Color.FromHex("#84a3c1")
             });
-
+        }
+        private static void SetDefaultGreenColors()
+        {
             Colors.Add(new ColorPick
             {
                 HexColor = "#4d7326",
@@ -99,7 +109,9 @@ namespace WarehouseControlSystem
                 Name = AppResources.NewZonePage_Color_Green_Light,
                 Color = Color.FromHex("#73ac39")
             });
-
+        }
+        private static void SetDefaultRedColors()
+        {
             Colors.Add(new ColorPick
             {
                 HexColor = "#b41848",
@@ -113,7 +125,10 @@ namespace WarehouseControlSystem
                 Name = AppResources.NewZonePage_Color_RedLight,
                 Color = Color.FromHex("#c3466c")
             });
+        }
 
+        private static void SetDefaultGrayColors()
+        {
             Colors.Add(new ColorPick
             {
                 HexColor = "#808080",

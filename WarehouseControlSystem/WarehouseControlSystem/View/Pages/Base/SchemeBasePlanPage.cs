@@ -21,15 +21,16 @@ namespace WarehouseControlSystem.View.Pages.Base
         readonly Easing easing1 = Easing.Linear;
         readonly Easing easingParcking = Easing.CubicInOut;
 
-        double x = 0, y = 0;
+        double x;
+        double y;
 
         double leftborder = double.MaxValue;
         double topborder = double.MaxValue;
         double rightborder = double.MinValue;
         double bottomborder = double.MinValue;
 
-        double oldeTotalX = 0;
-        double oldeTotalY = 0;
+        double oldeTotalX;
+        double oldeTotalY;
 
         protected TapGestureRecognizer TapGesture;
         protected PanGestureRecognizer PanGesture;
@@ -97,36 +98,7 @@ namespace WarehouseControlSystem.View.Pages.Base
                         y = 0;
                         oldeTotalX = 0;
                         oldeTotalY = 0;
-
-                        foreach (SchemeBaseView lv in SelectedViews)
-                        {
-                            if (lv.Model.EditMode == SchemeElementEditMode.Move)
-                            {
-                                double newX = lv.X + lv.TranslationX;
-                                double newY = lv.Y + lv.TranslationY;
-
-                                lv.Model.Left = (int)Math.Round(newX / BaseModel.WidthStep);
-                                lv.Model.Top = (int)Math.Round(newY / BaseModel.HeightStep);
-
-                                double dX = lv.Model.Left * BaseModel.WidthStep - lv.X;
-                                double dY = lv.Model.Top * BaseModel.HeightStep - lv.Y;
-
-                                await lv.TranslateTo(dX, dY, 500, easingParcking);
-                                AbsoluteLayout.SetLayoutBounds(lv, new Rectangle(lv.X + dX, lv.Y + dY, lv.Width, lv.Height));
-                                lv.TranslationX = 0;
-                                lv.TranslationY = 0;
-                            }
-                            if (lv.Model.EditMode == SchemeElementEditMode.Resize)
-                            {
-                                lv.Model.Width = (int)Math.Round(lv.Width / BaseModel.WidthStep);
-                                lv.Model.Height = (int)Math.Round(lv.Height / BaseModel.HeightStep);
-                                double newWidth = lv.Model.Width * BaseModel.WidthStep;
-                                double newheight = lv.Model.Height * BaseModel.HeightStep;
-                                AbsoluteLayout.SetLayoutBounds(lv, new Rectangle(lv.X, lv.Y, newWidth, newheight));
-                            }
-                            lv.Opacity = 1;
-                        }
-
+                        await EndMove();
                         BaseModel.SaveChangesAsync();
                         MovingAction = MovingActionTypeEnum.None;
                         break;
@@ -205,6 +177,39 @@ namespace WarehouseControlSystem.View.Pages.Base
                 {
                     AbsoluteLayout.SetLayoutBounds(lv, new Rectangle(lv.X, lv.Y, lv.Model.PrevViewWidth + dx, lv.Model.PrevViewHeight + dy));
                 }
+            }
+        }
+
+        private async Task EndMove()
+        {
+            foreach (SchemeBaseView lv in SelectedViews)
+            {
+                if (lv.Model.EditMode == SchemeElementEditMode.Move)
+                {
+                    double newX = lv.X + lv.TranslationX;
+                    double newY = lv.Y + lv.TranslationY;
+
+                    lv.Model.Left = (int)Math.Round(newX / BaseModel.WidthStep);
+                    lv.Model.Top = (int)Math.Round(newY / BaseModel.HeightStep);
+
+                    double dX = lv.Model.Left * BaseModel.WidthStep - lv.X;
+                    double dY = lv.Model.Top * BaseModel.HeightStep - lv.Y;
+
+                    await lv.TranslateTo(dX, dY, 500, easingParcking);
+                    AbsoluteLayout.SetLayoutBounds(lv, new Rectangle(lv.X + dX, lv.Y + dY, lv.Width, lv.Height));
+                    lv.TranslationX = 0;
+                    lv.TranslationY = 0;
+                }
+
+                if (lv.Model.EditMode == SchemeElementEditMode.Resize)
+                {
+                    lv.Model.Width = (int)Math.Round(lv.Width / BaseModel.WidthStep);
+                    lv.Model.Height = (int)Math.Round(lv.Height / BaseModel.HeightStep);
+                    double newWidth = lv.Model.Width * BaseModel.WidthStep;
+                    double newheight = lv.Model.Height * BaseModel.HeightStep;
+                    AbsoluteLayout.SetLayoutBounds(lv, new Rectangle(lv.X, lv.Y, newWidth, newheight));
+                }
+                lv.Opacity = 1;
             }
         }
 

@@ -69,7 +69,6 @@ namespace WarehouseControlSystem.ViewModel
                 State = ModelState.Error;
                 ErrorText = AppResources.Error_LoadRacksList;
             }
-
         }
 
         private void FillModel(List<Rack> racks)

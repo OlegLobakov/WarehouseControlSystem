@@ -545,32 +545,9 @@ namespace WarehouseControlSystem.ViewModel
             List<BinViewModel> selectedlist = BinViewModels.FindAll(x => x.Selected == true);
             if (selectedlist.Count > 1)
             {
-                int leftsection = int.MaxValue;
-                int leftlevel = int.MaxValue;
-                int rightsection = 0;
-                int rightlevel = 0;
-                foreach (BinViewModel bvm1 in selectedlist)
-                {
-                    combinedrackno1 = bvm1.Code;
-                    if (bvm1.Section < leftsection)
-                    {
-                        leftsection = bvm1.Section;
-                    }
-                    if (bvm1.Level < leftlevel)
-                    {
-                        leftlevel = bvm1.Level;
-                    }
-                    if (bvm1.Section > rightsection + bvm1.SectionSpan - 1)
-                    {
-                        rightsection = bvm1.Section + bvm1.SectionSpan - 1;
-                    }
-                    if (bvm1.Level > rightlevel + bvm1.LevelSpan - 1)
-                    {
-                        rightlevel = bvm1.Level + bvm1.LevelSpan - 1;
-                    }
-                }
+                DefineBordersOfCombine(selectedlist);
 
-                List<BinViewModel> deleted =
+                List<BinViewModel> fordelete =
                     BinViewModels.FindAll(x =>
                         x.Section >= leftsection &&
                         x.Section <= rightsection &&
@@ -580,6 +557,7 @@ namespace WarehouseControlSystem.ViewModel
                 BinViewModel firstbvm = BinViewModels.Find(x =>
                         x.Section >= leftsection &&
                         x.Level >= leftlevel);
+
                 if (firstbvm is BinViewModel)
                 {
                     combinedrackno1 = firstbvm.Code;
@@ -587,10 +565,7 @@ namespace WarehouseControlSystem.ViewModel
                     rackno1 = firstbvm.RackNo;
                 }
 
-                foreach (BinViewModel bvm2 in deleted)
-                {
-                    DeleteBin(bvm2);
-                }
+                DeleteSelected(fordelete);
 
                 Bin newbin = new Bin()
                 {
@@ -611,6 +586,42 @@ namespace WarehouseControlSystem.ViewModel
             }
             UnSelect();
             MessagingCenter.Send(this, "Update");
+        }
+
+        int leftsection = int.MaxValue;
+        int leftlevel = int.MaxValue;
+        int rightsection = 0;
+        int rightlevel = 0;
+
+        private void DefineBordersOfCombine(List<BinViewModel> selectedlist)
+        {
+            foreach (BinViewModel bvm1 in selectedlist)
+            {
+                if (bvm1.Section < leftsection)
+                {
+                    leftsection = bvm1.Section;
+                }
+                if (bvm1.Level < leftlevel)
+                {
+                    leftlevel = bvm1.Level;
+                }
+                if (bvm1.Section > rightsection + bvm1.SectionSpan - 1)
+                {
+                    rightsection = bvm1.Section + bvm1.SectionSpan - 1;
+                }
+                if (bvm1.Level > rightlevel + bvm1.LevelSpan - 1)
+                {
+                    rightlevel = bvm1.Level + bvm1.LevelSpan - 1;
+                }
+            }
+        }
+
+        private void DeleteSelected(List<BinViewModel> list)
+        {
+            foreach (BinViewModel bvm2 in list)
+            {
+                DeleteBin(bvm2);
+            }
         }
 
         public void DeleteBins()

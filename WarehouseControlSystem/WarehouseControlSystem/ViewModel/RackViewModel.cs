@@ -890,32 +890,11 @@ namespace WarehouseControlSystem.ViewModel
                 }
 
                 bool errorsexist = false;
-                foreach (BinViewModel bmv in BinsViewModel.BinViewModels)
+                foreach (BinViewModel bvm in BinsViewModel.BinViewModels)
                 {
                     try
                     {
-                        bmv.SaveFields();
-                        LoadingText = AppResources.RackNewPage_LoadingProgressBin + " " + bmv.Bin.Code;
-
-                        int binexist = await NAV.GetBinCount(LocationCode, "", "", bmv.Bin.Code, ACD.Default).ConfigureAwait(true);
-                        if (binexist > 0)
-                        {
-                            if (ConflictBinChange)
-                            {
-                                LoadingText = AppResources.RackNewPage_LoadingProgressModifyBin + " " + bmv.Bin.Code;
-                                bmv.Bin.PrevCode = bmv.Bin.Code;
-                                await NAV.ModifyBin(bmv.Bin, ACD.Default).ConfigureAwait(true);
-                            }
-                            else
-                            {
-                                //skip
-                            }
-                        }
-                        else
-                        {
-                            LoadingText = AppResources.RackNewPage_LoadingProgressBin + " " + bmv.Bin.Code;
-                            await NAV.CreateBin(BinsViewModel.BinTemplate, bmv.Bin, ACD.Default).ConfigureAwait(true);
-                        }
+                        await SaveBin(bvm).ConfigureAwait(true);
                     }
                     catch (Exception e)
                     {
@@ -924,6 +903,7 @@ namespace WarehouseControlSystem.ViewModel
                         ErrorText += e.Message;
                     }
                 }
+
                 SaveFields(Rack);
                 LoadAnimation = false;
                 if (errorsexist)
@@ -942,6 +922,35 @@ namespace WarehouseControlSystem.ViewModel
                 LoadAnimation = false;
                 State = ModelState.Error;
                 ErrorText = e.Message;
+            }
+        }
+
+        private async Task SaveBin(BinViewModel bmv)
+        {
+            try
+            {
+                bmv.SaveFields();
+                LoadingText = AppResources.RackNewPage_LoadingProgressBin + " " + bmv.Bin.Code;
+
+                int binexist = await NAV.GetBinCount(LocationCode, "", "", bmv.Bin.Code, ACD.Default).ConfigureAwait(true);
+                if (binexist > 0)
+                {
+                    if (ConflictBinChange)
+                    {
+                        LoadingText = AppResources.RackNewPage_LoadingProgressModifyBin + " " + bmv.Bin.Code;
+                        bmv.Bin.PrevCode = bmv.Bin.Code;
+                        await NAV.ModifyBin(bmv.Bin, ACD.Default).ConfigureAwait(true);
+                    }
+                }
+                else
+                {
+                    LoadingText = AppResources.RackNewPage_LoadingProgressBin + " " + bmv.Bin.Code;
+                    await NAV.CreateBin(BinsViewModel.BinTemplate, bmv.Bin, ACD.Default).ConfigureAwait(true);
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
             }
         }
 
