@@ -48,15 +48,7 @@ namespace WarehouseControlSystem.ViewModel
                 List<Location> list = await NAV.GetLocationList("", false, 1, int.MaxValue, ACD.Default).ConfigureAwait(true);
                 if ((!IsDisposed) && (list is List<Location>))
                 {
-                    if (list.Count > 0)
-                    {
-                        FillModel(list);
-                    }
-                    else
-                    {
-                        State = ModelState.Error;
-                        ErrorText = "No Data";
-                    }
+                    FillModel(list);
                 }
             }
             catch (OperationCanceledException e)
@@ -75,13 +67,21 @@ namespace WarehouseControlSystem.ViewModel
 
         private void FillModel(List<Location> list)
         {
-            ClearAll();
-            foreach (Location location in list)
+            if (list.Count > 0)
             {
-                LocationViewModel lvm = new LocationViewModel(Navigation, location);
-                LocationViewModels.Add(lvm);
+                ClearAll();
+                foreach (Location location in list)
+                {
+                    LocationViewModel lvm = new LocationViewModel(Navigation, location);
+                    LocationViewModels.Add(lvm);
+                }
+                State = ModelState.Normal;
             }
-            State = ModelState.Normal;
+            else
+            {
+                State = ModelState.Error;
+                ErrorText = "No Data";
+            }
         }
     }
 }

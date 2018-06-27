@@ -19,65 +19,9 @@ using Xamarin.Forms;
 
 namespace WarehouseControlSystem.ViewModel
 {
-    public class BinContentShortViewModel : BaseViewModel
+    public class BinContentShortViewModel : NAVEntryBaseViewModel
     {
         BinContent BinContent;
-        public string ItemNo
-        {
-            get { return itemno; }
-            set
-            {
-                if (itemno != value)
-                {
-                    itemno = value;
-                    OnPropertyChanged(nameof(ItemNo));
-                }
-            }
-        }
-        string itemno;
-
-        public string Description 
-        {
-            get { return description; }
-            set
-            {
-                if (description != value)
-                {
-                    description = value;
-                    OnPropertyChanged(nameof(Description));
-                }
-            }
-        }
-        string description;
-
-        public decimal Quantity
-        {
-            get { return quantity; }
-            set
-            {
-                if (quantity != value)
-                {
-                    quantity = value;
-                    OnPropertyChanged(nameof(Quantity));
-                }
-            }
-        }
-        decimal quantity;
-
-        public decimal QuantityBase
-        {
-            get { return quantitybase; }
-            set
-            {
-                if (quantitybase != value)
-                {
-                    quantitybase = value;
-                    OnPropertyChanged(nameof(QuantityBase));
-                }
-            }
-        }
-        decimal quantitybase;
-
 
         public BinContentShortViewModel(INavigation navigation, BinContent bc) : base(navigation)
         {
@@ -85,6 +29,7 @@ namespace WarehouseControlSystem.ViewModel
             FillFields(bc);
             State = ModelState.Undefined;
         }
+
         public void FillFields(BinContent bc)
         {
             ItemNo = bc.ItemNo;

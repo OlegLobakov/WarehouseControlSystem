@@ -78,18 +78,10 @@ namespace WarehouseControlSystem.ViewModel
                 PlanWidth = await NAV.GetPlanWidth(ACD.Default).ConfigureAwait(true);
                 PlanHeight = await NAV.GetPlanHeight(ACD.Default).ConfigureAwait(true);
                 CheckPlanSizes();
-                List<Location> list = await NAV.GetLocationList("", true, 1, int.MaxValue, ACD.Default).ConfigureAwait(true); 
+                List<Location> list = await NAV.GetLocationList("", true, 1, int.MaxValue, ACD.Default).ConfigureAwait(true);
                 if ((list is List<Location>) && (!IsDisposed))
                 {
-                    if (list.Count > 0)
-                    {
-                        FillModel(list);
-                    }
-                    else
-                    {
-                        State = ModelState.Error;
-                        ErrorText = "No Data";
-                    }
+                    FillModel(list);
                 }
             }
             catch (OperationCanceledException e)
@@ -113,17 +105,25 @@ namespace WarehouseControlSystem.ViewModel
 
         private void FillModel(List<Location> list)
         {
-            ClearAll();
-            foreach (Location location in list)
+            if (list.Count > 0)
             {
-                SetDefaultSizes(location);
-                LocationViewModel lvm = new LocationViewModel(Navigation, location);
-                lvm.OnTap += Lvm_OnTap;
-                LocationViewModels.Add(lvm);
+                ClearAll();
+                foreach (Location location in list)
+                {
+                    SetDefaultSizes(location);
+                    LocationViewModel lvm = new LocationViewModel(Navigation, location);
+                    lvm.OnTap += Lvm_OnTap;
+                    LocationViewModels.Add(lvm);
+                }
+                State = ModelState.Normal;
+                UpdateMinSizes();
+                Rebuild(true);
             }
-            State = ModelState.Normal;
-            UpdateMinSizes();
-            Rebuild(true);
+            else
+            {
+                State = ModelState.Error;
+                ErrorText = "No Data";
+            }
         }
 
         private void SetDefaultSizes(Location location)

@@ -57,6 +57,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } string address1;
+
         public bool SchemeVisible
         {
             get { return schemevisible; }
@@ -66,7 +67,7 @@ namespace WarehouseControlSystem.ViewModel
                 {
                     schemevisible = value;
                     Changed = true;
-                    SaveToNAVSchemeVisible();
+                    SaveToLocationSchemeVisible();
                     OnPropertyChanged(nameof(SchemeVisible));
                 }
             }
@@ -319,7 +320,7 @@ namespace WarehouseControlSystem.ViewModel
             FillFields(Location);
         }
 
-        public async void SaveToNAVSchemeVisible()
+        public async void SaveToLocationSchemeVisible()
         {
             if (IsSaveToNAVEnabled)
             {

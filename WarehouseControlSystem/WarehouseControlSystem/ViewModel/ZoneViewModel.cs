@@ -71,7 +71,7 @@ namespace WarehouseControlSystem.ViewModel
                 {
                     schemevisible = value;
                     Changed = true;
-                    SaveToNAVSchemeVisible();
+                    SaveToZoneSchemeVisible();
                     OnPropertyChanged(nameof(SchemeVisible));
                 }
             }
@@ -451,7 +451,7 @@ namespace WarehouseControlSystem.ViewModel
             };
         }
 
-        private async Task SaveToNAVSchemeVisible()
+        private async Task SaveToZoneSchemeVisible()
         {
             if (IsSaveToNAVEnabled)
             {

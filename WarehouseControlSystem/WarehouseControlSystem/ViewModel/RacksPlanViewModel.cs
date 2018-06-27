@@ -133,20 +133,8 @@ namespace WarehouseControlSystem.ViewModel
                 List<Rack> racks = await NAV.GetRackList(Zone.LocationCode, Zone.Code, true, 1, int.MaxValue, ACD.Default).ConfigureAwait(true);
                 if ((!IsDisposed) && (racks is List<Rack>))
                 {
-                    if (racks.Count > 0)
-                    {
-                        FillModel(racks);
-                    }
-                    else
-                    {
-                        State = ModelState.Error;
-                        ErrorText = "No Data";
-                    }
+                    FillModel(racks);
                 }
-            }
-            catch (OperationCanceledException e)
-            {
-                System.Diagnostics.Debug.WriteLine(e.Message);
             }
             catch (Exception e)
             {
@@ -158,16 +146,24 @@ namespace WarehouseControlSystem.ViewModel
 
         private void FillModel(List<Rack> racks)
         {
-            RackViewModels.Clear();
-            State = ModelState.Normal;
-            foreach (Rack rack in racks)
+            if (racks.Count > 0)
             {
-                RackViewModel rvm = new RackViewModel(Navigation, rack, false);
-                rvm.OnTap += Rvm_OnTap;
-                RackViewModels.Add(rvm);
+                RackViewModels.Clear();
+                State = ModelState.Normal;
+                foreach (Rack rack in racks)
+                {
+                    RackViewModel rvm = new RackViewModel(Navigation, rack, false);
+                    rvm.OnTap += Rvm_OnTap;
+                    RackViewModels.Add(rvm);
+                }
+                UpdateMinSizes();
+                Rebuild(true);
             }
-            UpdateMinSizes();
-            Rebuild(true);
+            else
+            {
+                State = ModelState.Error;
+                ErrorText = "No Data";
+            }
         }
 
         public async Task LoadUDS()

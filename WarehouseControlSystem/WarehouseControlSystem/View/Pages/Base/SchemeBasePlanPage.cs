@@ -98,7 +98,7 @@ namespace WarehouseControlSystem.View.Pages.Base
                         y = 0;
                         oldeTotalX = 0;
                         oldeTotalY = 0;
-                        await EndMove();
+                        await EndMove().ConfigureAwait(true);
                         BaseModel.SaveChangesAsync();
                         MovingAction = MovingActionTypeEnum.None;
                         break;

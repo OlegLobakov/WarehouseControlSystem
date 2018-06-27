@@ -46,15 +46,7 @@ namespace WarehouseControlSystem.ViewModel
                 List<Zone> zones = await NAV.GetZoneList(Location.Code, "", false, 1, int.MaxValue, ACD.Default);
                 if (zones is List<Zone>)
                 {
-                    if (zones.Count > 0)
-                    {
-                        FillModel(zones);
-                    }
-                    else
-                    {
-                        State = ModelState.Error;
-                        ErrorText = "No Data";
-                    }
+                    FillModel(zones);
                 }
             }
             catch (OperationCanceledException e)
@@ -70,13 +62,21 @@ namespace WarehouseControlSystem.ViewModel
 
         private void FillModel(List<Zone> zones)
         {
-            ClearAll();
-            foreach (Zone zone in zones)
+            if (zones.Count > 0)
             {
-                ZoneViewModel zvm = new ZoneViewModel(Navigation, zone);
-                ZoneViewModels.Add(zvm);
+                ClearAll();
+                foreach (Zone zone in zones)
+                {
+                    ZoneViewModel zvm = new ZoneViewModel(Navigation, zone);
+                    ZoneViewModels.Add(zvm);
+                }
+                State = ModelState.Normal;
             }
-            State = ModelState.Normal;
+            else
+            {
+                State = ModelState.Error;
+                ErrorText = "No Data";
+            }
         }
     }
 }

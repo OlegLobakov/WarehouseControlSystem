@@ -90,15 +90,7 @@ namespace WarehouseControlSystem.ViewModel
                 CheckPlanSizes();
                 if (zones is List<Zone>)
                 {
-                    if (zones.Count > 0)
-                    {
-                        FillModel(zones);
-                    }
-                    else
-                    {
-                        State = ModelState.Error;
-                        ErrorText = "No Data";
-                    }
+                    FillModel(zones);
                 }
             }
             catch (OperationCanceledException e)
@@ -115,17 +107,25 @@ namespace WarehouseControlSystem.ViewModel
 
         private void FillModel(List<Zone> zones)
         {
-            ClearAll();
-            foreach (Zone zone in zones)
+            if (zones.Count > 0)
             {
-                SetDefaultSizes(zone);
-                ZoneViewModel zvm = new ZoneViewModel(Navigation, zone);
-                zvm.OnTap += Zvm_OnTap;
-                ZoneViewModels.Add(zvm);
+                ClearAll();
+                foreach (Zone zone in zones)
+                {
+                    SetDefaultSizes(zone);
+                    ZoneViewModel zvm = new ZoneViewModel(Navigation, zone);
+                    zvm.OnTap += Zvm_OnTap;
+                    ZoneViewModels.Add(zvm);
+                }
+                State = ModelState.Normal;
+                UpdateMinSizes();
+                Rebuild(true);
             }
-            State = ModelState.Normal;
-            UpdateMinSizes();
-            Rebuild(true);
+            else
+            {
+                State = ModelState.Error;
+                ErrorText = "No Data";
+            }
         }
 
         private void SetDefaultSizes(Zone zone)

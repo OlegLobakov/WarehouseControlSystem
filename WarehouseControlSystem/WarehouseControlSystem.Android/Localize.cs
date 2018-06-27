@@ -42,27 +42,7 @@ namespace WarehouseControlSystem.Droid
             netLanguage = Settings.CurrentLocalization;
 
             // this gets called a lot - try/catch can be expensive so consider caching or something
-            System.Globalization.CultureInfo ci = null;
-            try
-            {
-                ci = new System.Globalization.CultureInfo(netLanguage);
-            }
-            catch
-            {
-                // iOS locale not valid .NET culture (eg. "en-ES" : English in Spain)
-                // fallback to first characters, in this case "en"
-                try
-                {
-                    var fallback = ToDotnetFallbackLanguage(new PlatformCulture(netLanguage));
-                    ci = new System.Globalization.CultureInfo(fallback);
-                }
-                catch
-                {
-                    // iOS language not valid .NET culture, falling back to English
-                    ci = new System.Globalization.CultureInfo("en");
-                }
-            }
-
+            System.Globalization.CultureInfo ci = GetCI(netLanguage);
             return ci;
         }
 
@@ -73,6 +53,12 @@ namespace WarehouseControlSystem.Droid
             netLanguage = AndroidToDotnetLanguage(androidLocale.ToString().Replace("_", "-"));
 
             // this gets called a lot - try/catch can be expensive so consider caching or something
+            System.Globalization.CultureInfo ci = GetCI(netLanguage);
+            return ci;
+        }
+
+        private CultureInfo GetCI(string netLanguage)
+        {
             System.Globalization.CultureInfo ci = null;
             try
             {
@@ -93,7 +79,6 @@ namespace WarehouseControlSystem.Droid
                     ci = new System.Globalization.CultureInfo("en");
                 }
             }
-
             return ci;
         }
 

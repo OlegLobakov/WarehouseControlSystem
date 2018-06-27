@@ -48,20 +48,8 @@ namespace WarehouseControlSystem.ViewModel
                 List<Rack> racks = await NAV.GetRackList(Zone.LocationCode, Zone.Code, false, 1, int.MaxValue, ACD.Default).ConfigureAwait(true);
                 if ((!IsDisposed) && (racks is List<Rack>))
                 {
-                    if (racks.Count > 0)
-                    {
-                        FillModel(racks);
-                    }
-                    else
-                    {
-                        State = ModelState.Error;
-                        ErrorText = "No Data";
-                    }
+                    FillModel(racks);
                 }
-            }
-            catch (OperationCanceledException e)
-            {
-                System.Diagnostics.Debug.WriteLine(e.Message);
             }
             catch (Exception e)
             {
@@ -73,14 +61,22 @@ namespace WarehouseControlSystem.ViewModel
 
         private void FillModel(List<Rack> racks)
         {
-            ObservableCollection<RackViewModel> nlist = new ObservableCollection<RackViewModel>();
-            foreach (Rack rack in racks)
+            if (racks.Count > 0)
             {
-                RackViewModel rvm = new RackViewModel(Navigation, rack, false);
-                nlist.Add(rvm);
+                ObservableCollection<RackViewModel> nlist = new ObservableCollection<RackViewModel>();
+                foreach (Rack rack in racks)
+                {
+                    RackViewModel rvm = new RackViewModel(Navigation, rack, false);
+                    nlist.Add(rvm);
+                }
+                RackViewModels = nlist;
+                State = ModelState.Normal;
             }
-            RackViewModels = nlist;
-            State = ModelState.Normal;
+            else
+            {
+                State = ModelState.Error;
+                ErrorText = "No Data";
+            }
         }
 
         public override void DisposeModel()

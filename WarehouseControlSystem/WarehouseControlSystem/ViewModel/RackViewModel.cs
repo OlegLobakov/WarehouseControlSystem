@@ -157,6 +157,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } string racksectionseparator;
+
         public string SectionLevelSeparator
         {
             get { return sectionlevelseparator; }
@@ -170,6 +171,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } string sectionlevelseparator;
+
         public string LevelDepthSeparator
         {
             get { return leveldepthseparator; }
@@ -197,6 +199,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } bool reverssectionnumbering;
+
         public bool ReversLevelNumbering
         {
             get { return reverslevelbering; }
@@ -287,7 +290,7 @@ namespace WarehouseControlSystem.ViewModel
                 {
                     schemevisible = value;
                     Changed = true;
-                    SaveToNAVSchemeVisible();
+                    SaveToRackSchemeVisible();
                     OnPropertyChanged(nameof(SchemeVisible));
                 }
             }
@@ -796,7 +799,7 @@ namespace WarehouseControlSystem.ViewModel
             BinsViewModel.BinTemplate = bt;
         }
 
-        public async Task SaveToNAVSchemeVisible()
+        public async Task SaveToRackSchemeVisible()
         {
             if (IsSaveToNAVEnabled)
             {

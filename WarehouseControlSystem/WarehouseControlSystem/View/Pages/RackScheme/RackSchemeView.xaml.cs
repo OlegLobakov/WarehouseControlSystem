@@ -31,7 +31,7 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             InitializeComponent();
 
             CreateSections();
-            CreateLabel();
+            CreateLabels();
             FillSections();
         }
 
@@ -50,14 +50,7 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
 
             for (int i = 1; i <= model.Sections; i++)
             {
-                Label label1 = new Label
-                {
-                    BackgroundColor = Color.FromHex("#dbe1eb"),
-                    HorizontalOptions = LayoutOptions.FillAndExpand,
-                    VerticalOptions = LayoutOptions.FillAndExpand,
-                    HorizontalTextAlignment = TextAlignment.Center,
-                    VerticalTextAlignment = TextAlignment.Center,
-                };
+                Label label1 = NewLabel();
 
                 label1.TextColor = Color.White;
 
@@ -109,7 +102,7 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             }
         }
 
-        private void CreateLabel()
+        private void CreateLabels()
         {
             RackViewModel model = (RackViewModel)Model;
 
@@ -148,14 +141,7 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
 
             for (int i = 1; i <= model.Sections; i++)
             {
-                Label label1 = new Label
-                {
-                    BackgroundColor = Color.FromHex("#dbe1eb"),
-                    HorizontalOptions = LayoutOptions.FillAndExpand,
-                    VerticalOptions = LayoutOptions.FillAndExpand,
-                    HorizontalTextAlignment = TextAlignment.Center,
-                    VerticalTextAlignment = TextAlignment.Center,
-                };
+                Label label1 = NewLabel();
 
                 if (model.SubSchemeSelects is List<SubSchemeSelect>)
                 {
@@ -187,6 +173,7 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
                 AddToGrid(model, label1, i);
             }
         }
+        
         private void AddToGrid(RackViewModel model, Label label1, int i)
         {
             switch (model.RackOrientation)
@@ -204,6 +191,18 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
                     grid.Children.Add(label1, 0, i - 1);
                     break;
             }
+        }
+
+        private Label NewLabel()
+        {
+            return new Label
+            {
+                BackgroundColor = Color.FromHex("#dbe1eb"),
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                VerticalOptions = LayoutOptions.FillAndExpand,
+                HorizontalTextAlignment = TextAlignment.Center,
+                VerticalTextAlignment = TextAlignment.Center,
+            };
         }
 
         protected override void OnSizeAllocated(double width, double height)
