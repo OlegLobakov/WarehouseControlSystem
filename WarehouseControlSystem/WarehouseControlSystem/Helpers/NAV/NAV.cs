@@ -2268,17 +2268,15 @@ namespace WarehouseControlSystem.Helpers.NAV
             return tcs.Task;
         }
 
-        public static async Task<XElement> Process(string functionname, XElement body, XNamespace myns, bool testconnection, CancellationTokenSource cts)
+        private static Connection SelectConnection(bool test)
         {
-            Connection connection;
-            if (testconnection)
+            if (test)
             {
                 if (!(Global.TestConnection is Connection))
                 {
                     return null;
                 }
-
-                connection = Global.TestConnection;
+                return Global.TestConnection;
             }
             else
             {
@@ -2286,13 +2284,12 @@ namespace WarehouseControlSystem.Helpers.NAV
                 {
                     return null;
                 }
-                connection = Global.CurrentConnection;
+                return Global.CurrentConnection;
             }
+        }
 
-            XElement rv = null;
-
-            string requestbody = GetRequestText(CreateSOAPRequest(body, myns));
-
+        private static HttpClientHandler GetHandler(Connection connection)
+        {
             var handler = new HttpClientHandler
             {
                 UseDefaultCredentials = false,
@@ -2311,6 +2308,16 @@ namespace WarehouseControlSystem.Helpers.NAV
                     throw new InvalidOperationException("Impossible value");
             }
 
+            return handler;
+        }
+
+        public static async Task<XElement> Process(string functionname, XElement body, XNamespace myns, bool testconnection, CancellationTokenSource cts)
+        {
+            Connection connection = SelectConnection(testconnection);
+            XElement rv = null;
+            string requestbody = GetRequestText(CreateSOAPRequest(body, myns));
+
+            var handler = GetHandler(connection);
             using (var client = new HttpClient(handler))
             {
                 var request = new HttpRequestMessage
@@ -2328,7 +2335,6 @@ namespace WarehouseControlSystem.Helpers.NAV
                     Stream stream = streamTask.Result;
                     var sr = new StreamReader(stream);
                     XDocument xmldoc = XDocument.Load(sr);
-
                     if (response.IsSuccessStatusCode)
                     {
                         XElement bodysopeenvelopenode = xmldoc.Root.Element(ns + "Body");

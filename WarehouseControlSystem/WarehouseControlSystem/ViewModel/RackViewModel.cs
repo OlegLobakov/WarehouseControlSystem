@@ -874,24 +874,7 @@ namespace WarehouseControlSystem.ViewModel
             {
                 LoadingText = AppResources.RackNewPage_LoadingProgressRack + " " + newrack.No;
                 int rackexist = await NAV.GetRackCount(LocationCode, ZoneCode, No, false, ACD.Default).ConfigureAwait(true);
-                if (rackexist > 0)
-                {
-                    if (ConflictRackChange)
-                    {
-                        newrack.PrevNo = newrack.No;
-                        await NAV.ModifyRack(newrack, ACD.Default).ConfigureAwait(true);
-                    }
-                    else
-                    {
-                        State = ModelState.Error;
-                        ErrorText = AppResources.RackNewPage_Error_RackAlreadyExist;
-                    }
-                }
-                else
-                {
-                    await NAV.CreateRack(newrack, ACD.Default).ConfigureAwait(true);
-                }
-
+                await ModifyRack(newrack, rackexist).ConfigureAwait(true);
                 bool errorsexist = false;
                 foreach (BinViewModel bvm in BinsViewModel.BinViewModels)
                 {
@@ -906,7 +889,6 @@ namespace WarehouseControlSystem.ViewModel
                         ErrorText += e.Message;
                     }
                 }
-
                 SaveFields(Rack);
                 LoadAnimation = false;
                 if (errorsexist)
@@ -921,10 +903,30 @@ namespace WarehouseControlSystem.ViewModel
             }
             catch (Exception e)
             {
-                System.Diagnostics.Debug.WriteLine(e.Message);
                 LoadAnimation = false;
                 State = ModelState.Error;
                 ErrorText = e.Message;
+            }
+        }
+
+        private async Task ModifyRack(Rack newrack, int rackexist)
+        {
+            if (rackexist > 0)
+            {
+                if (ConflictRackChange)
+                {
+                    newrack.PrevNo = newrack.No;
+                    await NAV.ModifyRack(newrack, ACD.Default).ConfigureAwait(true);
+                }
+                else
+                {
+                    State = ModelState.Error;
+                    ErrorText = AppResources.RackNewPage_Error_RackAlreadyExist;
+                }
+            }
+            else
+            {
+                await NAV.CreateRack(newrack, ACD.Default).ConfigureAwait(true);
             }
         }
 
