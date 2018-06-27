@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
 using System.Windows.Input;
+using System.Threading.Tasks;
 
 namespace WarehouseControlSystem.ViewModel.Base
 {
@@ -162,7 +163,10 @@ namespace WarehouseControlSystem.ViewModel.Base
         {
         }
 
-        public virtual void SaveChanges()
+        /// <summary>
+        /// 
+        /// </summary>
+        public virtual void SaveChangesAsync()
         {
         }
 
@@ -177,6 +181,7 @@ namespace WarehouseControlSystem.ViewModel.Base
             {
                 PlanWidth = 20;
             }
+
             if (PlanHeight == 0)
             {
                 PlanHeight = 10;

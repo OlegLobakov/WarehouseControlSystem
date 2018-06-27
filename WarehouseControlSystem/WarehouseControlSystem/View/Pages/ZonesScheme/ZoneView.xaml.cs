@@ -13,18 +13,14 @@
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using WarehouseControlSystem.ViewModel;
-
+using WarehouseControlSystem.View.Pages.Base;
 namespace WarehouseControlSystem.View.Pages.ZonesScheme
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class ZoneView : ContentView
+    public partial class ZoneView : SchemeBaseView
     {   
-        public ZoneViewModel Model { get; }
-
-        public ZoneView(ZoneViewModel zvm)
+        public ZoneView(ZoneViewModel zvm) : base(zvm)
         {
-            Model = zvm;
-            BindingContext = Model;
             InitializeComponent();
         }
     }

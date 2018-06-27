@@ -27,7 +27,8 @@ namespace WarehouseControlSystem.ViewModel
 {
     public class RackViewModel : NAVBaseViewModel
     {
-        public Rack Rack { get; set; }
+        private Rack Rack { get; set; }
+
         public string No
         {
             get { return no; }
@@ -491,6 +492,7 @@ namespace WarehouseControlSystem.ViewModel
         public void FillFields(Rack rack)
         {
             No = rack.No;
+            PrevCode = rack.PrevNo;
             Sections = rack.Sections;
             Levels = rack.Levels;
             Depth = rack.Depth;
@@ -498,11 +500,16 @@ namespace WarehouseControlSystem.ViewModel
             ZoneCode = rack.ZoneCode;
             RackOrientation = rack.RackOrientation;
             SchemeVisible = rack.SchemeVisible;
+            Left = rack.Left;
+            Top = rack.Top;
+            Width = rack.Width;
+            Height = rack.Height;
         }
 
         public void SaveFields(Rack rack)
         {
             rack.No = No;
+            rack.PrevNo = PrevCode;
             rack.Sections = Sections;
             rack.Levels = Levels;
             rack.Depth = Depth;
@@ -510,12 +517,10 @@ namespace WarehouseControlSystem.ViewModel
             rack.ZoneCode = ZoneCode;
             rack.RackOrientation = RackOrientation;
             rack.SchemeVisible = SchemeVisible;
-        }
-
-        public void SavePrevSize(double width, double height)
-        {
-            PrevWidth = width;
-            PrevHeight = height;
+            rack.Left = Left;
+            rack.Top = Top;
+            rack.Width = Width;
+            rack.Height = Height;
         }
 
         public void Tap(object sender)

@@ -1,8 +1,9 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+<d:SchemeBaseView  xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WarehouseControlSystem.View.Pages.ZonesScheme.ZoneView"
-             xmlns:vc="clr-namespace:WarehouseControlSystem.View.Content">
+              xmlns:d="clr-namespace:WarehouseControlSystem.View.Pages.Base"
+   xmlns:vc="clr-namespace:WarehouseControlSystem.View.Content">
     <ContentView.Content>
         <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Padding="0" BackgroundColor="DarkGray">
             <StackLayout.Triggers>
@@ -83,4 +84,4 @@
             </StackLayout>
         </StackLayout>
     </ContentView.Content>
-</ContentView>
+</d:SchemeBaseView>

@@ -17,26 +17,17 @@ using Xamarin.Forms.Xaml;
 using WarehouseControlSystem.Model;
 using WarehouseControlSystem.Model.NAV;
 using WarehouseControlSystem.ViewModel;
+using WarehouseControlSystem.View.Pages.Base;
 
 namespace WarehouseControlSystem.View.Pages.RackScheme
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class RackSchemeView : ContentView
+    public partial class RackSchemeView : SchemeBaseView
     {
-        public RackViewModel Model
-        {
-            get
-            {
-                return model;
-            }
-        }
-        private readonly RackViewModel model;
         private List<Label> udslabels = new List<Label>();
 
-        public RackSchemeView(RackViewModel rvm)
+        public RackSchemeView(RackViewModel rvm) : base(rvm)
         {
-            model = rvm;
-            BindingContext = model;
             InitializeComponent();
 
             CreateSections();
@@ -46,6 +37,8 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
 
         public void UpdateUDS()
         {
+            RackViewModel model = (RackViewModel)Model;
+
             foreach (Label lbl1 in udslabels)
             {
                 if (grid.Children.Contains(lbl1))
@@ -113,6 +106,8 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
 
         private void CreateSections()
         {
+            RackViewModel model = (RackViewModel)Model;
+
             if ((model.RackOrientation == RackOrientationEnum.HorizontalLeft || model.RackOrientation == RackOrientationEnum.HorizontalRight))
             {
                 for (int i = 1; i <= model.Sections + 1; i++)
@@ -132,6 +127,8 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
 
         private void CreateLabel()
         {
+            RackViewModel model = (RackViewModel)Model;
+
             Label lb = new Label
             {
                 BackgroundColor = Color.FromHex("#3d567c"),
@@ -163,6 +160,8 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
 
         private void FillSections()
         {
+            RackViewModel model = (RackViewModel)Model;
+
             for (int i = 1; i <= model.Sections; i++)
             {
                 Label label1 = new Label
@@ -222,9 +221,9 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
         protected override void OnSizeAllocated(double width, double height)
         {
             base.OnSizeAllocated(width, height);
+            RackViewModel model = (RackViewModel)Model;
             model.SchemeWidth = width;
             model.SchemeHeight = height;
-
             model.SchemeFontSize = 12;
         }
 

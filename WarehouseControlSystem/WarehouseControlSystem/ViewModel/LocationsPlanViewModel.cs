@@ -33,15 +33,11 @@ namespace WarehouseControlSystem.ViewModel
     {
         public LocationViewModel SelectedLocationViewModel { get; set; }
         public ObservableCollection<LocationViewModel> LocationViewModels { get; set; } = new ObservableCollection<LocationViewModel>();
-        public ObservableCollection<LocationViewModel> SelectedViewModels { get; set; } = new ObservableCollection<LocationViewModel>();
 
         public ICommand ListLocationsCommand { protected set; get; }
         public ICommand NewLocationCommand { protected set; get; }
         public ICommand EditLocationCommand { protected set; get; }
         public ICommand DeleteLocationCommand { protected set; get; }
-
-        public bool IsSelectedList { get { return SelectedViewModels.Count > 0; } }
-
 
         public LocationsPlanViewModel(INavigation navigation) : base(navigation)
         {
@@ -62,7 +58,6 @@ namespace WarehouseControlSystem.ViewModel
 
         public void ClearAll()
         {
-            SelectedViewModels.Clear();
             foreach (LocationViewModel lvm in LocationViewModels)
             {
                 lvm.DisposeModel();
@@ -173,10 +168,10 @@ namespace WarehouseControlSystem.ViewModel
 
             foreach (LocationViewModel lvm in LocationViewModels)
             {
-                lvm.Left = lvm.Location.Left * WidthStep;
-                lvm.Top = lvm.Location.Top * HeightStep;
-                lvm.Width = lvm.Location.Width * WidthStep;
-                lvm.Height = lvm.Location.Height * HeightStep;
+                lvm.ViewLeft = lvm.Left * WidthStep;
+                lvm.ViewTop = lvm.Top * HeightStep;
+                lvm.ViewWidth = lvm.Width * WidthStep;
+                lvm.ViewHeight = lvm.Height * HeightStep;
             }
 
             if (recreate)
@@ -196,7 +191,10 @@ namespace WarehouseControlSystem.ViewModel
                 Global.SearchLocationCode = tappedlvm.Code;
                 try
                 {
-                    ZonesSchemePage zsp = new ZonesSchemePage(tappedlvm.Location);
+                    Location location  =new Location();
+                    tappedlvm.SaveFields(location);
+                    ZonesPlanViewModel zpvm = new ZonesPlanViewModel(Navigation, location);
+                    ZonesSchemePage zsp = new ZonesSchemePage(zpvm);
                     await Navigation.PushAsync(zsp);
                 }
                 catch (Exception e)
@@ -239,9 +237,7 @@ namespace WarehouseControlSystem.ViewModel
                     tappedlvm.Selected = true;
                     tappedlvm.EditMode = SchemeElementEditMode.Move;
                 }
-
-                SelectedViewModels = new ObservableCollection<LocationViewModel>(LocationViewModels.ToList().FindAll(x => x.Selected == true));
-            }
+             }
         }
 
         public void UnSelectAll()
@@ -292,7 +288,7 @@ namespace WarehouseControlSystem.ViewModel
             {
                 LocationViewModel lvm = (LocationViewModel)obj;
                 State = ModelState.Loading;
-                await NAV.DeleteLocation(lvm.Location.Code, ACD.Default).ConfigureAwait(true);
+                await NAV.DeleteLocation(lvm.Code, ACD.Default).ConfigureAwait(true);
                 LocationViewModels.Remove(lvm);
             }
             catch (Exception e)
@@ -309,7 +305,7 @@ namespace WarehouseControlSystem.ViewModel
         }
 
 
-        public async Task SaveLocationChangesAsync()
+        public override async void SaveChangesAsync()
         {
             if (NotNetOrConnection)
             {
@@ -321,7 +317,9 @@ namespace WarehouseControlSystem.ViewModel
             {
                 try
                 {
-                    await NAV.ModifyLocation(lvm.Location, ACD.Default).ConfigureAwait(true);
+                    Location location = new Location();
+                    lvm.SaveFields(location);
+                    await NAV.ModifyLocation(location, ACD.Default).ConfigureAwait(true);
                 }
                 catch (Exception e)
                 {
@@ -359,13 +357,13 @@ namespace WarehouseControlSystem.ViewModel
 
             foreach (LocationViewModel lvm in LocationViewModels)
             {
-                if (lvm.Location.Left + lvm.Location.Width > newminplanwidth)
+                if (lvm.Left + lvm.Width > newminplanwidth)
                 {
-                    newminplanwidth = lvm.Location.Left + lvm.Location.Width;
+                    newminplanwidth = lvm.Left + lvm.Width;
                 }
-                if (lvm.Location.Top + lvm.Location.Height > newminplanheight)
+                if (lvm.Top + lvm.Height > newminplanheight)
                 {
-                    newminplanheight = lvm.Location.Top + lvm.Location.Height;
+                    newminplanheight = lvm.Top + lvm.Height;
                 }
             }
             MinPlanWidth = newminplanwidth;

@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+<d:SchemeBaseView xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="clr-namespace:WarehouseControlSystem.View.Pages.Base"                
              x:Class="WarehouseControlSystem.View.Pages.RackScheme.RackSchemeView">
   <ContentView.Content>
         <!--<ContentView x:Name="fieldcontentiew" Padding="1" BackgroundColor="Gray" 
@@ -36,4 +37,4 @@
             </Grid>
         </StackLayout>
     </ContentView.Content>
-</ContentView>
+</d:SchemeBaseView>

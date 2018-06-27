@@ -19,45 +19,31 @@ using WarehouseControlSystem.Model.NAV;
 using WarehouseControlSystem.Resx;
 using WarehouseControlSystem.ViewModel;
 using WarehouseControlSystem.View.Pages.Find;
+using WarehouseControlSystem.View.Pages.Base;
 
 namespace WarehouseControlSystem.View.Pages.ZonesScheme
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class ZonesSchemePage : ContentPage
+    public partial class ZonesSchemePage : SchemeBasePlanPage
     {
-        List<ZoneView> Views { get; set; }
-        List<ZoneView> SelectedViews { get; set; }
+        private readonly ZonesPlanViewModel Model;
 
-        MovingActionTypeEnum MovingAction = MovingActionTypeEnum.None;
-
-        TapGestureRecognizer TapGesture;
-        PanGestureRecognizer PanGesture;
-
-        private readonly ZonesPlanViewModel model;
-
-        public ZonesSchemePage(Location location)
+        public ZonesSchemePage(ZonesPlanViewModel model):base(model)
         {
-            model = new ZonesPlanViewModel(Navigation, location);
-            BindingContext = model;
+            Model = model;
             InitializeComponent();
 
-            Views = new List<ZoneView>();
-            SelectedViews = new List<ZoneView>();
-
-            TapGesture = new TapGestureRecognizer();
             abslayout.GestureRecognizers.Add(TapGesture);
-
-            PanGesture = new PanGestureRecognizer();
             abslayout.GestureRecognizers.Add(PanGesture);
 
-            Title = AppResources.ZoneSchemePage_Title + " - " + location.Name;
-            Global.CurrentLocationName = location.Name;
+            Title = AppResources.ZoneSchemePage_Title + " - " + Model.Location.Name;
+            Global.CurrentLocationName = Model.Location.Name;
 
             MessagingCenter.Subscribe<ZonesPlanViewModel>(this, "Rebuild", Rebuild);
             MessagingCenter.Subscribe<ZonesPlanViewModel>(this, "Reshape", Reshape);
 
-            model.IsEditMode = false;
-            model.SetEditModeForItems(model.IsEditMode);
+            Model.IsEditMode = false;
+            Model.SetEditModeForItems(Model.IsEditMode);
         }
 
         protected override async void OnAppearing()
@@ -65,12 +51,12 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
             base.OnAppearing();
             PanGesture.PanUpdated += OnPaned;
             TapGesture.Tapped += GridTapped;
-            await model.Load();
+            await Model.Load();
         }
 
         protected override void OnDisappearing()
         {
-            model.State = ViewModel.Base.ModelState.Undefined;
+            Model.State = ViewModel.Base.ModelState.Undefined;
             PanGesture.PanUpdated -= OnPaned;
             TapGesture.Tapped -= GridTapped;
             SelectedViews.Clear();
@@ -81,23 +67,11 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
 
         protected override bool OnBackButtonPressed()
         {
-            model.DisposeModel();
+            Model.DisposeModel();
             MessagingCenter.Unsubscribe<ZonesPlanViewModel>(this, "Rebuild");
             MessagingCenter.Unsubscribe<ZonesPlanViewModel>(this, "Reshape");
             base.OnBackButtonPressed();
             return false;
-        }
-
-        private void StackLayout_SizeChanged(object sender, EventArgs e)
-        {
-            StackLayout sl = (StackLayout)sender;
-            model.SetScreenSizes(sl.Width, sl.Height, false);
-        }
-
-        private void Abslayout_SizeChanged(object sender, EventArgs e)
-        {
-            AbsoluteLayout al = (AbsoluteLayout)sender;
-            model.SetScreenSizes(al.Width, al.Height, true);
         }
 
         private void Rebuild(ZonesPlanViewModel lmv)
@@ -105,10 +79,10 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
             SelectedViews.Clear();
             abslayout.Children.Clear();
             Views.Clear();
-            foreach (ZoneViewModel zvm in model.ZoneViewModels)
+            foreach (ZoneViewModel zvm in Model.ZoneViewModels)
             {
                 ZoneView zv = new ZoneView(zvm);
-                AbsoluteLayout.SetLayoutBounds(zv, new Rectangle(zvm.Left, zvm.Top, zvm.Width, zvm.Height));
+                AbsoluteLayout.SetLayoutBounds(zv, new Rectangle(zvm.ViewLeft, zvm.ViewTop, zvm.ViewWidth, zvm.ViewHeight));
                 abslayout.Children.Add(zv);
                 Views.Add(zv);
                 zvm.LoadRacks();
@@ -117,168 +91,16 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
 
         private void Reshape(ZonesPlanViewModel rsmv)
         {
-            foreach (ZoneView lv in Views)
-            {
-                AbsoluteLayout.SetLayoutBounds(lv, new Rectangle(lv.Model.Left, lv.Model.Top, lv.Model.Width, lv.Model.Height));
-            }
+            Reshape();
         }
 
         private void GridTapped(object sender, EventArgs e)
         {
-            foreach (ZoneView zv in Views)
+            foreach (SchemeBaseView zv in Views)
             {
                 zv.Opacity = 1;
             }
-            model.UnSelectAll();
-        }
-
-        readonly Easing easing1 = Easing.Linear;
-        readonly Easing easingParcking = Easing.CubicInOut;
-
-        double x = 0, y = 0, widthstep = 0, heightstep = 0;
-
-        double leftborder = double.MaxValue;
-        double topborder = double.MaxValue;
-        double rightborder = double.MinValue;
-        double bottomborder = double.MinValue;
-
-        double oldeTotalX = 0, oldeTotalY = 0;
-
-        private async void OnPaned(object sender, PanUpdatedEventArgs e)
-        {
-            if (!model.IsEditMode)
-            {
-                return;
-            }
-
-            if ((MovingAction != MovingActionTypeEnum.None) && (MovingAction != MovingActionTypeEnum.Pan))
-            {
-                return;
-            }
-
-            if (!model.IsSelectedList)
-            {
-                return;
-            }
-
-            switch (e.StatusType)
-            {
-                case GestureStatus.Started:
-                    {
-                        SelectedViews = Views.FindAll(x => x.Model.Selected == true);
-                        MovingAction = MovingActionTypeEnum.Pan;
-
-                        widthstep = (model.ScreenWidth/ model.PlanWidth);
-                        heightstep = (model.ScreenHeight / model.PlanHeight);
-
-                        leftborder = double.MaxValue;
-                        topborder = double.MaxValue;
-                        rightborder = double.MinValue;
-                        bottomborder = double.MinValue;
-
-                        foreach (ZoneView zv in SelectedViews)
-                        {
-                            leftborder = Math.Min(zv.X, leftborder);
-                            topborder = Math.Min(zv.Y, topborder);
-                            rightborder = Math.Max(zv.X + zv.Width, rightborder);
-                            bottomborder = Math.Max(zv.Y + zv.Height, bottomborder);
-                            zv.Opacity = 0.5;
-                            zv.Model.SavePrevSize(zv.Width, zv.Height);
-                        }
-
-                        x += oldeTotalX;
-                        y += oldeTotalY;
-                        break;
-                    }
-                case GestureStatus.Running:
-                    {
-                        double dx = x + e.TotalX;
-                        double dy = y + e.TotalY;
-
-                        oldeTotalX = e.TotalX;
-                        oldeTotalY = e.TotalY;
-
-                        if (dx + leftborder < 0)
-                        {
-                            dx = -leftborder;
-                        }
-
-                        if (dx + rightborder > model.ScreenWidth)
-                        {
-                            dx = model.ScreenWidth - rightborder;
-                        }
-
-                        if (dy + topborder < 0)
-                        {
-                            dy = -topborder;
-                        }
-
-                        if (dy + bottomborder > model.ScreenHeight)
-                        {
-                            dy = model.ScreenHeight - bottomborder;
-                        }
-
-                        foreach (ZoneView zv in SelectedViews)
-                        {
-                            if (zv.Model.EditMode == SchemeElementEditMode.Move)
-                            {
-                                await zv.TranslateTo(dx, dy, 250, easing1);
-                            }
-                            if (zv.Model.EditMode == SchemeElementEditMode.Resize)
-                            {
-                                AbsoluteLayout.SetLayoutBounds(zv, new Rectangle(zv.X, zv.Y, zv.Model.PrevWidth + dx, zv.Model.PrevHeight + dy));
-                            }
-                        }
-                        break;
-                    }
-                case GestureStatus.Completed:
-                    {
-
-                        x = 0;
-                        y = 0;
-                        oldeTotalX = 0;
-                        oldeTotalY = 0;
-                        foreach (ZoneView zv in SelectedViews)
-                        {
-                            if (zv.Model.EditMode == SchemeElementEditMode.Move)
-                            {
-                                double newX = zv.X + zv.TranslationX;
-                                double newY = zv.Y + zv.TranslationY;
-
-                                zv.Model.Zone.Left = (int)Math.Round(newX / widthstep);
-                                zv.Model.Zone.Top = (int)Math.Round(newY / heightstep);
-
-                                //выравнивание по сетке
-                                double dX = zv.Model.Zone.Left * widthstep - zv.X;
-                                double dY = zv.Model.Zone.Top * heightstep - zv.Y;
-
-                                await zv.TranslateTo(dX, dY, 500, easingParcking);
-                                AbsoluteLayout.SetLayoutBounds(zv, new Rectangle(zv.X + dX, zv.Y + dY, zv.Width, zv.Height));
-                                zv.TranslationX = 0;
-                                zv.TranslationY = 0;
-                            }
-                            if (zv.Model.EditMode == SchemeElementEditMode.Resize)
-                            {
-                                zv.Model.Zone.Width = (int)Math.Round(zv.Width / widthstep);
-                                zv.Model.Zone.Height = (int)Math.Round(zv.Height / heightstep);
-                                double newWidth = zv.Model.Zone.Width * widthstep;
-                                double newheight = zv.Model.Zone.Height * heightstep;
-                                AbsoluteLayout.SetLayoutBounds(zv, new Rectangle(zv.X, zv.Y, newWidth, newheight));
-                            }
-                            zv.Opacity = 1;
-                        }
-                        await model.SaveZonesChangesAsync();
-                        MovingAction = MovingActionTypeEnum.None;
-                        break;
-                    }
-                case GestureStatus.Canceled:
-                    {
-                        MovingAction = MovingActionTypeEnum.None;
-                        break;
-                    }
-                default:
-                    throw new InvalidOperationException("ZonesSchemePage OnPaned Impossible Value ");
-            }
+            Model.UnSelectAll();
         }
 
         private async void ToolbarItem_Search(object sender, EventArgs e)
@@ -292,18 +114,18 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
         {
             GridTapped(null, new EventArgs());
 
-            if (model.IsEditMode)
+            if (Model.IsEditMode)
             {
-                model.IsEditMode = false;
-                model.SetEditModeForItems(model.IsEditMode);
+                Model.IsEditMode = false;
+                Model.SetEditModeForItems(Model.IsEditMode);
                 abslayout.BackgroundColor = Color.White;
-                await model.SaveLocationParams();
+                await Model.SaveLocationParams();
             }
             else
             {
                 abslayout.BackgroundColor = Color.LightGray;
-                model.IsEditMode = true;
-                model.SetEditModeForItems(model.IsEditMode);
+                Model.IsEditMode = true;
+                Model.SetEditModeForItems(Model.IsEditMode);
             }
         }
     }

@@ -1,8 +1,11 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="WarehouseControlSystem.View.Pages.LocationsScheme.LocationView"
-             xmlns:vc="clr-namespace:WarehouseControlSystem.View.Content">
+<d:SchemeBaseView 
+    xmlns="http://xamarin.com/schemas/2014/forms" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="WarehouseControlSystem.View.Pages.LocationsScheme.LocationView"
+    xmlns:d="clr-namespace:WarehouseControlSystem.View.Pages.Base"
+    xmlns:vc="clr-namespace:WarehouseControlSystem.View.Content">
+    
     <ContentView.Content>
         <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Padding="0" BackgroundColor="DarkGray">
             <StackLayout.Triggers>
@@ -29,17 +32,6 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <!--<Label Grid.Row="0" x:Name="codelabel"    Text="{Binding Code}"     
-                       FontSize="Large"   
-                       HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
-                       HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
-                       TextColor="White" Margin="10,5,0,0">
-                        <Label.Triggers>
-                            <DataTrigger Binding="{Binding Color}" TargetType="Label" Value="{StaticResource SchemeBlockWhiteColor}">
-                                <Setter Property="TextColor" Value="Black"/>
-                            </DataTrigger>
-                        </Label.Triggers>
-                    </Label>-->
 
                     <Label Grid.Row="0" x:Name="namelabel"    Text="{Binding Name}"     
                         FontSize="Medium" FontAttributes="Bold" 
@@ -99,4 +91,4 @@
             </StackLayout>
         </StackLayout>
     </ContentView.Content>
-</ContentView>
+</d:SchemeBaseView>

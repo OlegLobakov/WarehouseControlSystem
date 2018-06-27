@@ -42,7 +42,9 @@ namespace WarehouseControlSystem
 
         private async Task LocationsTaped()
         {
-            await Navigation.PushAsync(new LocationsSchemePage());
+            LocationsPlanViewModel lpvm = new LocationsPlanViewModel(Navigation);
+            LocationsSchemePage lsp = new LocationsSchemePage(lpvm);
+            await Navigation.PushAsync(lsp);
         }
 
         private async Task AboutTaped()

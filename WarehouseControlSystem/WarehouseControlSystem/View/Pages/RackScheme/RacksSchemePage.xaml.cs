@@ -19,44 +19,32 @@ using WarehouseControlSystem.Resx;
 using WarehouseControlSystem.Model.NAV;
 using WarehouseControlSystem.ViewModel;
 using WarehouseControlSystem.View.Pages.Find;
-
+using WarehouseControlSystem.View.Pages.Base;
 
 namespace WarehouseControlSystem.View.Pages.RackScheme
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class RacksSchemePage : ContentPage
+    public partial class RacksSchemePage : SchemeBasePlanPage
     {
-        List<RackSchemeView> Views { get; set; }
-        List<RackSchemeView> SelectedViews { get; set; }
+        private readonly RacksPlanViewModel Model;
 
-        MovingActionTypeEnum MovingAction = MovingActionTypeEnum.None;
- 
-        TapGestureRecognizer TapGesture;
-        PanGestureRecognizer PanGesture;
-
-        private readonly RacksPlanViewModel model;
-
-        public RacksSchemePage(Zone zone)
+        public RacksSchemePage(RacksPlanViewModel model) : base(model)
         {
-            model = new RacksPlanViewModel(Navigation, zone);
-            BindingContext = model;
+            Model = model;
             InitializeComponent();
 
-            Views = new List<RackSchemeView>();
-            SelectedViews = new List<RackSchemeView>(); 
-
-            TapGesture = new TapGestureRecognizer();
             abslayout.GestureRecognizers.Add(TapGesture);
-
-            PanGesture = new PanGestureRecognizer();
             abslayout.GestureRecognizers.Add(PanGesture);
 
-            Title = AppResources.ZoneSchemePage_Title +" "+ Global.CurrentLocationName+" | " + AppResources.RackSchemePage_Title + " - " + zone.Description;
+            Title = AppResources.ZoneSchemePage_Title +" "+ Global.CurrentLocationName+" | " + AppResources.RackSchemePage_Title + " - " + Model.Zone.Description;
 
             MessagingCenter.Subscribe<RacksPlanViewModel>(this, "Rebuild", Rebuild);
             MessagingCenter.Subscribe<RacksPlanViewModel>(this, "Reshape", Reshape);
             MessagingCenter.Subscribe<RacksPlanViewModel>(this, "UDSRunIsDone", UDSRunIsDone);
             MessagingCenter.Subscribe<RacksPlanViewModel>(this, "UDSListIsLoaded", UDSListIsLoaded);
+
+            Model.IsEditMode = false;
+            Model.SetEditModeForItems(Model.IsEditMode);
         }
 
         protected override async void OnAppearing()
@@ -64,13 +52,13 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             base.OnAppearing();
             PanGesture.PanUpdated += OnPaned;
             TapGesture.Tapped += GridTapped;
-            await model.Load();
-            await model.LoadUDS();
+            await Model.Load();
+            await Model.LoadUDS();
         }
 
         protected override void OnDisappearing()
         {
-            model.State = ViewModel.Base.ModelState.Undefined;
+            Model.State = ViewModel.Base.ModelState.Undefined;
             PanGesture.PanUpdated -= OnPaned;
             TapGesture.Tapped -= GridTapped;
             SelectedViews.Clear();
@@ -81,7 +69,7 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
 
         protected override bool OnBackButtonPressed()
         {
-            model.DisposeModel();
+            Model.DisposeModel();
             MessagingCenter.Unsubscribe<RacksPlanViewModel>(this, "Rebuild");
             MessagingCenter.Unsubscribe<RacksPlanViewModel>(this, "Reshape");
             MessagingCenter.Unsubscribe<RacksPlanViewModel>(this, "UDSRunIsDone");
@@ -90,18 +78,18 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             return false;
         }
 
-        private void StackLayout_SizeChanged(object sender, EventArgs e)
+        private void RacksStackLayoutSizeChanged(object sender, EventArgs e)
         {
             StackLayout sl = (StackLayout)sender;
-            model.SetScreenSizes(sl.Width, sl.Height, false);
-            model.UDSPanelHeight = (int)Math.Round(sl.Height / 5.5);
+            Model.SetScreenSizes(sl.Width, sl.Height, false);
+            Model.UDSPanelHeight = (int)Math.Round(sl.Height / 5.5);
         }
 
-        private void Abslayout_SizeChanged(object sender, EventArgs e)
+        private void RacksAbslayoutSizeChanged(object sender, EventArgs e)
         {
             AbsoluteLayout al = (AbsoluteLayout)sender;
-            model.UDSPanelHeight = (int)Math.Round(al.Height / 5.5);
-            model.SetScreenSizes(al.Width, al.Height, true);
+            Model.UDSPanelHeight = (int)Math.Round(al.Height / 5.5);
+            Model.SetScreenSizes(al.Width, al.Height, true);
         }
 
         private void Rebuild(RacksPlanViewModel rsmv)
@@ -109,11 +97,10 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             SelectedViews.Clear();
             abslayout.Children.Clear();
             Views.Clear();
-            foreach (RackViewModel rvm in model.RackViewModels)
+            foreach (RackViewModel rvm in Model.RackViewModels)
             {
                 RackSchemeView rsv = new RackSchemeView(rvm);
-                AbsoluteLayout.SetLayoutBounds(rsv,
-                    new Rectangle(rvm.Left, rvm.Top, rvm.Width, rvm.Height));
+                AbsoluteLayout.SetLayoutBounds(rsv, new Rectangle(rvm.ViewLeft, rvm.ViewTop, rvm.ViewWidth, rvm.ViewHeight));
                 abslayout.Children.Add(rsv);
                 Views.Add(rsv);
             }
@@ -121,23 +108,21 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
 
         private void Reshape(RacksPlanViewModel rsmv)
         {
-            foreach (RackSchemeView rsv in Views)
-            {
-                AbsoluteLayout.SetLayoutBounds(rsv, new Rectangle(rsv.Model.Left, rsv.Model.Top, rsv.Model.Width, rsv.Model.Height));
-            }
+            Reshape();
         }
 
         private void UDSRunIsDone(RacksPlanViewModel zmv)
         {
-            foreach (RackSchemeView lv in Views)
+            foreach (SchemeBaseView lv in Views)
             {
-                lv.UpdateUDS();
+                RackSchemeView rsv = (RackSchemeView)lv;
+                rsv.UpdateUDS();
             }
         }
 
         private void UDSListIsLoaded(RacksPlanViewModel rvm)
         {
-            hlv.ItemsSource = model.UserDefinedSelectionViewModels;
+            hlv.ItemsSource = Model.UserDefinedSelectionViewModels;
         }
 
         private void OnSearch(SearchViewModel svm)
@@ -147,168 +132,37 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
 
         private void GridTapped(object sender, EventArgs e)
         {
-            foreach (RackSchemeView rsv in Views)
+            foreach (SchemeBaseView rsv in Views)
             {
                 rsv.Opacity = 1;
             }
-            model.UnSelectAll();
-        }
-
-        readonly Easing easing1 = Easing.Linear;
-        readonly Easing easingParcking = Easing.CubicInOut;
-
-        double x = 0;
-        double y = 0;
-        double widthstep = 0;
-        double heightstep = 0;
-
-        double leftborder = double.MaxValue;
-        double topborder = double.MaxValue;
-        double rightborder = double.MinValue;
-        double bottomborder = double.MinValue;
-
-        double oldeTotalX = 0, oldeTotalY = 0;
-
-        private async void OnPaned(object sender, PanUpdatedEventArgs e)
-        {
-            if (!model.IsEditMode)
-            {
-                return;
-            }
-
-            if ((MovingAction != MovingActionTypeEnum.None) && (MovingAction != MovingActionTypeEnum.Pan))
-            {
-                return;
-            }
-
-            if (!model.IsSelectedList)
-            {
-                return;
-            }
-
-            switch (e.StatusType)
-            {
-                case GestureStatus.Started:
-                    {
-                        SelectedViews = Views.FindAll(x => x.Model.Selected == true);
-                        MovingAction = MovingActionTypeEnum.Pan;
-
-                        widthstep = model.ScreenWidth / model.PlanWidth;
-                        heightstep = model.ScreenHeight / model.PlanHeight;
-
-                        leftborder = double.MaxValue;
-                        topborder = double.MaxValue;
-                        rightborder = double.MinValue;
-                        bottomborder = double.MinValue;
-
-                        foreach (RackSchemeView lv in SelectedViews)
-                        {
-                            leftborder = Math.Min(lv.X, leftborder);
-                            topborder = Math.Min(lv.Y, topborder);
-                            rightborder = Math.Max(lv.X + lv.Width, rightborder);
-                            bottomborder = Math.Max(lv.Y + lv.Height, bottomborder);
-                            lv.Opacity = 0.5;
-                        }
-                        x += oldeTotalX;
-                        y += oldeTotalY;
-                        break;
-                    }
-                case GestureStatus.Running:
-                    {
-                        double dx = x + e.TotalX;
-                        double dy = y + e.TotalY;
-
-                        oldeTotalX = e.TotalX;
-                        oldeTotalY = e.TotalY;
-
-                        if (dx + leftborder < 0)
-                        {
-                            dx = -leftborder;
-                        }
-
-                        if (dx + rightborder > model.ScreenWidth)
-                        {
-                            dx = model.ScreenWidth - rightborder;
-                        }
-
-                        if (dy + topborder < 0)
-                        {
-                            dy = -topborder;
-                        }
-
-                        if (dy + bottomborder > model.ScreenHeight)
-                        {
-                            dy = model.ScreenHeight - bottomborder;
-                        }
-
-                        foreach (RackSchemeView lv in SelectedViews)
-                        {
-                            await lv.TranslateTo(dx, dy, 250, easing1);
-                        }
-                        break;
-                    }
-                case GestureStatus.Completed:
-                    {
-                        x = 0;
-                        y = 0;
-                        oldeTotalX = 0;
-                        oldeTotalY = 0;
-                        foreach (RackSchemeView rv in SelectedViews)
-                        {
-                            double newX = rv.X + rv.TranslationX;
-                            double newY = rv.Y + rv.TranslationY;
-
-                            rv.Model.Rack.Left = (int)Math.Round(newX / widthstep);
-                            rv.Model.Rack.Top = (int)Math.Round(newY / heightstep);
-
-                            //выравнивание по сетке
-                            double dX = rv.Model.Rack.Left * widthstep - rv.X;
-                            double dY = rv.Model.Rack.Top * heightstep - rv.Y;
-
-                            await rv.TranslateTo(dX, dY, 500, easingParcking);
-                            rv.Opacity = 1;
-                            //lv.Layout(new Rectangle(lv.X + dX, lv.Y + dY, lv.Width, lv.Height)); //в таком варианте почемуто есть глюк при переключении режима редактирования
-                            AbsoluteLayout.SetLayoutBounds(rv, new Rectangle(rv.X + dX, rv.Y + dY, rv.Width, rv.Height));
-                            rv.TranslationX = 0;
-                            rv.TranslationY = 0;
-                        }
-
-                        await model.SaveRacksChangesAsync();
-                        MovingAction = MovingActionTypeEnum.None;
-                        break;
-                    }
-                case GestureStatus.Canceled:
-                    {
-                        MovingAction = MovingActionTypeEnum.None;
-                        break;
-                    }
-                default:
-                    throw new InvalidOperationException("RacksSchemePage OnPaned Impossible Value ");
-            }
+            Model.UnSelectAll();
         }
 
         private async void ToolbarItem_Clicked(object sender, EventArgs e)
         {
             GridTapped(null, new EventArgs());
 
-            if (model.IsEditMode)
+            if (Model.IsEditMode)
             {
-                model.IsEditMode = false;
+                Model.IsEditMode = false;
+                Model.SetEditModeForItems(Model.IsEditMode);
                 abslayout.BackgroundColor = Color.White;
-                await model.SaveZoneParams();
+                await Model.SaveZoneParams();
             }
             else
             {
-                model.UnSelectAll();
+                Model.UnSelectAll();
                 abslayout.BackgroundColor = Color.LightGray;
-                model.IsEditMode = true;
-                model.Rebuild(false);
+                Model.IsEditMode = true;
+                Model.SetEditModeForItems(Model.IsEditMode);
+                Model.Rebuild(false);
             }
         }
 
         private void ToolbarItem_UDS(object sender, EventArgs e)
         {
-            model.IsVisibleUDS = !model.IsVisibleUDS;
+            Model.IsVisibleUDS = !Model.IsVisibleUDS;
         }
 
         private async void ToolbarItem_Search(object sender, EventArgs e)

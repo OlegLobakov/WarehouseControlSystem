@@ -130,7 +130,6 @@ namespace WarehouseControlSystem.ViewModel
             }
         } ObservableCollection<UserDefinedFunctionViewModel> userdefinedfunctions;
 
-
         public RackViewModel LinkToRackViewModel { get; set; }
 
         public ObservableCollection<string> BinTypes { get; set; } = new ObservableCollection<string>();
@@ -394,7 +393,6 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } bool templatedefault1;
-
 
         public BinsViewModel(INavigation navigation) : base(navigation)
         {

@@ -1,9 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+<d:SchemeBasePlanPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:hs="clr-namespace:WarehouseControlSystem.Helpers.Containers.HorizontalListView"
              xmlns:components="clr-namespace:WarehouseControlSystem.View.Content"
-             x:Class="WarehouseControlSystem.View.Pages.RackScheme.RacksSchemePage"
+              xmlns:d="clr-namespace:WarehouseControlSystem.View.Pages.Base"
+            x:Class="WarehouseControlSystem.View.Pages.RackScheme.RacksSchemePage"
              xmlns:i18n="clr-namespace:WarehouseControlSystem;assembly=WarehouseControlSystem">
     <ContentPage.ToolbarItems>
         <ToolbarItem  Order="Primary" Priority="10" Text="{i18n:Translate LocationsSchemePage_Toolbar_List}" Command="{Binding RackListCommand}" >
@@ -68,7 +69,7 @@
         </ToolbarItem>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" SizeChanged="StackLayout_SizeChanged" Padding="0">
+        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" SizeChanged="RacksStackLayoutSizeChanged" Padding="0">
             <Grid IsVisible="{Binding IsLoadingState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Padding="0">
                 <StackLayout VerticalOptions="Center" HorizontalOptions="Center" Orientation="Vertical">
                     <ActivityIndicator IsRunning="{Binding LoadAnimation}" HeightRequest="50" WidthRequest="50"/>
@@ -104,7 +105,7 @@
                             <Label Text="{Binding PlanWidth}" HorizontalOptions="Center"></Label>
                         </StackLayout>
                     </Grid>
-                    <AbsoluteLayout Grid.Row="1" x:Name="abslayout" SizeChanged="Abslayout_SizeChanged" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                    <AbsoluteLayout Grid.Row="1" x:Name="abslayout" SizeChanged="RacksAbslayoutSizeChanged" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
 
                     </AbsoluteLayout>
                     <ScrollView Grid.Row="2" HeightRequest="{Binding UDSPanelHeight}" IsVisible="{Binding IsVisibleUDS}" 
@@ -151,4 +152,4 @@
             </StackLayout>
         </StackLayout>
     </ContentPage.Content>
-</ContentPage>
+</d:SchemeBasePlanPage>

@@ -47,15 +47,13 @@ namespace WarehouseControlSystem.ViewModel
             }
         }  ObservableCollection<RackViewModel> rackviewmodels;
 
-        public ObservableCollection<RackViewModel> SelectedViewModels { get; set; }
-
+       
         public ICommand RackListCommand { protected set; get; }
         public ICommand NewRackCommand { protected set; get; }
         public ICommand EditRackCommand { protected set; get; }
         public ICommand DeleteRackCommand { protected set; get; }
 
-        public bool IsSelectedList { get { return SelectedViewModels.Count > 0; } }
-
+     
         public ObservableCollection<UserDefinedSelectionViewModel> UserDefinedSelectionViewModels { get; set; }
 
         public bool IsVisibleUDS
@@ -88,7 +86,6 @@ namespace WarehouseControlSystem.ViewModel
         {
             Zone = zone;
             RackViewModels = new ObservableCollection<RackViewModel>();
-            SelectedViewModels = new ObservableCollection<RackViewModel>();
             UserDefinedSelectionViewModels = new ObservableCollection<UserDefinedSelectionViewModel>();
 
             RackListCommand = new Command(async () => await RackList().ConfigureAwait(false));
@@ -120,7 +117,6 @@ namespace WarehouseControlSystem.ViewModel
                 lvm.DisposeModel();
             }
             RackViewModels.Clear();
-            SelectedViewModels.Clear();
             SelectedRackViewModel = null;
         }
 
@@ -163,7 +159,6 @@ namespace WarehouseControlSystem.ViewModel
         private void FillModel(List<Rack> racks)
         {
             RackViewModels.Clear();
-            SelectedViewModels.Clear();
             State = ModelState.Normal;
             foreach (Rack rack in racks)
             {
@@ -229,8 +224,10 @@ namespace WarehouseControlSystem.ViewModel
                     }
                 }
                 rvm.Selected = !rvm.Selected;
-
-                SelectedViewModels = new ObservableCollection<RackViewModel>(RackViewModels.ToList().FindAll(x => x.Selected == true));
+                if (rvm.Selected)
+                {
+                    rvm.EditMode = SchemeElementEditMode.Move;
+                }
             }
         }
 
@@ -295,10 +292,10 @@ namespace WarehouseControlSystem.ViewModel
 
             foreach (RackViewModel rvm in RackViewModels)
             {
-                rvm.Left = rvm.Rack.Left * WidthStep;
-                rvm.Top = rvm.Rack.Top * HeightStep;
-                rvm.Width = rvm.Rack.Width * WidthStep;
-                rvm.Height = rvm.Rack.Height * HeightStep;
+                rvm.ViewLeft = rvm.Left * WidthStep;
+                rvm.ViewTop = rvm.Top * HeightStep;
+                rvm.ViewWidth = rvm.Width * WidthStep;
+                rvm.ViewHeight = rvm.Height * HeightStep;
             }
 
             if (recreate)
@@ -317,7 +314,6 @@ namespace WarehouseControlSystem.ViewModel
             {
                 rvm.Selected = false;
             }
-            SelectedViewModels.Clear();
         }
 
         public async Task RackList()
@@ -366,7 +362,7 @@ namespace WarehouseControlSystem.ViewModel
             await NAV.ModifyZone(Zone, ACD.Default).ConfigureAwait(true);
         }
 
-        public async Task SaveRacksChangesAsync()
+        public override async void SaveChangesAsync()
         {
             if (NotNetOrConnection)
             {
@@ -378,7 +374,9 @@ namespace WarehouseControlSystem.ViewModel
             {
                 try
                 {
-                    await NAV.ModifyRack(rvm.Rack, ACD.Default).ConfigureAwait(true);
+                    Rack rack = new Rack();
+                    rvm.SaveFields(rack);
+                    await NAV.ModifyRack(rack, ACD.Default).ConfigureAwait(true);
                 }
                 catch (Exception e)
                 {
@@ -396,18 +394,26 @@ namespace WarehouseControlSystem.ViewModel
             int newminplanheight = 0;
             foreach (RackViewModel rvm in RackViewModels)
             {
-                if ((rvm.Rack.Left + rvm.Rack.Width) > newminplanwidth)
+                if ((rvm.Left + rvm.Width) > newminplanwidth)
                 {
-                    newminplanwidth = rvm.Rack.Left + rvm.Rack.Width;
+                    newminplanwidth = rvm.Left + rvm.Width;
                 }
-                if ((rvm.Rack.Top + rvm.Rack.Height) > newminplanheight)
+                if ((rvm.Top + rvm.Height) > newminplanheight)
                 {
-                    newminplanheight = rvm.Rack.Top + rvm.Rack.Height;
+                    newminplanheight = rvm.Top + rvm.Height;
                 }
             }
 
             MinPlanWidth = newminplanwidth;
             MinPlanHeight = newminplanheight;
+        }
+
+        public void SetEditModeForItems(bool iseditmode)
+        {
+            foreach (RackViewModel rvm in RackViewModels)
+            {
+                rvm.IsEditMode = iseditmode;
+            }
         }
 
         public override void DisposeModel()

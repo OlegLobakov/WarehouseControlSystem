@@ -29,7 +29,7 @@ namespace WarehouseControlSystem.ViewModel
 {
     public class LocationViewModel : NAVBaseViewModel
     {
-        public Location Location { get; set; }
+        private Location Location { get; set; }
 
         public string Debug
         {
@@ -222,6 +222,7 @@ namespace WarehouseControlSystem.ViewModel
         public void FillFields(Location location)
         {
             Code = location.Code;
+            PrevCode = location.PrevCode;
             Name = location.Name;
             Address = location.Address;
             SchemeVisible = location.SchemeVisible;
@@ -233,6 +234,10 @@ namespace WarehouseControlSystem.ViewModel
             RequireShipment = location.RequireShipment;
             RequirePick = location.RequirePick;
             RequirePutaway = location.RequirePutaway;
+            Left = location.Left;
+            Top = location.Top;
+            Width = location.Width;
+            Height = location.Height;
             PlanWidth = location.PlanWidth;
             PlanHeight = location.PlanHeight;
         }
@@ -240,6 +245,7 @@ namespace WarehouseControlSystem.ViewModel
         public void SaveFields(Location location)
         {
             location.Code = Code;
+            location.PrevCode = PrevCode;
             location.Name = Name;
             location.Address = Address;
             location.SchemeVisible = SchemeVisible;
@@ -251,14 +257,12 @@ namespace WarehouseControlSystem.ViewModel
             location.RequireShipment = RequireShipment;
             location.RequirePick = RequirePick;
             location.RequirePutaway = RequirePutaway;
+            location.Left = Left;
+            location.Top = Top;
+            location.Width = Width;
+            location.Height = Height;
             location.PlanWidth = PlanWidth;
             location.PlanHeight = PlanHeight;
-        }
-
-        public void SavePrevSize(double width, double height)
-        {
-            PrevWidth = width;
-            PrevHeight = height;
         }
 
         public void Tap(object sender)

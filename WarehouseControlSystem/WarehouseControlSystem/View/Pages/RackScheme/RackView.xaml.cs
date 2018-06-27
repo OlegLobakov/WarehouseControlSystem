@@ -23,15 +23,7 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
     public partial class RackView : ContentView
     {
         Label HeaderLabel;
-
-        public RackViewModel Model 
-        {
-            get
-            {
-                return model;
-            }
-        }
-        RackViewModel model;
+        public RackViewModel model;
 
         public RackView()
         {
@@ -41,9 +33,10 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             MessagingCenter.Subscribe<RackViewModel>(this, "Update", Update);
         }
 
+
         private void Update(BinsViewModel bvm)
         {
-            Update(Model);
+            Update(model);
         }
 
         public void Update(RackViewModel rvm)
@@ -54,42 +47,14 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             grid.Children.Clear();
             grid.RowDefinitions.Clear();
             grid.ColumnDefinitions.Clear();
-
-            CreateGrid();
-            CreateLabels();
-
-            for (int i = 1; i <= model.Levels; i++)
-            {
-                for (int j = 1; j <= model.Sections; j++)
-                {
-                    BinViewModel finded = rvm.BinsViewModel.BinViewModels.Find(x => x.Level == i && x.Section == j);
-                    if (finded is BinViewModel)
-                    {
-                        if (rvm.CreateMode)
-                        {
-                            BinView bev = new BinView(finded);
-                            grid.Children.Add(bev, finded.Section, finded.Section + finded.SectionSpan, finded.Level, finded.Level + finded.LevelSpan);
-                        }
-                        else
-                        {
-                            BinViewInRack bev = new BinViewInRack(finded);
-                            grid.Children.Add(bev, finded.Section, finded.Section + finded.SectionSpan, finded.Level, finded.Level + finded.LevelSpan);
-                        }
-                    }
-                }    
-            }
-        }
-
-        private void CreateGrid()
-        {
             grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(25, GridUnitType.Absolute) });
-            for (int i = 1; i <= Model.Levels; i++)
+            for (int i = 1; i <= model.Levels; i++)
             {
                 grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
             }
 
             grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(40, GridUnitType.Absolute) });
-            for (int i = 1; i <= Model.Sections; i++)
+            for (int i = 1; i <= model.Sections; i++)
             {
                 grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(120, GridUnitType.Absolute) });
             }
@@ -106,10 +71,7 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             HeaderLabel.FontAttributes = FontAttributes.Bold;
 
             grid.Children.Add(HeaderLabel, 0, 0);
-        }
 
-        private void CreateLabels()
-        {
             for (int i = 1; i <= model.Levels; i++)
             {
                 Label lb = new Label()
@@ -141,7 +103,33 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
                 lb.Text = j.ToString();
                 grid.Children.Add(lb, j, 0);
             }
+
+
+
+            for (int i = 1; i <= model.Levels; i++)
+            {
+                for (int j = 1; j <= model.Sections; j++)
+                {
+
+                    BinViewModel finded = rvm.BinsViewModel.BinViewModels.Find(x => x.Level == i && x.Section == j);
+                    if (finded is BinViewModel)
+                    {
+                        if (rvm.CreateMode)
+                        {
+                            BinView bev = new BinView(finded);
+                            grid.Children.Add(bev, finded.Section, finded.Section + finded.SectionSpan, finded.Level, finded.Level + finded.LevelSpan);
+                        }
+                        else
+                        {
+                            BinViewInRack bev = new BinViewInRack(finded);
+                            grid.Children.Add(bev, finded.Section, finded.Section + finded.SectionSpan, finded.Level, finded.Level + finded.LevelSpan);
+                        }
+                    }
+
+                }
+            }
         }
+
         public void SetHeaderLabel(string text)
         {
             if (HeaderLabel is Label)
@@ -150,10 +138,10 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             }
         }
 
-        public void DisposeObject()
+        public void Dispose()
         {
             MessagingCenter.Unsubscribe<BinsViewModel>(this, "Update");
-            MessagingCenter.Unsubscribe<RackViewModel>(this, "Update");        
+            MessagingCenter.Unsubscribe<RackViewModel>(this, "Update");
         }
     }
 }

@@ -33,22 +33,19 @@ namespace WarehouseControlSystem.ViewModel
 
         public ZoneViewModel SelectedZoneViewModel { get; set; }
         public ObservableCollection<ZoneViewModel> ZoneViewModels { get; set; }
-        public ObservableCollection<ZoneViewModel> SelectedViewModels { get; set; }
-
+     
         public ICommand ListZonesCommand { protected set; get; }
         public ICommand NewZoneCommand { protected set; get; }
         public ICommand EditZoneCommand { protected set; get; }
         public ICommand DeleteZoneCommand { protected set; get; }
 
-        public bool IsSelectedList { get { return SelectedViewModels.Count > 0; } }
-
+     
         public ZonesPlanViewModel(INavigation navigation, Location location) : base(navigation)
         {
             Location = location;
 
             ZoneViewModels = new ObservableCollection<ZoneViewModel>();
-            SelectedViewModels = new ObservableCollection<ZoneViewModel>();
-
+      
             ListZonesCommand = new Command(async () => await ListZones().ConfigureAwait(false));
             NewZoneCommand = new Command(async () => await NewZone().ConfigureAwait(false));
             EditZoneCommand = new Command(async (x) => await EditZone(x).ConfigureAwait(false));
@@ -72,7 +69,6 @@ namespace WarehouseControlSystem.ViewModel
 
         public void ClearAll()
         {
-            SelectedViewModels.Clear();
             foreach (ZoneViewModel zvm in ZoneViewModels)
             {
                 zvm.DisposeModel();
@@ -168,7 +164,11 @@ namespace WarehouseControlSystem.ViewModel
         {
             if (!IsEditMode)
             {
-                await Navigation.PushAsync(new RacksSchemePage(zvm.Zone));
+                Zone zone = new Zone();
+                zvm.SaveFields(zone);
+                RacksViewModel rvm = new RacksViewModel(Navigation, zone);
+                RacksSchemePage rsp = new RacksSchemePage(rvm);
+                await Navigation.PushAsync(rsp);
             }
             else
             {
@@ -202,8 +202,6 @@ namespace WarehouseControlSystem.ViewModel
                     zvm.Selected = true;
                     zvm.EditMode = SchemeElementEditMode.Move;
                 }
-
-                SelectedViewModels = new ObservableCollection<ZoneViewModel>(ZoneViewModels.ToList().FindAll(x => x.Selected == true));
             }
         }
 
@@ -216,10 +214,10 @@ namespace WarehouseControlSystem.ViewModel
 
             foreach (ZoneViewModel zvm in ZoneViewModels)
             {
-                zvm.Left = zvm.Zone.Left * WidthStep;
-                zvm.Top = zvm.Zone.Top * HeightStep;
-                zvm.Width = zvm.Zone.Width * WidthStep;
-                zvm.Height = zvm.Zone.Height * HeightStep;
+                zvm.ViewLeft = zvm.Left * WidthStep;
+                zvm.ViewTop = zvm.Top * HeightStep;
+                zvm.ViewWidth = zvm.Width * WidthStep;
+                zvm.ViewHeight = zvm.Height * HeightStep;
             }
 
             if (recreate)
@@ -240,7 +238,6 @@ namespace WarehouseControlSystem.ViewModel
             {
                 zvm.Selected = false;
             }
-            SelectedViewModels.Clear();
         }
 
         public async Task ListZones()
@@ -286,7 +283,9 @@ namespace WarehouseControlSystem.ViewModel
             {
                 ZoneViewModel zvm = (ZoneViewModel)obj;
                 State = ModelState.Loading;
-                await NAV.DeleteZone(zvm.Zone, ACD.Default).ConfigureAwait(true);
+                Zone zone = new Zone();
+                zvm.SaveFields(zone);
+                await NAV.DeleteZone(zone, ACD.Default).ConfigureAwait(true);
                 ZoneViewModels.Remove(zvm);
             }
             catch (Exception e)
@@ -314,7 +313,7 @@ namespace WarehouseControlSystem.ViewModel
             await NAV.ModifyLocation(Location, ACD.Default).ConfigureAwait(true);
         }
 
-        public async Task SaveZonesChangesAsync()
+        public override async void SaveChangesAsync()
         {
             if (NotNetOrConnection)
             {
@@ -326,7 +325,9 @@ namespace WarehouseControlSystem.ViewModel
             {
                 try
                 {
-                    await NAV.ModifyZone(zvm.Zone, ACD.Default).ConfigureAwait(true);
+                    Zone zone = new Zone();
+                    zvm.SaveFields(zone);
+                    await NAV.ModifyZone(zone, ACD.Default).ConfigureAwait(true);
                 }
                 catch (Exception e)
                 {
@@ -345,14 +346,14 @@ namespace WarehouseControlSystem.ViewModel
             int newminplanheight = 0;
             foreach (ZoneViewModel zvm in ZoneViewModels)
             {
-                if (zvm.Zone.Left + zvm.Zone.Width > newminplanwidth)
+                if (zvm.Left + zvm.Width > newminplanwidth)
                 {
-                    newminplanwidth = zvm.Zone.Left + zvm.Zone.Width;
+                    newminplanwidth = zvm.Left + zvm.Width;
                 }
 
-                if (zvm.Zone.Top + zvm.Zone.Height > newminplanheight)
+                if (zvm.Top + zvm.Height > newminplanheight)
                 {
-                    newminplanheight = zvm.Zone.Top + zvm.Zone.Height;
+                    newminplanheight = zvm.Top + zvm.Height;
                 }
             }
             MinPlanWidth = newminplanwidth;

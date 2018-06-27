@@ -13,19 +13,16 @@
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using WarehouseControlSystem.ViewModel;
+using WarehouseControlSystem.View.Pages.Base;
 
 namespace WarehouseControlSystem.View.Pages.LocationsScheme
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class LocationView : ContentView
+    public partial class LocationView : SchemeBaseView
     {
-        public LocationViewModel Model { get; }
-
-        public LocationView(LocationViewModel lvm)
+        public LocationView(LocationViewModel lvm) : base(lvm)
         {
-            Model = lvm;
-            BindingContext = Model;
             InitializeComponent();
-        }   
+        }
     }
 }

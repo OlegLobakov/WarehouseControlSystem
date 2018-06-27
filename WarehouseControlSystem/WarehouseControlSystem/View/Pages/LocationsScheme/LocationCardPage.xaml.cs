@@ -33,7 +33,7 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
 
 
             colorpicker.ItemsSource = Global.Colors;
-            ColorPick color = Global.Colors.Find(x => x.HexColor == lvm.Location.HexColor);
+            ColorPick color = Global.Colors.Find(x => x.Color == lvm.Color);
             if (color is ColorPick)
             {
                 colorpicker.SelectedItem = color;

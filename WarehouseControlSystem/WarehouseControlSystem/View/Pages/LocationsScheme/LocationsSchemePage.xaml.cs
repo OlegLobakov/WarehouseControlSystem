@@ -17,34 +17,22 @@ using Xamarin.Forms.Xaml;
 using WarehouseControlSystem.Model;
 using WarehouseControlSystem.ViewModel;
 using System.Threading.Tasks;
+using WarehouseControlSystem.View.Pages.Base;
 
 namespace WarehouseControlSystem.View.Pages.LocationsScheme
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class LocationsSchemePage : ContentPage
+    public partial class LocationsSchemePage : SchemeBasePlanPage
     {
-        List<LocationView> Views { get; set; }
-        List<LocationView> SelectedViews { get; set; }
 
-        MovingActionTypeEnum MovingAction = MovingActionTypeEnum.None;
+        private readonly LocationsPlanViewModel Model;
 
-        TapGestureRecognizer TapGesture;
-        PanGestureRecognizer PanGesture;
-
-        private readonly LocationsPlanViewModel model;
-        public LocationsSchemePage()
+        public LocationsSchemePage(LocationsPlanViewModel model) :base(model)
         {
-            model = new LocationsPlanViewModel(Navigation);
-            BindingContext = model;
+            Model = model;
             InitializeComponent();
 
-            Views = new List<LocationView>();
-            SelectedViews = new List<LocationView>();
-
-            TapGesture = new TapGestureRecognizer();
             abslayout.GestureRecognizers.Add(TapGesture);
-
-            PanGesture = new PanGestureRecognizer();
             abslayout.GestureRecognizers.Add(PanGesture);
 
             MessagingCenter.Subscribe<LocationsPlanViewModel>(this, "Rebuild", Rebuild);
@@ -56,38 +44,23 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
             base.OnAppearing();
             PanGesture.PanUpdated += OnPaned;
             TapGesture.Tapped += GridTapped;
-            await model.Load();
+            await Model.Load();
         }
 
         protected override void OnDisappearing()
         {
             PanGesture.PanUpdated -= OnPaned;
             TapGesture.Tapped -= GridTapped;
-            SelectedViews.Clear();
-            Views.Clear();
-            abslayout.Children.Clear();
             base.OnDisappearing();
         }
 
         protected override bool OnBackButtonPressed()
         {
-            model.DisposeModel();
+            Model.DisposeModel();
             MessagingCenter.Unsubscribe<LocationsPlanViewModel>(this, "Rebuild");
             MessagingCenter.Unsubscribe<LocationsPlanViewModel>(this, "Reshape");
             base.OnBackButtonPressed();
             return false;
-        }
-
-        private void StackLayout_SizeChanged(object sender, EventArgs e)
-        {
-            StackLayout sl = (StackLayout)sender;
-            model.SetScreenSizes(sl.Width, sl.Height, false);
-        }
-
-        private void Abslayout_SizeChanged(object sender, EventArgs e)
-        {
-            AbsoluteLayout al = (AbsoluteLayout)sender;
-            model.SetScreenSizes(al.Width, al.Height, true);
         }
 
         private void Rebuild(LocationsPlanViewModel lmv)
@@ -95,190 +68,44 @@ namespace WarehouseControlSystem.View.Pages.LocationsScheme
             abslayout.Children.Clear();
             SelectedViews.Clear();
             Views.Clear();
-            foreach (LocationViewModel lvm1 in model.LocationViewModels)
+            foreach (LocationViewModel lvm1 in Model.LocationViewModels)
             {
                 LocationView lv = new LocationView(lvm1);
-                AbsoluteLayout.SetLayoutBounds(lv, new Rectangle(lvm1.Left, lvm1.Top, lvm1.Width, lvm1.Height));
+                AbsoluteLayout.SetLayoutBounds(lv, new Rectangle(lvm1.ViewLeft, lvm1.ViewTop, lvm1.ViewWidth, lvm1.ViewHeight));
                 abslayout.Children.Add(lv);
                 Views.Add(lv);
                 lvm1.LoadZones();
             }
         }
 
-        private void Reshape(LocationsPlanViewModel rsmv)
+        private void Reshape(LocationsPlanViewModel lmv)
         {
-            foreach (LocationView lv in Views)
-            {
-                AbsoluteLayout.SetLayoutBounds(lv, new Rectangle(lv.Model.Left, lv.Model.Top, lv.Model.Width, lv.Model.Height));
-            }
+            Reshape();
         }
 
         private void GridTapped(object sender, EventArgs e)
         {
-            foreach (LocationView lv in Views)
+            foreach (SchemeBaseView lv in Views)
             {
                 lv.Opacity = 1;
             }
-            model.UnSelectAll();
-        }
-
-        readonly Easing easing1 = Easing.Linear;
-        readonly Easing easingParcking = Easing.CubicInOut;
-
-        double x = 0, y = 0, widthstep = 0, heightstep = 0;
-
-        double leftborder = double.MaxValue;
-        double topborder = double.MaxValue;
-        double rightborder = double.MinValue;
-        double bottomborder = double.MinValue;
-
-        double oldeTotalX = 0, oldeTotalY = 0;
-
-        private async void OnPaned(object sender, PanUpdatedEventArgs e)
-        {
-            if (!model.IsEditMode)
-            {
-                return;
-            }
-
-            if ((MovingAction != MovingActionTypeEnum.None) && (MovingAction != MovingActionTypeEnum.Pan))
-            {
-                return;
-            }
-
-            if (!model.IsSelectedList)
-            {
-                return;
-            }
-
-            switch (e.StatusType)
-            {
-                case GestureStatus.Started:
-                    {
-                        SelectedViews = Views.FindAll(x => x.Model.Selected == true);
-                        MovingAction = MovingActionTypeEnum.Pan;
-
-                        widthstep = model.ScreenWidth / model.PlanWidth;
-                        heightstep = model.ScreenHeight / model.PlanHeight;
-                        leftborder = double.MaxValue;
-                        topborder = double.MaxValue;
-                        rightborder = double.MinValue;
-                        bottomborder = double.MinValue;
-                        foreach (LocationView lv in SelectedViews)
-                        {
-                            leftborder = Math.Min(lv.X, leftborder);
-                            topborder = Math.Min(lv.Y, topborder);
-                            rightborder = Math.Max(lv.X + lv.Width, rightborder);
-                            bottomborder = Math.Max(lv.Y + lv.Height, bottomborder);
-                            lv.Opacity = 0.5;
-                            lv.Model.SavePrevSize(lv.Width,lv.Height);
-                        }
-                        x += oldeTotalX;
-                        y += oldeTotalY;                       
-                        break;
-                    }
-                case GestureStatus.Running:
-                    {
-                        double dx = x + e.TotalX;
-                        double dy = y + e.TotalY;
-                        oldeTotalX = e.TotalX;
-                        oldeTotalY = e.TotalY;
-                        if (dx + leftborder < 0)
-                        {
-                            dx = -leftborder;
-                        }
-
-                        if (dx + rightborder > model.ScreenWidth)
-                        {
-                            dx = model.ScreenWidth - rightborder;
-                        }
-
-                        if (dy + topborder < 0)
-                        {
-                            dy = -topborder;
-                        }
-
-                        if (dy + bottomborder > (model.ScreenHeight))
-                        {
-                            dy = model.ScreenHeight - bottomborder;
-                        }
-
-                        foreach (LocationView lv in SelectedViews)
-                        {
-                            if (lv.Model.EditMode == SchemeElementEditMode.Move)
-                            {
-                                await lv.TranslateTo(dx, dy, 250, easing1);
-                            }
-                            if (lv.Model.EditMode == SchemeElementEditMode.Resize)
-                            {
-                                AbsoluteLayout.SetLayoutBounds(lv, new Rectangle(lv.X, lv.Y, lv.Model.PrevWidth + dx, lv.Model.PrevHeight + dy));
-                            }
-                        }
-                        break;
-                    }
-                case GestureStatus.Completed:
-                    {
-                        x = 0;
-                        y = 0;
-                        oldeTotalX = 0;
-                        oldeTotalY = 0;
-                        foreach (LocationView lv in SelectedViews)
-                        {
-                            if (lv.Model.EditMode == SchemeElementEditMode.Move)
-                            {
-                                double newX = lv.X + lv.TranslationX;
-                                double newY = lv.Y + lv.TranslationY;
-
-                                lv.Model.Location.Left = (int)Math.Round(newX / widthstep);
-                                lv.Model.Location.Top = (int)Math.Round(newY / heightstep);
-
-                                double dX = lv.Model.Location.Left * widthstep - lv.X;
-                                double dY = lv.Model.Location.Top * heightstep - lv.Y;
-
-                                await lv.TranslateTo(dX, dY, 500, easingParcking);
-                                //lv.Layout(new Rectangle(lv.X + dX, lv.Y + dY, lv.Width, lv.Height)); //в таком варианте почемуто есть глюк при переключении режима редактирования
-                                AbsoluteLayout.SetLayoutBounds(lv, new Rectangle(lv.X + dX, lv.Y + dY, lv.Width, lv.Height));
-                                lv.TranslationX = 0;
-                                lv.TranslationY = 0;
-                            }
-                            if (lv.Model.EditMode == SchemeElementEditMode.Resize)
-                            {
-                                lv.Model.Location.Width = (int)Math.Round(lv.Width / widthstep);
-                                lv.Model.Location.Height = (int)Math.Round(lv.Height / heightstep);
-                                double newWidth = lv.Model.Location.Width * widthstep;
-                                double newheight = lv.Model.Location.Height * heightstep;
-                                AbsoluteLayout.SetLayoutBounds(lv, new Rectangle(lv.X, lv.Y, newWidth, newheight));
-                            }
-                            lv.Opacity = 1;
-                        }
-                        await model.SaveLocationChangesAsync();
-                        MovingAction = MovingActionTypeEnum.None;
-                        break;
-                    }
-                case GestureStatus.Canceled:
-                    {
-                        MovingAction = MovingActionTypeEnum.None;
-                        break;
-                    }
-                default:
-                    throw new InvalidOperationException("Impossible value");
-            }
+            Model.UnSelectAll();
         }
 
         private async void ToolbarItem_Clicked(object sender, EventArgs e)
         {
             GridTapped(null, new EventArgs());
 
-            if (model.IsEditMode)
+            if (Model.IsEditMode)
             {
                 abslayout.BackgroundColor = Color.White;
-                model.IsEditMode = false;
-                await model.SaveSchemeParams();
+                Model.IsEditMode = false;
+                await Model.SaveSchemeParams();
             }
             else
             {
                 abslayout.BackgroundColor = Color.LightGray;
-                model.IsEditMode = true;
+                Model.IsEditMode = true;
             }
         }
     }

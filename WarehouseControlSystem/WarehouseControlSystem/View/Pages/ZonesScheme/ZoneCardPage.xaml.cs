@@ -33,7 +33,7 @@ namespace WarehouseControlSystem.View.Pages.ZonesScheme
             InitializeComponent();
 
             colorpicker.ItemsSource = Global.Colors;
-            ColorPick color = Global.Colors.Find(x => x.HexColor == zvm.Zone.HexColor);
+            ColorPick color = Global.Colors.Find(x => x.Color == zvm.Color);
             if (color is ColorPick)
             {
                 colorpicker.SelectedItem = color;

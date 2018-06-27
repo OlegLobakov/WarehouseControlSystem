@@ -30,8 +30,8 @@ namespace WarehouseControlSystem.ViewModel
 {
     public class ZoneViewModel : NAVBaseViewModel
     {
-        public Location Location { get; set; }
-        public Zone Zone { get; set; }
+        private Location Location { get; set; }
+        private Zone Zone { get; set; }
 
         public string Description
         {
@@ -220,12 +220,17 @@ namespace WarehouseControlSystem.ViewModel
         {
             LocationCode = zone.LocationCode;
             Code = zone.Code;
+            PrevCode = zone.PrevCode;
             Description = zone.Description;
             Color = Color.FromHex(zone.HexColor);
             BinTypeCode = zone.BinTypeCode;
             SchemeVisible = zone.SchemeVisible;
             RackQuantity = zone.RackQuantity;
             BinQuantity = zone.BinQuantity;
+            Left = zone.Left;
+            Top = zone.Top;
+            Width = zone.Width;
+            Height = zone.Height;
             PlanWidth = zone.PlanWidth;
             PlanHeight = zone.PlanHeight;
         }
@@ -234,20 +239,19 @@ namespace WarehouseControlSystem.ViewModel
         {
             zone.LocationCode = LocationCode;
             zone.Code = Code;
+            zone.PrevCode = PrevCode;
             zone.Description = Description;
             zone.HexColor = ColorToHex(Color);
             zone.BinTypeCode = BinTypeCode;
             zone.SchemeVisible = SchemeVisible;
+            zone.Left = Left;
+            zone.Top = Top;
+            zone.Width = Width;
+            zone.Height = Height;
             zone.PlanWidth = PlanWidth;
             zone.PlanHeight = PlanHeight;
         }
        
-        public void SavePrevSize(double width, double height)
-        {
-            PrevWidth = width;
-            PrevHeight = height;
-        }
-
         public void Tap(object sender)
         {
             if (OnTap is Action<ZoneViewModel>)

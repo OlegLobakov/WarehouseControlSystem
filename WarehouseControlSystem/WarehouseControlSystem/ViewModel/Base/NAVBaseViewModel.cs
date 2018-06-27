@@ -38,6 +38,21 @@ namespace WarehouseControlSystem.ViewModel.Base
             }
         } string code = "";
 
+        public string PrevCode
+        {
+            get { return prevcode; }
+            set
+            {
+                if (prevcode != value)
+                {
+                    prevcode = value;
+                    Changed = true;
+                    OnPropertyChanged(nameof(PrevCode));
+                }
+            }
+        }
+        string prevcode = "";
+
         public string LocationCode
         {
             get { return locationcode; }
@@ -132,13 +147,21 @@ namespace WarehouseControlSystem.ViewModel.Base
             }
         } bool changed;
 
-        public double Left { get; set; }
-        public double Top { get; set; }
-        public double Width { get; set; }
-        public double Height { get; set; }
+        /// <summary>
+        /// Screen Koordinates on scheme
+        /// </summary>
+        public double ViewLeft { get; set; }
+        public double ViewTop { get; set; }
+        public double ViewWidth { get; set; }
+        public double ViewHeight { get; set; }
 
-        public double PrevWidth { get; set; }
-        public double PrevHeight { get; set; }
+        public double PrevViewWidth { get; set; }
+        public double PrevViewHeight { get; set; }
+
+        public int Left { get; set; }
+        public int Top { get; set; }
+        public int Width { get; set; }
+        public int Height { get; set; }
 
         public int PlanWidth
         {
@@ -238,6 +261,12 @@ namespace WarehouseControlSystem.ViewModel.Base
             }
         }
         string name;
+
+        public void SavePrevSize(double width, double height)
+        {
+            PrevViewWidth = width;
+            PrevViewHeight = height;
+        }
 
         public NAVBaseViewModel(INavigation navigation) : base(navigation)
         {
