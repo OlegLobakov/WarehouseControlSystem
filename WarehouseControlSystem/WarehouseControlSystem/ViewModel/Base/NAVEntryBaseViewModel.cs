@@ -34,20 +34,6 @@ namespace WarehouseControlSystem.ViewModel.Base
         }
         string locationcode;
 
-        public string ZoneCode
-        {
-            get { return zonecode; }
-            set
-            {
-                if (zonecode != value)
-                {
-                    zonecode = value;
-                    OnPropertyChanged(nameof(ZoneCode));
-                }
-            }
-        }
-        string zonecode;
-
         public string BinCode
         {
             get { return bincode; }
@@ -61,6 +47,20 @@ namespace WarehouseControlSystem.ViewModel.Base
             }
         }
         string bincode;
+
+        public string ZoneCode
+        {
+            get { return zonecode; }
+            set
+            {
+                if (zonecode != value)
+                {
+                    zonecode = value;
+                    OnPropertyChanged(nameof(ZoneCode));
+                }
+            }
+        }
+        string zonecode;
 
         public string ItemNo
         {

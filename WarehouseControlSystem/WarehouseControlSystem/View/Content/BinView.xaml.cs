@@ -32,15 +32,6 @@ namespace WarehouseControlSystem.View.Content
             model = bvm;
             BindingContext = model;
             InitializeComponent();
-
-            TapGestureRecognizer tc = new TapGestureRecognizer
-            {
-                Command = model.TapCommand
-            };
-
-            GestureRecognizers.Add(tc);
-            codelabel.GestureRecognizers.Add(tc);
-            grid.GestureRecognizers.Add(tc);
         }
     }
 }

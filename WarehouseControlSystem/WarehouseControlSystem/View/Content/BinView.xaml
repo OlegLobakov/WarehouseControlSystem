@@ -4,6 +4,10 @@
              x:Class="WarehouseControlSystem.View.Content.BinView">
   <ContentView.Content>
         <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <StackLayout.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding TapCommand}"/>
+            </StackLayout.GestureRecognizers>
+            
             <StackLayout.Triggers>
                 <DataTrigger Binding="{Binding Selected}" TargetType="StackLayout" Value="true">
                     <Setter Property="Padding" Value="3"  />

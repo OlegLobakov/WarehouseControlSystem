@@ -1,12 +1,13 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-    
-    
-    
+﻿<?xml version="1.0" encoding="UTF-8"?>   
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WarehouseControlSystem.View.Content.BinViewInRack">
   <ContentView.Content>
         <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <StackLayout.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding TapCommand}"/>
+            </StackLayout.GestureRecognizers>
+            
             <StackLayout.Triggers>
                 <DataTrigger Binding="{Binding Selected}" TargetType="StackLayout" Value="true">
                     <Setter Property="Padding" Value="3"  />
