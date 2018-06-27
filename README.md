@@ -43,6 +43,16 @@ Let's make changes on the fly:
 alt="IMAGE ALT TEXT HERE" width="480" height="320" border="10" />
 </a>
 
+### Warehouse Search
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=Pl8gKuFRamE" target="_blank"><img src="http://img.youtube.com/vi/Pl8gKuFRamE/0.jpg" 
+alt="Warehouse Search" width="480" height="320" border="10" />
+</a>
+
+### Zone, Rack, Bins Creation
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=0GNiur4O29E" target="_blank"><img src="http://img.youtube.com/vi/0GNiur4O29E/0.jpg" 
+alt="Zone, Rack, Bins Creation" width="480" height="320" border="10" />
+</a>
+
 ### User Defined Search Functions
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=Hkiv8lzFFmo" target="_blank"><img src="http://img.youtube.com/vi/Hkiv8lzFFmo/0.jpg" 
 alt="User Defined Search Functions" width="480" height="320" border="10" />
