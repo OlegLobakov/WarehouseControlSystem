@@ -29,7 +29,9 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding TapCommand}"/>
+                    </Grid.GestureRecognizers>
                     <!--<Label Grid.Row="0" x:Name="codelabel" Text="{Binding Code}" FontSize="17" 
                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
                        HorizontalTextAlignment="Start" VerticalTextAlignment="Center" TextColor="White" Margin="10,5,0,0">

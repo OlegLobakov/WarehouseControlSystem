@@ -1361,4 +1361,7 @@
   <data name="BinInfoPanelRackCard_Functions" xml:space="preserve">
     <value>Функции</value>
   </data>
+  <data name="RackNewPage_Numeration" xml:space="preserve">
+    <value>Нумерация ячеек</value>
+  </data>
 </root>

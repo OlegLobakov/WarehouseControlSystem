@@ -595,6 +595,11 @@ namespace WarehouseControlSystem.ViewModel
 
         private void DefineBordersOfCombine(List<BinViewModel> selectedlist)
         {
+            leftsection = int.MaxValue;
+            leftlevel = int.MaxValue;
+            rightsection = 0;
+            rightlevel = 0;
+
             foreach (BinViewModel bvm1 in selectedlist)
             {
                 if (bvm1.Section < leftsection)
@@ -873,6 +878,11 @@ namespace WarehouseControlSystem.ViewModel
             BinViewModel selectedbvm = BinViewModels.Find(x => x.Selected == true);
             IsSelectedBins = selectedbvm is BinViewModel;
 
+            if (selectedbvm is BinViewModel)
+            {
+                SetTemplateBySelectedBin(selectedbvm);
+            }
+
             if (bvm.IsContent)
             {
                 bvm.LoadAnimation = true;
@@ -932,23 +942,46 @@ namespace WarehouseControlSystem.ViewModel
             return BinViewModels.Find(x => x.Selected == true);
         }
 
+        private bool FillTemplateIsEnabled = false;
+
+        private void SetTemplateBySelectedBin(BinViewModel bvm)
+        {
+            FillTemplateIsEnabled = false;
+            TemplateCode = bvm.Code;
+            TemplateMaximumWeight = bvm.MaximumWeight;
+            TemplateBlocked = bvm.Blocked;
+            TemplateBlockMovement = bvm.BlockMovement;
+            TemplateBinType = bvm.BinType;
+            TemplateBinRanking = bvm.BinRanking;
+            TemplateMaximumCubage = bvm.MaximumCubage;
+            TemplateMaximumWeight = bvm.MaximumWeight;
+            TemplateAdjustmentBin = bvm.AdjustmentBin;
+            TemplateWarehouseClassCode = bvm.WarehouseClassCode;
+            TemplateSpecialEquipmentCode = bvm.SpecialEquipmentCode;
+            TemplateDefault = bvm.Default;
+            FillTemplateIsEnabled = true;
+        }
+
         private void SetSelectedBinsByTemplate()
         {
-            List<BinViewModel> selectedlist = BinViewModels.FindAll(x => x.Selected == true);
-            foreach (BinViewModel bvm in selectedlist)
+            if (FillTemplateIsEnabled)
             {
-                bvm.Code = TemplateCode;
-                bvm.MaximumWeight = TemplateMaximumWeight;
-                bvm.Blocked = TemplateBlocked;
-                bvm.BlockMovement = TemplateBlockMovement;
-                bvm.BinType = TemplateBinType;
-                bvm.BinRanking = TemplateBinRanking;
-                bvm.MaximumCubage = TemplateMaximumCubage;
-                bvm.MaximumWeight = TemplateMaximumWeight;
-                bvm.AdjustmentBin = TemplateAdjustmentBin;
-                bvm.WarehouseClassCode = TemplateWarehouseClassCode;
-                bvm.SpecialEquipmentCode = TemplateSpecialEquipmentCode;
-                bvm.Default = TemplateDefault;
+                List<BinViewModel> selectedlist = BinViewModels.FindAll(x => x.Selected == true);
+                foreach (BinViewModel bvm in selectedlist)
+                {
+                    bvm.Code = TemplateCode;
+                    bvm.MaximumWeight = TemplateMaximumWeight;
+                    bvm.Blocked = TemplateBlocked;
+                    bvm.BlockMovement = TemplateBlockMovement;
+                    bvm.BinType = TemplateBinType;
+                    bvm.BinRanking = TemplateBinRanking;
+                    bvm.MaximumCubage = TemplateMaximumCubage;
+                    bvm.MaximumWeight = TemplateMaximumWeight;
+                    bvm.AdjustmentBin = TemplateAdjustmentBin;
+                    bvm.WarehouseClassCode = TemplateWarehouseClassCode;
+                    bvm.SpecialEquipmentCode = TemplateSpecialEquipmentCode;
+                    bvm.Default = TemplateDefault;
+                }
             }
         }
 

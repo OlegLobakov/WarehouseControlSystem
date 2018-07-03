@@ -344,18 +344,25 @@ namespace WarehouseControlSystem.ViewModel
 
             try
             {
+                LocationsIsBeingLoaded = true;
+                List<Location> locations = await NAV.GetLocationList("", false, 1, int.MaxValue, ACD.Default).ConfigureAwait(true);
+                Locations.Clear();
+                foreach (Location location in locations)
+                {
+                    Locations.Add(location);
+                }
+
                 if (CanChangeLocationCode)
                 {
-                    LocationsIsBeingLoaded = true;
-                    List<Location> locations = await NAV.GetLocationList("", false, 1, int.MaxValue, ACD.Default).ConfigureAwait(true);
-                    Locations.Clear();
-                    foreach (Location location in locations)
-                    {
-                        Locations.Add(location);
-                    }
-                    LocationsIsLoaded = locations.Count > 0 && CanChangeLocationCode;
-                    MessagingCenter.Send<ZoneViewModel>(this, "LocationsIsLoaded");
+                    LocationsIsLoaded = locations.Count > 0;
                 }
+                else
+                {
+                    LocationsIsLoaded = false;
+                }
+                MessagingCenter.Send<ZoneViewModel>(this, "LocationsIsLoaded");
+
+                
 
                 BinTypesIsBeingLoaded = true;
                 List<BinType> bintypes = await NAV.GetBinTypeList(1, int.MaxValue, ACD.Default).ConfigureAwait(true);

@@ -281,7 +281,6 @@ namespace WarehouseControlSystem.Helpers.NAV
             Task.Run(() => GetIntFromNAV(tcs, functionname, body, myns, cts));
             return tcs.Task;
         }
-
         public static Task<List<Location>> GetLocationList(string codefilter, bool onlyvisibled, int position, int count, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<List<Location>>();
@@ -1046,6 +1045,7 @@ namespace WarehouseControlSystem.Helpers.NAV
             foreach (XAttribute currentatribute in currentnode.Attributes())
             {
                 GetBinFromXML1(bin, currentatribute);
+                GetBinFromXML2(bin, currentatribute);
             }
             return bin;
         }

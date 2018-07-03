@@ -95,7 +95,6 @@
                                 ItemsSource="{Binding SpecialEquipments}"
                                 IsEnabled="{Binding SpecialEquipmentsIsEnabled}"
                                 SelectedItem="{Binding SpecialEquipmentCode}">
-
                         </Picker>
                     </StackLayout>
                     <StackLayout Grid.Row="4" Orientation="Vertical">

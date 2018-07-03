@@ -1365,4 +1365,7 @@
   <data name="BinInfoPanelRackCard_Functions" xml:space="preserve">
     <value>Functions</value>
   </data>
+  <data name="RackNewPage_Numeration" xml:space="preserve">
+    <value>Bin Numbering</value>
+  </data>
 </root>

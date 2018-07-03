@@ -2977,6 +2977,15 @@ namespace WarehouseControlSystem.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bin Numbering.
+        /// </summary>
+        internal static string RackNewPage_Numeration {
+            get {
+                return ResourceManager.GetString("RackNewPage_Numeration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Orientation.
         /// </summary>
         internal static string RackNewPage_Orientation {
