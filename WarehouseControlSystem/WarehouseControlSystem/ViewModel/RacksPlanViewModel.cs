@@ -244,39 +244,40 @@ namespace WarehouseControlSystem.ViewModel
                     {
                         rvm.UDSSelects.RemoveAll(x => x.FunctionID == udsvm.ID);
                     }
-
-                    foreach (UserDefinedSelectionResult udsr in list)
-                    {
-                        RackViewModel rvm = RackViewModels.ToList().Find(x => x.No == udsr.RackNo);
-
-                        if (rvm is RackViewModel)
-                        {
-                            SubSchemeSelect sss = new SubSchemeSelect()
-                            {
-                                FunctionID = udsr.FunctionID,
-                                Section = udsr.Section,
-                                Level = udsr.Level,
-                                Depth = udsr.Depth,
-                                Value = udsr.Value,
-                                HexColor = udsr.HexColor
-                            };
-                            rvm.UDSSelects.Add(sss);
-                        }
-                    }
+                    FillRackUDSR(list);
                 }
                 MessagingCenter.Send(this, "UDSRunIsDone");
-            }
-            catch (OperationCanceledException e)
-            {
-                System.Diagnostics.Debug.WriteLine(e.Message);
-                ErrorText = e.Message;
-                LoadAnimation = false;
             }
             catch (Exception e)
             {
                 System.Diagnostics.Debug.WriteLine(e.Message);
             }
+            finally
+            {
+                LoadAnimation = false;
+            }
             udsvm.State = ModelState.Normal;
+        }
+
+        private void FillRackUDSR(List<UserDefinedSelectionResult> list)
+        {
+            foreach (UserDefinedSelectionResult udsr in list)
+            {
+                RackViewModel rvm = RackViewModels.ToList().Find(x => x.No == udsr.RackNo);
+                if (rvm is RackViewModel)
+                {
+                    SubSchemeSelect sss = new SubSchemeSelect()
+                    {
+                        FunctionID = udsr.FunctionID,
+                        Section = udsr.Section,
+                        Level = udsr.Level,
+                        Depth = udsr.Depth,
+                        Value = udsr.Value,
+                        HexColor = udsr.HexColor
+                    };
+                    rvm.UDSSelects.Add(sss);
+                }
+            }
         }
 
         public override void Rebuild(bool recreate)

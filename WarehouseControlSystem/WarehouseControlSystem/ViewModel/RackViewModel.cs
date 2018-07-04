@@ -533,57 +533,72 @@ namespace WarehouseControlSystem.ViewModel
         {
             if (CreateMode)
             {
-                System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("en-us");
-
                 for (int k = 1; k <= Depth; k++)
                 {
-                    int levelnumber = NumberingLevelBegin + Levels - 1;
-
-                    if (ReversLevelNumbering)
-                    {
-                        levelnumber = numberinglevelbegin;
-                    }
-
-                    for (int i = 1; i <= Levels; i++)
-                    {
-                        int sectionnumber = numberingsectionbegin;
-
-                        if (ReversSectionNumbering)
-                        {
-                            sectionnumber = numberingsectionbegin + Sections - 1;
-                        }
-
-                        for (int j = 1; j <= Sections; j++)
-                        {
-                            string number = No + racksectionseparator + sectionnumber.ToString("D2", ci) + sectionlevelseparator + levelnumber.ToString();
-
-                            BinViewModel bvm = BinsViewModel.Find(j, i, k);
-                            if (bvm is BinViewModel)
-                            {
-                                bvm.Code = number;
-                            }
-
-                            if (ReversSectionNumbering)
-                            {
-                                sectionnumber = sectionnumber - StepNumberingSection;
-                            }
-                            else
-                            {
-                                sectionnumber = sectionnumber + StepNumberingSection;
-                            }
-                        }
-                        if (ReversLevelNumbering)
-                        {
-                            levelnumber = levelnumber + 1;
-                        }
-                        else
-                        {
-                            levelnumber = levelnumber - 1;
-                        }
-                    }
+                    NumberDepth(k);
                 }
 
                 await BinsViewModel.CheckBins(ACD).ConfigureAwait(true);
+            }
+        }
+
+        private void NumberDepth(int k)
+        {
+            int levelnumber = NumberingLevelBegin + Levels - 1;
+
+            if (ReversLevelNumbering)
+            {
+                levelnumber = numberinglevelbegin;
+            }
+
+            for (int i = 1; i <= Levels; i++)
+            {
+                NumberSections(k, i, levelnumber);
+
+                if (ReversLevelNumbering)
+                {
+                    levelnumber = levelnumber + 1;
+                }
+                else
+                {
+                    levelnumber = levelnumber - 1;
+                }
+            }
+        }
+
+        private void NumberSections(int k, int i, int levelname)
+        {
+            int sectionname = numberingsectionbegin;
+
+            if (ReversSectionNumbering)
+            {
+                sectionname = numberingsectionbegin + Sections - 1;
+            }
+
+            for (int j = 1; j <= Sections; j++)
+            {
+                Numbering(k, i, j, levelname, sectionname);
+
+                if (ReversSectionNumbering)
+                {
+                    sectionname = sectionname - StepNumberingSection;
+                }
+                else
+                {
+                    sectionname = sectionname + StepNumberingSection;
+                }
+            }
+        }
+
+        private void Numbering(int k, int i, int j, int levelname, int sectionname)
+        {
+            System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("en-us");
+            string number = No + racksectionseparator + sectionname.ToString("D2", ci) + sectionlevelseparator + levelname.ToString();
+
+            BinViewModel bvm = BinsViewModel.Find(j, i, k);
+            if (bvm is BinViewModel)
+            {
+                bvm.Code = number;
             }
         }
 
@@ -862,31 +877,13 @@ namespace WarehouseControlSystem.ViewModel
                 LoadingText = AppResources.RackNewPage_LoadingProgressRack + " " + newrack.No;
                 int rackexist = await NAV.GetRackCount(LocationCode, ZoneCode, No, false, ACD.Default).ConfigureAwait(true);
                 await ModifyRack(newrack, rackexist).ConfigureAwait(true);
-                bool errorsexist = false;
                 foreach (BinViewModel bvm in BinsViewModel.BinViewModels)
                 {
-                    try
-                    {
-                        await SaveBin(bvm).ConfigureAwait(true);
-                    }
-                    catch (Exception e)
-                    {
-                        System.Diagnostics.Debug.WriteLine(e.Message);
-                        errorsexist = true;
-                        ErrorText += e.Message;
-                    }
+                    await SaveBin(bvm).ConfigureAwait(true);
                 }
                 SaveFields(Rack);
                 LoadAnimation = false;
-                if (errorsexist)
-                {
-                    State = ModelState.Error;
-                }
-                else
-                {
-                    MessagingCenter.Send<RackViewModel>(this, "Update");
-                    await Navigation.PopAsync();
-                }
+                MessagingCenter.Send<RackViewModel>(this, "Update");
             }
             catch (Exception e)
             {

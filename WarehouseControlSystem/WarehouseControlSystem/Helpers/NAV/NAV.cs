@@ -1860,47 +1860,58 @@ namespace WarehouseControlSystem.Helpers.NAV
             WarehouseEntry we = new WarehouseEntry();
             foreach (XAttribute currentatribute in currentnode.Attributes())
             {
-                switch (currentatribute.Name.LocalName)
-                {
-                    case "LocationCode":
-                        we.LocationCode = currentatribute.Value;
-                        break;
-                    case "ZoneCode":
-                        we.ZoneCode = currentatribute.Value;
-                        break;
-                    case "BinCode":
-                        we.BinCode = currentatribute.Value;
-                        break;
-                    case "ItemNo":
-                        we.ItemNo = currentatribute.Value;
-                        break;
-                    case "VariantCode":
-                        we.VariantCode = currentatribute.Value;
-                        break;
-                    case "Description":
-                        we.Description = currentatribute.Value;
-                        break;
-                    case "EntryType":
-                        we.EntryType = StringToInt(currentatribute.Value);
-                        break;
-                    case "RegisteringDate":
-                        we.RegisteringDate = currentatribute.Value;
-                        break;
-                    case "SourceNo":
-                        we.SourceNo = currentatribute.Value;
-                        break;
-                    case "Quantity":
-                        we.Quantity = StringToDec(currentatribute.Value);
-                        break;
-                    case "QuantityBase":
-                        we.QuantityBase = StringToDec(currentatribute.Value);
-                        break;
-                    case "UnitofMeasureCode":
-                        we.UnitofMeasureCode = currentatribute.Value;
-                        break;
-                }
+                GetWarehouseEntryFromXML1(we, currentatribute);
+                GetWarehouseEntryFromXML2(we, currentatribute);
             }
             return we;
+        }
+        private static void GetWarehouseEntryFromXML1(WarehouseEntry we, XAttribute currentatribute)
+        {
+            switch (currentatribute.Name.LocalName)
+            {
+                case "LocationCode":
+                    we.LocationCode = currentatribute.Value;
+                    break;
+                case "ZoneCode":
+                    we.ZoneCode = currentatribute.Value;
+                    break;
+                case "BinCode":
+                    we.BinCode = currentatribute.Value;
+                    break;
+                case "ItemNo":
+                    we.ItemNo = currentatribute.Value;
+                    break;
+                case "VariantCode":
+                    we.VariantCode = currentatribute.Value;
+                    break;
+                case "Description":
+                    we.Description = currentatribute.Value;
+                    break;
+            }
+        }
+        private static void GetWarehouseEntryFromXML2(WarehouseEntry we, XAttribute currentatribute)
+        {
+            switch (currentatribute.Name.LocalName)
+            {
+                case "EntryType":
+                    we.EntryType = StringToInt(currentatribute.Value);
+                    break;
+                case "RegisteringDate":
+                    we.RegisteringDate = currentatribute.Value;
+                    break;
+                case "SourceNo":
+                    we.SourceNo = currentatribute.Value;
+                    break;
+                case "Quantity":
+                    we.Quantity = StringToDec(currentatribute.Value);
+                    break;
+                case "QuantityBase":
+                    we.QuantityBase = StringToDec(currentatribute.Value);
+                    break;
+                case "UnitofMeasureCode":
+                    we.UnitofMeasureCode = currentatribute.Value;
+                    break;
+            }
         }
         #endregion
         #region UserDefinedSelection
@@ -2330,53 +2341,60 @@ namespace WarehouseControlSystem.Helpers.NAV
             return handler;
         }
 
+        private static HttpRequestMessage CreateHttpRequest(SoapParams sp,Connection connection)
+        {
+            string requestbody = GetRequestText(CreateSOAPRequest(sp.SoapBody, sp.NameSpace));
+            var request = new HttpRequestMessage
+            {
+                RequestUri = connection.GetUri(),
+                Method = HttpMethod.Post
+            };
+            request.Content = new StringContent(requestbody, Encoding.UTF8, "text/xml");
+            return request;
+        }
+        private static XElement GetResponseContent(HttpResponseMessage response)
+        {
+            Task<Stream> streamTask = response.Content.ReadAsStreamAsync();
+            Stream stream = streamTask.Result;
+            var sr = new StreamReader(stream);
+            XDocument xmldoc = XDocument.Load(sr);
+            if (response.IsSuccessStatusCode)
+            {
+                XElement bodysopeenvelopenode = xmldoc.Root.Element(ns + "Body");
+                if (bodysopeenvelopenode is XElement)
+                {
+                    return bodysopeenvelopenode;
+                }
+            }
+            else
+            {
+                if (response.ReasonPhrase == "Internal Server Error")
+                {
+                    throw CreateNAVException(xmldoc);
+                }
+                else
+                {
+                    NAVUnknowException unknown = new NAVUnknowException(response.ReasonPhrase);
+                    throw unknown;
+                }
+            }
+            return null;
+        }
+
         public static async Task<XElement> Process(SoapParams sp, bool testconnection, CancellationTokenSource cts)
         {
             Connection connection = SelectConnection(testconnection);
-            XElement rv = null;
             try
             {
-                string requestbody = GetRequestText(CreateSOAPRequest(sp.SoapBody, sp.NameSpace));
-
                 var handler = GetHandler(connection);
                 using (var client = new HttpClient(handler))
                 {
-                    var request = new HttpRequestMessage
-                    {
-                        RequestUri = connection.GetUri(),
-                        Method = HttpMethod.Post
-                    };
-
-                    request.Content = new StringContent(requestbody, Encoding.UTF8, "text/xml");
+                    HttpRequestMessage request = CreateHttpRequest(sp, connection);
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
                     client.DefaultRequestHeaders.Add("SOAPAction", connection.GetSoapActionTxt() + "/" + sp.FunctionName);
-
                     using (var response = await client.SendAsync(request, cts.Token))
                     {
-                        Task<Stream> streamTask = response.Content.ReadAsStreamAsync();
-                        Stream stream = streamTask.Result;
-                        var sr = new StreamReader(stream);
-                        XDocument xmldoc = XDocument.Load(sr);
-                        if (response.IsSuccessStatusCode)
-                        {
-                            XElement bodysopeenvelopenode = xmldoc.Root.Element(ns + "Body");
-                            if (bodysopeenvelopenode is XElement)
-                            {
-                                return bodysopeenvelopenode;
-                            }
-                        }
-                        else
-                        {
-                            if (response.ReasonPhrase == "Internal Server Error")
-                            {
-                                throw CreateNAVException(xmldoc);
-                            }
-                            else
-                            {
-                                NAVUnknowException unknown = new NAVUnknowException(response.ReasonPhrase);
-                                throw unknown;
-                            }
-                        }
+                        return GetResponseContent(response);
                     }
                 }
             }
@@ -2384,7 +2402,6 @@ namespace WarehouseControlSystem.Helpers.NAV
             {
                 throw e;
             }
-            return rv;
         }
 
         /// <summary>

@@ -277,13 +277,10 @@ namespace WarehouseControlSystem.ViewModel
                 }
                 catch (Exception e)
                 {
+                    IsBeenSavingToNAV = false;
                     System.Diagnostics.Debug.WriteLine(e.Message);
                     State = ModelState.Error;
                     ErrorText = e.Message;
-                }
-                finally
-                {
-                    IsBeenSavingToNAV = false;
                 }
             }
             else
@@ -296,13 +293,10 @@ namespace WarehouseControlSystem.ViewModel
                 }
                 catch (Exception e)
                 {
+                    IsBeenSavingToNAV = false;
                     System.Diagnostics.Debug.WriteLine(e.Message);
                     State = ModelState.Error;
                     ErrorText = e.Message;
-                }
-                finally
-                {
-                    IsBeenSavingToNAV = false;
                 }
             }
         }
@@ -410,25 +404,7 @@ namespace WarehouseControlSystem.ViewModel
                     foreach (Rack rack in racks)
                     {
                         SubSchemeElement sse = CreateSSE(rack);
-
-                        if (Global.SearchResponses is List<SearchResponse>)
-                        {
-                            List<SearchResponse> list = Global.SearchResponses.FindAll(x => x.ZoneCode == Code && x.RackNo == rack.No);
-                            if (list is List<SearchResponse>)
-                            {
-                                sse.Selection = new List<SubSchemeSelect>();
-                                foreach (SearchResponse sr in list)
-                                {
-                                    SubSchemeSelect sss = new SubSchemeSelect
-                                    {
-                                        Section = sr.Section,
-                                        Level = sr.Level,
-                                        Depth = sr.Depth
-                                    };
-                                    sse.Selection.Add(sss);
-                                }
-                            }
-                        }
+                        CheckGlobalSearch(rack, sse);
                         SubSchemeElements.Add(sse);
                     }
                     RacksIsLoaded = SubSchemeElements.Count > 0;
@@ -455,6 +431,28 @@ namespace WarehouseControlSystem.ViewModel
                 HexColor = ColorToHex(Color.Gray),
                 RackOrientation = rack.RackOrientation
             };
+        }
+
+        private void CheckGlobalSearch(Rack rack, SubSchemeElement sse)
+        {
+            if (Global.SearchResponses is List<SearchResponse>)
+            {
+                List<SearchResponse> list = Global.SearchResponses.FindAll(x => x.ZoneCode == Code && x.RackNo == rack.No);
+                if (list is List<SearchResponse>)
+                {
+                    sse.Selection = new List<SubSchemeSelect>();
+                    foreach (SearchResponse sr in list)
+                    {
+                        SubSchemeSelect sss = new SubSchemeSelect
+                        {
+                            Section = sr.Section,
+                            Level = sr.Level,
+                            Depth = sr.Depth
+                        };
+                        sse.Selection.Add(sss);
+                    }
+                }
+            }
         }
 
         private async Task SaveToZoneSchemeVisible()

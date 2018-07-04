@@ -23,7 +23,6 @@ using Xamarin.Forms;
 using WarehouseControlSystem.Helpers.NAV;
 using WarehouseControlSystem.Resx;
 using System.Windows.Input;
-using System.Threading;
 
 namespace WarehouseControlSystem.ViewModel
 {
@@ -279,36 +278,51 @@ namespace WarehouseControlSystem.ViewModel
             State = ModelState.Loading;
             LoadAnimation = true;
             SaveFields(Location);
-            if (CreateMode)
+            try
             {
-                try
+                if (CreateMode)
                 {
-                    await NAV.CreateLocation(Location, ACD.Default);
-                    await Navigation.PopAsync();
+                    await CreateLocation(Location);
                 }
-                catch (Exception e)
+                else
                 {
-                    System.Diagnostics.Debug.WriteLine(e.Message);
-                    State = ModelState.Error;
-                    ErrorText = e.Message+" "+e.StackTrace;
+                    await ModifyLocation(Location);
                 }
             }
-            else
+            catch (Exception e)
             {
-                try
-                {
-                    await NAV.ModifyLocation(Location, ACD.Default);
-                    await Navigation.PopAsync();
-                }
-                catch (Exception e)
-                {
-                    System.Diagnostics.Debug.WriteLine(e.Message);
-                    State = ModelState.Error;
-                    ErrorText = e.Message + " " + e.StackTrace;
-                }
+                System.Diagnostics.Debug.WriteLine(e.Message);
+                State = ModelState.Error;
+                ErrorText = e.Message + " " + e.StackTrace;
             }
-            LoadAnimation = false;
         }
+
+        private async Task CreateLocation(Location location)
+        {
+            try
+            {
+                await NAV.CreateLocation(location, ACD.Default).ConfigureAwait(true);
+                await Navigation.PopAsync();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        private async Task ModifyLocation(Location location)
+        {
+            try
+            {
+                await NAV.ModifyLocation(location, ACD.Default).ConfigureAwait(true);
+                await Navigation.PopAsync();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
 
         public async void Cancel()
         {
