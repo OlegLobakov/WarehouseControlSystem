@@ -33,6 +33,13 @@ namespace WarehouseControlSystem.Helpers.NAV
             public string FunctionName { get; set; }
             public XElement SoapBody { get; set; }
             public XNamespace NameSpace { get; set; }
+
+            public SoapParams(string functionname, XElement sb, XNamespace ns)
+            {
+                FunctionName = functionname;
+                SoapBody = sb;
+                NameSpace = ns;
+            }
         }
 
         static XNamespace ns = "http://schemas.xmlsoap.org/soap/envelope/";
@@ -80,12 +87,7 @@ namespace WarehouseControlSystem.Helpers.NAV
             XNamespace myns = GetNameSpace();
             string functionname = "GetPlanWidth";
             XElement body = new XElement(myns + functionname);
-            SoapParams sp = new SoapParams
-            {
-                FunctionName = functionname,
-                SoapBody = body,
-                NameSpace = myns
-            };
+            SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(() => GetIntFromNAV(tcs, sp, cts));
             return tcs.Task;
         }
@@ -102,12 +104,7 @@ namespace WarehouseControlSystem.Helpers.NAV
             XNamespace myns = GetNameSpace();
             string functionname = "GetPlanHeight";
             XElement body = new XElement(myns + functionname);
-            SoapParams sp = new SoapParams
-            {
-                FunctionName = functionname,
-                SoapBody = body,
-                NameSpace = myns
-            };
+            SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(() => GetIntFromNAV(tcs, sp, cts));
             return tcs.Task;
         }
@@ -125,12 +122,7 @@ namespace WarehouseControlSystem.Helpers.NAV
             string functionname = "SetPlanWidth";
             XElement body = new XElement(myns + functionname,
                 new XElement(myns + "value", value));
-            SoapParams sp = new SoapParams
-            {
-                FunctionName = functionname,
-                SoapBody = body,
-                NameSpace = myns
-            };
+            SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(() => GetIntFromNAV(tcs, sp, cts));
             return tcs.Task;
         }
@@ -147,12 +139,7 @@ namespace WarehouseControlSystem.Helpers.NAV
             string functionname = "SetPlanHeight";
             XElement body = new XElement(myns + functionname,
                 new XElement(myns + "value", value));
-            SoapParams sp = new SoapParams
-            {
-                FunctionName = functionname,
-                SoapBody = body,
-                NameSpace = myns
-            };
+            SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(() => GetIntFromNAV(tcs, sp, cts));
 
             return tcs.Task;
@@ -169,12 +156,7 @@ namespace WarehouseControlSystem.Helpers.NAV
             XNamespace myns = GetNameSpace();
             string functionname = "APIVersion";
             XElement body = new XElement(myns + functionname);
-            SoapParams sp = new SoapParams
-            {
-                FunctionName = functionname,
-                SoapBody = body,
-                NameSpace = myns
-            };
+            SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(() => GetIntFromNAV(tcs, sp, cts));
             return tcs.Task;
         }
@@ -230,12 +212,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                 new XElement(myns + functionname,
                     new XElement(myns + "code", location.Code),
                     SetLocationParams(myns, location));
-            SoapParams sp = new SoapParams
-            {
-                FunctionName = functionname,
-                SoapBody = body,
-                NameSpace = myns
-            };
+            SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(() => GetIntFromNAV(tcs, sp, cts));
             return tcs.Task;
         }
@@ -255,12 +232,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                     new XElement(myns + "code", location.Code),
                     new XElement(myns + "prevCode", location.PrevCode),
                     SetLocationParams(myns, location));
-            SoapParams sp = new SoapParams
-            {
-                FunctionName = functionname,
-                SoapBody = body,
-                NameSpace = myns
-            };
+            SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(() => GetIntFromNAV(tcs, sp, cts));
             return tcs.Task;
         }
@@ -279,12 +251,7 @@ namespace WarehouseControlSystem.Helpers.NAV
             new XElement(myns + functionname,
                 new XElement(myns + "code", location.Code),
                 new XElement(myns + "visible", location.SchemeVisible.ToString()));
-            SoapParams sp = new SoapParams
-            {
-                FunctionName = functionname,
-                SoapBody = body,
-                NameSpace = myns
-            };
+            SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(() => GetIntFromNAV(tcs, sp, cts));
 
             return tcs.Task;
@@ -303,12 +270,7 @@ namespace WarehouseControlSystem.Helpers.NAV
             XElement body =
                 new XElement(myns + functionname,
                     new XElement(myns + "name", locationcode));
-            SoapParams sp = new SoapParams
-            {
-                FunctionName = functionname,
-                SoapBody = body,
-                NameSpace = myns
-            };
+            SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(() => GetIntFromNAV(tcs, sp, cts));
             return tcs.Task;
         }
@@ -327,12 +289,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                 new XElement(myns + functionname,
                     new XElement(myns + "codeFilter", codefilter),
                     new XElement(myns + "onlyVisibled", onlyvisibled.ToString()));
-            SoapParams sp = new SoapParams
-            {
-                FunctionName = functionname,
-                SoapBody = body,
-                NameSpace = myns
-            };
+            SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(() => GetIntFromNAV(tcs, sp, cts));
             return tcs.Task;
         }
@@ -353,12 +310,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                     new XElement(myns + "codeFilter", codefilter),
                     new XElement(myns + "onlyVisibled", onlyvisibled1.ToString()),
                     PositionCount(myns, position1, count1));
-            SoapParams sp = new SoapParams
-            {
-                FunctionName = functionname,
-                SoapBody = body,
-                NameSpace = myns
-            };
+            SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(() => GetLocationListFromNAV(tcs, sp, cts));
             return tcs.Task;
         }
@@ -512,12 +464,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                 new XElement(myns + "locationCode", zone.LocationCode),
                 new XElement(myns + "code", zone.Code),
                 SetZoneParams(myns, zone));
-            SoapParams sp = new SoapParams
-            {
-                FunctionName = functionname,
-                SoapBody = body,
-                NameSpace = myns
-            };
+            SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(() => GetIntFromNAV(tcs, sp, cts));
             return tcs.Task;
         }
@@ -538,12 +485,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                 new XElement(myns + "code", zone.Code),
                 new XElement(myns + "prevCode", zone.PrevCode),
                 SetZoneParams(myns, zone));
-            SoapParams sp = new SoapParams
-            {
-                FunctionName = functionname,
-                SoapBody = body,
-                NameSpace = myns
-            };
+            SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(() => GetIntFromNAV(tcs, sp, cts));
             return tcs.Task;
         }
@@ -563,12 +505,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                 new XElement(myns + "locationCode", zone.LocationCode),
                 new XElement(myns + "code", zone.Code),
                 new XElement(myns + "visible", zone.SchemeVisible));
-            SoapParams sp = new SoapParams
-            {
-                FunctionName = functionname,
-                SoapBody = body,
-                NameSpace = myns
-            };
+            SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(() => GetIntFromNAV(tcs,sp , cts));
             return tcs.Task;
         }
@@ -586,12 +523,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                 new XElement(myns + functionname,
                     new XElement(myns + "locationCode", zone.LocationCode),
                     new XElement(myns + "code", zone.Code));
-            SoapParams sp = new SoapParams
-            {
-                FunctionName = functionname,
-                SoapBody = body,
-                NameSpace = myns
-            };
+            SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(() => GetIntFromNAV(tcs, sp, cts));
             return tcs.Task;
         }
@@ -611,12 +543,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                             new XElement(myns + "locationFilter", locationfilter),
                             new XElement(myns + "codeFilter", codefilter),
                             new XElement(myns + "onlyVisibled", onlyvisibled));
-            SoapParams sp = new SoapParams
-            {
-                FunctionName = functionname,
-                SoapBody = body,
-                NameSpace = myns
-            };
+            SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(() => GetIntFromNAV(tcs, sp, cts));
             return tcs.Task;
         }
@@ -637,12 +564,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                     new XElement(myns + "codeFilter", codefilter2),
                     new XElement(myns + "onlyVisibled", onlyvisibled2),
                     PositionCount(myns, position2, count2));
-            SoapParams sp = new SoapParams
-            {
-                FunctionName = functionname,
-                SoapBody = body,
-                NameSpace = myns
-            };
+            SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(() => GetZoneListNAV(tcs, sp, cts));
             return tcs.Task;
         }
@@ -784,12 +706,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                 new XElement(myns + "zoneCode", rack.ZoneCode),
                 new XElement(myns + "no", rack.No),
                 SetRackParams(myns,rack));
-            SoapParams sp = new SoapParams
-            {
-                FunctionName = functionname,
-                SoapBody = body,
-                NameSpace = myns
-            };
+            SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(() => GetIntFromNAV(tcs, sp, cts));
             return tcs.Task;
         }
@@ -811,12 +728,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                 new XElement(myns + "no", rack.No),
                 new XElement(myns + "prevNo", rack.PrevNo),
                 SetRackParams(myns, rack));
-            SoapParams sp = new SoapParams
-            {
-                FunctionName = functionname,
-                SoapBody = body,
-                NameSpace = myns
-            };
+            SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(() => GetIntFromNAV(tcs, sp, cts));
             return tcs.Task;
         }
@@ -836,12 +748,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                 new XElement(myns + "locationCode", rack.LocationCode),
                 new XElement(myns + "zoneCode", rack.ZoneCode),
                 new XElement(myns + "no", rack.No));
-            SoapParams sp = new SoapParams
-            {
-                FunctionName = functionname,
-                SoapBody = body,
-                NameSpace = myns
-            };
+            SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(() => GetIntFromNAV(tcs, sp, cts));
             return tcs.Task;
         }
@@ -862,12 +769,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                     new XElement(myns + "zoneCode", rack.ZoneCode),
                     new XElement(myns + "no", rack.No),
                     new XElement(myns + "visible", rack.SchemeVisible));
-            SoapParams sp = new SoapParams
-            {
-                FunctionName = functionname,
-                SoapBody = body,
-                NameSpace = myns
-            };
+            SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(() => GetIntFromNAV(tcs, sp, cts));
             return tcs.Task;
         }
@@ -889,12 +791,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                     new XElement(myns + "nOFilter", nofilter),
                     new XElement(myns + "onlyVisibled", onlyvisibled));
 
-            SoapParams sp = new SoapParams
-            {
-                FunctionName = functionname,
-                SoapBody = body,
-                NameSpace = myns
-            };
+            SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(() => GetIntFromNAV(tcs, sp, cts));
             return tcs.Task;
         }
@@ -915,12 +812,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                     new XElement(myns + "zoneCodeFilter", zonefilter),
                     new XElement(myns + "onlyVisibled", onlyvisibled3),
                     PositionCount(myns, position3, count3));
-            SoapParams sp = new SoapParams
-            {
-                FunctionName = functionname,
-                SoapBody = body,
-                NameSpace = myns
-            };
+            SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(() => GetRackListFromNAV(tcs, sp, cts));
             return tcs.Task;
         }
@@ -1041,12 +933,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                 new XElement(myns + "sectionSpan", bin.SectionSpan),
                 new XElement(myns + "levelSpan", bin.LevelSpan),
                 new XElement(myns + "depthSpan", bin.DepthSpan));
-            SoapParams sp = new SoapParams
-            {
-                FunctionName = functionname,
-                SoapBody = body,
-                NameSpace = myns
-            };
+            SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(() => GetIntFromNAV(tcs, sp, cts));
             return tcs.Task;
         }
@@ -1080,12 +967,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                     new XElement(myns + "binTypeCode", bin.BinType),
                     new XElement(myns + "warehouseClassCode", bin.WarehouseClassCode),
                     new XElement(myns + "specialEquipmentCode", bin.SpecialEquipmentCode));
-            SoapParams sp = new SoapParams
-            {
-                FunctionName = functionname,
-                SoapBody = body,
-                NameSpace = myns
-            };
+            SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(() => GetIntFromNAV(tcs, sp, cts));
 
             return tcs.Task;
@@ -1107,12 +989,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                 new XElement(myns + "zoneCodeFilter", bin.Code),
                 new XElement(myns + "rackCodeFilter", bin.PrevCode),
                 new XElement(myns + "code", bin.RackNo));
-            SoapParams sp = new SoapParams
-            {
-                FunctionName = functionname,
-                SoapBody = body,
-                NameSpace = myns
-            };
+            SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(() => GetIntFromNAV(tcs, sp, cts));
             return tcs.Task;
         }
@@ -1133,12 +1010,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                 new XElement(myns + "zoneCodeFilter", codefilter),
                 new XElement(myns + "rackCodeFilter", rackcodefilter),
                 new XElement(myns + "binCodeFilter", bincodefilter));
-            SoapParams sp = new SoapParams
-            {
-                FunctionName = functionname,
-                SoapBody = body,
-                NameSpace = myns
-            };
+            SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(() => GetIntFromNAV(tcs, sp, cts));
             return tcs.Task;
         }
@@ -1160,12 +1032,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                     new XElement(myns + "rackCodeFilter", Filter.RackCodeFilter),
                     new XElement(myns + "binCodeFilter", Filter.BinCodeFilter),
                     PositionCount(myns, Filter.ItemsPosition, Filter.ItemsCount));
-            SoapParams sp = new SoapParams
-            {
-                FunctionName = functionname,
-                SoapBody = body,
-                NameSpace = myns
-            };
+            SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(() => GetBinListFromNAV(tcs, sp, cts));
             return tcs.Task;
         }
@@ -1313,12 +1180,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                 new XElement(myns + functionname,
                     new XElement(myns + "locationCode", bintemplate.LocationCode),
                     SetBinTemplateParams(myns, bintemplate));
-            SoapParams sp = new SoapParams
-            {
-                FunctionName = functionname,
-                SoapBody = body,
-                NameSpace = myns
-            };
+            SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(() => GetIntFromNAV(tcs, sp, cts));
             return tcs.Task;
         }
@@ -1338,12 +1200,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                 new XElement(myns + functionname,
                 new XElement(myns + "locationCode", bintemplate.LocationCode),
                 SetBinTemplateParams(myns, bintemplate));
-            SoapParams sp = new SoapParams
-            {
-                FunctionName = functionname,
-                SoapBody = body,
-                NameSpace = myns
-            };
+            SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(() => GetIntFromNAV(tcs, sp, cts));
             return tcs.Task;
         }
@@ -1362,12 +1219,7 @@ namespace WarehouseControlSystem.Helpers.NAV
             XElement body =
                 new XElement(myns + functionname,
                 new XElement(myns + "code", bintemplate.Code));
-            SoapParams sp = new SoapParams
-            {
-                FunctionName = functionname,
-                SoapBody = body,
-                NameSpace = myns
-            };
+            SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(() => GetIntFromNAV(tcs, sp, cts));
             return tcs.Task;
         }
@@ -1382,12 +1234,7 @@ namespace WarehouseControlSystem.Helpers.NAV
             XNamespace myns = GetNameSpace();
             string functionname = "GetBinTemplateCount";
                 XElement body = new XElement(myns + functionname);
-            SoapParams sp = new SoapParams
-            {
-                FunctionName = functionname,
-                SoapBody = body,
-                NameSpace = myns
-            };
+            SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(() => GetIntFromNAV(tcs, sp, cts));
             return tcs.Task;
         }
@@ -1405,12 +1252,7 @@ namespace WarehouseControlSystem.Helpers.NAV
             XElement body =
                 new XElement(myns + functionname,
                     PositionCount(myns, position, count));
-            SoapParams sp = new SoapParams
-            {
-                FunctionName = functionname,
-                SoapBody = body,
-                NameSpace = myns
-            };
+            SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(() => GetBinTemplateListFromNAV(tcs, sp, cts));
             return tcs.Task;
         }
@@ -1509,12 +1351,7 @@ namespace WarehouseControlSystem.Helpers.NAV
             XNamespace myns = GetNameSpace();
             string functionname = "GetBinTypeCount";
             XElement body = new XElement(myns + functionname);
-            SoapParams sp = new SoapParams
-            {
-                FunctionName = functionname,
-                SoapBody = body,
-                NameSpace = myns
-            };
+            SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(() => GetIntFromNAV(tcs, sp, cts));
             return tcs.Task;
         }
@@ -1531,12 +1368,7 @@ namespace WarehouseControlSystem.Helpers.NAV
             XElement body =
                 new XElement(myns + functionname,
                     PositionCount(myns, position, count));
-            SoapParams sp = new SoapParams
-            {
-                FunctionName = functionname,
-                SoapBody = body,
-                NameSpace = myns
-            };
+            SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(() => GetBinTypeListFromNAV(tcs, sp, cts));
             return tcs.Task;
         }
@@ -1591,7 +1423,19 @@ namespace WarehouseControlSystem.Helpers.NAV
         }
         #endregion
         #region BinContent
-        public static Task<int> GetBinContentCount(string locationCodeFilter, string zoneCodeFilter, string binCodeFiler, string itemNoFilter, string variantCodeFilter, CancellationTokenSource cts)
+        public static XElement[] BinContentFilters(XNamespace myns, NAVFilter Filter)
+        {
+            return new XElement[]
+            {
+                new XElement(myns + "locationCodeFilter", Filter.LocationCodeFilter),
+                new XElement(myns + "zoneCodeFilter", Filter.ZoneCodeFilter),
+                new XElement(myns + "binCodeFilter", Filter.BinCodeFilter),
+                new XElement(myns + "itemNoFilter", Filter.ItemNoFilter),
+                new XElement(myns + "variantCodeFilter", Filter.VariantCodeFilter)
+            };
+        }
+
+        public static Task<int> GetBinContentCount(NAVFilter Filter, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<int>();
             if (IsConnectionFaild())
@@ -1603,17 +1447,8 @@ namespace WarehouseControlSystem.Helpers.NAV
             string functionname = "GetBinContentCount";
             XElement body =
                 new XElement(myns + functionname,
-                    new XElement(myns + "locationCodeFilter", locationCodeFilter),
-                    new XElement(myns + "zoneCodeFilter", zoneCodeFilter),
-                    new XElement(myns + "binCodeFilter", binCodeFiler),
-                    new XElement(myns + "itemNoFilter", itemNoFilter),
-                    new XElement(myns + "variantCodeFilter", variantCodeFilter));
-            SoapParams sp = new SoapParams
-            {
-                FunctionName = functionname,
-                SoapBody = body,
-                NameSpace = myns
-            };
+                    BinContentFilters(myns, Filter));
+            SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(() => GetIntFromNAV(tcs, sp, cts));
             return tcs.Task;
         }
@@ -1629,18 +1464,9 @@ namespace WarehouseControlSystem.Helpers.NAV
             string functionname = "GetBinContentList";
             XElement body =
                 new XElement(myns + functionname,
-                    new XElement(myns + "locationCodeFilter", Filter.LocationCodeFilter),
-                    new XElement(myns + "zoneCodeFilter", Filter.ZoneCodeFilter),
-                    new XElement(myns + "binCodeFilter", Filter.BinCodeFilter),
-                    new XElement(myns + "itemNoFilter", Filter.ItemNoFilter),
-                    new XElement(myns + "variantCodeFilter", Filter.VariantCodeFilter),
+                    BinContentFilters(myns,Filter),
                     PositionCount(myns, Filter.ItemsPosition, Filter.ItemsCount));
-            SoapParams sp = new SoapParams
-            {
-                FunctionName = functionname,
-                SoapBody = body,
-                NameSpace = myns
-            };
+            SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(() => GetBinContentFromNAV(tcs, sp, cts));
             return tcs.Task;
         }
@@ -1749,12 +1575,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                     new XElement(myns + "barCodeFilter", barCodeCodeFilter),
                     new XElement(myns + "itemNoFilter", itemNoFilter),
                     new XElement(myns + "variantCodeFilter", variantCodeFilter));
-            SoapParams sp = new SoapParams
-            {
-                FunctionName = functionname,
-                SoapBody = body,
-                NameSpace = myns
-            };
+            SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(() => GetIntFromNAV(tcs, sp, cts));
             return tcs.Task;
         }
@@ -1775,12 +1596,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                     new XElement(myns + "itemNoFilter", itemNoFilter),
                     new XElement(myns + "variantCodeFilter", variantCodeFilter),
                     PositionCount(myns, position, count));
-            SoapParams sp = new SoapParams
-            {
-                FunctionName = functionname,
-                SoapBody = body,
-                NameSpace = myns
-            };
+            SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(() => GetItemIdentifierListFromNAV(tcs, sp, cts));
 
             return tcs.Task;
@@ -1843,12 +1659,7 @@ namespace WarehouseControlSystem.Helpers.NAV
             XNamespace myns = GetNameSpace();
             string functionname = "GetWarehouseClassCount";
             XElement body = new XElement(myns + functionname);
-            SoapParams sp = new SoapParams
-            {
-                FunctionName = functionname,
-                SoapBody = body,
-                NameSpace = myns
-            };
+            SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(() => GetIntFromNAV(tcs, sp, cts));
             return tcs.Task;
         }
@@ -1865,17 +1676,12 @@ namespace WarehouseControlSystem.Helpers.NAV
             XElement body =
                 new XElement(myns + functionname,
                     PositionCount(myns, position, count));
-            SoapParams sp = new SoapParams
-            {
-                FunctionName = functionname,
-                SoapBody = body,
-                NameSpace = myns
-            };
-            Task.Run(() => GetWarehouseEntryListFromNAV(tcs, sp, cts));
+            SoapParams sp = new SoapParams(functionname, body, myns);
+            Task.Run(() => GetWarehouseClassListFromNAV(tcs, sp, cts));
 
             return tcs.Task;
         }
-        private static async Task GetWarehouseEntryListFromNAV(TaskCompletionSource<List<WarehouseClass>> tcs, SoapParams sp, CancellationTokenSource cts)
+        private static async Task GetWarehouseClassListFromNAV(TaskCompletionSource<List<WarehouseClass>> tcs, SoapParams sp, CancellationTokenSource cts)
         {
             try
             {
@@ -1926,12 +1732,7 @@ namespace WarehouseControlSystem.Helpers.NAV
             XNamespace myns = GetNameSpace();
             string functionname = "GetSpecialEquipmentCount";
             XElement body = new XElement(myns + functionname);
-            SoapParams sp = new SoapParams
-            {
-                FunctionName = functionname,
-                SoapBody = body,
-                NameSpace = myns
-            };
+            SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(() => GetIntFromNAV(tcs, sp, cts));
             return tcs.Task;
         }
@@ -1949,12 +1750,7 @@ namespace WarehouseControlSystem.Helpers.NAV
             XElement body =
                 new XElement(myns + functionname,
                     PositionCount(myns, position, count));
-            SoapParams sp = new SoapParams
-            {
-                FunctionName = functionname,
-                SoapBody = body,
-                NameSpace = myns
-            };
+            SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(() => GetSpecialEquipmentListFromNAV(tcs, sp, cts));
 
             return tcs.Task;
@@ -2016,12 +1812,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                     new XElement(myns + "binCodeFilter", Filter.BinCodeFilter),
                     new XElement(myns + "itemNoFilter", Filter.ItemNoFilter),
                     new XElement(myns + "variantCodeFilter", Filter.VariantCodeFilter));
-            SoapParams sp = new SoapParams
-            {
-                FunctionName = functionname,
-                SoapBody = body,
-                NameSpace = myns
-            };
+            SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(() => GetIntFromNAV(tcs, sp, cts));
             return tcs.Task;
         }
@@ -2038,18 +1829,9 @@ namespace WarehouseControlSystem.Helpers.NAV
 
             XElement body =
                 new XElement(myns + functionname,
-                    new XElement(myns + "locationCodeFilter", Filter.LocationCodeFilter),
-                    new XElement(myns + "zoneCodeFilter", Filter.ZoneCodeFilter),
-                    new XElement(myns + "binCodeFilter", Filter.BinCodeFilter),
-                    new XElement(myns + "itemNoFilter", Filter.ItemNoFilter),
-                    new XElement(myns + "variantCodeFilter", Filter.VariantCodeFilter),
+                    BinContentFilters(myns,Filter),
                     PositionCount(myns, Filter.ItemsPosition, Filter.ItemsCount));
-            SoapParams sp = new SoapParams
-            {
-                FunctionName = functionname,
-                SoapBody = body,
-                NameSpace = myns
-            };
+            SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(() => GetWarehouseEntryListFromNAV(tcs, sp, cts));
             return tcs.Task;
         }
@@ -2138,37 +1920,29 @@ namespace WarehouseControlSystem.Helpers.NAV
                     new XElement(myns + "locationCode", locationCode),
                     new XElement(myns + "zoneCode", zoneCode),
                     new XElement(myns + "responseDocument", ""));
-
-            SoapParams sp = new SoapParams
-            {
-                FunctionName = functionname,
-                SoapBody = body,
-                NameSpace = myns
-            };
-
-            Task.Run(async () =>
-                {
-                    try
-                    {
-                        XElement soapbodynode = await Process(sp, false, cts).ConfigureAwait(false);
-                        string response = soapbodynode.Value;
-                        XDocument document = GetDoc(response);
-                        List<UserDefinedSelection> rv = new List<UserDefinedSelection>();
-                        foreach (XElement currentnode in document.Root.Elements())
-                        {
-                            UserDefinedSelection uds = GetUserDefinedSelectionFromXML(currentnode);
-                            rv.Add(uds);
-                        }
-                        tcs.SetResult(rv);
-                    }
-                    catch (Exception e)
-                    {
-                        System.Diagnostics.Debug.WriteLine(e.Message);
-                        tcs.SetException(e);
-                    }
-                });
-
+            SoapParams sp = new SoapParams(functionname, body, myns);
+            Task.Run(() => LoadUDSNAV(tcs, sp, cts));
             return tcs.Task;
+        }
+        private static async Task LoadUDSNAV(TaskCompletionSource<List<UserDefinedSelection>> tcs, SoapParams sp, CancellationTokenSource cts)
+        {
+            try
+            {
+                XElement soapbodynode = await Process(sp, false, cts).ConfigureAwait(false);
+                string response = soapbodynode.Value;
+                XDocument document = GetDoc(response);
+                List<UserDefinedSelection> rv = new List<UserDefinedSelection>();
+                foreach (XElement currentnode in document.Root.Elements())
+                {
+                    UserDefinedSelection uds = GetUserDefinedSelectionFromXML(currentnode);
+                    rv.Add(uds);
+                }
+                tcs.SetResult(rv);
+            }
+            catch (Exception e)
+            {
+                tcs.SetException(e);
+            }
         }
         private static UserDefinedSelection GetUserDefinedSelectionFromXML(XElement currentnode)
         {
@@ -2223,34 +1997,29 @@ namespace WarehouseControlSystem.Helpers.NAV
                     new XElement(myns + "zoneCode", zoneCode),
                     new XElement(myns + "functionIndex", i),
                     new XElement(myns + "responseDocument", ""));
-            SoapParams sp = new SoapParams
-            {
-                FunctionName = functionname,
-                SoapBody = body,
-                NameSpace = myns
-            };
-            Task.Run(async () =>
-                {
-                    try
-                    {
-                        XElement soapbodynode = await Process(sp, false, cts).ConfigureAwait(false);
-                        string response = soapbodynode.Value;
-                        XDocument document = GetDoc(response);
-                        List<UserDefinedSelectionResult> rv = new List<UserDefinedSelectionResult>();
-                        foreach (XElement currentnode in document.Root.Elements())
-                        {
-                            UserDefinedSelectionResult uds = GetUserDefinedSelectionResultnFromXML(currentnode);
-                            rv.Add(uds);
-                        }
-                        tcs.SetResult(rv);
-                    }
-                    catch (Exception e)
-                    {
-                        System.Diagnostics.Debug.WriteLine(e.Message);
-                        tcs.SetException(e);
-                    }
-                });
+            SoapParams sp = new SoapParams(functionname, body, myns);
+            Task.Run(() => RunUDSNAV(tcs, sp, cts));
             return tcs.Task;
+        }
+        private static async Task RunUDSNAV(TaskCompletionSource<List<UserDefinedSelectionResult>> tcs, SoapParams sp, CancellationTokenSource cts)
+        {
+            try
+            {
+                XElement soapbodynode = await Process(sp, false, cts).ConfigureAwait(false);
+                string response = soapbodynode.Value;
+                XDocument document = GetDoc(response);
+                List<UserDefinedSelectionResult> rv = new List<UserDefinedSelectionResult>();
+                foreach (XElement currentnode in document.Root.Elements())
+                {
+                    UserDefinedSelectionResult uds = GetUserDefinedSelectionResultnFromXML(currentnode);
+                    rv.Add(uds);
+                }
+                tcs.SetResult(rv);
+            }
+            catch (Exception e)
+            {
+                tcs.SetException(e);
+            }
         }
         private static UserDefinedSelectionResult GetUserDefinedSelectionResultnFromXML(XElement currentnode)
         {
@@ -2318,35 +2087,29 @@ namespace WarehouseControlSystem.Helpers.NAV
                     new XElement(myns + "zoneCode", zoneCode),
                     new XElement(myns + "rackNo", rackno),
                     new XElement(myns + "responseDocument", ""));
-            SoapParams sp = new SoapParams
-            {
-                FunctionName = functionname,
-                SoapBody = body,
-                NameSpace = myns
-            };
-            Task.Run(async () =>
-                {
-                    try
-                    {
-                        XElement soapbodynode = await Process(sp, false, cts).ConfigureAwait(false);
-                        string response = soapbodynode.Value;
-                        XDocument document = GetDoc(response);
-                        List<UserDefinedFunction> rv = new List<UserDefinedFunction>();
-                        foreach (XElement currentnode in document.Root.Elements())
-                        {
-                            UserDefinedFunction udf = GetUserDefinedFunctionFromXML(currentnode);
-                            rv.Add(udf);
-                        }
-                        tcs.SetResult(rv);
-                    }
-                    catch (Exception e)
-                    {
-                        System.Diagnostics.Debug.WriteLine(e.Message);
-                        tcs.SetException(e);
-                    }
-                });
-
+            SoapParams sp = new SoapParams(functionname, body, myns);
+            Task.Run(() => LoadUserDefinedFunctionListNAV(tcs, sp, cts));
             return tcs.Task;
+        }
+        private static async Task LoadUserDefinedFunctionListNAV(TaskCompletionSource<List<UserDefinedFunction>> tcs, SoapParams sp, CancellationTokenSource cts)
+        {
+            try
+            {
+                XElement soapbodynode = await Process(sp, false, cts).ConfigureAwait(false);
+                string response = soapbodynode.Value;
+                XDocument document = GetDoc(response);
+                List<UserDefinedFunction> rv = new List<UserDefinedFunction>();
+                foreach (XElement currentnode in document.Root.Elements())
+                {
+                    UserDefinedFunction udf = GetUserDefinedFunctionFromXML(currentnode);
+                    rv.Add(udf);
+                }
+                tcs.SetResult(rv);
+            }
+            catch (Exception e)
+            {
+                tcs.SetException(e);
+            }
         }
         private static UserDefinedFunction GetUserDefinedFunctionFromXML(XElement currentnode)
         {
@@ -2401,30 +2164,22 @@ namespace WarehouseControlSystem.Helpers.NAV
                     new XElement(myns + "itemNo", Filter.ItemNoFilter),
                     new XElement(myns + "variantCode", Filter.VariantCodeFilter),
                     new XElement(myns + "quantity", quantity));
-
-            SoapParams sp = new SoapParams
-            {
-                FunctionName = functionname,
-                SoapBody = body,
-                NameSpace = myns
-            };
-
-            Task.Run(async () =>
-                {
-                    try
-                    {
-                        XElement soapbodynode = await Process(sp, false, cts).ConfigureAwait(false);
-                        string rv = soapbodynode.Value;
-                        tcs.SetResult(rv);
-                    }
-                    catch (Exception e)
-                    {
-                        System.Diagnostics.Debug.WriteLine(e.Message);
-                        tcs.SetException(e);
-                    }
-                });
-
+            SoapParams sp = new SoapParams(functionname, body, myns);
+            Task.Run(() => RunFunctionNAV(tcs, sp, cts));
             return tcs.Task;
+        }
+        private static async Task RunFunctionNAV(TaskCompletionSource<string> tcs, SoapParams sp, CancellationTokenSource cts)
+        {
+            try
+            {
+                XElement soapbodynode = await Process(sp, false, cts).ConfigureAwait(false);
+                string rv = soapbodynode.Value;
+                tcs.SetResult(rv);
+            }
+            catch (Exception e)
+            {
+                tcs.SetException(e);
+            }
         }
         #endregion
 
@@ -2445,12 +2200,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                     new XElement(myns + "locationCode", locationcode),
                     new XElement(myns + "request", searchrequest),
                     new XElement(myns + "responseDocument", ""));
-            SoapParams sp = new SoapParams
-            {
-                FunctionName = functionname,
-                SoapBody = body,
-                NameSpace = myns
-            };
+            SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(async () =>
                 {
                     try
@@ -2518,12 +2268,7 @@ namespace WarehouseControlSystem.Helpers.NAV
             XNamespace myns = "urn:microsoft-dynamics-schemas/codeunit/" + Global.TestConnection.Codeunit;
             string functionname = "APIVersion";
             XElement body = new XElement(myns + functionname);
-            SoapParams sp = new SoapParams
-            {
-                FunctionName = functionname,
-                SoapBody = body,
-                NameSpace = myns
-            };
+            SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(async () =>
                 {
                     try
