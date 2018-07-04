@@ -1000,7 +1000,7 @@ namespace WarehouseControlSystem.Helpers.NAV
             Task.Run(() => GetIntFromNAV(tcs, functionname, body, myns, cts));
             return tcs.Task;
         }
-        public static Task<List<Bin>> GetBinList(string locationfilter, string codefilter, string rackcodefilter, string bincodefilter, int position, int count, CancellationTokenSource cts)
+        public static Task<List<Bin>> GetBinList(NAVFilter Filter, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<List<Bin>>();
             if (IsConnectionFaild())
@@ -1013,11 +1013,11 @@ namespace WarehouseControlSystem.Helpers.NAV
             string functionname = "GetBinList";
             XElement body =
                 new XElement(myns + functionname,
-                    new XElement(myns + "locationCodeFilter", locationfilter),
-                    new XElement(myns + "zoneCodeFilter", codefilter),
-                    new XElement(myns + "rackCodeFilter", rackcodefilter),
-                    new XElement(myns + "binCodeFilter", bincodefilter),
-                    PositionCount(myns, position, count));
+                    new XElement(myns + "locationCodeFilter", Filter.LocationCodeFilter),
+                    new XElement(myns + "zoneCodeFilter", Filter.ZoneCodeFilter),
+                    new XElement(myns + "rackCodeFilter", Filter.RackCodeFilter),
+                    new XElement(myns + "binCodeFilter", Filter.BinCodeFilter),
+                    PositionCount(myns, Filter.ItemsPosition, Filter.ItemsCount));
 
             Task.Run(() => GetBinListFromNAV(tcs, functionname, body, myns, cts));
             return tcs.Task;
@@ -1430,7 +1430,7 @@ namespace WarehouseControlSystem.Helpers.NAV
             Task.Run(() => GetIntFromNAV(tcs, functionname, body, myns, cts));
             return tcs.Task;
         }
-        public static Task<List<BinContent>> GetBinContentList(string locationCodeFilter, string zoneCodeFilter, string binCodeFiler, string itemNoFilter, string variantCodeFilter, int position, int count, CancellationTokenSource cts)
+        public static Task<List<BinContent>> GetBinContentList(NAVFilter Filter, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<List<BinContent>>();
             if (IsConnectionFaild())
@@ -1442,12 +1442,12 @@ namespace WarehouseControlSystem.Helpers.NAV
             string functionname = "GetBinContentList";
             XElement body =
                 new XElement(myns + functionname,
-                    new XElement(myns + "locationCodeFilter", locationCodeFilter),
-                    new XElement(myns + "zoneCodeFilter", zoneCodeFilter),
-                    new XElement(myns + "binCodeFilter", binCodeFiler),
-                    new XElement(myns + "itemNoFilter", itemNoFilter),
-                    new XElement(myns + "variantCodeFilter", variantCodeFilter),
-                    PositionCount(myns, position, count));
+                    new XElement(myns + "locationCodeFilter", Filter.LocationCodeFilter),
+                    new XElement(myns + "zoneCodeFilter", Filter.ZoneCodeFilter),
+                    new XElement(myns + "binCodeFilter", Filter.BinCodeFilter),
+                    new XElement(myns + "itemNoFilter", Filter.ItemNoFilter),
+                    new XElement(myns + "variantCodeFilter", Filter.VariantCodeFilter),
+                    PositionCount(myns, Filter.ItemsPosition, Filter.ItemsCount));
 
             Task.Run(() => GetBinContentFromNAV(tcs, functionname, body, myns, cts));
             return tcs.Task;
@@ -1777,7 +1777,7 @@ namespace WarehouseControlSystem.Helpers.NAV
         #endregion
 
         #region WarehouseEntry
-        public static Task<int> GetWarehouseEntryCount(string locationCodeFilter, string zoneCodeFilter, string binCodeFilter, string itemNoFilter, string variantCodeFilter, CancellationTokenSource cts)
+        public static Task<int> GetWarehouseEntryCount(NAVFilter Filter, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<int>();
             if (IsConnectionFaild())
@@ -1789,15 +1789,16 @@ namespace WarehouseControlSystem.Helpers.NAV
             string functionname = "GetWarehouseEntryCount";
             XElement body =
                 new XElement(myns + functionname,
-                    new XElement(myns + "locationCodeFilter", locationCodeFilter),
-                    new XElement(myns + "zoneCodeFilter", zoneCodeFilter),
-                    new XElement(myns + "binCodeFilter", binCodeFilter),
-                    new XElement(myns + "itemNoFilter", itemNoFilter),
-                    new XElement(myns + "variantCodeFilter", variantCodeFilter));
+                    new XElement(myns + "locationCodeFilter", Filter.LocationCodeFilter),
+                    new XElement(myns + "zoneCodeFilter", Filter.ZoneCodeFilter),
+                    new XElement(myns + "binCodeFilter", Filter.BinCodeFilter),
+                    new XElement(myns + "itemNoFilter", Filter.ItemNoFilter),
+                    new XElement(myns + "variantCodeFilter", Filter.VariantCodeFilter));
+
             Task.Run(() => GetIntFromNAV(tcs, functionname, body, myns, cts));
             return tcs.Task;
         }
-        public static Task<List<WarehouseEntry>> GetWarehouseEntryList(string locationCodeFilter, string zoneCodeFilter, string binCodeFilter, string itemNoFilter, string variantCodeFilter, int position, int count, CancellationTokenSource cts)
+        public static Task<List<WarehouseEntry>> GetWarehouseEntryList(NAVFilter Filter, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<List<WarehouseEntry>>();
             if (IsConnectionFaild())
@@ -1810,14 +1811,12 @@ namespace WarehouseControlSystem.Helpers.NAV
 
             XElement body =
                 new XElement(myns + functionname,
-                    new XElement(myns + "locationCodeFilter", locationCodeFilter),
-                    new XElement(myns + "zoneCodeFilter", zoneCodeFilter),
-                    new XElement(myns + "binCodeFilter", binCodeFilter),
-                    new XElement(myns + "itemNoFilter", itemNoFilter),
-                    new XElement(myns + "variantCodeFilter", variantCodeFilter),
-                    new XElement(myns + "variantCodeFilter", position),
-                    new XElement(myns + "variantCodeFilter", count),
-                    new XElement(myns + "responseDocument", ""));
+                    new XElement(myns + "locationCodeFilter", Filter.LocationCodeFilter),
+                    new XElement(myns + "zoneCodeFilter", Filter.ZoneCodeFilter),
+                    new XElement(myns + "binCodeFilter", Filter.BinCodeFilter),
+                    new XElement(myns + "itemNoFilter", Filter.ItemNoFilter),
+                    new XElement(myns + "variantCodeFilter", Filter.VariantCodeFilter),
+                    PositionCount(myns, Filter.ItemsPosition, Filter.ItemsCount));
 
             Task.Run(() => GetWarehouseEntryListFromNAV(tcs, functionname, body, myns, cts));
             return tcs.Task;
@@ -2132,7 +2131,7 @@ namespace WarehouseControlSystem.Helpers.NAV
             return udf;
         }
 
-        public static Task<string> RunFunction(int i, string locationCode, string zoneCode, string rackno, string bincode, string itemno, string variantcode, decimal quantity, CancellationTokenSource cts)
+        public static Task<string> RunFunction(int i, NAVFilter Filter, decimal quantity, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<string>();
             if (IsConnectionFaild())
@@ -2146,12 +2145,12 @@ namespace WarehouseControlSystem.Helpers.NAV
             XElement body =
                 new XElement(myns + functionname,
                     new XElement(myns + "functionindex", i),
-                    new XElement(myns + "locationCode", locationCode),
-                    new XElement(myns + "zoneCode", zoneCode),
-                    new XElement(myns + "rackNo", rackno),
-                    new XElement(myns + "binCode", bincode),
-                    new XElement(myns + "itemNo", itemno),
-                    new XElement(myns + "variantCode", variantcode),
+                    new XElement(myns + "locationCode", Filter.LocationCodeFilter),
+                    new XElement(myns + "zoneCode", Filter.ZoneCodeFilter),
+                    new XElement(myns + "rackNo", Filter.RackCodeFilter),
+                    new XElement(myns + "binCode", Filter.BinCodeFilter),
+                    new XElement(myns + "itemNo", Filter.ItemNoFilter),
+                    new XElement(myns + "variantCode", Filter.VariantCodeFilter),
                     new XElement(myns + "quantity", quantity));
 
             Task.Run(async () =>

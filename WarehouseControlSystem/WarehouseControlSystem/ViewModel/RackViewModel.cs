@@ -1023,7 +1023,14 @@ namespace WarehouseControlSystem.ViewModel
                     foreach (BinViewModel bvm in list)
                     {
                         LoadingText = bvm.Code;
-                        string response = await NAV.RunFunction(udfvmselected.ID, bvm.LocationCode, bvm.ZoneCode, bvm.RackNo, bvm.Code, "", "", 0, ACD.Default).ConfigureAwait(true);
+                        NAVFilter navfilter = new NAVFilter
+                        {
+                            LocationCodeFilter = bvm.LocationCode,
+                            ZoneCodeFilter = bvm.ZoneCode,
+                            RackCodeFilter = bvm.RackNo,
+                            BinCodeFilter = bvm.Code
+                        };
+                        string response = await NAV.RunFunction(udfvmselected.ID, navfilter, 0, ACD.Default).ConfigureAwait(true);
                     }
                     State = ModelState.Normal;
                 }

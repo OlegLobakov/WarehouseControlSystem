@@ -664,7 +664,12 @@ namespace WarehouseControlSystem.ViewModel
                 foreach (BinViewModel bvm in list)
                 {
                     bvm.IsChecked = false;
-                    List<Bin> binsexist = await NAV.GetBinList(LocationCode, "", "", bvm.Code, 1, int.MaxValue, ACD.Default).ConfigureAwait(true);
+                    NAVFilter navfilter = new NAVFilter
+                    {
+                        LocationCodeFilter = LocationCode,
+                        BinCodeFilter = bvm.Code
+                    };
+                    List<Bin> binsexist = await NAV.GetBinList(navfilter, ACD.Default).ConfigureAwait(true);
                     if (binsexist.Count > 0)
                     {
                         bvm.IsExist = true;
@@ -705,7 +710,13 @@ namespace WarehouseControlSystem.ViewModel
             {
                 LoadedBinsQuantity = 0;
                 SearchBinsQuantity = 0;
-                List<Bin> bins = await NAV.GetBinList(LocationCode, ZoneCode, RackNo, "", 1, int.MaxValue, ACD.Default).ConfigureAwait(true);
+                NAVFilter navfilter = new NAVFilter
+                {
+                    LocationCodeFilter = LocationCode,
+                    ZoneCodeFilter = ZoneCode,
+                    RackCodeFilter = RackNo
+                };
+                List<Bin> bins = await NAV.GetBinList(navfilter, ACD.Default).ConfigureAwait(true);
                 if (!IsDisposed)
                 {
                     if (bins.Count > 0)
@@ -888,7 +899,13 @@ namespace WarehouseControlSystem.ViewModel
                 bvm.LoadAnimation = true;
                 try
                 {
-                    List<BinContent> bincontent = await NAV.GetBinContentList(LocationCode, ZoneCode, bvm.Code, "", "", 1, int.MaxValue, ACD.Default).ConfigureAwait(true);
+                    NAVFilter navfilter = new NAVFilter
+                    {
+                        LocationCodeFilter = LocationCode,
+                        ZoneCodeFilter = ZoneCode,
+                        BinCodeFilter = bvm.Code
+                    };
+                    List<BinContent> bincontent = await NAV.GetBinContentList(navfilter, ACD.Default).ConfigureAwait(true);
                     if ((!IsDisposed) && (bincontent.Count > 0))
                     {
                         bvm.BinContent.Clear();
