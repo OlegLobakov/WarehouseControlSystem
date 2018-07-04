@@ -184,34 +184,15 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
-        private async void Lvm_OnTap(LocationViewModel tappedlvm)
+        private void Lvm_OnTap(LocationViewModel tappedlvm)
         {
             if (!IsEditMode)
             {
-                Global.SearchLocationCode = tappedlvm.Code;
-                try
-                {
-                    Location location  =new Location();
-                    tappedlvm.SaveFields(location);
-                    ZonesPlanViewModel zpvm = new ZonesPlanViewModel(Navigation, location);
-                    ZonesSchemePage zsp = new ZonesSchemePage(zpvm);
-                    await Navigation.PushAsync(zsp);
-                }
-                catch (Exception e)
-                {
-                    System.Diagnostics.Debug.WriteLine(e.Message);
-                }
+                OpenZoneSchemePage(tappedlvm);
             }
             else
             {
-                foreach (LocationViewModel lvm in LocationViewModels)
-                {
-                    if (lvm != tappedlvm)
-                    {
-                        lvm.Selected = false;
-                        lvm.EditMode = SchemeElementEditMode.None;
-                    }
-                }
+                UnSelectAllOthers(tappedlvm);
 
                 if (tappedlvm.Selected)
                 {
@@ -219,11 +200,9 @@ namespace WarehouseControlSystem.ViewModel
                     {
                         case SchemeElementEditMode.None:
                             break;
-
                         case SchemeElementEditMode.Move:
                             tappedlvm.EditMode = SchemeElementEditMode.Resize;
                             break;
-
                         case SchemeElementEditMode.Resize:
                             tappedlvm.Selected = false;
                             tappedlvm.EditMode = SchemeElementEditMode.None;
@@ -240,6 +219,33 @@ namespace WarehouseControlSystem.ViewModel
              }
         }
 
+        private async void OpenZoneSchemePage(LocationViewModel tappedlvm)
+        {
+            Global.SearchLocationCode = tappedlvm.Code;
+            try
+            {
+                Location location = new Location();
+                tappedlvm.SaveFields(location);
+                ZonesPlanViewModel zpvm = new ZonesPlanViewModel(Navigation, location);
+                ZonesSchemePage zsp = new ZonesSchemePage(zpvm);
+                await Navigation.PushAsync(zsp);
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.Message);
+            }
+        }
+        private void UnSelectAllOthers(LocationViewModel tappedlvm)
+        {
+            foreach (LocationViewModel lvm in LocationViewModels)
+            {
+                if (lvm != tappedlvm)
+                {
+                    lvm.Selected = false;
+                    lvm.EditMode = SchemeElementEditMode.None;
+                }
+            }
+        }
         public void UnSelectAll()
         {
             foreach (LocationViewModel lvm in LocationViewModels)

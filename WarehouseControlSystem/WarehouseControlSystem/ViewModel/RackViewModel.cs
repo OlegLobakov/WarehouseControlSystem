@@ -45,7 +45,6 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } string no;
-
         public string NoWarningText
         {
             get { return nowarningtext; }
@@ -129,7 +128,6 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } int depth;
-
         public RackOrientationEnum RackOrientation
         {
             get { return rackorientation; }
@@ -143,7 +141,6 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } RackOrientationEnum rackorientation;
-
         public string RackSectionSeparator
         {
             get { return racksectionseparator; }
@@ -157,7 +154,6 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } string racksectionseparator;
-
         public string SectionLevelSeparator
         {
             get { return sectionlevelseparator; }
@@ -171,7 +167,6 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } string sectionlevelseparator;
-
         public string LevelDepthSeparator
         {
             get { return leveldepthseparator; }
@@ -185,7 +180,6 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } string leveldepthseparator;
-
         public bool ReversSectionNumbering
         {
             get { return reverssectionnumbering; }
@@ -199,7 +193,6 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } bool reverssectionnumbering;
-
         public bool ReversLevelNumbering
         {
             get { return reverslevelbering; }
@@ -226,7 +219,6 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } bool reversdepthnumbering;
-
         public int NumberingSectionBegin
         {
             get { return numberingsectionbegin; }
@@ -280,7 +272,6 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } int stepnumberingsection = 1;
-
         public bool SchemeVisible
         {
             get { return schemevisible; }
@@ -508,7 +499,6 @@ namespace WarehouseControlSystem.ViewModel
             Width = rack.Width;
             Height = rack.Height;
         }
-
         public void SaveFields(Rack rack)
         {
             rack.No = No;
@@ -525,7 +515,6 @@ namespace WarehouseControlSystem.ViewModel
             rack.Width = Width;
             rack.Height = Height;
         }
-
         public void Tap(object sender)
         {
             if (OnTap is Action<RackViewModel>)
@@ -533,7 +522,6 @@ namespace WarehouseControlSystem.ViewModel
                 OnTap(this);
             }
         }
-
         public void RecreateBins(int prevdepth, int newdepth, int prevlevels, int newlevels, int prevsections, int newsections)
         {
             if (CreateMode)
@@ -541,7 +529,6 @@ namespace WarehouseControlSystem.ViewModel
                 BinsViewModel.RecreateBins(prevdepth, newdepth, prevlevels, newlevels, prevsections, newsections);
             }
         }
-
         public async void Renumbering()
         {
             if (CreateMode)

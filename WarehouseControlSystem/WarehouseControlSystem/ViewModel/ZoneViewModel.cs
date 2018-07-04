@@ -344,37 +344,11 @@ namespace WarehouseControlSystem.ViewModel
             {
                 LocationsIsBeingLoaded = true;
                 List<Location> locations = await NAV.GetLocationList("", false, 1, int.MaxValue, ACD.Default).ConfigureAwait(true);
-                Locations.Clear();
-                foreach (Location location in locations)
-                {
-                    Locations.Add(location);
-                }
+                AddLocations(locations);
 
-                if (CanChangeLocationCode)
-                {
-                    LocationsIsLoaded = locations.Count > 0;
-                }
-                else
-                {
-                    LocationsIsLoaded = false;
-                }
-                MessagingCenter.Send<ZoneViewModel>(this, "LocationsIsLoaded");
-          
                 BinTypesIsBeingLoaded = true;
                 List<BinType> bintypes = await NAV.GetBinTypeList(1, int.MaxValue, ACD.Default).ConfigureAwait(true);
-                BinTypes.Clear();
-                foreach (BinType bt in bintypes)
-                {
-                    BinTypes.Add(bt);
-                }
-                BinTypesIsLoaded = bintypes.Count > 0;
-                MessagingCenter.Send<ZoneViewModel>(this, "BinTypesIsLoaded");
-            }
-            catch (OperationCanceledException e)
-            {
-                System.Diagnostics.Debug.WriteLine(e.Message);
-                State = ModelState.Error;
-                ErrorText = e.Message;
+                AddBinTypes(bintypes);
             }
             catch (Exception e)
             {
@@ -387,6 +361,35 @@ namespace WarehouseControlSystem.ViewModel
                 BinTypesIsBeingLoaded = false;
                 LocationsIsBeingLoaded = false;
             }
+        }
+        private void AddLocations(List<Location> locations)
+        {
+            Locations.Clear();
+            foreach (Location location in locations)
+            {
+                Locations.Add(location);
+            }
+
+            if (CanChangeLocationCode)
+            {
+                LocationsIsLoaded = locations.Count > 0;
+            }
+            else
+            {
+                LocationsIsLoaded = false;
+            }
+            MessagingCenter.Send<ZoneViewModel>(this, "LocationsIsLoaded");
+        }
+
+        private void AddBinTypes(List<BinType> bintypes)
+        {
+            BinTypes.Clear();
+            foreach (BinType bt in bintypes)
+            {
+                BinTypes.Add(bt);
+            }
+            BinTypesIsLoaded = bintypes.Count > 0;
+            MessagingCenter.Send<ZoneViewModel>(this, "BinTypesIsLoaded");
         }
 
         public async Task LoadRacks()

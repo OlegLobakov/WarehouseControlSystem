@@ -884,16 +884,7 @@ namespace WarehouseControlSystem.ViewModel
 
         private async void Bvm_OnTap(BinViewModel bvm)
         {
-            bvm.Selected = !bvm.Selected;
-
-            BinViewModel selectedbvm = BinViewModels.Find(x => x.Selected == true);
-            IsSelectedBins = selectedbvm is BinViewModel;
-
-            if (selectedbvm is BinViewModel)
-            {
-                SetTemplateBySelectedBin(selectedbvm);
-            }
-
+            Select(bvm);
             if (bvm.IsContent)
             {
                 bvm.LoadAnimation = true;
@@ -906,19 +897,7 @@ namespace WarehouseControlSystem.ViewModel
                         BinCodeFilter = bvm.Code
                     };
                     List<BinContent> bincontent = await NAV.GetBinContentList(navfilter, ACD.Default).ConfigureAwait(true);
-                    if ((!IsDisposed) && (bincontent.Count > 0))
-                    {
-                        bvm.BinContent.Clear();
-                        foreach (BinContent bc in bincontent)
-                        {
-                            BinContentShortViewModel bsvm = new BinContentShortViewModel(Navigation, bc);
-                            bvm.BinContent.Add(bsvm);
-                        }
-                    }
-                }
-                catch (OperationCanceledException e)
-                {
-                    System.Diagnostics.Debug.WriteLine("Cancel LoadBinContent", e.Message);
+                    FillBinContent(bvm, bincontent);
                 }
                 catch(Exception e)
                 {
@@ -926,12 +905,33 @@ namespace WarehouseControlSystem.ViewModel
                 }
                 bvm.LoadAnimation = false;
             }
+            SetSelectedBinContent();
+            if (OnBinClick is Action<BinsViewModel>)
+            {
+                OnBinClick(this);
+            }
+        }
 
+        private void Select(BinViewModel bvm)
+        {
+            bvm.Selected = !bvm.Selected;
+
+            BinViewModel selectedbvm = BinViewModels.Find(x => x.Selected == true);
+            IsSelectedBins = selectedbvm is BinViewModel;
+
+            if (selectedbvm is BinViewModel)
+            {
+                SetTemplateBySelectedBin(selectedbvm);
+            }
+        }
+
+        private void SetSelectedBinContent()
+        {
             List<BinViewModel> list = BinViewModels.FindAll(x => x.Selected == true);
             if (list is List<BinViewModel>)
-            { 
+            {
                 ObservableCollection<BinContentShortViewModel> nlist = new ObservableCollection<BinContentShortViewModel>();
-                
+
                 foreach (BinViewModel bvm1 in list)
                 {
                     foreach (BinContentShortViewModel bcsvm in bvm1.BinContent)
@@ -947,10 +947,18 @@ namespace WarehouseControlSystem.ViewModel
             {
                 EditedBinCodeIsEnabled = false;
             }
+        }
 
-            if (OnBinClick is Action<BinsViewModel>)
+        private void FillBinContent(BinViewModel bvm, List<BinContent> bincontent)
+        {
+            if ((!IsDisposed) && (bincontent.Count > 0))
             {
-                OnBinClick(this);
+                bvm.BinContent.Clear();
+                foreach (BinContent bc in bincontent)
+                {
+                    BinContentShortViewModel bsvm = new BinContentShortViewModel(Navigation, bc);
+                    bvm.BinContent.Add(bsvm);
+                }
             }
         }
 
