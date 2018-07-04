@@ -177,20 +177,7 @@ namespace WarehouseControlSystem.ViewModel
             {
                 UserDefinedSelectionViewModels.Clear();
                 List<UserDefinedSelection> list = await NAV.LoadUDS(Zone.LocationCode, Zone.Code, ACD.Default).ConfigureAwait(true);
-                if (list is List<UserDefinedSelection>)
-                {
-                    foreach (UserDefinedSelection uds in list)
-                    {
-                        UserDefinedSelectionViewModel udsvm = new UserDefinedSelectionViewModel(Navigation, uds)
-                        {
-                            UDSWidth = UDSPanelHeight,
-                        };
-                        udsvm.OnTap += RunUDS;
-
-                        UserDefinedSelectionViewModels.Add(udsvm);
-                    }
-                }
-                MessagingCenter.Send(this, "UDSListIsLoaded");
+                FillUDSList(list);
             }
             catch (OperationCanceledException e)
             {
@@ -201,6 +188,23 @@ namespace WarehouseControlSystem.ViewModel
                 System.Diagnostics.Debug.WriteLine(e.Message);
                 State = ModelState.Error;
                 ErrorText = e.ToString();
+            }
+        }
+        private void FillUDSList(List<UserDefinedSelection> list)
+        {
+            if (list is List<UserDefinedSelection>)
+            {
+                foreach (UserDefinedSelection uds in list)
+                {
+                    UserDefinedSelectionViewModel udsvm = new UserDefinedSelectionViewModel(Navigation, uds)
+                    {
+                        UDSWidth = UDSPanelHeight,
+                    };
+                    udsvm.OnTap += RunUDS;
+
+                    UserDefinedSelectionViewModels.Add(udsvm);
+                }
+                MessagingCenter.Send(this, "UDSListIsLoaded");
             }
         }
 

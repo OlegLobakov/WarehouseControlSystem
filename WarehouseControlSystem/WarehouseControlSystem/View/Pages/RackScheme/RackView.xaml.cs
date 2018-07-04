@@ -80,6 +80,12 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
 
         private void CreateLabels()
         {
+            CreateLevelsLabels();
+            CreateSectionLabels();
+        }
+
+        private void CreateLevelsLabels()
+        {
             for (int i = 1; i <= model.Levels; i++)
             {
                 Label lb = new Label()
@@ -95,7 +101,10 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
                 };
                 grid.Children.Add(lb, 0, i);
             }
+        }
 
+        private void CreateSectionLabels()
+        {
             for (int j = 1; j <= model.Sections; j++)
             {
                 Label lb = new Label()

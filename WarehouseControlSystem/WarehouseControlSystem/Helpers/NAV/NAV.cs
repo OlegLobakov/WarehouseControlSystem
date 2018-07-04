@@ -343,6 +343,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                 GetLocationFromXML1(location, currentatribute);
                 GetLocationFromXML2(location, currentatribute);
                 GetLocationFromXML3(location, currentatribute);
+                GetLocationFromXML4(location, currentatribute);
             }
             return location;
         }
@@ -411,6 +412,12 @@ namespace WarehouseControlSystem.Helpers.NAV
                 case "RequirePutaway":
                     location.RequirePutaway = StringToBool(currentatribute.Value);
                     break;
+            }
+        }
+        private static void GetLocationFromXML4(Location location, XAttribute currentatribute)
+        {
+            switch (currentatribute.Name.LocalName)
+            {
                 case "UseAsInTransit":
                     location.Transit = StringToBool(currentatribute.Value);
                     break;
@@ -425,10 +432,10 @@ namespace WarehouseControlSystem.Helpers.NAV
                     break;
             }
         }
-        #endregion
+            #endregion
 
-        #region Zone
-        public static XElement[] SetZoneParams(XNamespace myns, Zone zone)
+            #region Zone
+            public static XElement[] SetZoneParams(XNamespace myns, Zone zone)
         {
             return new XElement[]
             {
@@ -2240,32 +2247,44 @@ namespace WarehouseControlSystem.Helpers.NAV
             SearchResponse searchresponse = new SearchResponse();
             foreach (XAttribute currentatribute in currentnode.Attributes())
             {
-                switch (currentatribute.Name.LocalName)
-                {
-                    case "Z":
-                        searchresponse.ZoneCode = currentatribute.Value;
-                        break;
-                    case "B":
-                        searchresponse.BinCode = currentatribute.Value;
-                        break;
-                    case "R":
-                        searchresponse.RackNo = currentatribute.Value;
-                        break;
-                    case "S":
-                        searchresponse.Section = StringToInt(currentatribute.Value);
-                        break;
-                    case "L":
-                        searchresponse.Level = StringToInt(currentatribute.Value);
-                        break;
-                    case "D":
-                        searchresponse.Depth = StringToInt(currentatribute.Value);
-                        break;
-                    case "Q":
-                        searchresponse.QuantityBase = (int)Math.Round(StringToDec(currentatribute.Value));
-                        break;
-                }
+                GetSearchResponseFromXML1(searchresponse, currentatribute);
+                GetSearchResponseFromXML2(searchresponse, currentatribute);
             }
             return searchresponse;
+        }
+
+        private static void GetSearchResponseFromXML1(SearchResponse searchresponse, XAttribute currentatribute)
+        {
+            switch (currentatribute.Name.LocalName)
+            {
+                case "Z":
+                    searchresponse.ZoneCode = currentatribute.Value;
+                    break;
+                case "B":
+                    searchresponse.BinCode = currentatribute.Value;
+                    break;
+                case "R":
+                    searchresponse.RackNo = currentatribute.Value;
+                    break;
+            }
+        }
+        private static void GetSearchResponseFromXML2(SearchResponse searchresponse, XAttribute currentatribute)
+        {
+            switch (currentatribute.Name.LocalName)
+            {
+                case "S":
+                    searchresponse.Section = StringToInt(currentatribute.Value);
+                    break;
+                case "L":
+                    searchresponse.Level = StringToInt(currentatribute.Value);
+                    break;
+                case "D":
+                    searchresponse.Depth = StringToInt(currentatribute.Value);
+                    break;
+                case "Q":
+                    searchresponse.QuantityBase = (int)Math.Round(StringToDec(currentatribute.Value));
+                    break;
+            }
         }
         #endregion
         public static Task<int> TestConnection(CancellationTokenSource cts)

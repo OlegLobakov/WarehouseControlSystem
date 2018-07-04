@@ -710,18 +710,12 @@ namespace WarehouseControlSystem.ViewModel
             if (CanChangeLocationAndZone)
             {
                 LocationCode = location.Code;
-                IsBusy = true;
                 try
                 {
                     ZoneCode = "";
                     ZonesIsLoaded = false;
                     List<Zone> zones = await NAV.GetZoneList(location.Code, "", false, 1, int.MaxValue, ACD.Default).ConfigureAwait(true);
-                    Zones.Clear();
-                    foreach (Zone zone in zones)
-                    {
-                        Zones.Add(zone);
-                    }
-                    ZonesIsLoaded = CanChangeLocationAndZone && zones.Count > 0;
+                    FillZones(zones);
                     await ReloadBinTemplates().ConfigureAwait(true);
                     MessagingCenter.Send<RackViewModel>(this, "ZonesIsLoaded");
                     await CheckNo().ConfigureAwait(true);
@@ -731,11 +725,17 @@ namespace WarehouseControlSystem.ViewModel
                     System.Diagnostics.Debug.WriteLine(e.Message);
                     ErrorText = e.Message;
                 }
-                finally
-                {
-                    IsBusy = false;
-                }
             }
+        }
+
+        private void FillZones(List<Zone> zones)
+        {
+            Zones.Clear();
+            foreach (Zone zone in zones)
+            {
+                Zones.Add(zone);
+            }
+            ZonesIsLoaded = CanChangeLocationAndZone && zones.Count > 0;
         }
 
         public async Task SetZone(Zone zone)
@@ -1023,11 +1023,6 @@ namespace WarehouseControlSystem.ViewModel
                     State = ModelState.Error;
                     ErrorText = AppResources.RackCardPage_Error_BinDidNotSelect;
                 }
-            }
-            catch (OperationCanceledException e)
-            {
-                System.Diagnostics.Debug.WriteLine(e.Message);
-                ErrorText = e.Message;
             }
             catch (Exception e)
             {

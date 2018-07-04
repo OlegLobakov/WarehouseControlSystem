@@ -398,17 +398,7 @@ namespace WarehouseControlSystem.ViewModel
             try
             {
                 List<Rack> racks = await NAV.GetRackList(LocationCode, Code, true, 1, int.MaxValue, ACD.Default).ConfigureAwait(true);
-                if (!IsDisposed)
-                {
-                    SubSchemeElements.Clear();
-                    foreach (Rack rack in racks)
-                    {
-                        SubSchemeElement sse = CreateSSE(rack);
-                        CheckGlobalSearch(rack, sse);
-                        SubSchemeElements.Add(sse);
-                    }
-                    RacksIsLoaded = SubSchemeElements.Count > 0;
-                }
+                FillRacks(racks);
             }
             catch (Exception e)
             {
@@ -417,6 +407,21 @@ namespace WarehouseControlSystem.ViewModel
             finally
             {
                 RacksIsBeingLoaded = false;
+            }
+        }
+
+        private void FillRacks(List<Rack> racks)
+        {
+            if (!IsDisposed)
+            {
+                SubSchemeElements.Clear();
+                foreach (Rack rack in racks)
+                {
+                    SubSchemeElement sse = CreateSSE(rack);
+                    CheckGlobalSearch(rack, sse);
+                    SubSchemeElements.Add(sse);
+                }
+                RacksIsLoaded = SubSchemeElements.Count > 0;
             }
         }
 
