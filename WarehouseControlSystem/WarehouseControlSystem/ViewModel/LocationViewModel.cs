@@ -402,24 +402,8 @@ namespace WarehouseControlSystem.ViewModel
             ZonesIsBeingLoaded = true;
             try
             {
-                List<Zone> zones = await NAV.GetZoneList(Code, "", true, 1, int.MaxValue, ACD.Default);
-                if (!IsDisposed)
-                {
-                    SubSchemeElements.Clear();
-                    foreach (Zone zone in zones)
-                    {
-                        SubSchemeElement sse = new SubSchemeElement
-                        {
-                            Left = zone.Left,
-                            Top = zone.Top,
-                            Height = zone.Height,
-                            Width = zone.Width,
-                            HexColor = zone.HexColor
-                        };
-                        SubSchemeElements.Add(sse);
-                    }
-                    ZonesIsLoaded = SubSchemeElements.Count > 0;
-                }
+                List<Zone> zones = await NAV.GetZoneList(Code, "", true, 1, int.MaxValue, ACD.Default).ConfigureAwait(true);
+                AddSubSchemeElements(zones);
             }
             catch (OperationCanceledException e)
             {
@@ -429,6 +413,27 @@ namespace WarehouseControlSystem.ViewModel
             finally
             {
                 ZonesIsBeingLoaded = false;
+            }
+        }
+
+        private void AddSubSchemeElements(List<Zone> zones)
+        {
+            if (!IsDisposed)
+            {
+                SubSchemeElements.Clear();
+                foreach (Zone zone in zones)
+                {
+                    SubSchemeElement sse = new SubSchemeElement
+                    {
+                        Left = zone.Left,
+                        Top = zone.Top,
+                        Height = zone.Height,
+                        Width = zone.Width,
+                        HexColor = zone.HexColor
+                    };
+                    SubSchemeElements.Add(sse);
+                }
+                ZonesIsLoaded = SubSchemeElements.Count > 0;
             }
         }
 

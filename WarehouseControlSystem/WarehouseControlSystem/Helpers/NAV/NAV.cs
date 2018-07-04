@@ -281,7 +281,7 @@ namespace WarehouseControlSystem.Helpers.NAV
             Task.Run(() => GetIntFromNAV(tcs, functionname, body, myns, cts));
             return tcs.Task;
         }
-        public static Task<List<Location>> GetLocationList(string codefilter, bool onlyvisibled, int position, int count, CancellationTokenSource cts)
+        public static Task<List<Location>> GetLocationList(string codefilter, bool onlyvisibled1, int position1, int count1, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<List<Location>>();
             if (IsConnectionFaild())
@@ -296,31 +296,33 @@ namespace WarehouseControlSystem.Helpers.NAV
             XElement body =
                 new XElement(myns + functionname,
                     new XElement(myns + "codeFilter", codefilter),
-                    new XElement(myns + "onlyVisibled", onlyvisibled.ToString()),
-                    PositionCount(myns, position, count));
+                    new XElement(myns + "onlyVisibled", onlyvisibled1.ToString()),
+                    PositionCount(myns, position1, count1));
 
-            Task.Run(async () =>
-                {
-                    try
-                    {
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
-                        List<Location> rv = new List<Location>();
-                        string response = soapbodynode.Value;
-                        XDocument document = GetDoc(response);
-                        foreach (XElement currentnode in document.Root.Elements())
-                        {
-                            Location location = GetLocationFromXML(currentnode);
-                            rv.Add(location);
-                        }
-                        tcs.SetResult(rv);
-                    }
-                    catch (Exception e)
-                    {
-                        tcs.SetException(e);
-                    }
-                });
+            Task.Run(() => GetLocationListFromNAV(tcs, functionname, body, myns, cts));
             return tcs.Task;
         }
+        private static async Task GetLocationListFromNAV(TaskCompletionSource<List<Location>> tcs, string functionname, XElement body, XNamespace myns, CancellationTokenSource cts)
+        {
+            try
+            {
+                XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
+                List<Location> rv = new List<Location>();
+                string response = soapbodynode.Value;
+                XDocument document = GetDoc(response);
+                foreach (XElement currentnode in document.Root.Elements())
+                {
+                    Location location = GetLocationFromXML(currentnode);
+                    rv.Add(location);
+                }
+                tcs.SetResult(rv);
+            }
+            catch (Exception e)
+            {
+                tcs.SetException(e);
+            }
+        }
+
         private static Location GetLocationFromXML(XElement currentnode)
         {
             Location location = new Location();
@@ -532,7 +534,7 @@ namespace WarehouseControlSystem.Helpers.NAV
             Task.Run(() => GetIntFromNAV(tcs, functionname, body, myns, cts));
             return tcs.Task;
         }
-        public static Task<List<Zone>> GetZoneList(string locationfilter, string codefilter, bool onlyvisibled, int position, int count, CancellationTokenSource cts)
+        public static Task<List<Zone>> GetZoneList(string locationfilter, string codefilter2, bool onlyvisibled2, int position2, int count2, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<List<Zone>>();
             if (IsConnectionFaild())
@@ -546,33 +548,34 @@ namespace WarehouseControlSystem.Helpers.NAV
             XElement body =
                 new XElement(myns + functionname,
                     new XElement(myns + "locationFilter", locationfilter),
-                    new XElement(myns + "codeFilter", codefilter),
-                    new XElement(myns + "onlyVisibled", onlyvisibled),
-                    PositionCount(myns, position, count));
+                    new XElement(myns + "codeFilter", codefilter2),
+                    new XElement(myns + "onlyVisibled", onlyvisibled2),
+                    PositionCount(myns, position2, count2));
 
-            Task.Run(async () =>
-                {
-                    try
-                    {
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
-                        string response = soapbodynode.Value;
-                        XDocument document = GetDoc(response);
-                        List<Zone> rv = new List<Zone>();
-                        foreach (XElement currentnode in document.Root.Elements())
-                        {
-                            Zone zone = GetZoneFromXML(currentnode);
-                            rv.Add(zone);
-                        }
-                        tcs.SetResult(rv);
-                    }
-                    catch (Exception e)
-                    {
-                        System.Diagnostics.Debug.WriteLine(e.Message);
-                        tcs.SetException(e);
-                    }
-                });
+            Task.Run(() => GetZoneListNAV(tcs, functionname, body, myns, cts));
             return tcs.Task;
         }
+        private static async Task GetZoneListNAV(TaskCompletionSource<List<Zone>> tcs, string functionname, XElement body, XNamespace myns, CancellationTokenSource cts)
+        {
+            try
+            {
+                XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
+                string response = soapbodynode.Value;
+                XDocument document = GetDoc(response);
+                List<Zone> rv = new List<Zone>();
+                foreach (XElement currentnode in document.Root.Elements())
+                {
+                    Zone zone = GetZoneFromXML(currentnode);
+                    rv.Add(zone);
+                }
+                tcs.SetResult(rv);
+            }
+            catch (Exception e)
+            {
+                tcs.SetException(e);
+            }
+        }
+
         private static Zone GetZoneFromXML(XElement currentnode)
         {
             Zone zone = new Zone();
@@ -778,7 +781,7 @@ namespace WarehouseControlSystem.Helpers.NAV
             Task.Run(() => GetIntFromNAV(tcs, functionname, body, myns, cts));
             return tcs.Task;
         }
-        public static Task<List<Rack>> GetRackList(string locationfilter, string zonefilter, bool onlyvisibled, int position, int count, CancellationTokenSource cts)
+        public static Task<List<Rack>> GetRackList(string locationfilter, string zonefilter, bool onlyvisibled3, int position3, int count3, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<List<Rack>>();
             if (IsConnectionFaild())
@@ -793,33 +796,33 @@ namespace WarehouseControlSystem.Helpers.NAV
                 new XElement(myns + functionname,
                     new XElement(myns + "locationCodeFilter", locationfilter),
                     new XElement(myns + "zoneCodeFilter", zonefilter),
-                    new XElement(myns + "onlyVisibled", onlyvisibled),
-                    PositionCount(myns, position, count));
+                    new XElement(myns + "onlyVisibled", onlyvisibled3),
+                    PositionCount(myns, position3, count3));
 
-            Task.Run(async () =>
-                {
-                    try
-                    {
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
-                        string response = soapbodynode.Value;
-                        XDocument document = GetDoc(response);
-                        List<Rack> rv = new List<Rack>();
-                        foreach (XElement currentnode in document.Root.Elements())
-                        {
-                            Rack rack = GetRackFromXML(currentnode);
-                            rv.Add(rack);
-                        }
-                        tcs.SetResult(rv);
-                    }
-                    catch (Exception e)
-                    {
-                        System.Diagnostics.Debug.WriteLine(e.Message);
-                        tcs.SetException(e);
-                    }
-                });
-
+            Task.Run(() => GetRackListFromNAV(tcs, functionname, body, myns, cts));
             return tcs.Task;
         }
+        private static async Task GetRackListFromNAV(TaskCompletionSource<List<Rack>> tcs, string functionname, XElement body, XNamespace myns, CancellationTokenSource cts)
+        {
+            try
+            {
+                XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
+                string response = soapbodynode.Value;
+                XDocument document = GetDoc(response);
+                List<Rack> rv = new List<Rack>();
+                foreach (XElement currentnode in document.Root.Elements())
+                {
+                    Rack rack = GetRackFromXML(currentnode);
+                    rv.Add(rack);
+                }
+                tcs.SetResult(rv);
+            }
+            catch (Exception e)
+            {
+                tcs.SetException(e);
+            }
+        }
+
         private static Rack GetRackFromXML(XElement currentnode)
         {
             Rack rack = new Rack();
@@ -1016,29 +1019,30 @@ namespace WarehouseControlSystem.Helpers.NAV
                     new XElement(myns + "binCodeFilter", bincodefilter),
                     PositionCount(myns, position, count));
 
-            Task.Run(async () =>
-                {
-                    try
-                    {
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
-                        string response = soapbodynode.Value;
-                        XDocument document = GetDoc(response);
-                        List<Bin> rv = new List<Bin>();
-                        foreach (XElement currentnode in document.Root.Elements())
-                        {
-                            Bin bin = GetBinFromXML(currentnode);
-                            rv.Add(bin);
-                        }
-                        tcs.SetResult(rv);
-                    }
-                    catch (Exception e)
-                    {
-                        System.Diagnostics.Debug.WriteLine(e.Message);
-                        tcs.SetException(e);
-                    }
-                });
+            Task.Run(() => GetBinListFromNAV(tcs, functionname, body, myns, cts));
             return tcs.Task;
         }
+        private static async Task GetBinListFromNAV(TaskCompletionSource<List<Bin>> tcs, string functionname, XElement body, XNamespace myns, CancellationTokenSource cts)
+        {
+            try
+            {
+                XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
+                string response = soapbodynode.Value;
+                XDocument document = GetDoc(response);
+                List<Bin> rv = new List<Bin>();
+                foreach (XElement currentnode in document.Root.Elements())
+                {
+                    Bin bin = GetBinFromXML(currentnode);
+                    rv.Add(bin);
+                }
+                tcs.SetResult(rv);
+            }
+            catch (Exception e)
+            {
+                tcs.SetException(e);
+            }
+        }
+
         private static Bin GetBinFromXML(XElement currentnode)
         {
             Bin bin = new Bin();
@@ -1046,6 +1050,7 @@ namespace WarehouseControlSystem.Helpers.NAV
             {
                 GetBinFromXML1(bin, currentatribute);
                 GetBinFromXML2(bin, currentatribute);
+                GetBinFromXML3(bin, currentatribute);
             }
             return bin;
         }
@@ -1077,6 +1082,12 @@ namespace WarehouseControlSystem.Helpers.NAV
                 case "RackNo":
                     bin.RackNo = currentatribute.Value;
                     break;
+            }
+        }
+        private static void GetBinFromXML2(Bin bin, XAttribute currentatribute)
+        {
+            switch (currentatribute.Name.LocalName)
+            {
                 case "Section":
                     bin.Section = StringToInt(currentatribute.Value);
                     break;
@@ -1086,12 +1097,6 @@ namespace WarehouseControlSystem.Helpers.NAV
                 case "Depth":
                     bin.Depth = StringToInt(currentatribute.Value);
                     break;
-            }
-        }
-        private static void GetBinFromXML2(Bin bin, XAttribute currentatribute)
-        {
-            switch (currentatribute.Name.LocalName)
-            {
                 case "LevelSpan":
                     bin.LevelSpan = StringToInt(currentatribute.Value);
                     break;
@@ -1101,6 +1106,12 @@ namespace WarehouseControlSystem.Helpers.NAV
                 case "DepthSpan":
                     bin.DepthSpan = StringToInt(currentatribute.Value);
                     break;
+            }
+        }
+        private static void GetBinFromXML3(Bin bin, XAttribute currentatribute)
+        {
+            switch (currentatribute.Name.LocalName)
+            {
                 case "BinRanking":
                     bin.BinRanking = StringToInt(currentatribute.Value);
                     break;
@@ -1228,29 +1239,28 @@ namespace WarehouseControlSystem.Helpers.NAV
                 new XElement(myns + functionname,
                     PositionCount(myns, position, count));
 
-            Task.Run(async () =>
-                    {
-                        try
-                        {
-                            XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
-                            string response = soapbodynode.Value;
-                            XDocument document = GetDoc(response);
-                            List<BinTemplate> rv = new List<BinTemplate>();
-                            foreach (XElement currentnode in document.Root.Elements())
-                            {
-                                BinTemplate bintemplate = GetBinTemplateFromXML(currentnode);
-                                rv.Add(bintemplate);
-                            }
-                            tcs.SetResult(rv);
-                        }
-                        catch (Exception e)
-                        {
-                            System.Diagnostics.Debug.WriteLine(e.Message);
-                            tcs.SetException(e);
-                        }
-                    });
-
+            Task.Run(() => GetBinTemplateListFromNAV(tcs, functionname, body, myns, cts));
             return tcs.Task;
+        }
+        private static async Task GetBinTemplateListFromNAV(TaskCompletionSource<List<BinTemplate>> tcs, string functionname, XElement body, XNamespace myns, CancellationTokenSource cts)
+        {
+            try
+            {
+                XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
+                string response = soapbodynode.Value;
+                XDocument document = GetDoc(response);
+                List<BinTemplate> rv = new List<BinTemplate>();
+                foreach (XElement currentnode in document.Root.Elements())
+                {
+                    BinTemplate bintemplate = GetBinTemplateFromXML(currentnode);
+                    rv.Add(bintemplate);
+                }
+                tcs.SetResult(rv);
+            }
+            catch (Exception e)
+            {
+                tcs.SetException(e);
+            }
         }
         private static BinTemplate GetBinTemplateFromXML(XElement currentnode)
         {
@@ -1345,29 +1355,28 @@ namespace WarehouseControlSystem.Helpers.NAV
                 new XElement(myns + functionname,
                     PositionCount(myns, position, count));
 
-            Task.Run(async () =>
-                {
-                    try
-                    {
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
-                        string response = soapbodynode.Value;
-                        XDocument document = GetDoc(response);
-                        List<BinType> rv = new List<BinType>();
-                        foreach (XElement currentnode in document.Root.Elements())
-                        {
-                            BinType bintype = GetBinTypeFromXML(currentnode);
-                            rv.Add(bintype);
-                        }
-                        tcs.SetResult(rv);
-                    }
-                    catch (Exception e)
-                    {
-                        System.Diagnostics.Debug.WriteLine(e.Message);
-                        tcs.SetException(e);
-                    }
-                });
-
+            Task.Run(() => GetBinTypeListFromNAV(tcs, functionname, body, myns, cts));
             return tcs.Task;
+        }
+        private static async Task GetBinTypeListFromNAV(TaskCompletionSource<List<BinType>> tcs, string functionname, XElement body, XNamespace myns, CancellationTokenSource cts)
+        {
+            try
+            {
+                XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
+                string response = soapbodynode.Value;
+                XDocument document = GetDoc(response);
+                List<BinType> rv = new List<BinType>();
+                foreach (XElement currentnode in document.Root.Elements())
+                {
+                    BinType bintype = GetBinTypeFromXML(currentnode);
+                    rv.Add(bintype);
+                }
+                tcs.SetResult(rv);
+            }
+            catch (Exception e)
+            {
+                tcs.SetException(e);
+            }
         }
         private static BinType GetBinTypeFromXML(XElement currentnode)
         {
@@ -1440,29 +1449,28 @@ namespace WarehouseControlSystem.Helpers.NAV
                     new XElement(myns + "variantCodeFilter", variantCodeFilter),
                     PositionCount(myns, position, count));
 
-            Task.Run(async () =>
-                {
-                    try
-                    {
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
-                        string response = soapbodynode.Value;
-                        XDocument document = GetDoc(response);
-                        List<BinContent> rv = new List<BinContent>();
-                        foreach (XElement currentnode in document.Root.Elements())
-                        {
-                            BinContent bincontent = GetBinContentFromXML(currentnode);
-                            rv.Add(bincontent);
-                        }
-                        tcs.SetResult(rv);
-                    }
-                    catch (Exception e)
-                    {
-                        System.Diagnostics.Debug.WriteLine(e.Message);
-                        tcs.SetException(e);
-                    }
-                });
-
+            Task.Run(() => GetBinContentFromNAV(tcs, functionname, body, myns, cts));
             return tcs.Task;
+        }
+        private static async Task GetBinContentFromNAV(TaskCompletionSource<List<BinContent>> tcs, string functionname, XElement body, XNamespace myns, CancellationTokenSource cts)
+        {
+            try
+            {
+                XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
+                string response = soapbodynode.Value;
+                XDocument document = GetDoc(response);
+                List<BinContent> rv = new List<BinContent>();
+                foreach (XElement currentnode in document.Root.Elements())
+                {
+                    BinContent bincontent = GetBinContentFromXML(currentnode);
+                    rv.Add(bincontent);
+                }
+                tcs.SetResult(rv);
+            }
+            catch (Exception e)
+            {
+                tcs.SetException(e);
+            }
         }
         private static BinContent GetBinContentFromXML(XElement currentnode)
         {
@@ -1571,29 +1579,29 @@ namespace WarehouseControlSystem.Helpers.NAV
                     new XElement(myns + "variantCodeFilter", variantCodeFilter),
                     PositionCount(myns, position, count));
 
-            Task.Run(async () =>
-            {
-                try
-                {
-                    XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
-                    string response = soapbodynode.Value;
-                    XDocument document = GetDoc(response);
-                    List<ItemIdentifier> rv = new List<ItemIdentifier>();
-                    foreach (XElement currentnode in document.Root.Elements())
-                    {
-                        ItemIdentifier itemidentifier = GetItemIdentifierFromXML(currentnode);
-                        rv.Add(itemidentifier);
-                    }
-                    tcs.SetResult(rv);
-                }
-                catch (Exception e)
-                {
-                    System.Diagnostics.Debug.WriteLine(e.Message);
-                    tcs.SetException(e);
-                }
-            });
+            Task.Run(() => GetItemIdentifierListFromNAV(tcs, functionname, body, myns, cts));
 
             return tcs.Task;
+        }
+        private static async Task GetItemIdentifierListFromNAV(TaskCompletionSource<List<ItemIdentifier>> tcs, string functionname, XElement body, XNamespace myns, CancellationTokenSource cts)
+        {
+            try
+            {
+                XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
+                string response = soapbodynode.Value;
+                XDocument document = GetDoc(response);
+                List<ItemIdentifier> rv = new List<ItemIdentifier>();
+                foreach (XElement currentnode in document.Root.Elements())
+                {
+                    ItemIdentifier itemidentifier = GetItemIdentifierFromXML(currentnode);
+                    rv.Add(itemidentifier);
+                }
+                tcs.SetResult(rv);
+            }
+            catch (Exception e)
+            {
+                tcs.SetException(e);
+            }
         }
         private static ItemIdentifier GetItemIdentifierFromXML(XElement currentnode)
         {
@@ -1651,29 +1659,29 @@ namespace WarehouseControlSystem.Helpers.NAV
                 new XElement(myns + functionname,
                     PositionCount(myns, position, count));
 
-            Task.Run(async () =>
-                {
-                    try
-                    {
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
-                        string response = soapbodynode.Value;
-                        XDocument document = GetDoc(response);
-                        List<WarehouseClass> rv = new List<WarehouseClass>();
-                        foreach (XElement currentnode in document.Root.Elements())
-                        {
-                            WarehouseClass warehouseclass = GetWarehouseClassFromXML(currentnode);
-                            rv.Add(warehouseclass);
-                        }
-                        tcs.SetResult(rv);
-                    }
-                    catch (Exception e)
-                    {
-                        System.Diagnostics.Debug.WriteLine(e.Message);
-                        tcs.SetException(e);
-                    }
-                });
+            Task.Run(() => GetWarehouseEntryListFromNAV(tcs, functionname, body, myns, cts));
 
             return tcs.Task;
+        }
+        private static async Task GetWarehouseEntryListFromNAV(TaskCompletionSource<List<WarehouseClass>> tcs, string functionname, XElement body, XNamespace myns, CancellationTokenSource cts)
+        {
+            try
+            {
+                XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
+                string response = soapbodynode.Value;
+                XDocument document = GetDoc(response);
+                List<WarehouseClass> rv = new List<WarehouseClass>();
+                foreach (XElement currentnode in document.Root.Elements())
+                {
+                    WarehouseClass warehouseclass = GetWarehouseClassFromXML(currentnode);
+                    rv.Add(warehouseclass);
+                }
+                tcs.SetResult(rv);
+            }
+            catch (Exception e)
+            {
+                tcs.SetException(e);
+            }
         }
         private static WarehouseClass GetWarehouseClassFromXML(XElement currentnode)
         {
@@ -1725,29 +1733,29 @@ namespace WarehouseControlSystem.Helpers.NAV
                 new XElement(myns + functionname,
                     PositionCount(myns, position, count));
 
-            Task.Run(async () =>
-                {
-                    try
-                    {
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
-                        string response = soapbodynode.Value;
-                        XDocument document = GetDoc(response);
-                        List<SpecialEquipment> rv = new List<SpecialEquipment>();
-                        foreach (XElement currentnode in document.Root.Elements())
-                        {
-                            SpecialEquipment specialequipment = GetSpecialEquipmentFromXML(currentnode);
-                            rv.Add(specialequipment);
-                        }
-                        tcs.SetResult(rv);
-                    }
-                    catch (Exception e)
-                    {
-                        System.Diagnostics.Debug.WriteLine(e.Message);
-                        tcs.SetException(e);
-                    }
-                });
+            Task.Run(() => GetSpecialEquipmentListFromNAV(tcs, functionname, body, myns, cts));
 
             return tcs.Task;
+        }
+        private static async Task GetSpecialEquipmentListFromNAV(TaskCompletionSource<List<SpecialEquipment>> tcs, string functionname, XElement body, XNamespace myns, CancellationTokenSource cts)
+        {
+            try
+            {
+                XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
+                string response = soapbodynode.Value;
+                XDocument document = GetDoc(response);
+                List<SpecialEquipment> rv = new List<SpecialEquipment>();
+                foreach (XElement currentnode in document.Root.Elements())
+                {
+                    SpecialEquipment specialequipment = GetSpecialEquipmentFromXML(currentnode);
+                    rv.Add(specialequipment);
+                }
+                tcs.SetResult(rv);
+            }
+            catch (Exception e)
+            {
+                tcs.SetException(e);
+            }
         }
         private static SpecialEquipment GetSpecialEquipmentFromXML(XElement currentnode)
         {
@@ -1811,28 +1819,28 @@ namespace WarehouseControlSystem.Helpers.NAV
                     new XElement(myns + "variantCodeFilter", count),
                     new XElement(myns + "responseDocument", ""));
 
-            Task.Run(async () =>
-                {
-                    try
-                    {
-                        XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
-                        string response = soapbodynode.Value;
-                        XDocument document = GetDoc(response);
-                        List<WarehouseEntry> rv = new List<WarehouseEntry>();
-                        foreach (XElement currentnode in document.Root.Elements())
-                        {
-                            WarehouseEntry we = GetWarehouseEntryFromXML(currentnode);
-                            rv.Add(we);
-                        }
-                        tcs.SetResult(rv);
-                    }
-                    catch (Exception e)
-                    {
-                        System.Diagnostics.Debug.WriteLine(e.Message);
-                        tcs.SetException(e);
-                    }
-                });
+            Task.Run(() => GetWarehouseEntryListFromNAV(tcs, functionname, body, myns, cts));
             return tcs.Task;
+        }
+        private static async Task GetWarehouseEntryListFromNAV(TaskCompletionSource<List<WarehouseEntry>> tcs, string functionname, XElement body, XNamespace myns, CancellationTokenSource cts)
+        {
+            try
+            {
+                XElement soapbodynode = await Process(functionname, body, myns, false, cts).ConfigureAwait(false);
+                string response = soapbodynode.Value;
+                XDocument document = GetDoc(response);
+                List<WarehouseEntry> rv = new List<WarehouseEntry>();
+                foreach (XElement currentnode in document.Root.Elements())
+                {
+                    WarehouseEntry we = GetWarehouseEntryFromXML(currentnode);
+                    rv.Add(we);
+                }
+                tcs.SetResult(rv);
+            }
+            catch (Exception e)
+            {
+                tcs.SetException(e);
+            }
         }
         private static WarehouseEntry GetWarehouseEntryFromXML(XElement currentnode)
         {
@@ -2315,47 +2323,55 @@ namespace WarehouseControlSystem.Helpers.NAV
         {
             Connection connection = SelectConnection(testconnection);
             XElement rv = null;
-            string requestbody = GetRequestText(CreateSOAPRequest(body, myns));
-
-            var handler = GetHandler(connection);
-            using (var client = new HttpClient(handler))
+            try
             {
-                var request = new HttpRequestMessage
-                {
-                    RequestUri = connection.GetUri(),
-                    Method = HttpMethod.Post
-                };
-                request.Content = new StringContent(requestbody, Encoding.UTF8, "text/xml");
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
-                client.DefaultRequestHeaders.Add("SOAPAction", connection.GetSoapActionTxt() + "/" + functionname);
+                string requestbody = GetRequestText(CreateSOAPRequest(body, myns));
 
-                using (var response = await client.SendAsync(request, cts.Token))
+                var handler = GetHandler(connection);
+                using (var client = new HttpClient(handler))
                 {
-                    Task<Stream> streamTask = response.Content.ReadAsStreamAsync();
-                    Stream stream = streamTask.Result;
-                    var sr = new StreamReader(stream);
-                    XDocument xmldoc = XDocument.Load(sr);
-                    if (response.IsSuccessStatusCode)
+                    var request = new HttpRequestMessage
                     {
-                        XElement bodysopeenvelopenode = xmldoc.Root.Element(ns + "Body");
-                        if (bodysopeenvelopenode is XElement)
-                        {
-                            return bodysopeenvelopenode;
-                        }
-                    }
-                    else
+                        RequestUri = connection.GetUri(),
+                        Method = HttpMethod.Post
+                    };
+
+                    request.Content = new StringContent(requestbody, Encoding.UTF8, "text/xml");
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
+                    client.DefaultRequestHeaders.Add("SOAPAction", connection.GetSoapActionTxt() + "/" + functionname);
+
+                    using (var response = await client.SendAsync(request, cts.Token))
                     {
-                        if (response.ReasonPhrase == "Internal Server Error")
+                        Task<Stream> streamTask = response.Content.ReadAsStreamAsync();
+                        Stream stream = streamTask.Result;
+                        var sr = new StreamReader(stream);
+                        XDocument xmldoc = XDocument.Load(sr);
+                        if (response.IsSuccessStatusCode)
                         {
-                            throw CreateNAVException(xmldoc);
+                            XElement bodysopeenvelopenode = xmldoc.Root.Element(ns + "Body");
+                            if (bodysopeenvelopenode is XElement)
+                            {
+                                return bodysopeenvelopenode;
+                            }
                         }
                         else
                         {
-                            NAVUnknowException unknown = new NAVUnknowException(response.ReasonPhrase);
-                            throw unknown;
+                            if (response.ReasonPhrase == "Internal Server Error")
+                            {
+                                throw CreateNAVException(xmldoc);
+                            }
+                            else
+                            {
+                                NAVUnknowException unknown = new NAVUnknowException(response.ReasonPhrase);
+                                throw unknown;
+                            }
                         }
                     }
                 }
+            }
+            catch (Exception e)
+            {
+                throw e;
             }
             return rv;
         }

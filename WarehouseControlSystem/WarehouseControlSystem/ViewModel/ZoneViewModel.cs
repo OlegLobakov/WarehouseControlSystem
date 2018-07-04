@@ -104,7 +104,6 @@ namespace WarehouseControlSystem.ViewModel
         public ICommand TapCommand { protected set; get; }
         public event Action<ZoneViewModel> OnTap;
 
-
         public ObservableCollection<Location> Locations { get; set; } = new ObservableCollection<Location>();
         public bool LocationsIsLoaded
         {
@@ -171,7 +170,6 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } bool canchangelocationCode;
-
 
         public List<SubSchemeElement> SubSchemeElements { get; set; } = new List<SubSchemeElement>();
         public bool RacksIsLoaded
@@ -361,9 +359,7 @@ namespace WarehouseControlSystem.ViewModel
                     LocationsIsLoaded = false;
                 }
                 MessagingCenter.Send<ZoneViewModel>(this, "LocationsIsLoaded");
-
-                
-
+          
                 BinTypesIsBeingLoaded = true;
                 List<BinType> bintypes = await NAV.GetBinTypeList(1, int.MaxValue, ACD.Default).ConfigureAwait(true);
                 BinTypes.Clear();
