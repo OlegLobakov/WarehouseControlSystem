@@ -28,7 +28,6 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
@@ -44,18 +43,8 @@
                             </DataTrigger>
                         </Label.Triggers>
                     </Label>
-
-                    <vc:InnerSubSchemeView                         
-                        Grid.Row="3" Margin="10,5,10,5"
-                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"  
-                        PlanWidth="{Binding PlanWidth}"
-                        PlanHeight="{Binding PlanHeight}"
-                        SubSchemeElements="{Binding SubSchemeElements}" 
-                        IsVisible="{Binding ZonesIsLoaded}"
-                        SubSchemeBackgroundColor="{Binding Color}"
-                        UpdateScheme="{Binding ZonesIsLoaded}"/>
-
-                    <Label Grid.Row="2" Text="{Binding Address}"    
+                    
+                    <Label Grid.Row="1" Text="{Binding Address}"    
                        FontSize="Default"       
                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
                        HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
@@ -66,8 +55,19 @@
                             </DataTrigger>
                         </Label.Triggers>
                     </Label>
+                    
+                    <vc:InnerSubSchemeView                         
+                        Grid.Row="2"
+                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"  
+                        PlanWidth="{Binding PlanWidth}"
+                        PlanHeight="{Binding PlanHeight}"
+                        SubSchemeElements="{Binding SubSchemeElements}" 
+                        IsVisible="{Binding ZonesIsLoaded}"
+                        SubSchemeBackgroundColor="{Binding Color}"
+                        UpdateScheme="{Binding ZonesIsLoaded}"/>
 
-                    <StackLayout Grid.Row="4" Orientation="Horizontal">
+
+                    <StackLayout Grid.Row="3" Orientation="Horizontal">
                         <Label Text="{Binding EditModeText}" TextColor="White" 
                            HorizontalOptions="Start" VerticalOptions="Center"  
                            IsVisible="{Binding Selected}" Margin="10,0,0,0"/>

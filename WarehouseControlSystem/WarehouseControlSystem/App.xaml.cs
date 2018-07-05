@@ -23,13 +23,21 @@ namespace WarehouseControlSystem
         {
             InitializeComponent();
 
-            System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo(Settings.CurrentLocalization);
-            Resx.AppResources.Culture = ci;
-            Global.Culture = ci;
-
+            
             if (Device.RuntimePlatform == Device.iOS || Device.RuntimePlatform == Device.Android)
             {
-                DependencyService.Get<ILocalize>().SetLocale(ci); 
+                System.Globalization.CultureInfo fe = DependencyService.Get<ILocalize>().GetDeviceCultureInfo();
+                string fr = Settings.CurrentLocalization;
+                System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo(Settings.CurrentLocalization);
+                Resx.AppResources.Culture = ci;
+                Global.Culture = ci;
+                DependencyService.Get<ILocalize>().SetLocale(ci);
+            }
+            else
+            {
+                System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo(Settings.CurrentLocalization);
+                Resx.AppResources.Culture = ci;
+                Global.Culture = ci;
             }
 
             Global.Init();

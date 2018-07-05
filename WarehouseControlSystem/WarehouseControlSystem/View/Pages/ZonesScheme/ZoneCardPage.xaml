@@ -112,7 +112,7 @@
                         <Button Grid.Column="0" Text="{i18n:Translate NewZonePage_CreateButton}"  
                                 HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
                                 Command="{Binding OKCommand}" 
-                                BackgroundColor="White" FontAttributes="Bold" Margin="20">
+                                BackgroundColor="White" FontAttributes="Bold" TextColor="Black" Margin="20">
                             <Button.Triggers>
                                 <DataTrigger Binding="{Binding CreateMode}" TargetType="Button" Value="False">
                                     <Setter Property="Text" Value="OK"/>
@@ -123,7 +123,7 @@
                         <Button Grid.Column="1" Text="{i18n:Translate NewZonePage_CancelChangesButton}"  
                                 HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
                                 Command="{Binding CancelChangesCommand}" 
-                                BackgroundColor="White" FontAttributes="Bold" Margin="20">
+                                BackgroundColor="White" FontAttributes="Bold" TextColor="Black" Margin="20">
                             <Button.Triggers>
                                 <DataTrigger Binding="{Binding CreateMode}" TargetType="Button" Value="True">
                                     <Setter Property="IsVisible" Value="False"/>
@@ -134,7 +134,7 @@
                         <Button Grid.Column="2" Text="{i18n:Translate NewZonePage_CancelButton}"  
                                 HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
                                 Command="{Binding CancelCommand}" 
-                                BackgroundColor="White" FontAttributes="Bold" Margin="20">
+                                BackgroundColor="White" FontAttributes="Bold" TextColor="Black" Margin="20">
                         </Button>
                     </Grid>
                 </Grid>

@@ -30,9 +30,9 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Label Text="{i18n:Translate ParametersPage_Section_RackCreation_Title}" 
                        Grid.Row="0" Grid.Column="0"  FontAttributes="Bold" HorizontalOptions="Start" 

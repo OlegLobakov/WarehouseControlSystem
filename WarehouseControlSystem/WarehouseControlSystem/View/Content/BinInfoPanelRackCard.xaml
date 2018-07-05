@@ -16,7 +16,7 @@
                 </Grid.ColumnDefinitions>
                 <Button Grid.Column="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
                         Text="{i18n:Translate BinInfoPanelRackCard_Content}" BackgroundColor="Transparent"
-                        Command="{Binding ContentViewCommand}">
+                        Command="{Binding ContentViewCommand}" TextColor="Black">
                     <Button.Triggers>
                         <DataTrigger Binding="{Binding IsContentVisible}" TargetType="Button" Value="true">
                             <Setter Property="BackgroundColor" Value="{StaticResource PageHeaderBarBackgoundColor}"/>
@@ -27,7 +27,7 @@
 
                 <Button Grid.Column="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
                         Text="{i18n:Translate BinInfoPanelRackCard_Functions}" BackgroundColor="Transparent"
-                        Command="{Binding FunctionsViewCommand}">
+                        Command="{Binding FunctionsViewCommand}" TextColor="Black">
                     <Button.Triggers>
                         <DataTrigger Binding="{Binding IsUserDefinedCommandsVisible}" TargetType="Button" Value="true">
                             <Setter Property="BackgroundColor" Value="{StaticResource PageHeaderBarBackgoundColor}"/>

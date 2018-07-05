@@ -6,50 +6,99 @@
              xmlns:i18n="clr-namespace:WarehouseControlSystem;assembly=WarehouseControlSystem"
              Title="Warehouse Control System">
     <ContentPage.Content>
-        <Grid RowSpacing="6" ColumnSpacing="6" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <vc:WellcomeBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"  Grid.RowSpan="3" 
+        <Grid Padding="5">
+
+            <Grid RowSpacing="6" ColumnSpacing="6" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" IsVisible="{Binding IsDevicePhone}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <vc:WellcomeBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"  Grid.RowSpan="3" 
                          Name="{i18n:Translate WellcomePage_Locations}" 
                          BackgroundColor="{StaticResource WellcodeButtonBackgoundColor}" 
                          Taped="LocationsTaped"/>
-            <vc:WellcomeBlock Grid.Row="1" Grid.Column="3" 
+                <vc:WellcomeBlock Grid.Row="0" Grid.Column="2" 
                          Name="{i18n:Translate WellcomePage_About}" 
                          BackgroundColor="{StaticResource WellcodeButtonBackgoundColor}"
                          Taped="AboutTaped"/>
-            <vc:WellcomeBlock Grid.Row="2" Grid.Column="3" 
+                <vc:WellcomeBlock Grid.Row="1" Grid.Column="2" 
                          Name="{i18n:Translate WellcomePage_Connections}" 
                          BackgroundColor="{StaticResource WellcodeButtonBackgoundColor}"
                          Taped="ConnectionsTaped"/>
-            <vc:WellcomeBlock Grid.Row="3" Grid.Column="3" 
+                <vc:WellcomeBlock Grid.Row="2" Grid.Column="2" 
                          Name="{i18n:Translate WellcomePage_Options}" 
                          BackgroundColor="{StaticResource WellcodeButtonBackgoundColor}"
                          Taped="OptionsTaped"/>
-            <vc:WellcomeBlock Grid.Row="4" Grid.Column="1" 
+                <vc:WellcomeBlock Grid.Row="3" Grid.Column="0" 
                          Name="{i18n:Translate WellcomePage_AddLocation}" 
                          BackgroundColor="DarkGreen"
                          Taped="AddLocation"/>
-            <vc:WellcomeBlock Grid.Row="4" Grid.Column="2" 
+                <vc:WellcomeBlock Grid.Row="3" Grid.Column="1" 
                          Name="{i18n:Translate WellcomePage_AddZone}" 
                          BackgroundColor="DarkGreen"
                          Taped="AddZoneTaped"/>
-            <vc:WellcomeBlock Grid.Row="4" Grid.Column="3" 
+                <vc:WellcomeBlock Grid.Row="3" Grid.Column="2" 
                          Name="{i18n:Translate WellcomePage_AddRack}"  
                          BackgroundColor="DarkGreen"
                          Taped="AddRackTaped"/>
+            </Grid>
+            <Grid RowSpacing="6" ColumnSpacing="6" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                <Grid.Triggers>
+                    <DataTrigger Binding="{Binding IsDevicePhone}" TargetType="Grid" Value="true">
+                        <Setter Property="IsVisible" Value="false"  />
+                    </DataTrigger>
+                </Grid.Triggers>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <vc:WellcomeBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"  Grid.RowSpan="3" 
+                         Name="{i18n:Translate WellcomePage_Locations}" 
+                         BackgroundColor="{StaticResource WellcodeButtonBackgoundColor}" 
+                         Taped="LocationsTaped"/>
+                <vc:WellcomeBlock Grid.Row="1" Grid.Column="3" 
+                         Name="{i18n:Translate WellcomePage_About}" 
+                         BackgroundColor="{StaticResource WellcodeButtonBackgoundColor}"
+                         Taped="AboutTaped"/>
+                <vc:WellcomeBlock Grid.Row="2" Grid.Column="3" 
+                         Name="{i18n:Translate WellcomePage_Connections}" 
+                         BackgroundColor="{StaticResource WellcodeButtonBackgoundColor}"
+                         Taped="ConnectionsTaped"/>
+                <vc:WellcomeBlock Grid.Row="3" Grid.Column="3" 
+                         Name="{i18n:Translate WellcomePage_Options}" 
+                         BackgroundColor="{StaticResource WellcodeButtonBackgoundColor}"
+                         Taped="OptionsTaped"/>
+                <vc:WellcomeBlock Grid.Row="4" Grid.Column="1" 
+                         Name="{i18n:Translate WellcomePage_AddLocation}" 
+                         BackgroundColor="DarkGreen"
+                         Taped="AddLocation"/>
+                <vc:WellcomeBlock Grid.Row="4" Grid.Column="2" 
+                         Name="{i18n:Translate WellcomePage_AddZone}" 
+                         BackgroundColor="DarkGreen"
+                         Taped="AddZoneTaped"/>
+                <vc:WellcomeBlock Grid.Row="4" Grid.Column="3" 
+                         Name="{i18n:Translate WellcomePage_AddRack}"  
+                         BackgroundColor="DarkGreen"
+                         Taped="AddRackTaped"/>
+            </Grid>
         </Grid>
 
     </ContentPage.Content>

@@ -51,8 +51,8 @@
                             </Grid.RowDefinitions>
 
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="300" />
-                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="2*" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
 
@@ -159,7 +159,7 @@
                     </ScrollView>
                     <Button  Grid.Row="1" HorizontalOptions="End" Text="{i18n:Translate StateContainer_CancelChanges}" 
                              Command="{Binding CancelChangesCommand}" 
-                             BackgroundColor="White" FontAttributes="Bold" Margin="20"/>
+                             BackgroundColor="White" FontAttributes="Bold" Margin="20" TextColor="Black"/>
                 </Grid>
             </StackLayout>
             <StackLayout IsVisible="{Binding IsErrorState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">

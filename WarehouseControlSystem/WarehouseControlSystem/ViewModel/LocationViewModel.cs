@@ -282,11 +282,11 @@ namespace WarehouseControlSystem.ViewModel
             {
                 if (CreateMode)
                 {
-                    await CreateLocation(Location);
+                    await CreateLocation(Location).ConfigureAwait(true);
                 }
                 else
                 {
-                    await ModifyLocation(Location);
+                    await ModifyLocation(Location).ConfigureAwait(true);
                 }
             }
             catch (Exception e)

@@ -33,11 +33,28 @@ namespace WarehouseControlSystem
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MainPageDetail : ContentPage
     {
+        public bool IsDevicePhone
+        {
+            get { return isdevicephone; }
+            set
+            {
+                if (isdevicephone != value)
+                {
+                    isdevicephone = value;
+                    OnPropertyChanged(nameof(IsDevicePhone));
+                }
+            }
+        }
+        bool isdevicephone;
 
         public MainPageDetail()
         {
             InitializeComponent();
             BindingContext = this;
+            if (Device.Idiom == TargetIdiom.Phone)
+            {
+                IsDevicePhone = true;
+            }
         }
 
         private async Task LocationsTaped()
