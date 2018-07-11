@@ -345,8 +345,8 @@ namespace WarehouseControlSystem.ViewModel
 
             try
             {
-                await NAV.SetPlanWidth(PlanWidth, ACD.Default).ConfigureAwait(true);
-                await NAV.SetPlanHeight(PlanHeight, ACD.Default).ConfigureAwait(true);
+                int i = await NAV.SetPlanWidth(PlanWidth, ACD.Default).ConfigureAwait(true);
+                int j = await NAV.SetPlanHeight(PlanHeight, ACD.Default).ConfigureAwait(true);
             }
             catch (Exception e)
             {

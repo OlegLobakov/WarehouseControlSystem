@@ -43,6 +43,7 @@ namespace WarehouseControlSystem.View.Pages.Connections
 
         protected override void OnDisappearing()
         {
+            Global.SaveParameters();
             base.OnDisappearing();
         }
 

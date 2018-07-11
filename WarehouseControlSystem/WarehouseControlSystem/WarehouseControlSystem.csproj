@@ -67,6 +67,9 @@
     <Compile Update="View\Pages\RackScheme\RackSchemeView.xaml.cs">
       <DependentUpon>RackSchemeView.xaml</DependentUpon>
     </Compile>
+    <Compile Update="View\Pages\RackScheme\RackSimpleView.xaml.cs">
+      <DependentUpon>RackSimpleView.xaml</DependentUpon>
+    </Compile>
     <Compile Update="View\Pages\ZonesScheme\ZoneCardPage.xaml.cs">
       <DependentUpon>ZoneCardPage.xaml</DependentUpon>
     </Compile>

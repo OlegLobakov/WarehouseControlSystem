@@ -55,7 +55,6 @@ namespace WarehouseControlSystem
 
         protected override void OnSleep()
         {
-            Global.SaveParameters();
         }
 
         protected override void OnResume()
