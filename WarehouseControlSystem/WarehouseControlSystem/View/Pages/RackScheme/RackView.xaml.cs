@@ -25,12 +25,30 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
         Label HeaderLabel;
         public RackViewModel model;
 
+        public static readonly BindableProperty BinWidthProperty = BindableProperty.Create(nameof(BinWidth), typeof(int), typeof(RackView), 120, BindingMode.Default, null, Changed);
+        public int BinWidth
+        {
+            get { return (int)GetValue(BinWidthProperty); }
+            set { SetValue(BinWidthProperty, value); }
+        }
+
+        private static void Changed(BindableObject bindable, object oldValue, object newValue)
+        {
+            //var instance = bindable as RackView;
+            //instance?.Update();
+        }
+
         public RackView()
         {
             InitializeComponent();
 
             MessagingCenter.Subscribe<BinsViewModel>(this, "Update", Update);
             MessagingCenter.Subscribe<RackViewModel>(this, "Update", Update);
+        }
+
+        private void Update()
+        {
+            Update(model);
         }
 
         private void Update(BinsViewModel bvm)
@@ -62,7 +80,7 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(40, GridUnitType.Absolute) });
             for (int i = 1; i <= model.Sections; i++)
             {
-                grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(120, GridUnitType.Absolute) });
+                grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(BinWidth, GridUnitType.Absolute) });
             }
 
             HeaderLabel = new Label();

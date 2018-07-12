@@ -30,11 +30,14 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
     public partial class RackCardPage : ContentPage
     {
         private readonly RackViewModel model;
+        private bool ScaleMode { get; set; }
+
         public RackCardPage(RackViewModel rvm)
         {
             model = rvm;
             BindingContext = model;
             InitializeComponent();
+            ScaleMode = false;
             Title = AppResources.RackCardPage_Title + " " + model.No;
             MessagingCenter.Subscribe<BinsViewModel>(this, "BinsIsLoaded", BinsIsLoaded);
         }
@@ -54,6 +57,12 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             model.CancelAsync();
             base.OnBackButtonPressed();
             return false;
+        }
+
+        private void StackLayout_SizeChanged(object sender, EventArgs e)
+        {
+            StackLayout sl = (StackLayout)sender;
+            rackview.BinWidth = (int)sl.Width / 8;
         }
 
         public void BinsIsLoaded(BinsViewModel bvm)
@@ -88,6 +97,25 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             SearchViewModel svm = new SearchViewModel(Navigation);
             FindPage fp = new FindPage(svm);
             await Navigation.PushAsync(fp);
+        }
+
+        private void ToolbarItem_Clicked(object sender, EventArgs e)
+        {
+            if (ScaleMode)
+            {
+                rackscrollview.VerticalOptions = LayoutOptions.FillAndExpand;
+                rackview.BinWidth = (int)mainsl.Width / 8;
+                rackview.Update(model);
+                ScaleMode = false;
+            }
+            else
+            {
+                rackscrollview.VerticalOptions = LayoutOptions.CenterAndExpand;
+                rackview.BinWidth = (int)(mainsl.Width / (model.Sections + 3));
+                rackview.HeightRequest = (rackview.BinWidth * 1.5) * (model.Levels + 1);
+                rackview.Update(model);
+                ScaleMode = true;
+            }
         }
     }
 }

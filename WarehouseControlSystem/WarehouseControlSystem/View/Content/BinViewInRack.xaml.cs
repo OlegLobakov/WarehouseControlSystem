@@ -27,11 +27,31 @@ namespace WarehouseControlSystem.View.Content
     public partial class BinViewInRack : ContentView
     {
         readonly BinViewModel model;
+        public double CodeFontSize
+        {
+            get { return codefontsize; }
+            set
+            {
+                if (codefontsize != value)
+                {
+                    codefontsize = value;
+                    OnPropertyChanged(nameof(CodeFontSize));
+                }
+            }
+        }
+        double codefontsize;
+
         public BinViewInRack(BinViewModel bvm)
         {
             model = bvm;
             BindingContext = model;
             InitializeComponent();
+        }
+
+        private void StackLayout_SizeChanged(object sender, EventArgs e)
+        {
+            StackLayout sl = (StackLayout)sender;
+            CodeFontSize = sl.Width / 5;
         }
     }
 }
