@@ -1,9 +1,10 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>   
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="WarehouseControlSystem.View.Content.BinViewInRack">
+             x:Class="WarehouseControlSystem.View.Content.BinViewInRack"
+             x:Name="ThisBinView">
   <ContentView.Content>
-        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" SizeChanged="StackLayout_SizeChanged">
             <StackLayout.GestureRecognizers>
                 <TapGestureRecognizer Command="{Binding TapCommand}"/>
             </StackLayout.GestureRecognizers>
@@ -38,7 +39,7 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Label Grid.Row="0" x:Name="codelabel" Text="{Binding Code}" 
-                       FontSize="Small" 
+                       FontSize="{Binding Path=CodeFontSize, Source={x:Reference Name=ThisBinView}}" 
                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
                        HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="7,2,0,0">
                     <Label.Triggers>
@@ -48,10 +49,11 @@
                     </Label.Triggers>
                 </Label>
 
-                <ActivityIndicator Grid.Row="2" IsVisible="{Binding LoadAnimation}" IsRunning="{Binding LoadAnimation}" HeightRequest="30" WidthRequest="30" HorizontalOptions="Center" VerticalOptions="Center"/>
+                <ActivityIndicator Grid.Row="2" IsVisible="{Binding LoadAnimation}" IsRunning="{Binding LoadAnimation}" 
+                                   HeightRequest="30" WidthRequest="30" HorizontalOptions="Center" VerticalOptions="Center"/>
 
                 <Image Grid.Row="2" x:Name="iconelement" HorizontalOptions="CenterAndExpand" 
-                       VerticalOptions="CenterAndExpand" Aspect="AspectFit"
+                       VerticalOptions="CenterAndExpand" Aspect="Fill"
                        IsVisible="{Binding IsContent}">
                     <Image.Source>
                         <OnPlatform x:TypeArguments="FileImageSource">
@@ -65,8 +67,9 @@
                     </Image.Source>
                 </Image>
 
-                <Label Grid.Row="3" Text="{Binding SearchQuantity}" Margin="10" HorizontalOptions="End" 
+                <Label Grid.Row="3" Text="{Binding SearchQuantity}" Margin="0,0,5,5" HorizontalOptions="End" 
                        TextColor="White"
+                       FontSize="{Binding Path=CodeFontSize, Source={x:Reference Name=ThisBinView}}"
                        IsVisible="{Binding IsSearchQuantityVisible}"></Label>
             </Grid>
         </StackLayout>

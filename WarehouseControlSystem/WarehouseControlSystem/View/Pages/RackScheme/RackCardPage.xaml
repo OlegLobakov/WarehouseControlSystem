@@ -6,6 +6,19 @@
              x:Class="WarehouseControlSystem.View.Pages.RackScheme.RackCardPage"
              xmlns:i18n="clr-namespace:WarehouseControlSystem;assembly=WarehouseControlSystem">
     <ContentPage.ToolbarItems>
+
+        <ToolbarItem  Order="Primary" Priority="1000" Text="{i18n:Translate RackCardPage_Toolbar_Search}" Clicked="ToolbarItem_Clicked">
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="UWP,WinPhone">
+                        <FileImageSource File="Assets/Images/ic_action_zoom_out_map.png"/>
+                    </On>
+                    <On Platform="iOS,Android">
+                        <FileImageSource File="ic_action_zoom_out_map.png"/>
+                    </On>
+                </OnPlatform>
+            </ToolbarItem.Icon>
+        </ToolbarItem>
         <ToolbarItem  Order="Primary" Priority="2000" Text="{i18n:Translate RackCardPage_Toolbar_Search}" Clicked="ToolbarItem_Search">
             <ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
@@ -20,7 +33,7 @@
         </ToolbarItem>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+        <StackLayout  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" x:Name="mainsl" SizeChanged="StackLayout_SizeChanged">
             <StackLayout IsVisible="{Binding IsLoadingState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                 <StackLayout VerticalOptions="Center" HorizontalOptions="Center" Orientation="Vertical">
                     <ActivityIndicator IsRunning="{Binding LoadAnimation}" HeightRequest="50" WidthRequest="50"/>
@@ -57,9 +70,9 @@
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
 
-                            <ScrollView Grid.Row="0" Margin="5" 
+                            <ScrollView Grid.Row="0" Margin="5" VerticalOptions="CenterAndExpand"
                                 Orientation="Horizontal" BackgroundColor="White"
-                                x:Name="rackviewpanel">
+                                x:Name="rackscrollview">
                                 <rv:RackView x:Name="rackview"/>
                             </ScrollView>
                         </Grid>

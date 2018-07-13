@@ -3,6 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
               x:Class="WarehouseControlSystem.View.Pages.RackScheme.RackView">
     <ContentView.Content>
-        <Grid  x:Name="grid" BackgroundColor="White" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Padding="3"></Grid>
+        <Grid  x:Name="grid" BackgroundColor="White" Padding="3"></Grid>
     </ContentView.Content>
 </ContentView>
