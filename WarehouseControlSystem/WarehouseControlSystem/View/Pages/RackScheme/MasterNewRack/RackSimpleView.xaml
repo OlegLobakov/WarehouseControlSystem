@@ -3,8 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
               x:Class="WarehouseControlSystem.View.Pages.RackScheme.MasterNewRack.RackSimpleView">
     <ContentView.Content>
-        <StackLayout Padding="2" BackgroundColor="Black">
-            <Grid  x:Name="grid" BackgroundColor="Black" RowSpacing="2" ColumnSpacing="2">
+        <StackLayout Padding="2" BackgroundColor="DarkGray">
+            <Grid  x:Name="grid" RowSpacing="2" ColumnSpacing="2" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
             </Grid>
         </StackLayout>
     </ContentView.Content>

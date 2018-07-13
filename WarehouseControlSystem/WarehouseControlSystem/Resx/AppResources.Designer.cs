@@ -3094,7 +3094,16 @@ namespace WarehouseControlSystem.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No.
+        ///   Looks up a localized string similar to Prefix.
+        /// </summary>
+        internal static string RackNewPage_PrefixNumbering {
+            get {
+                return ResourceManager.GetString("RackNewPage_PrefixNumbering", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rack Code.
         /// </summary>
         internal static string RackNewPage_RackNo {
             get {

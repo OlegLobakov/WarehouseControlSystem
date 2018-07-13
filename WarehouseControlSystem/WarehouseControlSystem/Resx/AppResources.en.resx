@@ -1000,7 +1000,7 @@
     <value>Vertical Up</value>
   </data>
   <data name="RackNewPage_RackNo" xml:space="preserve">
-    <value>No</value>
+    <value>Rack Code</value>
   </data>
   <data name="RackNewPage_RackSectionSeparator" xml:space="preserve">
     <value>Rack-Section Separator</value>
@@ -1385,5 +1385,8 @@
   </data>
   <data name="MasterNewRack_ControlRackOrientation" xml:space="preserve">
     <value>Rack orientation is not defined!</value>
+  </data>
+  <data name="RackNewPage_PrefixNumbering" xml:space="preserve">
+    <value>Prefix</value>
   </data>
 </root>

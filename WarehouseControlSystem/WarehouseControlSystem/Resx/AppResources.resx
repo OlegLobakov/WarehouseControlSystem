@@ -570,7 +570,7 @@
     <value>Vertical Up</value>
   </data>
   <data name="RackNewPage_RackNo" xml:space="preserve">
-    <value>No</value>
+    <value>Rack Code</value>
   </data>
   <data name="RackNewPage_Sections" xml:space="preserve">
     <value>Sections</value>
@@ -1382,5 +1382,8 @@
   </data>
   <data name="MasterNewRack_ControlRackOrientation" xml:space="preserve">
     <value>Rack orientation is not defined!</value>
+  </data>
+  <data name="RackNewPage_PrefixNumbering" xml:space="preserve">
+    <value>Prefix</value>
   </data>
 </root>

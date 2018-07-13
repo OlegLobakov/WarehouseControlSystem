@@ -570,7 +570,7 @@
     <value>Вертикальная сверху</value>
   </data>
   <data name="RackNewPage_RackNo" xml:space="preserve">
-    <value>Номер</value>
+    <value>Код стеллажа</value>
   </data>
   <data name="RackNewPage_Sections" xml:space="preserve">
     <value>Секции</value>
@@ -1381,5 +1381,8 @@
   </data>
   <data name="MasterNewRack_ControlRackOrientation" xml:space="preserve">
     <value>Ориентация стеллажа не задана!</value>
+  </data>
+  <data name="RackNewPage_PrefixNumbering" xml:space="preserve">
+    <value>Префикс</value>
   </data>
 </root>

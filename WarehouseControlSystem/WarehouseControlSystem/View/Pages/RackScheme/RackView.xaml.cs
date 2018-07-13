@@ -44,6 +44,7 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
 
             MessagingCenter.Subscribe<BinsViewModel>(this, "Update", Update);
             MessagingCenter.Subscribe<RackViewModel>(this, "Update", Update);
+
         }
 
         private void Update()
@@ -55,12 +56,10 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
         {
             Update(model);
         }
-
         public void Update(RackViewModel rvm)
         {
             model = rvm;
             BindingContext = model;
-
             CreateGrid();
             CreateLabels();
             FillBins();

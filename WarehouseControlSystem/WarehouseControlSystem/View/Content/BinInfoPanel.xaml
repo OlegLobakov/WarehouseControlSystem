@@ -11,9 +11,9 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <StackLayout Grid.Row="0" Orientation="Horizontal">
-                <Label Text="Код ячейки" Margin="10,0,0,0"  VerticalOptions="Center"/>
+                <Label Text="Код ячейки" Margin="10"  VerticalOptions="Center"/>
                 <Entry Text="{Binding TemplateCode, Mode=TwoWay}" Keyboard="Text" 
-                       HorizontalOptions="FillAndExpand" VerticalOptions="Center" x:Name="singlebinentry" Margin="10,0,0,0" 
+                       HorizontalOptions="FillAndExpand" VerticalOptions="Center" x:Name="singlebinentry" Margin="10" 
                        IsEnabled="{Binding EditedBinCodeIsEnabled}"/>
             </StackLayout>
             <ScrollView Grid.Row="1" Orientation="Vertical">
@@ -30,38 +30,6 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <Grid Grid.Row="0">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <StackLayout Grid.Row="0" Orientation="Horizontal">
-                            <Label Text="{i18n:Translate BinEditView_FieldBinContent}" 
-                               HorizontalOptions="Start" 
-                               HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"
-                               IsEnabled="{Binding EditedBinCodeIsEnabled}"></Label>
-                            <Button x:Name="bincontentbutton" Text=""               
-                                FontAttributes="Bold" 
-                                HorizontalOptions="EndAndExpand"  
-                                BackgroundColor="White"
-                                IsEnabled="{Binding EditedBinCodeIsEnabled}"
-                                Command="{Binding ShowBinOperationCommand}"/>
-                        </StackLayout>
-                        <StackLayout Grid.Row="1" Orientation="Horizontal">
-                            <Label Text="{i18n:Translate BinEditView_FieldEntries}" 
-                               HorizontalOptions="Start" 
-                               HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"
-                               IsEnabled="{Binding EditedBinCodeIsEnabled}"></Label>
-                            <Button x:Name="binentriesbutton" Text=""               
-                                FontAttributes="Bold" 
-                                HorizontalOptions="EndAndExpand" 
-                                BackgroundColor="White"
-                                IsEnabled="{Binding EditedBinCodeIsEnabled}"
-                                Command="{Binding ShowBinOperationCommand}">
-                            </Button>                        
-                        </StackLayout>
-                    </Grid>
-
                     <StackLayout Grid.Row="1" Orientation="Vertical">
                         <Label Text="{i18n:Translate BinEditView_FieldBinType}" 
                                HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>

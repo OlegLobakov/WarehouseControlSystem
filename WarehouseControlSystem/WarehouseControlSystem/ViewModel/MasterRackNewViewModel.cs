@@ -27,7 +27,7 @@ namespace WarehouseControlSystem.ViewModel
 {
     public class MasterRackNewViewModel : NAVBaseViewModel
     {
-        private RackViewModel RackViewModel { get; set; }
+        public RackViewModel NewModel { get; set; }
 
         public string No
         {
@@ -167,6 +167,20 @@ namespace WarehouseControlSystem.ViewModel
         public ICommand Step1Command { protected set; get; }
         public ICommand Step2Command { protected set; get; }
         public ICommand Step3Command { protected set; get; }
+
+        public string NumberingPrefix
+        {
+            get { return numberingprefix; }
+            set
+            {
+                if (numberingprefix != value)
+                {
+                    numberingprefix = value;
+                    Renumbering();
+                    OnPropertyChanged(nameof(NumberingPrefix));
+                }
+            }
+        } string numberingprefix;
 
         public string RackSectionSeparator
         {
@@ -407,7 +421,7 @@ namespace WarehouseControlSystem.ViewModel
 
         public MasterRackNewViewModel(RackViewModel rvm, bool createmode1) : base(rvm.Navigation)
         {
-            RackViewModel = rvm;
+            NewModel = rvm;
             IsSaveToNAVEnabled = false;
             RackSectionSeparator = Settings.DefaultRackSectionSeparator;
             SectionLevelSeparator = Settings.DefaultSectionLevelSeparator;
@@ -435,7 +449,7 @@ namespace WarehouseControlSystem.ViewModel
         {
             if (CreateMode)
             {
-                RackViewModel.BinsViewModel.RecreateBins(prevdepth, newdepth, prevlevels, newlevels, prevsections, newsections);
+                NewModel.BinsViewModel.RecreateBins(prevdepth, newdepth, prevlevels, newlevels, prevsections, newsections);
             }
         }
 
@@ -448,7 +462,7 @@ namespace WarehouseControlSystem.ViewModel
                     NumberDepth(k);
                 }
 
-                await RackViewModel.BinsViewModel.CheckBins(ACD).ConfigureAwait(true);
+                await NewModel.BinsViewModel.CheckBins(ACD).ConfigureAwait(true);
             }
         }
 
@@ -501,9 +515,9 @@ namespace WarehouseControlSystem.ViewModel
         private void Numbering(int k, int i, int j, int levelname, int sectionname)
         {
             System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("en-us");
-            string number = No + racksectionseparator + sectionname.ToString("D2", ci) + sectionlevelseparator + levelname.ToString();
+            string number = NumberingPrefix + racksectionseparator + sectionname.ToString("D2", ci) + sectionlevelseparator + levelname.ToString();
 
-            BinViewModel bvm = RackViewModel.BinsViewModel.Find(j, i, k);
+            BinViewModel bvm = NewModel.BinsViewModel.Find(j, i, k);
             if (bvm is BinViewModel)
             {
                 bvm.Code = number;
@@ -589,12 +603,12 @@ namespace WarehouseControlSystem.ViewModel
             List<BinType> bintypes = await NAV.GetBinTypeList(1, int.MaxValue, ACD.Default).ConfigureAwait(true);
             if (!IsDisposed)
             {
-                RackViewModel.BinsViewModel.BinTypes.Clear();
+                NewModel.BinsViewModel.BinTypes.Clear();
                 foreach (BinType bt in bintypes)
                 {
-                    RackViewModel.BinsViewModel.BinTypes.Add(bt.Code);
+                    NewModel.BinsViewModel.BinTypes.Add(bt.Code);
                 }
-                RackViewModel.BinsViewModel.BinTypesIsEnabled = bintypes.Count > 0;
+                NewModel.BinsViewModel.BinTypesIsEnabled = bintypes.Count > 0;
             }
         }
         private async Task LoadWarehouseClassesList()
@@ -602,12 +616,12 @@ namespace WarehouseControlSystem.ViewModel
             List<WarehouseClass> warehouseclasses = await NAV.GetWarehouseClassList(1, int.MaxValue, ACD.Default).ConfigureAwait(true);
             if (!IsDisposed)
             {
-                RackViewModel.BinsViewModel.WarehouseClasses.Clear();
+                NewModel.BinsViewModel.WarehouseClasses.Clear();
                 foreach (WarehouseClass wc in warehouseclasses)
                 {
-                    RackViewModel.BinsViewModel.WarehouseClasses.Add(wc.Code);
+                    NewModel.BinsViewModel.WarehouseClasses.Add(wc.Code);
                 }
-                RackViewModel.BinsViewModel.WarehouseClassesIsEnabled = warehouseclasses.Count > 0;
+                NewModel.BinsViewModel.WarehouseClassesIsEnabled = warehouseclasses.Count > 0;
             }
         }
         private async Task LoadSpecialEquipmentsList()
@@ -615,24 +629,25 @@ namespace WarehouseControlSystem.ViewModel
             List<SpecialEquipment> specialequipments = await NAV.GetSpecialEquipmentList(1, int.MaxValue, ACD.Default).ConfigureAwait(true);
             if (!IsDisposed)
             {
-                RackViewModel.BinsViewModel.SpecialEquipments.Clear();
+                NewModel.BinsViewModel.SpecialEquipments.Clear();
                 foreach (SpecialEquipment se in specialequipments)
                 {
-                    RackViewModel.BinsViewModel.SpecialEquipments.Add(se.Code);
+                    NewModel.BinsViewModel.SpecialEquipments.Add(se.Code);
                 }
-                RackViewModel.BinsViewModel.SpecialEquipmentsIsEnabled = specialequipments.Count > 0;
+                NewModel.BinsViewModel.SpecialEquipmentsIsEnabled = specialequipments.Count > 0;
             }
         }
 
         public void ChangeBinTemplate(BinTemplate bt)
         {
-            RackViewModel.BinsViewModel.BinTemplate = bt;
+            NewModel.BinsViewModel.BinTemplate = bt;
         }
 
         private void Step1()
         {
             MasterStep = 1;
         }
+
         private void Step2()
         {
             
@@ -657,15 +672,15 @@ namespace WarehouseControlSystem.ViewModel
 
             if (check)
             {
-                RackViewModel.No = no;
-                RackViewModel.Sections = Sections;
-                RackViewModel.Levels = Levels;
-                RackViewModel.Depth = Depth;
-                RackViewModel.RackOrientation = RackOrientation;
-                RackViewModel.BinsViewModel.BinTemplate = SelectedBinTemplate;
-                RackViewModel.BinsViewModel.CreateBins(Depth, Levels, Sections);
-                MessagingCenter.Send<MasterRackNewViewModel>(this, "Update");
-                Renumbering();
+                NewModel.No = No;
+                NewModel.Sections = Sections;
+                NewModel.Levels = Levels;
+                NewModel.Depth = Depth;
+                NewModel.RackOrientation = RackOrientation;
+                NewModel.BinsViewModel.BinTemplate = SelectedBinTemplate;
+                NewModel.BinsViewModel.CreateBins(Depth, Levels, Sections);
+                NumberingPrefix = No;
+                MessagingCenter.Send<MasterRackNewViewModel>(this, "UpdateRackView");
                 MasterStep = 2;
             }
         }
@@ -695,13 +710,13 @@ namespace WarehouseControlSystem.ViewModel
             State = ModelState.Loading;
             LoadAnimation = true;
             Rack newrack = new Rack();
-            RackViewModel.SaveFields(newrack);
+            NewModel.SaveFields(newrack);
             try
             {
                 LoadingText = AppResources.RackNewPage_LoadingProgressRack + " " + newrack.No;
                 int rackexist = await NAV.GetRackCount(LocationCode, ZoneCode, No, false, ACD.Default).ConfigureAwait(true);
                 await ModifyRack(newrack, rackexist).ConfigureAwait(true);
-                foreach (BinViewModel bvm in RackViewModel.BinsViewModel.BinViewModels)
+                foreach (BinViewModel bvm in NewModel.BinsViewModel.BinViewModels)
                 {
                     await SaveBin(bvm).ConfigureAwait(true);
                 }
@@ -757,7 +772,7 @@ namespace WarehouseControlSystem.ViewModel
                 else
                 {
                     LoadingText = AppResources.RackNewPage_LoadingProgressBin + " " + bmv.Bin.Code;
-                    await NAV.CreateBin(RackViewModel.BinsViewModel.BinTemplate, bmv.Bin, ACD.Default).ConfigureAwait(true);
+                    await NAV.CreateBin(NewModel.BinsViewModel.BinTemplate, bmv.Bin, ACD.Default).ConfigureAwait(true);
                 }
             }
             catch (Exception e)
@@ -770,7 +785,7 @@ namespace WarehouseControlSystem.ViewModel
         public void CancelAsync()
         {
             ACD.CancelAll();
-            RackViewModel.CancelAsync(); 
+            NewModel.CancelAsync(); 
         }
 
         public override void DisposeModel()

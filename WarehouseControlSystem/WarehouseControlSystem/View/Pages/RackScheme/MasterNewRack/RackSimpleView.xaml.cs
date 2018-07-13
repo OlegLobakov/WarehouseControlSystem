@@ -22,68 +22,44 @@ namespace WarehouseControlSystem.View.Pages.RackScheme.MasterNewRack
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class RackSimpleView : ContentView
     {
-        class InnerBoxView
-        {
-            public int I { get; set; }
-            public int J { get; set; }
-            public BoxView BoxView { get; set; }
-        }
-        List<InnerBoxView> InnerBoxViewList { get; set; } = new List<InnerBoxView>();
-
-        public static readonly BindableProperty NoProperty = BindableProperty.Create(nameof(No), typeof(string), typeof(RackSimpleView), "", BindingMode.Default, null, NoChanged);
-        public string No
-        {
-            get { return (string)GetValue(NoProperty); }
-            set { SetValue(NoProperty, value); }
-        }
-
-        public static readonly BindableProperty SectionsProperty = BindableProperty.Create(nameof(Sections), typeof(int), typeof(RackSimpleView), 0, BindingMode.Default, null, SectionsChanged);
-        public int Sections
-        {
-            get { return (int)GetValue(SectionsProperty); }
-            set { SetValue(SectionsProperty, value); }
-        }
-
-        public static readonly BindableProperty LevelsProperty = BindableProperty.Create(nameof(Levels), typeof(int), typeof(RackSimpleView), 0, BindingMode.Default, null, LevelsChanged);
-        public int Levels
-        {
-            get { return (int)GetValue(LevelsProperty); }
-            set { SetValue(LevelsProperty, value); }
-        }
-
-        private static void NoChanged(BindableObject bindable, object oldValue, object newValue)
-        {
-            var instance = bindable as RackSimpleView;
-            string oldvalue = (string)oldValue;
-            string newvalue = (string)newValue;
-            //instance?.NoUpdate(oldvalue, newvalue);
-
-            instance?.NoUpdate(newvalue);
-        }
-
-        private static void SectionsChanged(BindableObject bindable, object oldValue, object newValue)
-        {
-            var instance = bindable as RackSimpleView;
-            int oldvalue = (int)oldValue;
-            int newvalue = (int)newValue;
-            instance?.Update();
-        }
-
-        private static void LevelsChanged(BindableObject bindable, object oldValue, object newValue)
-        {
-            var instance = bindable as RackSimpleView;
-            int oldvalue = (int)oldValue;
-            int newvalue = (int)newValue;
-            instance?.Update();
-        }
-
         Label HeaderLabel;
+        public RackViewModel model;
+
+        public static readonly BindableProperty BinWidthProperty = BindableProperty.Create(nameof(BinWidth), typeof(int), typeof(RackSimpleView), 120, BindingMode.Default, null, Changed);
+        public int BinWidth
+        {
+            get { return (int)GetValue(BinWidthProperty); }
+            set { SetValue(BinWidthProperty, value); }
+        }
+
+        private static void Changed(BindableObject bindable, object oldValue, object newValue)
+        {
+            //var instance = bindable as RackView;
+            //instance?.Update();
+        }
 
         public RackSimpleView()
         {
             InitializeComponent();
+        }
 
-            CreateGrid();
+        public void Update(RackViewModel rvm)
+        {
+            model = rvm;
+            BindingContext = model;
+
+            if (model.Sections > 0 && model.Levels > 0)
+            {
+                grid.IsVisible = false;
+                CreateGrid();
+                CreateLabels();
+                FillBins();
+                grid.IsVisible = true;
+            }
+        }
+
+        private void UpdateRackViewModel(RackViewModel rvm)
+        {
         }
 
         public void NoUpdate(string newvalue)
@@ -94,52 +70,35 @@ namespace WarehouseControlSystem.View.Pages.RackScheme.MasterNewRack
             }
         }
 
-        public void Update()
-        {
-            if (Sections > 0 && Levels > 0)
-            {
-                grid.IsVisible = false;
-
-                CreateGrid();
-                //CreateLabels();
-                FillBins();
-                grid.IsVisible = true;
-            }
-        }
 
         private void CreateGrid()
         {
-            WidthRequest = 22 * Sections + 60 + 2;
-            HeightRequest = 42 * Levels + 2;
-            
             grid.Children.Clear();
             grid.RowDefinitions.Clear();
             grid.ColumnDefinitions.Clear();
-
-             for (int i = 1; i <= Levels; i++)
+            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(25, GridUnitType.Absolute) });
+            for (int i = 1; i <= model.Levels; i++)
             {
-                grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(40, GridUnitType.Absolute) });
+                grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
             }
 
-            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(60, GridUnitType.Absolute) });
-            for (int i = 1; i <= Sections; i++)
+            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(40, GridUnitType.Absolute) });
+            for (int i = 1; i <= model.Sections; i++)
             {
-                grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(20, GridUnitType.Absolute) });
+                grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(BinWidth, GridUnitType.Absolute) });
             }
 
-            HeaderLabel = new Label
-            {
-                BackgroundColor = Color.FromHex("#7b7670"),
-                HorizontalOptions = LayoutOptions.FillAndExpand,
-                VerticalOptions = LayoutOptions.FillAndExpand,
-                HorizontalTextAlignment = TextAlignment.Center,
-                VerticalTextAlignment = TextAlignment.Center,
-                Text = No,
-                TextColor = Color.White,
-                FontAttributes = FontAttributes.Bold
-            };
+            HeaderLabel = new Label();
+            HeaderLabel.BackgroundColor = Color.FromHex("#b0aaa1");
+            HeaderLabel.HorizontalOptions = LayoutOptions.FillAndExpand;
+            HeaderLabel.VerticalOptions = LayoutOptions.FillAndExpand;
+            HeaderLabel.HorizontalTextAlignment = TextAlignment.Center;
+            HeaderLabel.VerticalTextAlignment = TextAlignment.Center;
+            HeaderLabel.Text = model.No;
+            HeaderLabel.TextColor = Color.White;
+            HeaderLabel.FontAttributes = FontAttributes.Bold;
 
-            grid.Children.Add(HeaderLabel, 0, 1, 0, Levels + 1);
+            grid.Children.Add(HeaderLabel, 0, 0);
         }
 
         private void CreateLabels()
@@ -150,59 +109,64 @@ namespace WarehouseControlSystem.View.Pages.RackScheme.MasterNewRack
 
         private void CreateLevelsLabels()
         {
-            for (int i = 1; i <= Levels; i++)
+            for (int i = 1; i <= model.Levels; i++)
             {
-                grid.Children.Add(new BoxView()
+                Label lb = new Label()
                 {
-                    BackgroundColor = Color.FromHex("#7b7670"),
+                    BackgroundColor = Color.FromHex("#b0aaa1"),
                     HorizontalOptions = LayoutOptions.FillAndExpand,
-                    VerticalOptions = LayoutOptions.FillAndExpand
-                }, 1, i);
+                    VerticalOptions = LayoutOptions.FillAndExpand,
+                    HorizontalTextAlignment = TextAlignment.Center,
+                    VerticalTextAlignment = TextAlignment.Center,
+                    Text = (model.Levels - i + 1).ToString(),
+                    TextColor = Color.White,
+                    FontAttributes = FontAttributes.Bold
+                };
+                grid.Children.Add(lb, 0, i);
             }
         }
 
         private void CreateSectionLabels()
         {
-            for (int j = 1; j <= Sections; j++)
+            for (int j = 1; j <= model.Sections; j++)
             {
-                grid.Children.Add(new BoxView()
+                Label lb = new Label()
                 {
-                    BackgroundColor = Color.FromHex("#7b7670"),
+                    BackgroundColor = Color.FromHex("#b0aaa1"),
                     HorizontalOptions = LayoutOptions.FillAndExpand,
-                    VerticalOptions = LayoutOptions.FillAndExpand
-                }, j, 0);
+                    VerticalOptions = LayoutOptions.FillAndExpand,
+                    HorizontalTextAlignment = TextAlignment.Center,
+                    VerticalTextAlignment = TextAlignment.Center,
+                    TextColor = Color.White,
+                    FontAttributes = FontAttributes.Bold
+                };
+                lb.Text = j.ToString();
+                grid.Children.Add(lb, j, 0);
             }
         }
 
         private void FillBins()
         {
-            for (int i = 0; i < Levels; i++)
+            for (int i = 1; i <= model.Levels; i++)
             {
-                for (int j = 0; j < Sections; j++)
+                for (int j = 1; j <= model.Sections; j++)
                 {
-                    InnerBoxView find = InnerBoxViewList.Find(x => x.I == i && x.J == j);
-                    if (find is InnerBoxView)
-                    {
-                        grid.Children.Add(find.BoxView, j + 1, i);
-                    }
-                    else
-                    {
-                        find = new InnerBoxView
-                        {
-                            I = i,
-                            J = j,
-                            BoxView = new BoxView
-                            {
-                                BackgroundColor = Color.FromHex("#b0aaa1"),
-                                HorizontalOptions = LayoutOptions.FillAndExpand,
-                                VerticalOptions = LayoutOptions.FillAndExpand
-                            }
-                        };
-                        InnerBoxViewList.Add(find);
-                    }
 
-                    grid.Children.Add(find.BoxView, j + 1, i);
+                    BinViewModel finded = model.BinsViewModel.BinViewModels.Find(x => x.Level == i && x.Section == j);
+                    if (finded is BinViewModel)
+                    {
+                        BinView bev = new BinView(finded);
+                        grid.Children.Add(bev, finded.Section, finded.Section + finded.SectionSpan, finded.Level, finded.Level + finded.LevelSpan);
+                    }
                 }
+            }
+        }
+
+        public void SetHeaderLabel(string text)
+        {
+            if (HeaderLabel is Label)
+            {
+                HeaderLabel.Text = text;
             }
         }
     }

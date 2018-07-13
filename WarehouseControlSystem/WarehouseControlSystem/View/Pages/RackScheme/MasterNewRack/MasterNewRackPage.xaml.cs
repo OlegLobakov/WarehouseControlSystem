@@ -22,9 +22,12 @@ namespace WarehouseControlSystem.View.Pages.RackScheme.MasterNewRack
             model = mrnvm;
             BindingContext = model;
             InitializeComponent();
+            infopanel.BindingContext = model.NewModel.BinsViewModel;
             Title = AppResources.RackNewPage_Title;
             orientationpicker.ItemsSource = Global.OrientationList;
             MessagingCenter.Subscribe<MasterRackNewViewModel>(this, "BinTemplatesIsLoaded", BinTemplatesIsLoaded);
+            MessagingCenter.Subscribe<MasterRackNewViewModel>(this, "UpdateRackView", UpdateRackView);
+            MessagingCenter.Subscribe<BinsViewModel>(this, "Update", UpdateBinsViewModel);
         }
 
         protected override async void OnAppearing()
@@ -52,6 +55,17 @@ namespace WarehouseControlSystem.View.Pages.RackScheme.MasterNewRack
             }
         }
 
+        private void UpdateRackView(MasterRackNewViewModel mrnvm)
+        {
+            rackview.BinWidth = (int)mainsl.Width / 8;
+            rackview.Update(model.NewModel);
+        }
+
+        private void UpdateBinsViewModel(BinsViewModel bvm)
+        {
+            rackview.Update(model.NewModel);
+        }
+
         private void Picker_OrientationChanged(object sender, EventArgs e)
         {
         }
@@ -62,8 +76,11 @@ namespace WarehouseControlSystem.View.Pages.RackScheme.MasterNewRack
             if (entry.Text is string)
             {
                 entry.Text = entry.Text.ToUpper();
+                Title = AppResources.RackNewPage_Title + " " + entry.Text;
             }
             await model.CheckNo();
         }
+
+
     }
 }
