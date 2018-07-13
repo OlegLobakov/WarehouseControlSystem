@@ -501,6 +501,26 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
+        public void CreateBins(int depth, int levels, int sections)
+        {
+            foreach (BinViewModel bvm in BinViewModels)
+            {
+                bvm.OnTap -= Bvm_OnTap;
+            }
+            BinViewModels.Clear();
+
+            for (int k = 1; k <= depth; k++)
+            {
+                for (int i = 1; i <= levels; i++)
+                {
+                    for (int j = 1; j <= sections; j++)
+                    {
+                        CreateBin(i, j, k);
+                    }
+                }
+            }
+        }
+
         public void CreateBin(int i, int j, int k)
         {
             Bin newbin = new Bin()

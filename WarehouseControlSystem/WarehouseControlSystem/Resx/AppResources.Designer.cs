@@ -1717,6 +1717,60 @@ namespace WarehouseControlSystem.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Back.
+        /// </summary>
+        internal static string MasterNewRack_BackButton {
+            get {
+                return ResourceManager.GetString("MasterNewRack_BackButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BinTemplate is not defined!.
+        /// </summary>
+        internal static string MasterNewRack_ControlBinTemplate {
+            get {
+                return ResourceManager.GetString("MasterNewRack_ControlBinTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No is not defined!.
+        /// </summary>
+        internal static string MasterNewRack_ControlNo {
+            get {
+                return ResourceManager.GetString("MasterNewRack_ControlNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rack orientation is not defined!.
+        /// </summary>
+        internal static string MasterNewRack_ControlRackOrientation {
+            get {
+                return ResourceManager.GetString("MasterNewRack_ControlRackOrientation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create.
+        /// </summary>
+        internal static string MasterNewRack_CreateButton {
+            get {
+                return ResourceManager.GetString("MasterNewRack_CreateButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Next.
+        /// </summary>
+        internal static string MasterNewRack_NextButton {
+            get {
+                return ResourceManager.GetString("MasterNewRack_NextButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bin Template.
         /// </summary>
         internal static string NewBinTemplatePage_BinTemplate {

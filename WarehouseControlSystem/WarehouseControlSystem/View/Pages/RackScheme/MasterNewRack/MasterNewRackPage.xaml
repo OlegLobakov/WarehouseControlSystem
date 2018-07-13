@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:i18n="clr-namespace:WarehouseControlSystem;assembly=WarehouseControlSystem"
+             xmlns:convertors="clr-namespace:WarehouseControlSystem.Helpers.Converters"
+             xmlns:rv="clr-namespace:WarehouseControlSystem.View.Pages.RackScheme.MasterNewRack"
+             x:Class="WarehouseControlSystem.View.Pages.RackScheme.MasterNewRack.MasterNewRackPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <convertors:RackOrientationConverter x:Key="orientationConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <StackLayout>
+            <StackLayout IsVisible="{Binding IsLoadingState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                <StackLayout VerticalOptions="Center" HorizontalOptions="Center" Orientation="Vertical">
+                    <ActivityIndicator IsRunning="{Binding LoadAnimation}" HeightRequest="50" WidthRequest="50"/>
+                    <Label Text="{Binding LoadingText}" FontSize="Small"/>
+                </StackLayout>
+            </StackLayout>
+            <StackLayout IsVisible="{Binding IsNormalState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                <StackLayout IsVisible="{Binding IsMasterStep1}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                    <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="5*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <StackLayout  Grid.Row="1" Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                            <Label Text="{i18n:Translate RackNewPage_RackNo}" WidthRequest="100" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="20,0,0,0"></Label>
+                            <Entry x:Name="codeentry" Text="{Binding No, Mode=TwoWay}" Keyboard="Text" Margin="0" 
+                                    BackgroundColor="White" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="100" 
+                                    TextChanged="CodeEntryChanged"/>
+                        </StackLayout>
+
+                        <!--<StackLayout Grid.Row="2" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Orientation="Vertical">
+                            <rv:RackSimpleView HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"
+                                        No="{Binding No}"
+                                        Sections="{Binding Sections}"
+                                        Levels="{Binding Levels}"/>
+                        </StackLayout>-->
+
+                        <Grid Grid.Row="2" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackLayout  Grid.Row="0" Grid.Column="1" Orientation="Vertical" >
+                                <Label Text="{i18n:Translate RackNewPage_Sections}"  HorizontalOptions="Center"/>
+                                <Label Text="{Binding Sections}"  HorizontalOptions="Center"/>
+                                <Slider  Maximum="100" Minimum="1" Value="{Binding Sections, Mode=TwoWay}"></Slider>
+                            </StackLayout>
+
+                            <StackLayout  Grid.Row="1" Grid.Column="1" Orientation="Vertical" >
+                                <Label Text="{i18n:Translate RackNewPage_Levels}"  HorizontalOptions="Center"/>
+                                <Label Text="{Binding Levels}"  HorizontalOptions="Center"/>
+                                <Slider Maximum="10" Minimum="1" Value="{Binding Levels, Mode=TwoWay}"></Slider>
+                            </StackLayout>
+
+                            <Grid Grid.Row="2" Grid.Column="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackLayout  Grid.Column="0" Orientation="Vertical">
+                                    <Label  Text="{i18n:Translate RackNewPage_Orientation}" 
+                                        HorizontalOptions="Start"/>
+                                    <Picker  x:Name="orientationpicker" 
+                                         HorizontalOptions="FillAndExpand" 
+                                         ItemDisplayBinding="{Binding Name}" 
+                                         SelectedIndexChanged="Picker_OrientationChanged"
+                                         SelectedItem="{Binding RackOrientation, Mode=OneWayToSource,Converter={StaticResource orientationConverter}}"></Picker>
+                                </StackLayout>
+                                <StackLayout Grid.Column="1" Orientation="Vertical" >
+                                    <Label HorizontalOptions="Start" VerticalTextAlignment="Center" Text="{i18n:Translate RackTemplate_FieldBinTemplateCode}"/>
+                                    <Picker x:Name="bintemplatepicker" HorizontalOptions="FillAndExpand" 
+                                                IsEnabled="{Binding BinTemplatesIsLoaded}" 
+                                                VerticalOptions="Start" 
+                                                ItemDisplayBinding="{Binding Code}"
+                                                SelectedItem="{Binding SelectedBinTemplate, Mode=TwoWay}"/>
+                                </StackLayout>
+                            </Grid>
+                        </Grid>
+
+                        <Grid Grid.Row="3" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Text="{Binding InfoText}" TextColor="DarkRed"  Grid.Column="2" Grid.ColumnSpan="3" 
+                               HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"
+                               HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+
+                            <Button Grid.Column="6"
+                                HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                Text="{i18n:Translate MasterNewRack_NextButton}"  
+                                TextColor="White" FontAttributes="Bold"
+                                BackgroundColor="{StaticResource PageHeaderBarBackgoundColor}"
+                                Command="{Binding Step2Command}"></Button>
+                        </Grid>
+
+
+                    </Grid>
+                </StackLayout>
+                <StackLayout IsVisible="{Binding IsMasterStep2}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                    <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="9*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+
+                        <Button Grid.Column="0" Grid.Row="2" 
+                                HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                Text="{i18n:Translate MasterNewRack_BackButton}"  
+                                TextColor="White" 
+                                BackgroundColor="{StaticResource PageHeaderBarBackgoundColor}"
+                                Command="{Binding Step1Command}"></Button>
+
+                        <Label Text="{Binding InfoText}" TextColor="DarkRed" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4" 
+                               HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                               HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+
+                        <Button Grid.Column="5" Grid.Row="2" 
+                                HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                Text="{i18n:Translate MasterNewRack_CreateButton}"  
+                                TextColor="White" 
+                                BackgroundColor="DarkRed"
+                                Command="{Binding Step3Command}"></Button>
+                    </Grid>
+                </StackLayout>
+            </StackLayout>
+            <StackLayout IsVisible="{Binding IsErrorState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="4*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" Text="{i18n:Translate StateContainer_Error}" 
+                           FontSize="Large" HorizontalOptions="Center"
+                           TextColor="Black"
+                           VerticalOptions="Center"/>
+                    <ScrollView Orientation="Vertical" Grid.Row="1" >
+                        <StackLayout>
+                            <Label Text="{Binding ErrorText}" FontSize="Large" 
+                                   TextColor="Black"
+                                   HorizontalOptions="FillAndExpand" 
+                                   VerticalOptions="FillAndExpand" 
+                                   HorizontalTextAlignment="Center"
+                                   VerticalTextAlignment="Center"/>
+                        </StackLayout>
+                    </ScrollView>
+                    <Button Grid.Row="2" Text="OK" FontSize="Large" 
+                            Command="{Binding ErrorOKCommand}" 
+                            TextColor="Black"
+                            BackgroundColor="White"/>
+                </Grid>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

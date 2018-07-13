@@ -93,12 +93,6 @@ namespace WarehouseControlSystem.ViewModel
                 LoadAnimation = true;
                 await Navigation.PopAsync();
             }
-            catch (OperationCanceledException e)
-            {
-                System.Diagnostics.Debug.WriteLine(e.Message);
-                State = ModelState.Error;
-                ErrorText = e.Message;
-            }
             catch (Exception e)
             {
                 System.Diagnostics.Debug.WriteLine(e.Message);

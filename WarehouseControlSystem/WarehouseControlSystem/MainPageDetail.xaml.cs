@@ -79,34 +79,5 @@ namespace WarehouseControlSystem
         {
             await Navigation.PushAsync(new ParametersPage());
         }
-
-        private async Task AddLocation()
-        {
-            Location location = new Location();
-            LocationViewModel lvm = new LocationViewModel(Navigation, location);
-            lvm.CreateMode = true;
-            await Navigation.PushAsync(new LocationCardPage(lvm));
-        }
-
-        private async Task AddZoneTaped()
-        {
-            Zone zone = new Zone();
-            ZoneViewModel zvm = new ZoneViewModel(Navigation, zone);
-            zvm.CreateMode = true;
-            zvm.CanChangeLocationCode = true;
-            await Navigation.PushAsync(new ZoneCardPage(zvm));
-        }
-
-        private async Task AddRackTaped()
-        {
-            Rack newrack = new Rack();
-            newrack.Sections = Settings.DefaultRackSections;
-            newrack.Levels = Settings.DefaultRackLevels;
-            newrack.Depth = Settings.DefaultRackDepth;
-            newrack.SchemeVisible = true;
-            RackViewModel rvm = new RackViewModel(Navigation, newrack, true);
-            rvm.CanChangeLocationAndZone = true;
-            await Navigation.PushAsync(new RackNewPage(rvm));
-        }
     }
 }

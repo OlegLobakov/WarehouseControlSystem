@@ -1368,4 +1368,22 @@
   <data name="RackNewPage_Numeration" xml:space="preserve">
     <value>Bin Numbering</value>
   </data>
+  <data name="MasterNewRack_NextButton" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="MasterNewRack_BackButton" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="MasterNewRack_CreateButton" xml:space="preserve">
+    <value>Create</value>
+  </data>
+  <data name="MasterNewRack_ControlBinTemplate" xml:space="preserve">
+    <value>BinTemplate is not defined!</value>
+  </data>
+  <data name="MasterNewRack_ControlNo" xml:space="preserve">
+    <value>No is not defined!</value>
+  </data>
+  <data name="MasterNewRack_ControlRackOrientation" xml:space="preserve">
+    <value>Rack orientation is not defined!</value>
+  </data>
 </root>

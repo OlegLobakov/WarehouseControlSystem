@@ -34,11 +34,11 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             
             Title = AppResources.RackNewPage_Title;
 
-            infopanel.BindingContext = model.BinsViewModel;
-            locationpicker.ItemsSource = model.Locations;
-            zonepicker.ItemsSource = model.Zones;
-            orientationpicker.ItemsSource = Global.OrientationList;
-            bintemplatepicker.ItemsSource = model.BinTemplates;
+            //infopanel.BindingContext = model.BinsViewModel;
+            //locationpicker.ItemsSource = model.Locations;
+            //zonepicker.ItemsSource = model.Zones;
+            //orientationpicker.ItemsSource = Global.OrientationList;
+            //bintemplatepicker.ItemsSource = model.BinTemplates;
 
             MessagingCenter.Subscribe<RackViewModel>(this, "ZonesIsLoaded", ZonesIsLoaded);
             MessagingCenter.Subscribe<RackViewModel>(this, "LocationsIsLoaded", LocationsIsLoaded);
@@ -49,7 +49,7 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
             base.OnAppearing();
             rackview.Update(model);
             model.State = ViewModel.Base.ModelState.Normal;
-            await model.Load();
+            //await model.Load();
         }
       
         protected override bool OnBackButtonPressed()
@@ -63,48 +63,48 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
 
         private void ZonesIsLoaded(object obj)
         {
-            if (!string.IsNullOrEmpty(model.ZoneCode))
-            {
-                List<Zone> list = new List<Zone>(model.Zones);
-                Zone zone1 = list.Find(x => x.Code == model.ZoneCode);
-                if (zone1 is Zone)
-                {
-                    zonepicker.SelectedItem = zone1;
-                }
-            }
+            //if (!string.IsNullOrEmpty(model.ZoneCode))
+            //{
+            //    List<Zone> list = new List<Zone>(model.Zones);
+            //    Zone zone1 = list.Find(x => x.Code == model.ZoneCode);
+            //    if (zone1 is Zone)
+            //    {
+            //        zonepicker.SelectedItem = zone1;
+            //    }
+            //}
         }
 
         private void LocationsIsLoaded(object obj)
         {
-            if (!string.IsNullOrEmpty(model.LocationCode))
-            {
-                List<Location> list = new List<Location>(model.Locations);
-                Location loc1 = list.Find(x => x.Code == model.LocationCode);
-                if (loc1 is Location)
-                {
-                    locationpicker.SelectedItem = loc1;
-                }
-            }
+            //if (!string.IsNullOrEmpty(model.LocationCode))
+            //{
+            //    List<Location> list = new List<Location>(model.Locations);
+            //    Location loc1 = list.Find(x => x.Code == model.LocationCode);
+            //    if (loc1 is Location)
+            //    {
+            //        locationpicker.SelectedItem = loc1;
+            //    }
+            //}
 
-            if (!string.IsNullOrEmpty(model.ZoneCode))
-            {
-                List<Zone> zoneslist = new List<Zone>(model.Zones);
-                Zone zone1 = zoneslist.Find(x => x.Code == model.ZoneCode);
-                if (zone1 is Zone)
-                {
-                    zonepicker.SelectedItem = zone1;
-                }
-            }
+            //if (!string.IsNullOrEmpty(model.ZoneCode))
+            //{
+            //    List<Zone> zoneslist = new List<Zone>(model.Zones);
+            //    Zone zone1 = zoneslist.Find(x => x.Code == model.ZoneCode);
+            //    if (zone1 is Zone)
+            //    {
+            //        zonepicker.SelectedItem = zone1;
+            //    }
+            //}
         }
 
         private async void CodeEntryChanged(object sender, TextChangedEventArgs e)
         {
-            Entry entry = (Entry)sender;
-            if (entry.Text is string)
-            {
-                entry.Text = entry.Text.ToUpper();
-            }
-            await model.CheckNo();
+            //Entry entry = (Entry)sender;
+            //if (entry.Text is string)
+            //{
+            //    entry.Text = entry.Text.ToUpper();
+            //}
+            //await model.CheckNo();
         }
 
         private void ToolbarItem_Clicked(object sender, EventArgs e)
@@ -128,13 +128,13 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
         {
             var picker = (Picker)sender;
             int selectedIndex = picker.SelectedIndex;
-            await model.SetLocation((Location)picker.SelectedItem);
+            //await model.SetLocation((Location)picker.SelectedItem);
         }
 
         private async void PickerZone(object sender, EventArgs e)
         {
             var picker = (Picker)sender;
-            await model.SetZone((Zone)picker.SelectedItem);
+            //await model.SetZone((Zone)picker.SelectedItem);
         }
 
         private void Slider_SectionsValueChanged(object sender, ValueChangedEventArgs e)

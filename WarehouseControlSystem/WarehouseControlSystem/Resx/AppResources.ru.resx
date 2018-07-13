@@ -1364,4 +1364,22 @@
   <data name="RackNewPage_Numeration" xml:space="preserve">
     <value>Нумерация ячеек</value>
   </data>
+  <data name="MasterNewRack_NextButton" xml:space="preserve">
+    <value>Далее</value>
+  </data>
+  <data name="MasterNewRack_BackButton" xml:space="preserve">
+    <value>Назад</value>
+  </data>
+  <data name="MasterNewRack_CreateButton" xml:space="preserve">
+    <value>Создать</value>
+  </data>
+  <data name="MasterNewRack_ControlBinTemplate" xml:space="preserve">
+    <value>Шаблон ячеек не определен!</value>
+  </data>
+  <data name="MasterNewRack_ControlNo" xml:space="preserve">
+    <value>Код стеллажа не задан!</value>
+  </data>
+  <data name="MasterNewRack_ControlRackOrientation" xml:space="preserve">
+    <value>Ориентация стеллажа не задана!</value>
+  </data>
 </root>

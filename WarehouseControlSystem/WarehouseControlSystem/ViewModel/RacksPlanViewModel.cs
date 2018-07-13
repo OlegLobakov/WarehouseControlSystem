@@ -26,6 +26,7 @@ using WarehouseControlSystem.Resx;
 using WarehouseControlSystem.View.Pages.RackScheme;
 using System.Windows.Input;
 using System.Threading;
+using WarehouseControlSystem.View.Pages.RackScheme.MasterNewRack;
 
 namespace WarehouseControlSystem.ViewModel
 {
@@ -332,14 +333,17 @@ namespace WarehouseControlSystem.ViewModel
                 Depth = Settings.DefaultRackDepth,
                 SchemeVisible = true,
             };
+
             RackViewModel rvm = new RackViewModel(Navigation, newrack, true)
             {
                 LocationCode = Zone.LocationCode,
                 ZoneCode = Zone.Code,
-                CanChangeLocationAndZone = false
             };
-            RackNewPage rnp = new RackNewPage(rvm);
-            await Navigation.PushAsync(rnp);
+
+            MasterRackNewViewModel mrnvm = new MasterRackNewViewModel(rvm, true);
+            MasterNewRackPage mnrp = new MasterNewRackPage(mrnvm);
+
+            await Navigation.PushAsync(mnrp);
         }
 
         public void EditRack(object obj)

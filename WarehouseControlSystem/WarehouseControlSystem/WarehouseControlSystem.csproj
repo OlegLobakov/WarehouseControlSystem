@@ -67,7 +67,7 @@
     <Compile Update="View\Pages\RackScheme\RackSchemeView.xaml.cs">
       <DependentUpon>RackSchemeView.xaml</DependentUpon>
     </Compile>
-    <Compile Update="View\Pages\RackScheme\RackSimpleView.xaml.cs">
+    <Compile Update="View\Pages\RackScheme\MasterNewRack\RackSimpleView.xaml.cs">
       <DependentUpon>RackSimpleView.xaml</DependentUpon>
     </Compile>
     <Compile Update="View\Pages\ZonesScheme\ZoneCardPage.xaml.cs">
@@ -88,6 +88,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="View\Content\UserDefinedSelectionView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="View\Pages\RackScheme\MasterNewRack\MasterNewRackPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>
