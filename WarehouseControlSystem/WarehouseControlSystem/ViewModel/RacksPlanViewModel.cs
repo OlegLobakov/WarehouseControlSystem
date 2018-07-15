@@ -241,21 +241,35 @@ namespace WarehouseControlSystem.ViewModel
 
             try
             {
-                udsvm.State = ModelState.Loading;
-                List<UserDefinedSelectionResult> list = await NAV.RunUDS(Zone.LocationCode, Zone.Code, udsvm.ID, ACD.Default).ConfigureAwait(true);
-                if (list is List<UserDefinedSelectionResult>)
+                if (udsvm.UDSIsRan)
                 {
                     foreach (RackViewModel rvm in RackViewModels)
                     {
                         rvm.UDSSelects.RemoveAll(x => x.FunctionID == udsvm.ID);
                     }
-                    FillRackUDSR(list);
+                    MessagingCenter.Send(this, "UDSRunIsDone");
+                    udsvm.UDSIsRan = false;
                 }
-                MessagingCenter.Send(this, "UDSRunIsDone");
+                else
+                {
+                    udsvm.State = ModelState.Loading;
+                    List<UserDefinedSelectionResult> list = await NAV.RunUDS(Zone.LocationCode, Zone.Code, udsvm.ID, ACD.Default).ConfigureAwait(true);
+                    if (list is List<UserDefinedSelectionResult>)
+                    {
+                        foreach (RackViewModel rvm in RackViewModels)
+                        {
+                            rvm.UDSSelects.RemoveAll(x => x.FunctionID == udsvm.ID);
+                        }
+                        FillRackUDSR(list);
+                    }
+                    MessagingCenter.Send(this, "UDSRunIsDone");
+                    udsvm.UDSIsRan = true;
+                }
             }
             catch (Exception e)
             {
                 System.Diagnostics.Debug.WriteLine(e.Message);
+                udsvm.UDSIsRan = false;
             }
             finally
             {
@@ -411,6 +425,14 @@ namespace WarehouseControlSystem.ViewModel
 
             MinPlanWidth = newminplanwidth;
             MinPlanHeight = newminplanheight;
+            if (PlanWidth < MinPlanWidth)
+            {
+                PlanWidth = MinPlanWidth;
+            }
+            if (PlanHeight < MinPlanHeight)
+            {
+                PlanHeight = MinPlanHeight;
+            }
         }
 
         public void SetEditModeForItems(bool iseditmode)

@@ -152,9 +152,9 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <ScrollView Grid.Row="0" Grid.RowSpan="5" 
+                            <ScrollView Grid.Row="0" Grid.RowSpan="5" Padding="3,0,0,0" BackgroundColor="White"
                                         HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"  
-                                        Orientation="Horizontal" BackgroundColor="White"  x:Name="rackviewpanel">
+                                        Orientation="Horizontal" x:Name="rackviewpanel">
                                 <rv:RackSimpleView x:Name="rackview"></rv:RackSimpleView>
                             </ScrollView>
 
@@ -171,99 +171,79 @@
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
 
 
-                                    <StackLayout Grid.Column="0" Grid.Row="0" Orientation="Vertical" >
-                                        <Label  HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
+                                    <Label Grid.Column="0" Grid.Row="0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
                                                 Text="{i18n:Translate RackNewPage_Conflict}"/>
-                                        <Label  HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
-                                                Text=" "/>
-                                    </StackLayout>
-
-                                    <StackLayout Grid.Column="0" Grid.Row="1" Orientation="Vertical" >
-                                        <Label  HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
+                                    
+                                    <Label  Grid.Column="0" Grid.Row="2" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
                                                 Text="{i18n:Translate RackNewPage_ConflictBins}"/>
-                                        <Switch HorizontalOptions="Start" VerticalOptions="Center" 
+                                    <Switch Grid.Column="0" Grid.Row="3" HorizontalOptions="Start" VerticalOptions="Center" 
                                                 IsToggled="{Binding ConflictBinChange, Mode=TwoWay}"></Switch>
-                                    </StackLayout>
 
-                                    <StackLayout Grid.Column="0" Grid.Row="2" Orientation="Vertical" >
-                                        <Label  HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
+                                    <Label  Grid.Column="0" Grid.Row="4" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
                                                 Text="{i18n:Translate RackNewPage_ConflictRack}"/>
-                                        <Switch HorizontalOptions="Start" VerticalOptions="Center" 
+                                    <Switch Grid.Column="0" Grid.Row="5" HorizontalOptions="Start" VerticalOptions="Center" 
                                                 IsToggled="{Binding ConflictRackChange, Mode=TwoWay}"></Switch>
-                                    </StackLayout>
 
+                                    
+                                    <Label Grid.Column="1" Grid.Row="0" Text="{i18n:Translate RackNewPage_Numeration}"/>
 
-                                    <StackLayout Grid.Column="1" Grid.Row="0" Orientation="Vertical">
-                                        <Label Text="{i18n:Translate RackNewPage_Numeration}"/>
-                                        <Label  HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
-                                                Text=" "/>
-                                    </StackLayout>
-
-                                    <StackLayout Grid.Column="1" Grid.Row="1" Orientation="Vertical" >
-                                        <Label  HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
+                                    <Label  Grid.Column="1" Grid.Row="2" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
                                                 Text="{i18n:Translate RackNewPage_InversNumebringSections}"/>
-                                        <Switch HorizontalOptions="Start" VerticalOptions="Center" 
+                                    <Switch Grid.Column="1" Grid.Row="3" HorizontalOptions="Start" VerticalOptions="Center" 
                                                 IsToggled="{Binding ReversSectionNumbering, Mode=TwoWay}"></Switch>
-                                    </StackLayout>
 
-                                    <StackLayout Grid.Column="1" Grid.Row="2" Orientation="Vertical" >
-                                        <Label  HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
+                                    <Label  Grid.Column="1" Grid.Row="4" HorizontalTextAlignment="Start"  
                                                 Text="{i18n:Translate RackNewPage_InversNumebringLevels}"/>
-                                        <Switch HorizontalOptions="Start" VerticalOptions="Center" 
+                                    <Switch Grid.Column="1" Grid.Row="5" HorizontalOptions="Start" 
                                                 IsToggled="{Binding ReversLevelNumbering, Mode=TwoWay}"></Switch>
-                                    </StackLayout>
 
-                                    <StackLayout Grid.Column="2" Grid.Row="0"  Orientation="Vertical" >
-                                        <Label HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
+
+                                    <Label Grid.Column="2" Grid.Row="0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
                                                Text="{i18n:Translate RackNewPage_PrefixNumbering}"/>
-                                        <Entry Text="{Binding NumberingPrefix, Mode=TwoWay}" BackgroundColor="White" />
-                                    </StackLayout>
-
-                                    <StackLayout Grid.Column="2" Grid.Row="1"  Orientation="Vertical" >
-                                        <Label HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
+                                    <Entry Grid.Column="2" Grid.Row="1" Text="{Binding NumberingPrefix, Mode=TwoWay}" BackgroundColor="White" />
+                                    
+                                    <Label Grid.Column="2" Grid.Row="2" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
                                                Text="{i18n:Translate RackNewPage_StartSectionNumbering}"/>
-                                        <Entry Text="{Binding NumberingSectionBegin, Mode=TwoWay}" Keyboard="Numeric" BackgroundColor="White" />
-                                    </StackLayout>
+                                    
+                                    <Entry Grid.Column="2" Grid.Row="3" Text="{Binding NumberingSectionBegin, Mode=TwoWay}" Keyboard="Numeric" BackgroundColor="White" />
 
-                                    <StackLayout Grid.Column="2" Grid.Row="2"  Orientation="Vertical" >
-                                        <Label HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
+                                    <Label Grid.Column="2" Grid.Row="4" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
                                                Text="{i18n:Translate RackNewPage_StartLevelsNumbering}"/>
-                                        <Entry Text="{Binding NumberingLevelBegin, Mode=TwoWay}" Keyboard="Numeric" BackgroundColor="White" />
-                                    </StackLayout>
+                                    
+                                    <Entry Grid.Column="2" Grid.Row="5" Text="{Binding NumberingLevelBegin, Mode=TwoWay}" Keyboard="Numeric" BackgroundColor="White" />
 
 
-                                    <StackLayout Grid.Column="3" Grid.Row="0"  Orientation="Vertical" >
-                                        <Label HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
+                                    <Label Grid.Column="3" Grid.Row="0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
                                                Text="{i18n:Translate RackNewPage_RackSectionSeparator}"/>
-                                        <Entry Text="{Binding RackSectionSeparator, Mode=TwoWay}" 
+                                    
+                                    <Entry Grid.Column="3" Grid.Row="1" Text="{Binding RackSectionSeparator, Mode=TwoWay}" 
                                                Keyboard="Numeric" BackgroundColor="White" />
-                                    </StackLayout>
-
-                                    <StackLayout Grid.Column="3" Grid.Row="1"  Orientation="Vertical" >
-                                        <Label HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
+                                    
+                                    <Label Grid.Column="3" Grid.Row="2" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
                                                Text="{i18n:Translate RackNewPage_SectionLevelSeparator}"/>
-                                        <Entry Text="{Binding SectionLevelSeparator, Mode=TwoWay}" 
+                                    
+                                    <Entry Grid.Column="3" Grid.Row="3" Text="{Binding SectionLevelSeparator, Mode=TwoWay}" 
                                                Keyboard="Numeric" BackgroundColor="White" />
-                                    </StackLayout>
-
-                                    <StackLayout Grid.Column="3" Grid.Row="2"  Orientation="Vertical">
-                                        <Label HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
+                                    
+                                    <Label Grid.Column="3" Grid.Row="4" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
                                                Text="{i18n:Translate RackNewPage_LevelDepthSeparator}"/>
-                                        <Entry Text="{Binding LevelDepthSeparator, Mode=TwoWay}" 
+                                    
+                                    <Entry Grid.Column="3" Grid.Row="5" Text="{Binding LevelDepthSeparator, Mode=TwoWay}" 
                                                Keyboard="Numeric" BackgroundColor="White" />
-                                    </StackLayout>
 
 
-                                    <StackLayout Grid.Column="4" Grid.Row="0"  Orientation="Vertical" >
-                                        <Label HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
+                                    <Label Grid.Column="4" Grid.Row="0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
                                                Text="{i18n:Translate RackNewPage_StepSectionNumbering}"/>
-                                        <Entry Text="{Binding StepNumberingSection, Mode=TwoWay}" 
+                                    
+                                    <Entry Grid.Column="4" Grid.Row="1" Text="{Binding StepNumberingSection, Mode=TwoWay}" 
                                                Keyboard="Numeric" BackgroundColor="White" />
-                                    </StackLayout>
-
+                                  
                                 </Grid>
 
                             </ScrollView>
@@ -294,7 +274,7 @@
                                 </Button>
                             </Grid>
                         </Grid>
-                        <vc:BinInfoPanel Grid.Column="1" x:Name="infopanel" IsVisible="{Binding IsSelectedBins}"/>
+                        <vc:BinInfoPanel Grid.Column="1" WidthRequest="300" IsVisible="{Binding IsSelectedBins}" x:Name="infopanel" BackgroundColor="White"/>
                     </Grid>
                 </StackLayout>
             </StackLayout>

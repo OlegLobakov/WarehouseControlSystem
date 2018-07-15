@@ -603,6 +603,7 @@ namespace WarehouseControlSystem.ViewModel
             List<BinType> bintypes = await NAV.GetBinTypeList(1, int.MaxValue, ACD.Default).ConfigureAwait(true);
             if (!IsDisposed)
             {
+                //ObservableCollection<string> bts = new ObservableCollection<string>();
                 NewModel.BinsViewModel.BinTypes.Clear();
                 foreach (BinType bt in bintypes)
                 {

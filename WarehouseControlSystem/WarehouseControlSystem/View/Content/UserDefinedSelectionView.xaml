@@ -10,15 +10,15 @@
             <StackLayout.GestureRecognizers>
                 <TapGestureRecognizer Command="{Binding TapCommand}"/>
             </StackLayout.GestureRecognizers>
-            
+            <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="Start" HeightRequest="8" BackgroundColor="Red" IsVisible="{Binding UDSIsRan}"/>
             <Grid IsVisible="{Binding IsLoadingState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-                <StackLayout VerticalOptions="Center" HorizontalOptions="Center" Orientation="Vertical">
+                <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" Orientation="Vertical">
                     <ActivityIndicator IsRunning="{Binding LoadAnimation}" HeightRequest="50" WidthRequest="50" Color="White"/>
                     <Label Text="{Binding LoadingText}" FontSize="Small"/>
                 </StackLayout>
             </Grid>
             <StackLayout IsVisible="{Binding IsNormalState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-                <Grid>
+                <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>

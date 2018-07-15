@@ -41,6 +41,8 @@ namespace WarehouseControlSystem.View.Pages.RackScheme.MasterNewRack
         protected override bool OnBackButtonPressed()
         {
             MessagingCenter.Unsubscribe<MasterRackNewViewModel>(this, "BinTemplatesIsLoaded");
+            MessagingCenter.Unsubscribe<MasterRackNewViewModel>(this, "UpdateRackView");
+            MessagingCenter.Unsubscribe<BinsViewModel>(this, "Update");
             model.CancelAsync();
             base.OnBackButtonPressed();
             return false;

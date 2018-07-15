@@ -396,7 +396,6 @@ namespace WarehouseControlSystem.ViewModel
 
         public BinsViewModel(INavigation navigation) : base(navigation)
         {
-            //UserDefinedFunctions = new ObservableCollection<UserDefinedFunctionViewModel>();
             SelectedBinContent = new ObservableCollection<BinContentShortViewModel>();
             UserDefinedFunctions = new ObservableCollection<UserDefinedFunctionViewModel>();
 

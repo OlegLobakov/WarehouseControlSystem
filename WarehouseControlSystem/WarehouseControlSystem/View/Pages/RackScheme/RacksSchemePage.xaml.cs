@@ -88,7 +88,6 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
         private void RacksAbslayoutSizeChanged(object sender, EventArgs e)
         {
             AbsoluteLayout al = (AbsoluteLayout)sender;
-            Model.UDSPanelHeight = (int)Math.Round(al.Height / 5.5);
             Model.SetScreenSizes(al.Width, al.Height, true);
         }
 

@@ -91,7 +91,7 @@
                         <StackLayout Grid.Column="0" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" Orientation="Vertical">
                             <Label Text="Height" HorizontalOptions="Center"></Label>
                             <Slider HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
-                                Maximum="80" Minimum="{Binding MinPlanHeight}" 
+                                Maximum="100" Minimum="{Binding MinPlanHeight}" 
                                 Value="{Binding PlanHeight, Mode=TwoWay}">
                             </Slider>
                             <Label Text="{Binding PlanHeight}" HorizontalOptions="Center"></Label>
@@ -99,7 +99,7 @@
                         <StackLayout Grid.Column="1" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" Orientation="Vertical">
                             <Label Text="Width" HorizontalOptions="Center"></Label>
                             <Slider HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
-                               Maximum="80" Minimum="{Binding MinPlanWidth}"
+                               Maximum="100" Minimum="{Binding MinPlanWidth}"
                                Value="{Binding PlanWidth, Mode=TwoWay}">
                             </Slider>
                             <Label Text="{Binding PlanWidth}" HorizontalOptions="Center"></Label>
