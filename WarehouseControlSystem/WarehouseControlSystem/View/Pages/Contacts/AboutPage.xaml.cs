@@ -24,6 +24,7 @@ namespace WarehouseControlSystem.View.Pages.Contacts
 
         public AboutPage()
         {
+            Version = "Version: "+Plugin.DeviceInfo.CrossDeviceInfo.Current.AppBuild;
             BindingContext = this;
             InitializeComponent();
             Title = AppResources.AboutPage_Title;
