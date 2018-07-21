@@ -136,6 +136,7 @@
     <Content Include="Assets\Images\ic_action_refresh.png" />
     <Content Include="Assets\Images\ic_action_remove_circle.png" />
     <Content Include="Assets\Images\ic_action_search.png" />
+    <Content Include="Assets\Images\ic_action_settings.png" />
     <Content Include="Assets\Images\ic_action_view_agenda.png" />
     <Content Include="Assets\Images\ic_action_view_module.png" />
     <Content Include="Assets\Images\ic_action_view_module_light.png" />

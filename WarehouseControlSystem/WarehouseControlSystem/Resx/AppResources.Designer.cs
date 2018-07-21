@@ -1438,7 +1438,7 @@ namespace WarehouseControlSystem.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New.
+        ///   Looks up a localized string similar to New Location.
         /// </summary>
         internal static string LocationsSchemePage_Toolbar_New {
             get {
@@ -1447,7 +1447,7 @@ namespace WarehouseControlSystem.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Scheme.
+        ///   Looks up a localized string similar to Edit Scheme.
         /// </summary>
         internal static string LocationsSchemePage_Toolbar_Scheme {
             get {
@@ -2680,6 +2680,15 @@ namespace WarehouseControlSystem.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit.
+        /// </summary>
+        internal static string RackCardPage_Toolbar_Change {
+            get {
+                return ResourceManager.GetString("RackCardPage_Toolbar_Change", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Scale.
         /// </summary>
         internal static string RackCardPage_Toolbar_Scale {
@@ -3238,7 +3247,7 @@ namespace WarehouseControlSystem.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New.
+        ///   Looks up a localized string similar to New Rack.
         /// </summary>
         internal static string RackSchemePage_Toolbar_New {
             get {
@@ -3247,7 +3256,7 @@ namespace WarehouseControlSystem.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Scheme.
+        ///   Looks up a localized string similar to Edit Scheme.
         /// </summary>
         internal static string RackSchemePage_Toolbar_Scheme {
             get {
@@ -3931,7 +3940,7 @@ namespace WarehouseControlSystem.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New.
+        ///   Looks up a localized string similar to New Zone.
         /// </summary>
         internal static string ZonesSchemePage_Toolbar_New {
             get {
@@ -3940,7 +3949,7 @@ namespace WarehouseControlSystem.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Scheme.
+        ///   Looks up a localized string similar to Edit Scheme.
         /// </summary>
         internal static string ZonesSchemePage_Toolbar_Scheme {
             get {

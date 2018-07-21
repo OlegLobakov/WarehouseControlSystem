@@ -42,6 +42,18 @@
                 </OnPlatform>
             </ToolbarItem.Icon>
         </ToolbarItem>
+        <ToolbarItem  Order="Secondary" Priority="1000" Text="{i18n:Translate RackCardPage_Toolbar_Change}">
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="UWP,WinPhone">
+                        <FileImageSource File="Assets/Images/ic_action_settings.png"/>
+                    </On>
+                    <On Platform="iOS,Android">
+                        <FileImageSource File="ic_action_settings.png"/>
+                    </On>
+                </OnPlatform>
+            </ToolbarItem.Icon>
+        </ToolbarItem>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" x:Name="mainsl" SizeChanged="StackLayout_SizeChanged">
