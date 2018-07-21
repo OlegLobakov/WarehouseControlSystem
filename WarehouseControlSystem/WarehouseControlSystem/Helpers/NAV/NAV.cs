@@ -269,7 +269,7 @@ namespace WarehouseControlSystem.Helpers.NAV
             string functionname = "DeleteLocation";
             XElement body =
                 new XElement(myns + functionname,
-                    new XElement(myns + "name", locationcode));
+                    new XElement(myns + "code", locationcode));
             SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(() => GetIntFromNAV(tcs, sp, cts));
             return tcs.Task;

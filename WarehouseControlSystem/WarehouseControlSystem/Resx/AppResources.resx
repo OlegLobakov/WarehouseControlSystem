@@ -1174,10 +1174,10 @@
     <value>Edit</value>
   </data>
   <data name="LocationsSchemePage_Toolbar_List" xml:space="preserve">
-    <value>List</value>
+    <value>Locations</value>
   </data>
   <data name="LocationsSchemePage_Toolbar_Mode" xml:space="preserve">
-    <value>Mode</value>
+    <value>Scheme</value>
   </data>
   <data name="LocationsSchemePage_Toolbar_New" xml:space="preserve">
     <value>New</value>
@@ -1385,5 +1385,47 @@
   </data>
   <data name="RackNewPage_PrefixNumbering" xml:space="preserve">
     <value>Prefix</value>
+  </data>
+  <data name="RackCardPage_Toolbar_Scale" xml:space="preserve">
+    <value>Scale</value>
+  </data>
+  <data name="RackSchemePage_Toolbar_List" xml:space="preserve">
+    <value>Racks</value>
+  </data>
+  <data name="RackSchemePage_Toolbar_New" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="RackSchemePage_Toolbar_Scheme" xml:space="preserve">
+    <value>Scheme</value>
+  </data>
+  <data name="RackSchemePage_Toolbar_Search" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="RackSchemePage_Toolbar_UDSF" xml:space="preserve">
+    <value>Functions</value>
+  </data>
+  <data name="ZonesSchemePage_Toolbar_List" xml:space="preserve">
+    <value>Zones</value>
+  </data>
+  <data name="ZonesSchemePage_Toolbar_New" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="ZonesSchemePage_Toolbar_Scheme" xml:space="preserve">
+    <value>Scheme</value>
+  </data>
+  <data name="ZonesSchemePage_Toolbar_Search" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="LocationsSchemePage_SaveScheme" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="RackSchemePage_SaveScheme" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="ZonesSchemePage_SaveScheme" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="RackCardPage_Toolbar_UnSelect" xml:space="preserve">
+    <value>Unselect</value>
   </data>
 </root>

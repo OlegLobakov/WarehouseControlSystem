@@ -43,7 +43,20 @@
                       HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"                 
                       HasUnevenRows="True" 
                       ItemTapped="ListView_ItemTapped"
-                      IsVisible="{Binding IsContentVisible}">
+                      IsVisible="{Binding IsContentVisible}"
+                      IsGroupingEnabled="True"
+                      GroupDisplayBinding="{Binding BinCode}" Margin="5">
+
+                <ListView.GroupHeaderTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout BackgroundColor="LightGray" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                                <Label Text="{Binding BinCode}" FontSize="Medium" Margin="10,5,5,5"/>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.GroupHeaderTemplate>
+
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>

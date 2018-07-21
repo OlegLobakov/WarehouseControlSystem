@@ -7,7 +7,7 @@
             x:Class="WarehouseControlSystem.View.Pages.RackScheme.RacksSchemePage"
              xmlns:i18n="clr-namespace:WarehouseControlSystem;assembly=WarehouseControlSystem">
     <ContentPage.ToolbarItems>
-        <ToolbarItem  Order="Primary" Priority="10" Text="{i18n:Translate LocationsSchemePage_Toolbar_List}" Command="{Binding RackListCommand}" >
+        <ToolbarItem  Order="Secondary" Priority="10" Text="{i18n:Translate RackSchemePage_Toolbar_List}" Command="{Binding RackListCommand}" >
             <ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
                     <On Platform="UWP,WinPhone">
@@ -19,19 +19,7 @@
                 </OnPlatform>
             </ToolbarItem.Icon>
         </ToolbarItem>
-        <ToolbarItem  Order="Primary"  Priority="20" Text="{i18n:Translate LocationsSchemePage_Toolbar_New}" Command="{Binding NewRackCommand}" >
-            <ToolbarItem.Icon>
-                <OnPlatform x:TypeArguments="FileImageSource">
-                    <On Platform="UWP,WinPhone">
-                        <FileImageSource File="Assets/Images/ic_action_add_circle.png"/>
-                    </On>
-                    <On Platform="iOS,Android">
-                        <FileImageSource File="ic_action_add_circle.png"/>
-                    </On>
-                </OnPlatform>
-            </ToolbarItem.Icon>
-        </ToolbarItem>
-        <ToolbarItem  Order="Primary" Priority="1000" Text="{i18n:Translate LocationsSchemePage_Toolbar_Mode}"  Clicked="ToolbarItem_Clicked">
+        <ToolbarItem  Order="Secondary" Priority="1000" Text="{i18n:Translate RackSchemePage_Toolbar_Scheme}"  Clicked="ToolbarItem_Clicked">
             <ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
                     <On Platform="UWP,WinPhone">
@@ -43,7 +31,7 @@
                 </OnPlatform>
             </ToolbarItem.Icon>
         </ToolbarItem>
-        <ToolbarItem  Order="Primary" Priority="2000" Text="{i18n:Translate LocationsSchemePage_Toolbar_Search}" Clicked="ToolbarItem_Search">
+        <ToolbarItem  Order="Primary" Priority="2000" Text="{i18n:Translate RackSchemePage_Toolbar_Search}" Clicked="ToolbarItem_Search">
             <ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
                     <On Platform="UWP,WinPhone">
@@ -55,7 +43,7 @@
                 </OnPlatform>
             </ToolbarItem.Icon>
         </ToolbarItem>
-        <ToolbarItem  Order="Primary" Priority="3000" Text="{i18n:Translate LocationsSchemePage_Toolbar_UDSF}" Clicked="ToolbarItem_UDS">
+        <ToolbarItem  Order="Primary" Priority="3000" Text="{i18n:Translate RackSchemePage_Toolbar_UDSF}" Clicked="ToolbarItem_UDS">
             <ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
                     <On Platform="UWP,WinPhone">
@@ -85,7 +73,8 @@
                     </Grid.RowDefinitions>
                     <Grid Grid.Row="0" IsVisible="{Binding IsEditMode}"  HorizontalOptions="FillAndExpand" Padding="20">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="3*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <StackLayout Grid.Column="0" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" Orientation="Vertical">
@@ -104,6 +93,12 @@
                             </Slider>
                             <Label Text="{Binding PlanWidth}" HorizontalOptions="Center"></Label>
                         </StackLayout>
+                        <Button Grid.Column="2" Margin="5"
+                                Text="{i18n:Translate RackSchemePage_SaveScheme}"
+                                BackgroundColor="{StaticResource PageHeaderBarBackgoundColor}"
+                                TextColor="White"
+                                FontSize="Medium"
+                                Clicked="ToolbarItem_Clicked"></Button>
                     </Grid>
                     <AbsoluteLayout Grid.Row="1" x:Name="abslayout" SizeChanged="RacksAbslayoutSizeChanged" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
 
@@ -150,6 +145,11 @@
                             BackgroundColor="White"/>
                 </Grid>
             </StackLayout>
+            <Grid IsVisible="{Binding IsNoDataState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Padding="0">
+                <StackLayout VerticalOptions="Center" HorizontalOptions="Center" Orientation="Vertical">
+                    <Label Text="{i18n:Translate RackSchemePage_StateMessageNoData}" FontSize="Medium" TextColor="Black"/>
+                </StackLayout>
+            </Grid>
         </StackLayout>
     </ContentPage.Content>
 </d:SchemeBasePlanPage>

@@ -79,8 +79,7 @@ namespace WarehouseControlSystem.ViewModel
             }
             else
             {
-                State = ModelState.Error;
-                ErrorText = "No Data";
+                State = ModelState.NoData;
             }
         }
     }

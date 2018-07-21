@@ -1173,10 +1173,10 @@
     <value>Изменить</value>
   </data>
   <data name="LocationsSchemePage_Toolbar_List" xml:space="preserve">
-    <value>Список</value>
+    <value>Склады</value>
   </data>
   <data name="LocationsSchemePage_Toolbar_Mode" xml:space="preserve">
-    <value>Режим</value>
+    <value>Схема</value>
   </data>
   <data name="LocationsSchemePage_Toolbar_New" xml:space="preserve">
     <value>Создать</value>
@@ -1384,5 +1384,47 @@
   </data>
   <data name="RackNewPage_PrefixNumbering" xml:space="preserve">
     <value>Префикс</value>
+  </data>
+  <data name="RackCardPage_Toolbar_Scale" xml:space="preserve">
+    <value>Масштаб</value>
+  </data>
+  <data name="RackSchemePage_Toolbar_List" xml:space="preserve">
+    <value>Стеллажи</value>
+  </data>
+  <data name="RackSchemePage_Toolbar_New" xml:space="preserve">
+    <value>Создать</value>
+  </data>
+  <data name="RackSchemePage_Toolbar_Scheme" xml:space="preserve">
+    <value>Схема</value>
+  </data>
+  <data name="RackSchemePage_Toolbar_Search" xml:space="preserve">
+    <value>Поиск</value>
+  </data>
+  <data name="RackSchemePage_Toolbar_UDSF" xml:space="preserve">
+    <value>Функции</value>
+  </data>
+  <data name="ZonesSchemePage_Toolbar_List" xml:space="preserve">
+    <value>Зоны</value>
+  </data>
+  <data name="ZonesSchemePage_Toolbar_New" xml:space="preserve">
+    <value>Создать</value>
+  </data>
+  <data name="ZonesSchemePage_Toolbar_Scheme" xml:space="preserve">
+    <value>Схема</value>
+  </data>
+  <data name="ZonesSchemePage_Toolbar_Search" xml:space="preserve">
+    <value>Поиск</value>
+  </data>
+  <data name="LocationsSchemePage_SaveScheme" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="RackSchemePage_SaveScheme" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="ZonesSchemePage_SaveScheme" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="RackCardPage_Toolbar_UnSelect" xml:space="preserve">
+    <value>Снять выделение</value>
   </data>
 </root>

@@ -6,7 +6,7 @@
              Title="{Binding Title}"
              x:Name="ThisPage">
     <ContentPage.ToolbarItems>
-        <ToolbarItem  Order="Primary" Priority="20" Text="{i18n:Translate LocationsSchemePage_Toolbar_New}" Command="{Binding NewZoneCommand}">
+        <ToolbarItem  Order="Primary" Priority="20" Text="{i18n:Translate ZonesSchemePage_Toolbar_New}" Command="{Binding NewZoneCommand}">
             <ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
                     <On Platform="UWP,WinPhone">
@@ -148,6 +148,11 @@
                             BackgroundColor="White"/>
                 </Grid>
             </StackLayout>
+            <Grid IsVisible="{Binding IsNoDataState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Padding="0">
+                <StackLayout VerticalOptions="Center" HorizontalOptions="Center" Orientation="Vertical">
+                    <Label Text="{i18n:Translate ZonesSchemePage_StateMessageNoData}" FontSize="Medium" TextColor="Black"/>
+                </StackLayout>
+            </Grid>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

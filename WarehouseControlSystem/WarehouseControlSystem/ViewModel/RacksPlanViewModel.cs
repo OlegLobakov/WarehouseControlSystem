@@ -55,7 +55,15 @@ namespace WarehouseControlSystem.ViewModel
         public ICommand DeleteRackCommand { protected set; get; }
 
      
+        /// <summary>
+        /// User Defined Selection List
+        /// </summary>
         public ObservableCollection<UserDefinedSelectionViewModel> UserDefinedSelectionViewModels { get; set; }
+        
+        /// <summary>
+        /// Store results on last UDS run
+        /// </summary>
+        private List<UserDefinedSelectionResult> UDSLastResults = new List<UserDefinedSelectionResult>();
 
         public bool IsVisibleUDS
         {
@@ -121,6 +129,10 @@ namespace WarehouseControlSystem.ViewModel
             SelectedRackViewModel = null;
         }
 
+        /// <summary>
+        /// Load visible racks
+        /// </summary>
+        /// <returns></returns>
         public async Task Load()
         {
             if (NotNetOrConnection)
@@ -159,11 +171,15 @@ namespace WarehouseControlSystem.ViewModel
                 }
                 UpdateMinSizes();
                 Rebuild(true);
+                if (UDSLastResults.Count > 0)
+                {
+                    FillRackViewModelsByUDSList(UDSLastResults);
+                    MessagingCenter.Send(this, "UDSRunIsDone");
+                }
             }
             else
             {
-                State = ModelState.Error;
-                ErrorText = "No Data";
+                State = ModelState.NoData;
             }
         }
 
@@ -176,9 +192,12 @@ namespace WarehouseControlSystem.ViewModel
 
             try
             {
-                UserDefinedSelectionViewModels.Clear();
-                List<UserDefinedSelection> list = await NAV.LoadUDS(Zone.LocationCode, Zone.Code, ACD.Default).ConfigureAwait(true);
-                FillUDSList(list);
+                if (UserDefinedSelectionViewModels.Count == 0)
+                {
+                    UserDefinedSelectionViewModels.Clear();
+                    List<UserDefinedSelection> list = await NAV.LoadUDS(Zone.LocationCode, Zone.Code, ACD.Default).ConfigureAwait(true);
+                    FillUDSList(list);
+                }
             }
             catch (OperationCanceledException e)
             {
@@ -202,7 +221,6 @@ namespace WarehouseControlSystem.ViewModel
                         UDSWidth = UDSPanelHeight,
                     };
                     udsvm.OnTap += RunUDS;
-
                     UserDefinedSelectionViewModels.Add(udsvm);
                 }
                 MessagingCenter.Send(this, "UDSListIsLoaded");
@@ -243,6 +261,7 @@ namespace WarehouseControlSystem.ViewModel
             {
                 if (udsvm.UDSIsRan)
                 {
+                    UDSLastResults.RemoveAll(x => x.FunctionID == udsvm.ID);
                     foreach (RackViewModel rvm in RackViewModels)
                     {
                         rvm.UDSSelects.RemoveAll(x => x.FunctionID == udsvm.ID);
@@ -256,13 +275,14 @@ namespace WarehouseControlSystem.ViewModel
                     List<UserDefinedSelectionResult> list = await NAV.RunUDS(Zone.LocationCode, Zone.Code, udsvm.ID, ACD.Default).ConfigureAwait(true);
                     if (list is List<UserDefinedSelectionResult>)
                     {
-                        foreach (RackViewModel rvm in RackViewModels)
+                        UDSLastResults.RemoveAll(x => x.FunctionID == udsvm.ID);
+                        foreach (UserDefinedSelectionResult udsr in list)
                         {
-                            rvm.UDSSelects.RemoveAll(x => x.FunctionID == udsvm.ID);
+                            UDSLastResults.Add(udsr);
                         }
-                        FillRackUDSR(list);
-                    }
-                    MessagingCenter.Send(this, "UDSRunIsDone");
+                        FillRackUDSR(udsvm.ID);
+                        MessagingCenter.Send(this, "UDSRunIsDone");
+                    }                   
                     udsvm.UDSIsRan = true;
                 }
             }
@@ -278,7 +298,17 @@ namespace WarehouseControlSystem.ViewModel
             udsvm.State = ModelState.Normal;
         }
 
-        private void FillRackUDSR(List<UserDefinedSelectionResult> list)
+        private void FillRackUDSR(int functionid)
+        {
+            foreach (RackViewModel rvm in RackViewModels)
+            {
+                rvm.UDSSelects.RemoveAll(x => x.FunctionID == functionid);
+            }
+            List<UserDefinedSelectionResult> list = UDSLastResults.FindAll(x => x.FunctionID == functionid);
+            FillRackViewModelsByUDSList(list);
+        }
+
+        private void FillRackViewModelsByUDSList(List<UserDefinedSelectionResult> list)
         {
             foreach (UserDefinedSelectionResult udsr in list)
             {
@@ -367,7 +397,8 @@ namespace WarehouseControlSystem.ViewModel
 
         public void DeleteRack(object obj)
         {
-            System.Diagnostics.Debug.WriteLine(obj.ToString());
+            RackViewModel rvm = (RackViewModel)obj;
+            ErrorText = "";
         }
 
         public async Task SaveZoneParams()

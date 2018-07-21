@@ -5,7 +5,7 @@
              xmlns:i18n="clr-namespace:WarehouseControlSystem;assembly=WarehouseControlSystem"
              x:Name="ThisPage">
     <ContentPage.ToolbarItems>
-        <ToolbarItem  Order="Primary" Text="{i18n:Translate LocationsSchemePage_Toolbar_New}">
+        <ToolbarItem  Order="Primary" Text="{i18n:Translate RackSchemePage_Toolbar_New}" Command="{Binding NewRackCommand}">
             <ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
                     <On Platform="UWP,WinPhone">
@@ -42,7 +42,7 @@
                         <ColumnDefinition Width="1*"/>
                     </Grid.ColumnDefinitions>
 
-                    <Label  Grid.Column="0" Text="{i18n:Translate RackListPage_FieldNo}" Margin="10,0,0,0"         
+                    <Label  Grid.Column="0" Text="{i18n:Translate RackListPage_FieldNo}" Margin="20,0,0,0"         
                                             HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                                             HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
 
@@ -89,7 +89,7 @@
                                             <ColumnDefinition Width="1*"/>
                                         </Grid.ColumnDefinitions>
 
-                                        <Label  Grid.Column="0" Text="{Binding No}" Margin="10,0,0,0"         
+                                        <Label  Grid.Column="0" Text="{Binding No}" Margin="20,0,0,0"         
                                             HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                                             HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
 
@@ -150,6 +150,12 @@
                             BackgroundColor="White"/>
                 </Grid>
             </StackLayout>
+            
+            <Grid IsVisible="{Binding IsNoDataState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Padding="0">
+                <StackLayout VerticalOptions="Center" HorizontalOptions="Center" Orientation="Vertical">
+                    <Label Text="{i18n:Translate RackSchemePage_StateMessageNoData}" FontSize="Medium" TextColor="Black"/>
+                </StackLayout>
+            </Grid>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

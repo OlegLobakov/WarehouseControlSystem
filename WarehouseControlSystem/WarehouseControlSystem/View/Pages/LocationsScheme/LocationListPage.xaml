@@ -21,13 +21,13 @@
 
     <ContentPage.Content>
         <StackLayout>
-            <StackLayout IsVisible="{Binding IsLoadingState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <Grid IsVisible="{Binding IsLoadingState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                 <StackLayout VerticalOptions="Center" HorizontalOptions="Center" Orientation="Vertical">
                     <ActivityIndicator IsRunning="{Binding LoadAnimation}" HeightRequest="50" WidthRequest="50"/>
                     <Label Text="{Binding LoadingText}" FontSize="Small"/>
                 </StackLayout>
-            </StackLayout>
-            <StackLayout IsVisible="{Binding IsNormalState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            </Grid>
+            <StackLayout IsVisible="{Binding IsNormalState}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -154,6 +154,12 @@
                             BackgroundColor="White"/>
                 </Grid>
             </StackLayout>
+            
+            <Grid IsVisible="{Binding IsNoDataState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Padding="0">
+                <StackLayout VerticalOptions="Center" HorizontalOptions="Center" Orientation="Vertical">
+                    <Label Text="{i18n:Translate LocationsSchemePage_StateMessageNoData}" FontSize="Medium" TextColor="Black"/>
+                </StackLayout>
+            </Grid>
         </StackLayout>
        
     </ContentPage.Content>

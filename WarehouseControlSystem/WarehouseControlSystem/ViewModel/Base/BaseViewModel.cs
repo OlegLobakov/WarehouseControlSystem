@@ -103,6 +103,19 @@ namespace WarehouseControlSystem.ViewModel.Base
         }
         bool isrequeststate;
 
+        public bool IsNoDataState
+        {
+            get { return isnodatastate; }
+            set
+            {
+                if (isnodatastate != value)
+                {
+                    isnodatastate = value;
+                    OnPropertyChanged(nameof(IsNoDataState));
+                }
+            }
+        }
+        bool isnodatastate;
 
         public bool Selected
         {
@@ -266,6 +279,7 @@ namespace WarehouseControlSystem.ViewModel.Base
             IsNormalState = false;
             IsErrorState = false;
             IsRequestState = false;
+            IsNoDataState = false;
 
             switch (state)
             {
@@ -282,6 +296,9 @@ namespace WarehouseControlSystem.ViewModel.Base
                     break;
                 case ModelState.Request:
                     IsRequestState = true;
+                    break;
+                case ModelState.NoData:
+                    IsNoDataState = true;
                     break;
                 default:
                     throw new InvalidOperationException("Impossible value");

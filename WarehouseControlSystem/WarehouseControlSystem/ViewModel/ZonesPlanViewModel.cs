@@ -123,8 +123,7 @@ namespace WarehouseControlSystem.ViewModel
             }
             else
             {
-                State = ModelState.Error;
-                ErrorText = "No Data";
+                State = ModelState.NoData;
             }
         }
 
@@ -287,6 +286,7 @@ namespace WarehouseControlSystem.ViewModel
                 zvm.SaveFields(zone);
                 await NAV.DeleteZone(zone, ACD.Default).ConfigureAwait(true);
                 ZoneViewModels.Remove(zvm);
+                State = ModelState.Normal;
             }
             catch (Exception e)
             {
@@ -296,7 +296,6 @@ namespace WarehouseControlSystem.ViewModel
             }
             finally
             {
-                State = ModelState.Normal;
                 LoadAnimation = false;
             }
         }

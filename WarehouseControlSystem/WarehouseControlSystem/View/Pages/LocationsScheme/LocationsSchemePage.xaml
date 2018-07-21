@@ -6,7 +6,7 @@
              xmlns:i18n="clr-namespace:WarehouseControlSystem;assembly=WarehouseControlSystem"
              Title="{Binding Title}">
     <ContentPage.ToolbarItems>
-        <ToolbarItem  Order="Primary" Priority="10" Text="{i18n:Translate LocationsSchemePage_Toolbar_List}" Command="{Binding ListLocationsCommand}">
+        <ToolbarItem  Order="Secondary" Priority="10" Text="{i18n:Translate LocationsSchemePage_Toolbar_List}" Command="{Binding ListLocationsCommand}">
             <ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
                     <On Platform="UWP">
@@ -18,19 +18,7 @@
                 </OnPlatform>
             </ToolbarItem.Icon>
         </ToolbarItem>
-        <ToolbarItem  Order="Primary" Priority="20" Text="{i18n:Translate LocationsSchemePage_Toolbar_New}" Command="{Binding NewLocationCommand}">
-            <ToolbarItem.Icon>
-                <OnPlatform x:TypeArguments="FileImageSource">
-                    <On Platform="UWP">
-                        <FileImageSource File="Assets/Images/ic_action_add_circle.png"/>
-                    </On>
-                    <On Platform="iOS,Android">
-                        <FileImageSource File="ic_action_add_circle.png"/>
-                    </On>
-                </OnPlatform>
-            </ToolbarItem.Icon>
-        </ToolbarItem>
-        <ToolbarItem  Order="Primary" Priority="1000" Text="{i18n:Translate LocationsSchemePage_Toolbar_Mode}" Clicked="ToolbarItem_Clicked">
+        <ToolbarItem  Order="Secondary" Priority="1000" Text="{i18n:Translate LocationsSchemePage_Toolbar_Mode}" Clicked="ToolbarItem_Clicked">
             <ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
                     <On Platform="UWP">
@@ -59,7 +47,8 @@
                     </Grid.RowDefinitions>
                     <Grid Grid.Row="0" IsVisible="{Binding IsEditMode}"  HorizontalOptions="FillAndExpand" Padding="20">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="3*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <StackLayout Grid.Column="0" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" Orientation="Vertical">
@@ -78,6 +67,12 @@
                             </Slider>
                             <Label Text="{Binding PlanWidth}" HorizontalOptions="Center"></Label>
                         </StackLayout>
+                        <Button Grid.Column="2" Margin="5"
+                                Text="{i18n:Translate LocationsSchemePage_SaveScheme}"
+                                BackgroundColor="{StaticResource PageHeaderBarBackgoundColor}"
+                                TextColor="White"
+                                FontSize="Medium"
+                                Clicked="ToolbarItem_Clicked"></Button>
                     </Grid>
                     <AbsoluteLayout Grid.Row="1" x:Name="abslayout" SizeChanged="Abslayout_SizeChanged"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                     </AbsoluteLayout>
@@ -110,6 +105,11 @@
                             BackgroundColor="White"/>
                 </Grid>
             </StackLayout>
+            <Grid IsVisible="{Binding IsNoDataState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Padding="0">
+                <StackLayout VerticalOptions="Center" HorizontalOptions="Center" Orientation="Vertical">
+                    <Label Text="{i18n:Translate LocationsSchemePage_StateMessageNoData}" FontSize="Medium" TextColor="Black"/>
+                </StackLayout>
+            </Grid>
         </StackLayout>
     </ContentPage.Content>
 </d:SchemeBasePlanPage>

@@ -1375,6 +1375,15 @@ namespace WarehouseControlSystem.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        internal static string LocationsSchemePage_SaveScheme {
+            get {
+                return ResourceManager.GetString("LocationsSchemePage_SaveScheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Locations not found!.
         /// </summary>
         internal static string LocationsSchemePage_StateMessageNoData {
@@ -1411,7 +1420,7 @@ namespace WarehouseControlSystem.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to List.
+        ///   Looks up a localized string similar to Locations.
         /// </summary>
         internal static string LocationsSchemePage_Toolbar_List {
             get {
@@ -1420,7 +1429,7 @@ namespace WarehouseControlSystem.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mode.
+        ///   Looks up a localized string similar to Scheme.
         /// </summary>
         internal static string LocationsSchemePage_Toolbar_Mode {
             get {
@@ -2671,11 +2680,29 @@ namespace WarehouseControlSystem.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Scale.
+        /// </summary>
+        internal static string RackCardPage_Toolbar_Scale {
+            get {
+                return ResourceManager.GetString("RackCardPage_Toolbar_Scale", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Search.
         /// </summary>
         internal static string RackCardPage_Toolbar_Search {
             get {
                 return ResourceManager.GetString("RackCardPage_Toolbar_Search", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unselect.
+        /// </summary>
+        internal static string RackCardPage_Toolbar_UnSelect {
+            get {
+                return ResourceManager.GetString("RackCardPage_Toolbar_UnSelect", resourceCulture);
             }
         }
         
@@ -3175,6 +3202,15 @@ namespace WarehouseControlSystem.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        internal static string RackSchemePage_SaveScheme {
+            get {
+                return ResourceManager.GetString("RackSchemePage_SaveScheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Racks not found!.
         /// </summary>
         internal static string RackSchemePage_StateMessageNoData {
@@ -3189,6 +3225,51 @@ namespace WarehouseControlSystem.Resx {
         internal static string RackSchemePage_Title {
             get {
                 return ResourceManager.GetString("RackSchemePage_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Racks.
+        /// </summary>
+        internal static string RackSchemePage_Toolbar_List {
+            get {
+                return ResourceManager.GetString("RackSchemePage_Toolbar_List", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New.
+        /// </summary>
+        internal static string RackSchemePage_Toolbar_New {
+            get {
+                return ResourceManager.GetString("RackSchemePage_Toolbar_New", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scheme.
+        /// </summary>
+        internal static string RackSchemePage_Toolbar_Scheme {
+            get {
+                return ResourceManager.GetString("RackSchemePage_Toolbar_Scheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search.
+        /// </summary>
+        internal static string RackSchemePage_Toolbar_Search {
+            get {
+                return ResourceManager.GetString("RackSchemePage_Toolbar_Search", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Functions.
+        /// </summary>
+        internal static string RackSchemePage_Toolbar_UDSF {
+            get {
+                return ResourceManager.GetString("RackSchemePage_Toolbar_UDSF", resourceCulture);
             }
         }
         
@@ -3805,6 +3886,15 @@ namespace WarehouseControlSystem.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        internal static string ZonesSchemePage_SaveScheme {
+            get {
+                return ResourceManager.GetString("ZonesSchemePage_SaveScheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Zones not found!.
         /// </summary>
         internal static string ZonesSchemePage_StateMessageNoData {
@@ -3828,6 +3918,42 @@ namespace WarehouseControlSystem.Resx {
         internal static string ZonesSchemePage_Title {
             get {
                 return ResourceManager.GetString("ZonesSchemePage_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zones.
+        /// </summary>
+        internal static string ZonesSchemePage_Toolbar_List {
+            get {
+                return ResourceManager.GetString("ZonesSchemePage_Toolbar_List", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New.
+        /// </summary>
+        internal static string ZonesSchemePage_Toolbar_New {
+            get {
+                return ResourceManager.GetString("ZonesSchemePage_Toolbar_New", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scheme.
+        /// </summary>
+        internal static string ZonesSchemePage_Toolbar_Scheme {
+            get {
+                return ResourceManager.GetString("ZonesSchemePage_Toolbar_Scheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search.
+        /// </summary>
+        internal static string ZonesSchemePage_Toolbar_Search {
+            get {
+                return ResourceManager.GetString("ZonesSchemePage_Toolbar_Search", resourceCulture);
             }
         }
         

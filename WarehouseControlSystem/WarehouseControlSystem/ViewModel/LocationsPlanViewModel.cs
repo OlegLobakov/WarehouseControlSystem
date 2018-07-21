@@ -121,8 +121,7 @@ namespace WarehouseControlSystem.ViewModel
             }
             else
             {
-                State = ModelState.Error;
-                ErrorText = "No Data";
+                State = ModelState.NoData;
             }
         }
 
@@ -296,6 +295,7 @@ namespace WarehouseControlSystem.ViewModel
                 State = ModelState.Loading;
                 await NAV.DeleteLocation(lvm.Code, ACD.Default).ConfigureAwait(true);
                 LocationViewModels.Remove(lvm);
+                State = ModelState.Normal;
             }
             catch (Exception e)
             {
@@ -305,7 +305,6 @@ namespace WarehouseControlSystem.ViewModel
             }
             finally
             {
-                State = ModelState.Normal;
                 LoadAnimation = false;
             }
         }

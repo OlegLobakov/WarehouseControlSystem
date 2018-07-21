@@ -117,5 +117,10 @@ namespace WarehouseControlSystem.View.Pages.RackScheme
                 ScaleMode = true;
             }
         }
+
+        private void ToolbarItem_UnSelect(object sender, EventArgs e)
+        {
+            model.BinsViewModel.UnSelect();
+        }
     }
 }

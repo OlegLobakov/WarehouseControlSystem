@@ -10,6 +10,7 @@ namespace WarehouseControlSystem.ViewModel.Base
         Loading,
         Normal,
         Error,
-        Request
+        Request,
+        NoData
     }
 }

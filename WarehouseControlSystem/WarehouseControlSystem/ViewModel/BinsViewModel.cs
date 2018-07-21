@@ -23,6 +23,7 @@ using System.Windows.Input;
 using System.Collections.ObjectModel;
 using System.Threading;
 using WarehouseControlSystem.Model;
+using WarehouseControlSystem.Helpers.Comparer;
 
 namespace WarehouseControlSystem.ViewModel
 {
@@ -105,7 +106,7 @@ namespace WarehouseControlSystem.ViewModel
 
         public List<BinViewModel> BinViewModels { get; set; } = new List<BinViewModel>();
 
-        public ObservableCollection<BinContentShortViewModel> SelectedBinContent
+        public ObservableCollection<BinContentGrouping> SelectedBinContent
         {
             get { return selectedbincontent; }
             set
@@ -116,7 +117,7 @@ namespace WarehouseControlSystem.ViewModel
                     OnPropertyChanged(nameof(SelectedBinContent));
                 }
             }
-        } ObservableCollection<BinContentShortViewModel> selectedbincontent;
+        } ObservableCollection<BinContentGrouping> selectedbincontent;
         public ObservableCollection<UserDefinedFunctionViewModel> UserDefinedFunctions
         {
             get { return userdefinedfunctions; }
@@ -396,7 +397,7 @@ namespace WarehouseControlSystem.ViewModel
 
         public BinsViewModel(INavigation navigation) : base(navigation)
         {
-            SelectedBinContent = new ObservableCollection<BinContentShortViewModel>();
+            SelectedBinContent = new ObservableCollection<BinContentGrouping>();
             UserDefinedFunctions = new ObservableCollection<UserDefinedFunctionViewModel>();
 
             BlockBinsCommand = new Command(BlockBins);
@@ -949,16 +950,18 @@ namespace WarehouseControlSystem.ViewModel
             List<BinViewModel> list = BinViewModels.FindAll(x => x.Selected == true);
             if (list is List<BinViewModel>)
             {
-                ObservableCollection<BinContentShortViewModel> nlist = new ObservableCollection<BinContentShortViewModel>();
+                ObservableCollection<BinContentGrouping> nlist = new ObservableCollection<BinContentGrouping>();
 
                 foreach (BinViewModel bvm1 in list)
                 {
-                    foreach (BinContentShortViewModel bcsvm in bvm1.BinContent)
-                    {
-                        nlist.Add(bcsvm);
-                    }
-                }
+                    nlist.Add(new BinContentGrouping(bvm1.Code, bvm1.BinContent));
 
+                    //foreach (BinContentShortViewModel bcsvm in bvm1.BinContent)
+                    //{
+                    //    nlist.Add(bcsvm);
+                    //}
+                }
+                //nlist.ToList().Sort(new BinContentShortViewModelComparer());
                 SelectedBinContent = nlist;
                 EditedBinCodeIsEnabled = list.Count == 1;
             }
