@@ -158,6 +158,15 @@ namespace WarehouseControlSystem.View.Pages.RackScheme.MasterNewRack
                         BinView bev = new BinView(finded);
                         grid.Children.Add(bev, finded.Section, finded.Section + finded.SectionSpan, finded.Level, finded.Level + finded.LevelSpan);
                     }
+                    else
+                    {
+                        EmptySpaceViewModel esvm = model.BinsViewModel.EmptySpacesViewModels.Find(x => x.Level == i && x.Section == j);
+                        if (esvm is EmptySpaceViewModel)
+                        {
+                            EmptySpaceViewInRack esvir = new EmptySpaceViewInRack(esvm);
+                            grid.Children.Add(esvir, esvm.Section, esvm.Level);
+                        }
+                    }
                 }
             }
         }

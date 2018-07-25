@@ -32,6 +32,7 @@
                         <Setter Property="Opacity" Value="1"/>
                     </DataTrigger>
                 </Grid.Triggers>
+                
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -44,7 +45,7 @@
                        HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="7,2,0,0">
                     <Label.Triggers>
                         <DataTrigger Binding="{Binding IsSearchQuantityVisible}" TargetType="Label" Value="true">
-                            <Setter Property="TextColor" Value="White"  />
+                            <Setter Property="TextColor" Value="White"/>
                         </DataTrigger>
                     </Label.Triggers>
                 </Label>
@@ -52,9 +53,7 @@
                 <ActivityIndicator Grid.Row="2" IsVisible="{Binding LoadAnimation}" IsRunning="{Binding LoadAnimation}" 
                                    HeightRequest="30" WidthRequest="30" HorizontalOptions="Center" VerticalOptions="Center"/>
 
-                <Image Grid.Row="2" x:Name="iconelement" HorizontalOptions="CenterAndExpand" 
-                       VerticalOptions="CenterAndExpand" Aspect="Fill"
-                       IsVisible="{Binding IsContent}">
+                <Image Grid.Row="0" x:Name="iconelement" HorizontalOptions="End" VerticalOptions="CenterAndExpand" Aspect="AspectFill" Margin="0,2,5,0" IsVisible="{Binding IsContent}">
                     <Image.Source>
                         <OnPlatform x:TypeArguments="FileImageSource">
                             <On Platform="UWP">

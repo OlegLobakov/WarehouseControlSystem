@@ -3139,11 +3139,38 @@ namespace WarehouseControlSystem.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Number Format.
+        /// </summary>
+        internal static string RackNewPage_RackDigits {
+            get {
+                return ResourceManager.GetString("RackNewPage_RackDigits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Level Num. Quantity.
+        /// </summary>
+        internal static string RackNewPage_RackLevelDigitsQuantity {
+            get {
+                return ResourceManager.GetString("RackNewPage_RackLevelDigitsQuantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Rack Code.
         /// </summary>
         internal static string RackNewPage_RackNo {
             get {
                 return ResourceManager.GetString("RackNewPage_RackNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Section Num. Quantity.
+        /// </summary>
+        internal static string RackNewPage_RackSectionDigitsQuantity {
+            get {
+                return ResourceManager.GetString("RackNewPage_RackSectionDigitsQuantity", resourceCulture);
             }
         }
         
@@ -3189,6 +3216,15 @@ namespace WarehouseControlSystem.Resx {
         internal static string RackNewPage_StartSectionNumbering {
             get {
                 return ResourceManager.GetString("RackNewPage_StartSectionNumbering", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Step Level Numbering.
+        /// </summary>
+        internal static string RackNewPage_StepLevelNumbering {
+            get {
+                return ResourceManager.GetString("RackNewPage_StepLevelNumbering", resourceCulture);
             }
         }
         

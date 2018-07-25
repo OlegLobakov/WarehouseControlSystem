@@ -1434,4 +1434,16 @@
   <data name="RackCardPage_Toolbar_UnSelect" xml:space="preserve">
     <value>Unselect</value>
   </data>
+  <data name="RackNewPage_RackDigits" xml:space="preserve">
+    <value>Number Format</value>
+  </data>
+  <data name="RackNewPage_RackLevelDigitsQuantity" xml:space="preserve">
+    <value>Level Num. Quantity</value>
+  </data>
+  <data name="RackNewPage_RackSectionDigitsQuantity" xml:space="preserve">
+    <value>Section Num. Quantity</value>
+  </data>
+  <data name="RackNewPage_StepLevelNumbering" xml:space="preserve">
+    <value>Step Level Numbering</value>
+  </data>
 </root>

@@ -1430,4 +1430,16 @@
   <data name="RackCardPage_Toolbar_UnSelect" xml:space="preserve">
     <value>Снять выделение</value>
   </data>
+  <data name="RackNewPage_RackDigits" xml:space="preserve">
+    <value>Формат</value>
+  </data>
+  <data name="RackNewPage_RackLevelDigitsQuantity" xml:space="preserve">
+    <value>Уровень кол-во цифр</value>
+  </data>
+  <data name="RackNewPage_RackSectionDigitsQuantity" xml:space="preserve">
+    <value>Секции кол-во цифр</value>
+  </data>
+  <data name="RackNewPage_StepLevelNumbering" xml:space="preserve">
+    <value>Шаг нумерации уровней</value>
+  </data>
 </root>

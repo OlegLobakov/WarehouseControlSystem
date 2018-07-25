@@ -105,6 +105,7 @@ namespace WarehouseControlSystem.ViewModel
         public event Action<BinsViewModel> OnBinClick;
 
         public List<BinViewModel> BinViewModels { get; set; } = new List<BinViewModel>();
+        public List<EmptySpaceViewModel> EmptySpacesViewModels { get; set; } = new List<EmptySpaceViewModel>();
 
         public ObservableCollection<BinContentGrouping> SelectedBinContent
         {
@@ -259,7 +260,7 @@ namespace WarehouseControlSystem.ViewModel
                 if (templatecode != value)
                 {
                     templatecode = value;
-                    SetSelectedBinsByTemplate();
+                    SetSelectedBinsByTemplate(true);
                     OnPropertyChanged(nameof(TemplateCode));
                 }
             }
@@ -272,7 +273,7 @@ namespace WarehouseControlSystem.ViewModel
                 if (templateblocked != value)
                 {
                     templateblocked = value;
-                    SetSelectedBinsByTemplate();
+                    SetSelectedBinsByTemplate(false);
                     OnPropertyChanged(nameof(TemplateBlocked));
                 }
             }
@@ -285,7 +286,7 @@ namespace WarehouseControlSystem.ViewModel
                 if (templateblockmovement != value)
                 {
                     templateblockmovement = value;
-                    SetSelectedBinsByTemplate();
+                    SetSelectedBinsByTemplate(false);
                     OnPropertyChanged(nameof(TemplateBlockMovement));
                 }
             }
@@ -298,7 +299,7 @@ namespace WarehouseControlSystem.ViewModel
                 if (templatebintype != value)
                 {
                     templatebintype = value;
-                    SetSelectedBinsByTemplate();
+                    SetSelectedBinsByTemplate(false);
                     OnPropertyChanged(nameof(TemplateBinType));
                 }
             }
@@ -311,7 +312,7 @@ namespace WarehouseControlSystem.ViewModel
                 if (templatebinranking != value)
                 {
                     templatebinranking = value;
-                    SetSelectedBinsByTemplate();
+                    SetSelectedBinsByTemplate(false);
                     OnPropertyChanged(nameof(TemplateBinRanking));
                 }
             }
@@ -324,7 +325,7 @@ namespace WarehouseControlSystem.ViewModel
                 if (templatemaximumcubage != value)
                 {
                     templatemaximumcubage = value;
-                    SetSelectedBinsByTemplate();
+                    SetSelectedBinsByTemplate(false);
                     OnPropertyChanged(nameof(TemplateMaximumCubage));
                 }
             }
@@ -337,7 +338,7 @@ namespace WarehouseControlSystem.ViewModel
                 if (templatemaximumweight != value)
                 {
                     templatemaximumweight = value;
-                    SetSelectedBinsByTemplate();
+                    SetSelectedBinsByTemplate(false);
                     OnPropertyChanged(nameof(TemplateMaximumWeight));
                 }
             }
@@ -350,7 +351,7 @@ namespace WarehouseControlSystem.ViewModel
                 if (templateadjustmentbin != value)
                 {
                     templateadjustmentbin = value;
-                    SetSelectedBinsByTemplate();
+                    SetSelectedBinsByTemplate(false);
                     OnPropertyChanged(nameof(TemplateAdjustmentBin));
                 }
             }
@@ -363,7 +364,7 @@ namespace WarehouseControlSystem.ViewModel
                 if (templatewarehouseclasscode != value)
                 {
                     templatewarehouseclasscode = value;
-                    SetSelectedBinsByTemplate();
+                    SetSelectedBinsByTemplate(false);
                     OnPropertyChanged(nameof(TemplateWarehouseClassCode));
                 }
             }
@@ -376,7 +377,7 @@ namespace WarehouseControlSystem.ViewModel
                 if (templatespecialequipmentcode != value)
                 {
                     templatespecialequipmentcode = value;
-                    SetSelectedBinsByTemplate();
+                    SetSelectedBinsByTemplate(false);
                     OnPropertyChanged(nameof(TemplateSpecialEquipmentCode));
                 }
             }
@@ -389,7 +390,7 @@ namespace WarehouseControlSystem.ViewModel
                 if (templatedefault1 != value)
                 {
                     templatedefault1 = value;
-                    SetSelectedBinsByTemplate();
+                    SetSelectedBinsByTemplate(false);
                     OnPropertyChanged(nameof(TemplateDefault));
                 }
             }
@@ -655,7 +656,28 @@ namespace WarehouseControlSystem.ViewModel
             foreach (BinViewModel bvm in selectedlist)
             {
                 DeleteBin(bvm);
+                EmptySpaceViewModel esvm = new EmptySpaceViewModel(Navigation);
+                esvm.Section = bvm.Section;
+                esvm.Level = bvm.Level;
+                esvm.Depth = bvm.Depth;
+                esvm.OnTap += Esvm_OnTap;
+                EmptySpacesViewModels.Add(esvm);
             }
+            MessagingCenter.Send(this, "Update");
+        }
+
+        /// <summary>
+        /// Tap on Empty Space
+        /// </summary>
+        /// <param name="obj"></param>
+        private void Esvm_OnTap(EmptySpaceViewModel esvm)
+        {
+            esvm.OnTap -= Esvm_OnTap;
+            if (EmptySpacesViewModels.Contains(esvm))
+            {
+                EmptySpacesViewModels.Remove(esvm);
+            }
+            CreateBin(esvm.Level, esvm.Section, esvm.Depth);
             MessagingCenter.Send(this, "Update");
         }
 
@@ -723,6 +745,7 @@ namespace WarehouseControlSystem.ViewModel
                 ErrorText = e.Message;
             }
         }
+
         public async Task LoadBins(AsyncCancelationDispatcher acd)
         {
             BinViewModelsDispose();
@@ -1009,7 +1032,7 @@ namespace WarehouseControlSystem.ViewModel
             FillTemplateIsEnabled = true;
         }
 
-        private void SetSelectedBinsByTemplate()
+        private async void SetSelectedBinsByTemplate(bool codefieldchanged)
         {
             if (FillTemplateIsEnabled)
             {
@@ -1028,6 +1051,10 @@ namespace WarehouseControlSystem.ViewModel
                     bvm.WarehouseClassCode = TemplateWarehouseClassCode;
                     bvm.SpecialEquipmentCode = TemplateSpecialEquipmentCode;
                     bvm.Default = TemplateDefault;
+                }
+                if (codefieldchanged)
+                {
+                    await CheckBins(ACD).ConfigureAwait(true);
                 }
             }
         }

@@ -302,6 +302,62 @@ namespace WarehouseControlSystem.ViewModel
             }
         } int numberingdepthbegin = 1;
 
+        public int NumberingSectionDigitsQuantity
+        {
+            get { return numberingsectiondigitsquantity; }
+            set
+            {
+                int newvalue = 1;
+                if ((value >= 1) && (value < 10))
+                {
+                    newvalue = value;
+                }
+
+                if (numberingsectiondigitsquantity != newvalue)
+                {
+                    numberingsectiondigitsquantity = newvalue;
+                    Renumbering();
+                    OnPropertyChanged(nameof(NumberingSectionDigitsQuantity));
+                }
+            }
+        } int numberingsectiondigitsquantity = 2;
+        public int NumberingLevelDigitsQuantity
+        {
+            get { return numberingleveldigitsquantity; }
+            set
+            {
+                int newvalue = 1;
+                if ((value >= 1) && (value < 10))
+                {
+                    newvalue = value;
+                }
+                if (numberingleveldigitsquantity != newvalue)
+                {
+                    numberingleveldigitsquantity = newvalue;
+                    Renumbering();
+                    OnPropertyChanged(nameof(NumberingLevelDigitsQuantity));
+                }
+            }
+        } int numberingleveldigitsquantity = 1;
+        public int NumberingDepthDigitsQuantity
+        {
+            get { return numberingdepthdigitsquantity; }
+            set
+            {
+                int newvalue = 1;
+                if ((value >= 1) && (value < 10))
+                {
+                    newvalue = value;
+                }
+                if (numberingdepthdigitsquantity != newvalue)
+                {
+                    numberingdepthdigitsquantity = newvalue;
+                    Renumbering();
+                    OnPropertyChanged(nameof(NumberingDepthDigitsQuantity));
+                }
+            }
+        } int numberingdepthdigitsquantity = 1;
+
         public int StepNumberingSection
         {
             get { return stepnumberingsection; }
@@ -315,6 +371,19 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } int stepnumberingsection = 1;
+        public int StepNumberingLevel
+        {
+            get { return stepnumberinglevel; }
+            set
+            {
+                if (stepnumberinglevel != value)
+                {
+                    stepnumberinglevel = value;
+                    Renumbering();
+                    OnPropertyChanged("StepNumberingLevel");
+                }
+            }
+        } int stepnumberinglevel = 1;
 
         public bool LocationsIsLoaded
         {
@@ -406,18 +475,18 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } bool conflictbinchange;
-        public bool ConflictRackChange
-        {
-            get { return conflictrackchange; }
-            set
-            {
-                if (conflictrackchange != value)
-                {
-                    conflictrackchange = value;
-                    OnPropertyChanged(nameof(ConflictRackChange));
-                }
-            }
-        } bool conflictrackchange;
+        //public bool ConflictRackChange
+        //{
+        //    get { return conflictrackchange; }
+        //    set
+        //    {
+        //        if (conflictrackchange != value)
+        //        {
+        //            conflictrackchange = value;
+        //            OnPropertyChanged(nameof(ConflictRackChange));
+        //        }
+        //    }
+        //} bool conflictrackchange;
 
         public MasterRackNewViewModel(RackViewModel rvm, bool createmode1) : base(rvm.Navigation)
         {
@@ -457,71 +526,36 @@ namespace WarehouseControlSystem.ViewModel
         {
             if (CreateMode)
             {
-                for (int k = 1; k <= Depth; k++)
+                NewModel.BinsViewModel.UnSelect();
+                foreach (BinViewModel bvm in NewModel.BinsViewModel.BinViewModels)
                 {
-                    NumberDepth(k);
+                    SetNumber(bvm);
                 }
 
                 await NewModel.BinsViewModel.CheckBins(ACD).ConfigureAwait(true);
             }
         }
 
-        private void NumberDepth(int k)
-        {
-            int levelnumber = NumberingLevelBegin + Levels - 1;
-
-            if (ReversLevelNumbering)
-            {
-                levelnumber = numberinglevelbegin;
-            }
-
-            for (int i = 1; i <= Levels; i++)
-            {
-                NumberSections(k, i, levelnumber);
-
-                if (ReversLevelNumbering)
-                {
-                    levelnumber = levelnumber + 1;
-                }
-                else
-                {
-                    levelnumber = levelnumber - 1;
-                }
-            }
-        }
-        private void NumberSections(int k, int i, int levelname)
-        {
-            int sectionname = numberingsectionbegin;
-
-            if (ReversSectionNumbering)
-            {
-                sectionname = numberingsectionbegin + Sections - 1;
-            }
-
-            for (int j = 1; j <= Sections; j++)
-            {
-                Numbering(k, i, j, levelname, sectionname);
-
-                if (ReversSectionNumbering)
-                {
-                    sectionname = sectionname - StepNumberingSection;
-                }
-                else
-                {
-                    sectionname = sectionname + StepNumberingSection;
-                }
-            }
-        }
-        private void Numbering(int k, int i, int j, int levelname, int sectionname)
+        private void SetNumber(BinViewModel bvm)
         {
             System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("en-us");
-            string number = NumberingPrefix + racksectionseparator + sectionname.ToString("D2", ci) + sectionlevelseparator + levelname.ToString();
 
-            BinViewModel bvm = NewModel.BinsViewModel.Find(j, i, k);
-            if (bvm is BinViewModel)
+            int sectionname = numberingsectionbegin + bvm.Section * StepNumberingSection;
+            if (ReversSectionNumbering)
             {
-                bvm.Code = number;
+                sectionname = numberingsectionbegin + (Sections - bvm.Section - 1) * StepNumberingSection; ;
             }
+
+            int levelname = NumberingLevelBegin + (Levels - bvm.Level - 1) * StepNumberingLevel;
+            if (ReversLevelNumbering)
+            {
+                levelname = NumberingLevelBegin + bvm.Level * StepNumberingLevel; ;
+            }
+
+            string sectionlabel = sectionname.ToString("D" + NumberingSectionDigitsQuantity.ToString(), ci);
+            string lavellabel = levelname.ToString("D" + NumberingLevelDigitsQuantity.ToString(), ci);
+
+            bvm.Code = NumberingPrefix + racksectionseparator + sectionlabel + sectionlevelseparator + lavellabel;
         }
 
         public async Task Load()
@@ -715,8 +749,8 @@ namespace WarehouseControlSystem.ViewModel
             try
             {
                 LoadingText = AppResources.RackNewPage_LoadingProgressRack + " " + newrack.No;
-                int rackexist = await NAV.GetRackCount(LocationCode, ZoneCode, No, false, ACD.Default).ConfigureAwait(true);
-                await ModifyRack(newrack, rackexist).ConfigureAwait(true);
+                //int rackexist = await NAV.GetRackCount(LocationCode, ZoneCode, No, false, ACD.Default).ConfigureAwait(true);
+                await NAV.CreateRack(newrack, ACD.Default).ConfigureAwait(true); ;
                 foreach (BinViewModel bvm in NewModel.BinsViewModel.BinViewModels)
                 {
                     await SaveBin(bvm).ConfigureAwait(true);
@@ -733,26 +767,6 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
-        private async Task ModifyRack(Rack newrack, int rackexist)
-        {
-            if (rackexist > 0)
-            {
-                if (ConflictRackChange)
-                {
-                    newrack.PrevNo = newrack.No;
-                    await NAV.ModifyRack(newrack, ACD.Default).ConfigureAwait(true);
-                }
-                else
-                {
-                    State = ModelState.Error;
-                    ErrorText = AppResources.RackNewPage_Error_RackAlreadyExist;
-                }
-            }
-            else
-            {
-                await NAV.CreateRack(newrack, ACD.Default).ConfigureAwait(true);
-            }
-        }
         private async Task SaveBin(BinViewModel bmv)
         {
             try

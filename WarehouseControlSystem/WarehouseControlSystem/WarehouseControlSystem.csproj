@@ -52,6 +52,9 @@
     <Compile Update="View\Content\BinInfoPanelRackCard.xaml.cs">
       <DependentUpon>BinInfoPanelRackCard.xaml</DependentUpon>
     </Compile>
+    <Compile Update="View\Content\EmptySpaceViewInRack.xaml.cs">
+      <DependentUpon>EmptySpaceViewInRack.xaml</DependentUpon>
+    </Compile>
     <Compile Update="View\Content\BinViewInRack.xaml.cs">
       <DependentUpon>BinViewInRack.xaml</DependentUpon>
     </Compile>

@@ -72,12 +72,17 @@ namespace WarehouseControlSystem.Helpers.Converters
             RackOrientationEnum rv = RackOrientationEnum.Undefined;
             try
             {
-                RackOrientationPick rop = (RackOrientationPick)value;
-                rv = rop.RackOrientation;
+                if (value != null)
+                {
+                    RackOrientationPick rop = (RackOrientationPick)value;
+                    rv = rop.RackOrientation;
+                }
             }
-            catch
+            catch(Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine("RackOrientationConverter ConvertBack error ");
+                System.Diagnostics.Debug.WriteLine("WarehouseControlSystemException.RackOrientationConverter");
+                System.Diagnostics.Debug.WriteLine("Message: " + ex.Message);
+                System.Diagnostics.Debug.WriteLine("Stack:" + ex.StackTrace);
             }
             return rv;
         }
