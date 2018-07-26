@@ -30,6 +30,34 @@ namespace WarehouseControlSystem.ViewModel
     {
         public BinTemplate BinTemplate { get; set; }
 
+        public string LocationCode
+        {
+            get { return locationcode; }
+            set
+            {
+                if (locationcode != value)
+                {
+                    locationcode = value;
+                    OnPropertyChanged(nameof(LocationCode));
+                }
+            }
+        }
+        string locationcode;
+
+        public string ZoneCode
+        {
+            get { return zonecode; }
+            set
+            {
+                if (zonecode != value)
+                {
+                    zonecode = value;
+                    OnPropertyChanged(nameof(ZoneCode));
+                }
+            }
+        }
+        string zonecode;
+
         public string Description
         {
             get { return description; }

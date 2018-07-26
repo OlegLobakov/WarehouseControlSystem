@@ -1735,6 +1735,15 @@ namespace WarehouseControlSystem.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Comment.
+        /// </summary>
+        internal static string MasterNewRack_Comment {
+            get {
+                return ResourceManager.GetString("MasterNewRack_Comment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to BinTemplate is not defined!.
         /// </summary>
         internal static string MasterNewRack_ControlBinTemplate {

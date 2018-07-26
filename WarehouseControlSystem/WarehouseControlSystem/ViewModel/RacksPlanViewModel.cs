@@ -312,7 +312,7 @@ namespace WarehouseControlSystem.ViewModel
         {
             foreach (UserDefinedSelectionResult udsr in list)
             {
-                RackViewModel rvm = RackViewModels.ToList().Find(x => x.No == udsr.RackNo);
+                RackViewModel rvm = RackViewModels.ToList().Find(x => x.ID == udsr.RackID);
                 if (rvm is RackViewModel)
                 {
                     SubSchemeSelect sss = new SubSchemeSelect()

@@ -48,7 +48,7 @@ namespace WarehouseControlSystem
                 MenuItems = new ObservableCollection<MainPageMenuItem>(new[]
                 {
                     new MainPageMenuItem { Id = 0,  Title =  AppResources.MainMenuHome, TargetType=typeof(MainPageDetail)},
-                    new MainPageMenuItem { Id = 10, Title =  AppResources.FindPage_Title,TargetType=typeof(FindPage)},
+                    //new MainPageMenuItem { Id = 10, Title =  AppResources.FindPage_Title,TargetType=typeof(FindPage)},
                     //new MainPageMenuItem { Id = 20, Title =  AppResources.MainMenuLog, TargetType=typeof(LogPage)},
                     new MainPageMenuItem { Id = 30, Title =  AppResources.MainMenuConnections, TargetType=typeof(ConnectionsPage)},
                     new MainPageMenuItem { Id = 50, Title =  AppResources.MainMenuParameters, TargetType=typeof(ParametersPage)},

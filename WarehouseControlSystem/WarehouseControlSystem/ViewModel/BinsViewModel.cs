@@ -29,6 +29,22 @@ namespace WarehouseControlSystem.ViewModel
 {
     public class BinsViewModel : BaseViewModel
     {
+        public int RackID
+        {
+            get { return rackid; }
+            set
+            {
+                if (rackid != value)
+                {
+                    rackid = value;
+                    foreach (BinViewModel bvm in BinViewModels)
+                    {
+                        bvm.RackID = rackid;
+                    }
+                    OnPropertyChanged(nameof(RackID));
+                }
+            }
+        } int rackid;
         public string LocationCode
         {
             get { return locationcode; }
@@ -61,22 +77,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } string zonecode;
-        public string RackNo
-        {
-            get { return rackno; }
-            set
-            {
-                if (rackno != value)
-                {
-                    rackno = value;
-                    foreach (BinViewModel bvm in BinViewModels)
-                    {
-                        bvm.RackNo = rackno;
-                    }
-                    OnPropertyChanged(nameof(RackNo));
-                }
-            }
-        } string rackno;
+
         public BinTemplate BinTemplate
         {
             get { return bintemplate; }
@@ -94,7 +95,6 @@ namespace WarehouseControlSystem.ViewModel
             }
         } BinTemplate bintemplate;
 
-        public ICommand BlockBinsCommand { protected set; get; }
         public ICommand CombineBinsCommand { protected set; get; }
         public ICommand DeleteBinsCommand { protected set; get; }
         public ICommand ShowBinOperationCommand { protected set; get; }
@@ -401,7 +401,6 @@ namespace WarehouseControlSystem.ViewModel
             SelectedBinContent = new ObservableCollection<BinContentGrouping>();
             UserDefinedFunctions = new ObservableCollection<UserDefinedFunctionViewModel>();
 
-            BlockBinsCommand = new Command(BlockBins);
             CombineBinsCommand = new Command(CombineBins);
             DeleteBinsCommand = new Command(DeleteBins);
             ShowBinOperationCommand = new Command(ShowBinOperations);
@@ -522,11 +521,11 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
-        public void CreateBin(int i, int j, int k)
+        public BinViewModel CreateBin(int i, int j, int k)
         {
             Bin newbin = new Bin()
             {
-                RackNo = RackNo,
+                RackID = RackID,
                 Section = j,
                 Level = i,
                 Depth = k
@@ -538,6 +537,7 @@ namespace WarehouseControlSystem.ViewModel
             }
             bvm.OnTap += Bvm_OnTap;
             BinViewModels.Add(bvm);
+            return bvm;
         }
 
         private void DeleteBin(BinViewModel bvm)
@@ -546,23 +546,11 @@ namespace WarehouseControlSystem.ViewModel
             BinViewModels.Remove(bvm);
         }
 
-        public void BlockBins()
-        {
-            List<BinViewModel> selectedlist = BinViewModels.FindAll(x => x.Selected == true);
-            foreach (BinViewModel bvm in selectedlist)
-            {
-                bvm.Blocked = !bvm.Blocked;
-            }
-            UnSelect();
-
-            MessagingCenter.Send(this, "Update");
-        }
-
         public void CombineBins()
         {
             string combinedrackno1 = "";
             string locationcode1 = "";
-            string rackno1 = "";
+            int rackno1;
             List<BinViewModel> selectedlist = BinViewModels.FindAll(x => x.Selected == true);
             if (selectedlist.Count > 1)
             {
@@ -583,7 +571,7 @@ namespace WarehouseControlSystem.ViewModel
                 {
                     combinedrackno1 = firstbvm.Code;
                     locationcode1 = firstbvm.LocationCode;
-                    rackno1 = firstbvm.RackNo;
+                    rackno1 = firstbvm.RackID;
                 }
 
                 DeleteSelected(fordelete);
@@ -591,7 +579,7 @@ namespace WarehouseControlSystem.ViewModel
                 Bin newbin = new Bin()
                 {
                     LocationCode = locationcode1,
-                    RackNo = rackno1,
+                    RackID = rackid,
                     Code = combinedrackno1,
                     Section = leftsection,
                     Level = leftlevel,
@@ -678,6 +666,7 @@ namespace WarehouseControlSystem.ViewModel
                 EmptySpacesViewModels.Remove(esvm);
             }
             CreateBin(esvm.Level, esvm.Section, esvm.Depth);
+            
             MessagingCenter.Send(this, "Update");
         }
 
@@ -700,39 +689,44 @@ namespace WarehouseControlSystem.ViewModel
 
         public async Task CheckBins(AsyncCancelationDispatcher acd)
         {
+            List<BinViewModel> list = BinViewModels.ToList();
+            foreach (BinViewModel bvm in list)
+            {
+                await CheckBin(bvm, acd).ConfigureAwait(true);
+            }
+        }
+
+        public async Task CheckBin(BinViewModel bvm, AsyncCancelationDispatcher acd)
+        {
             try
             {
-                List<BinViewModel> list = BinViewModels.ToList();
-                foreach (BinViewModel bvm in list)
+                bvm.IsChecked = false;
+                NAVFilter navfilter = new NAVFilter
                 {
-                    bvm.IsChecked = false;
-                    NAVFilter navfilter = new NAVFilter
-                    {
-                        LocationCodeFilter = LocationCode,
-                        BinCodeFilter = bvm.Code
-                    };
-                    List<Bin> binsexist = await NAV.GetBinList(navfilter, ACD.Default).ConfigureAwait(true);
-                    if (binsexist.Count > 0)
-                    {
-                        bvm.IsExist = true;
-                        Bin bin = binsexist.First();
+                    LocationCodeFilter = LocationCode,
+                    BinCodeFilter = bvm.Code
+                };
+                List<Bin> binsexist = await NAV.GetBinList(navfilter, acd.Default).ConfigureAwait(true);
+                if (binsexist.Count > 0)
+                {
+                    bvm.IsExist = true;
 
-                        //Place in new rack
-                        bin.RackNo = bvm.RackNo;
-                        bin.Section = bvm.Section;
-                        bin.Level = bvm.Level;
-                        bin.Depth = bvm.Depth;
-                        bin.SectionSpan = bvm.SectionSpan;
-                        bin.LevelSpan = bvm.LevelSpan;
-                        bin.DepthSpan = bvm.DepthSpan;
-                        bvm.FillFields(bin);
-                    }
-                    else
-                    {
-                        bvm.IsExist = false;
-                    }
-                    bvm.IsChecked = true;
+                    Bin bin = binsexist.First();
+                    bin.RackID = bvm.RackID;
+                    bin.Section = bvm.Section;
+                    bin.Level = bvm.Level;
+                    bin.Depth = bvm.Depth;
+                    bin.SectionSpan = bvm.SectionSpan;
+                    bin.LevelSpan = bvm.LevelSpan;
+                    bin.DepthSpan = bvm.DepthSpan;
+                    bvm.FillFields(bin);
                 }
+                else
+                {
+                    bvm.IsExist = false;
+                }
+                bvm.IsChecked = true;
+
             }
             catch (OperationCanceledException e)
             {
@@ -745,7 +739,6 @@ namespace WarehouseControlSystem.ViewModel
                 ErrorText = e.Message;
             }
         }
-
         public async Task LoadBins(AsyncCancelationDispatcher acd)
         {
             BinViewModelsDispose();
@@ -757,9 +750,9 @@ namespace WarehouseControlSystem.ViewModel
                 {
                     LocationCodeFilter = LocationCode,
                     ZoneCodeFilter = ZoneCode,
-                    RackCodeFilter = RackNo
+                    RackIDFilter = RackID.ToString()
                 };
-                List<Bin> bins = await NAV.GetBinList(navfilter, ACD.Default).ConfigureAwait(true);
+                List<Bin> bins = await NAV.GetBinList(navfilter, acd.Default).ConfigureAwait(true);
                 if (!IsDisposed)
                 {
                     if (bins.Count > 0)
@@ -804,7 +797,7 @@ namespace WarehouseControlSystem.ViewModel
                     List<SearchResponse> list = Global.SearchResponses.FindAll(
                         x =>
                         x.ZoneCode == ZoneCode &&
-                        x.RackNo == RackNo &&
+                        x.RackID == RackID &&
                         x.BinCode == bvm.Code);
 
                     if (list is List<SearchResponse>)
@@ -843,7 +836,7 @@ namespace WarehouseControlSystem.ViewModel
         {
             try
             {
-                List<UserDefinedFunction> list = await NAV.LoadUserDefinedFunctionList(LocationCode, ZoneCode, RackNo, ACD.Default).ConfigureAwait(true);
+                List<UserDefinedFunction> list = await NAV.LoadUserDefinedFunctionList(LocationCode, ZoneCode, RackID, acd.Default).ConfigureAwait(true);
                 if (list is List<UserDefinedFunction>)
                 {
                     ObservableCollection<UserDefinedFunctionViewModel> nlist = new ObservableCollection<UserDefinedFunctionViewModel>();

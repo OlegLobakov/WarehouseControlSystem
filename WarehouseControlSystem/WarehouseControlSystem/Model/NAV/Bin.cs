@@ -31,7 +31,7 @@ namespace WarehouseControlSystem.Model.NAV
         public bool Empty { get; set; }
         public bool NoSize { get; set; }
         public int BlockMovement { get; set; }
-        public string RackNo { get; set; } = "";
+        public int RackID { get; set; }
         public int Section { get; set; }
         public int Level { get; set; }
         public int Depth { get; set; }
@@ -59,7 +59,7 @@ namespace WarehouseControlSystem.Model.NAV
             tobin.Empty = Empty;
             tobin.NoSize = NoSize;
             tobin.BlockMovement = BlockMovement;
-            tobin.RackNo = RackNo;
+            tobin.RackID = RackID;
             tobin.Section = Section;
             tobin.Level = Level;
             tobin.Depth = Depth;

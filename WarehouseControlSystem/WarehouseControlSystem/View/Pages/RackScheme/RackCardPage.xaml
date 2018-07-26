@@ -71,13 +71,14 @@
                     </Grid.RowDefinitions>
                     <Grid Grid.Row="0" BackgroundColor="{StaticResource PageHeaderBarBackgoundColor}" >
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="2*"/>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Label Grid.Column="4" Text="{Binding SearchResult}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                        <Label Grid.Column="0" Text="{Binding Comment}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                               HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10" TextColor="White"/>
+                        <Label Grid.Column="3" Text="{Binding SearchResult}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                                HorizontalTextAlignment="End" VerticalTextAlignment="Center" Margin="10" TextColor="White"/>
                     </Grid>
                     <Grid Grid.Row="1">

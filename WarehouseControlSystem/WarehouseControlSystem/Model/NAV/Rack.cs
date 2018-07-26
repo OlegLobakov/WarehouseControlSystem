@@ -20,6 +20,7 @@ namespace WarehouseControlSystem.Model.NAV
 {
     public class Rack 
     {
+        public int ID { get; set; }
         public string LocationCode { get; set; } = "";
         public string ZoneCode { get; set; } = "";
         public string No { get; set; } = "";
@@ -83,7 +84,6 @@ namespace WarehouseControlSystem.Model.NAV
         public int Height { get; set; }
 
         public bool SchemeVisible { get; set; }
-        public string PrevNo { get; set; } = "";
 
         public Rack()
         {
@@ -113,10 +113,10 @@ namespace WarehouseControlSystem.Model.NAV
         {
             return new Rack
             {
+                ID = ID,
                 LocationCode = LocationCode,
                 ZoneCode = ZoneCode,
                 No = No,
-                PrevNo = PrevNo,
                 RackOrientation = RackOrientation,
                 BinTemplateCode = BinTemplateCode,
                 Sections = Sections,
@@ -133,10 +133,10 @@ namespace WarehouseControlSystem.Model.NAV
 
         public void CopyTo(Rack to)
         {
+            to.ID = ID;
             to.LocationCode = LocationCode;
             to.ZoneCode = ZoneCode;
             to.No = No;
-            to.PrevNo = PrevNo;
             to.RackOrientation = RackOrientation;
             to.BinTemplateCode = BinTemplateCode;
             to.Sections = Sections;

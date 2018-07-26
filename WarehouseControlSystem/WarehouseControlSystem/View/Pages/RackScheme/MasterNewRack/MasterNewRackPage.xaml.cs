@@ -65,6 +65,7 @@ namespace WarehouseControlSystem.View.Pages.RackScheme.MasterNewRack
 
         private void UpdateBinsViewModel(BinsViewModel bvm)
         {
+            model.NumberingEmptyBins();
             rackview.Update(model.NewModel);
         }
 

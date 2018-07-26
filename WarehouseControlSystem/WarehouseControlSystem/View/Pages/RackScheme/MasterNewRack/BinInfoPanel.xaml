@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="WarehouseControlSystem.View.Content.BinInfoPanel"
+             x:Class="WarehouseControlSystem.View.Pages.RackScheme.MasterNewRack.BinInfoPanel"
              xmlns:i18n="clr-namespace:WarehouseControlSystem;assembly=WarehouseControlSystem">
     <ContentView.Content>
         <StackLayout BackgroundColor="LightGray" Padding="3,0,0,0">
@@ -101,15 +101,11 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <Button Grid.Row="0" Grid.Column="0" Text="{i18n:Translate RackNewPage_ButtonsBlock}"    
-                        BorderRadius="0" FontSize="Medium"  
-                        BackgroundColor="#cfcfcf" Command="{Binding BlockBinsCommand}"/>
-                    <Button Grid.Row="1" Grid.Column="0" Text="{i18n:Translate RackNewPage_ButtonsCombine}"  
+                    <Button Grid.Row="1" Grid.Column="0" Text="{i18n:Translate RackNewPage_ButtonsCombine}" Margin="5" 
                         BorderRadius="0" FontSize="Medium"  
                         BackgroundColor="#cfcfcf" Command="{Binding CombineBinsCommand}"/>
-                    <Button Grid.Row="2" Grid.Column="0" Text="{i18n:Translate RackNewPage_ButtonsDelete}"   
+                    <Button Grid.Row="2" Grid.Column="0" Text="{i18n:Translate RackNewPage_ButtonsDelete}" Margin="5"  
                         BorderRadius="0" FontSize="Medium"  
                         BackgroundColor="#cfcfcf" Command="{Binding DeleteBinsCommand}"/>
                 </Grid>

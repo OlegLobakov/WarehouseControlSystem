@@ -28,7 +28,50 @@ namespace WarehouseControlSystem.ViewModel
     public class RackViewModel : NAVBaseViewModel
     {
         private Rack SourceRack { get; set; }
+        public string LocationCode
+        {
+            get { return locationcode; }
+            set
+            {
+                if (locationcode != value)
+                {
+                    locationcode = value;
+                    BinsViewModel.LocationCode = locationcode;
+                    OnPropertyChanged(nameof(LocationCode));
+                }
+            }
+        }
+        string locationcode;
 
+        public string ZoneCode
+        {
+            get { return zonecode; }
+            set
+            {
+                if (zonecode != value)
+                {
+                    zonecode = value;
+                    BinsViewModel.ZoneCode = zonecode;
+                    OnPropertyChanged(nameof(ZoneCode));
+                }
+            }
+        }
+        string zonecode;
+
+        public int ID
+        {
+            get { return id; }
+            set
+            {
+                if (id != value)
+                {
+                    id = value;
+                    BinsViewModel.RackID = id;
+                    Changed = true;
+                    OnPropertyChanged(nameof(ID));
+                }
+            }
+        } int id;
         public string No
         {
             get { return no; }
@@ -37,7 +80,6 @@ namespace WarehouseControlSystem.ViewModel
                 if (no != value)
                 {
                     no = value;
-                    BinsViewModel.RackNo = no;
                     Changed = true;
                     OnPropertyChanged(nameof(No));
                 }
@@ -96,7 +138,21 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } RackOrientationEnum rackorientation;
- 
+        public string Comment
+        {
+            get { return comment; }
+            set
+            {
+                if (comment != value)
+                {
+                    comment = value;
+                    Changed = true;
+                    OnPropertyChanged(nameof(comment));
+                }
+            }
+        }
+        string comment;
+
         public bool SchemeVisible
         {
             get { return schemevisible; }
@@ -200,24 +256,26 @@ namespace WarehouseControlSystem.ViewModel
 
         public void FillFields(Rack rack)
         {
+            ID = rack.ID;
+            LocationCode = rack.LocationCode;
+            ZoneCode = rack.ZoneCode;
             No = rack.No;
-            PrevCode = rack.PrevNo;
             Sections = rack.Sections;
             Levels = rack.Levels;
             Depth = rack.Depth;
-            LocationCode = rack.LocationCode;
-            ZoneCode = rack.ZoneCode;
             RackOrientation = rack.RackOrientation;
             SchemeVisible = rack.SchemeVisible;
             Left = rack.Left;
             Top = rack.Top;
             Width = rack.Width;
             Height = rack.Height;
+            Comment = rack.Comment;
         }
+
         public void SaveFields(Rack rack)
         {
+            rack.ID = ID;
             rack.No = No;
-            rack.PrevNo = PrevCode;
             rack.Sections = Sections;
             rack.Levels = Levels;
             rack.Depth = Depth;
@@ -229,7 +287,9 @@ namespace WarehouseControlSystem.ViewModel
             rack.Top = Top;
             rack.Width = Width;
             rack.Height = Height;
+            rack.Comment = Comment;
         }
+
         public void Tap(object sender)
         {
             if (OnTap is Action<RackViewModel>)
@@ -362,7 +422,7 @@ namespace WarehouseControlSystem.ViewModel
                         {
                             LocationCodeFilter = bvm.LocationCode,
                             ZoneCodeFilter = bvm.ZoneCode,
-                            RackCodeFilter = bvm.RackNo,
+                            RackIDFilter = bvm.RackID.ToString(),
                             BinCodeFilter = bvm.Code
                         };
                         string response = await NAV.RunFunction(udfvmselected.ID, navfilter, 0, ACD.Default).ConfigureAwait(true);
@@ -394,7 +454,7 @@ namespace WarehouseControlSystem.ViewModel
             {
                 List<SearchResponse> list = Global.SearchResponses.FindAll(
                     x => x.ZoneCode == ZoneCode &&
-                    x.RackNo == No);
+                    x.RackID == ID);
                 if (list is List<SearchResponse>)
                 {
                     foreach (SearchResponse sr in list)

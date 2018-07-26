@@ -29,6 +29,33 @@ namespace WarehouseControlSystem.ViewModel
     {
         public RackViewModel NewModel { get; set; }
 
+        public string LocationCode
+        {
+            get { return locationcode; }
+            set
+            {
+                if (locationcode != value)
+                {
+                    locationcode = value;
+                    OnPropertyChanged(nameof(LocationCode));
+                }
+            }
+        }
+        string locationcode;
+        public string ZoneCode
+        {
+            get { return zonecode; }
+            set
+            {
+                if (zonecode != value)
+                {
+                    zonecode = value;
+                    OnPropertyChanged(nameof(ZoneCode));
+                }
+            }
+        }
+        string zonecode;
+
         public string No
         {
             get { return no; }
@@ -63,9 +90,16 @@ namespace WarehouseControlSystem.ViewModel
             {
                 if (sections != value)
                 {
-                    sections = value;
-                    Changed = true;
-                    OnPropertyChanged(nameof(Sections));
+                    if ((value >= 1) && (value <= 100))
+                    {
+                        sections = value;
+                        Changed = true;
+                        OnPropertyChanged(nameof(Sections));
+                    }
+                    else
+                    {
+                        OnPropertyChanged(nameof(Sections));
+                    }
                 }
             }
         } int sections;
@@ -76,9 +110,16 @@ namespace WarehouseControlSystem.ViewModel
             {
                 if (levels != value)
                 {
-                    levels = value;
-                    Changed = true;
-                    OnPropertyChanged(nameof(Levels));
+                    if ((value >= 1) && (value <= 100))
+                    {
+                        levels = value;
+                        Changed = true;
+                        OnPropertyChanged(nameof(Levels));
+                    }
+                    else
+                    {
+                        OnPropertyChanged(nameof(Levels));
+                    }
                 }
             }
         } int levels;
@@ -89,9 +130,16 @@ namespace WarehouseControlSystem.ViewModel
             {
                 if (depth != value)
                 {
-                    depth = value;
-                    Changed = true;
-                    OnPropertyChanged(nameof(Depth));
+                    if ((value >= 1) && (value <= 10))
+                    {
+                        depth = value;
+                        Changed = true;
+                        OnPropertyChanged(nameof(Depth));
+                    }
+                    else
+                    {
+                        OnPropertyChanged(nameof(Depth));
+                    }
                 }
             }
         } int depth;
@@ -307,17 +355,18 @@ namespace WarehouseControlSystem.ViewModel
             get { return numberingsectiondigitsquantity; }
             set
             {
-                int newvalue = 1;
-                if ((value >= 1) && (value < 10))
+                if (numberingsectiondigitsquantity != value)
                 {
-                    newvalue = value;
-                }
-
-                if (numberingsectiondigitsquantity != newvalue)
-                {
-                    numberingsectiondigitsquantity = newvalue;
-                    Renumbering();
-                    OnPropertyChanged(nameof(NumberingSectionDigitsQuantity));
+                    if ((value >= 1) && (value <= 10))
+                    {
+                        numberingsectiondigitsquantity = value;
+                        Renumbering();
+                        OnPropertyChanged(nameof(NumberingSectionDigitsQuantity));
+                    }
+                    else
+                    {
+                        OnPropertyChanged(nameof(NumberingSectionDigitsQuantity));
+                    }
                 }
             }
         } int numberingsectiondigitsquantity = 2;
@@ -326,16 +375,18 @@ namespace WarehouseControlSystem.ViewModel
             get { return numberingleveldigitsquantity; }
             set
             {
-                int newvalue = 1;
-                if ((value >= 1) && (value < 10))
+                if (numberingleveldigitsquantity != value)
                 {
-                    newvalue = value;
-                }
-                if (numberingleveldigitsquantity != newvalue)
-                {
-                    numberingleveldigitsquantity = newvalue;
-                    Renumbering();
-                    OnPropertyChanged(nameof(NumberingLevelDigitsQuantity));
+                    if ((value >= 1) && (value <= 10))
+                    {
+                        numberingleveldigitsquantity = value;
+                        Renumbering();
+                        OnPropertyChanged(nameof(NumberingLevelDigitsQuantity));
+                    }
+                    else
+                    {
+                        OnPropertyChanged(nameof(NumberingLevelDigitsQuantity));
+                    }
                 }
             }
         } int numberingleveldigitsquantity = 1;
@@ -344,16 +395,18 @@ namespace WarehouseControlSystem.ViewModel
             get { return numberingdepthdigitsquantity; }
             set
             {
-                int newvalue = 1;
-                if ((value >= 1) && (value < 10))
+                if (numberingdepthdigitsquantity != value)
                 {
-                    newvalue = value;
-                }
-                if (numberingdepthdigitsquantity != newvalue)
-                {
-                    numberingdepthdigitsquantity = newvalue;
-                    Renumbering();
-                    OnPropertyChanged(nameof(NumberingDepthDigitsQuantity));
+                    if ((value >= 1) && (value <= 10))
+                    {
+                        numberingdepthdigitsquantity = value;
+                        Renumbering();
+                        OnPropertyChanged(nameof(NumberingDepthDigitsQuantity));
+                    }
+                    else
+                    {
+                        OnPropertyChanged(nameof(NumberingDepthDigitsQuantity));
+                    }
                 }
             }
         } int numberingdepthdigitsquantity = 1;
@@ -531,8 +584,20 @@ namespace WarehouseControlSystem.ViewModel
                 {
                     SetNumber(bvm);
                 }
-
                 await NewModel.BinsViewModel.CheckBins(ACD).ConfigureAwait(true);
+            }
+        }
+
+        public async void NumberingEmptyBins()
+        {
+            List<BinViewModel> list = NewModel.BinsViewModel.BinViewModels.FindAll(x => x.Code == "");
+            if (list is List<BinViewModel>)
+            {
+                foreach (BinViewModel bvm in list)
+                {
+                    SetNumber(bvm);
+                    await NewModel.BinsViewModel.CheckBin(bvm, ACD);
+                }
             }
         }
 
@@ -540,16 +605,16 @@ namespace WarehouseControlSystem.ViewModel
         {
             System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("en-us");
 
-            int sectionname = numberingsectionbegin + bvm.Section * StepNumberingSection;
+            int sectionname = NumberingSectionBegin + (bvm.Section - 1) * StepNumberingSection;
             if (ReversSectionNumbering)
             {
-                sectionname = numberingsectionbegin + (Sections - bvm.Section - 1) * StepNumberingSection; ;
+                sectionname = NumberingSectionBegin + (Sections - bvm.Section) * StepNumberingSection; ;
             }
 
-            int levelname = NumberingLevelBegin + (Levels - bvm.Level - 1) * StepNumberingLevel;
+            int levelname = NumberingLevelBegin + (Levels - bvm.Level) * StepNumberingLevel;
             if (ReversLevelNumbering)
             {
-                levelname = NumberingLevelBegin + bvm.Level * StepNumberingLevel; ;
+                levelname = NumberingLevelBegin + (bvm.Level - 1) * StepNumberingLevel; ;
             }
 
             string sectionlabel = sectionname.ToString("D" + NumberingSectionDigitsQuantity.ToString(), ci);
@@ -715,6 +780,7 @@ namespace WarehouseControlSystem.ViewModel
                 NewModel.BinsViewModel.BinTemplate = SelectedBinTemplate;
                 NewModel.BinsViewModel.CreateBins(Depth, Levels, Sections);
                 NumberingPrefix = No;
+                Renumbering();
                 MessagingCenter.Send<MasterRackNewViewModel>(this, "UpdateRackView");
                 MasterStep = 2;
             }
@@ -749,8 +815,8 @@ namespace WarehouseControlSystem.ViewModel
             try
             {
                 LoadingText = AppResources.RackNewPage_LoadingProgressRack + " " + newrack.No;
-                //int rackexist = await NAV.GetRackCount(LocationCode, ZoneCode, No, false, ACD.Default).ConfigureAwait(true);
-                await NAV.CreateRack(newrack, ACD.Default).ConfigureAwait(true); ;
+                int rackid = await NAV.CreateRack(newrack, ACD.Default).ConfigureAwait(true);
+                NewModel.ID = rackid;
                 foreach (BinViewModel bvm in NewModel.BinsViewModel.BinViewModels)
                 {
                     await SaveBin(bvm).ConfigureAwait(true);

@@ -1442,4 +1442,7 @@
   <data name="RackNewPage_StepLevelNumbering" xml:space="preserve">
     <value>Шаг нумерации уровней</value>
   </data>
+  <data name="MasterNewRack_Comment" xml:space="preserve">
+    <value>Примечание</value>
+  </data>
 </root>

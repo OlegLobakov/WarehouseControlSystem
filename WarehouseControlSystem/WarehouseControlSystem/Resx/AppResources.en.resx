@@ -1446,4 +1446,7 @@
   <data name="RackNewPage_StepLevelNumbering" xml:space="preserve">
     <value>Step Level Numbering</value>
   </data>
+  <data name="MasterNewRack_Comment" xml:space="preserve">
+    <value>Comment</value>
+  </data>
 </root>

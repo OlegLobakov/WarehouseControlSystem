@@ -4,7 +4,6 @@
              xmlns:i18n="clr-namespace:WarehouseControlSystem;assembly=WarehouseControlSystem"
              xmlns:rv="clr-namespace:WarehouseControlSystem.View.Pages.RackScheme.MasterNewRack"
              xmlns:convertors="clr-namespace:WarehouseControlSystem.Helpers.Converters"
-             xmlns:vc="clr-namespace:WarehouseControlSystem.View.Content"
              x:Class="WarehouseControlSystem.View.Pages.RackScheme.MasterNewRack.MasterNewRackPage">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -13,12 +12,12 @@
     </ContentPage.Resources>
     <ContentPage.Content>
         <StackLayout x:Name="mainsl">
-            <StackLayout IsVisible="{Binding IsLoadingState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <Grid IsVisible="{Binding IsLoadingState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                 <StackLayout VerticalOptions="Center" HorizontalOptions="Center" Orientation="Vertical">
                     <ActivityIndicator IsRunning="{Binding LoadAnimation}" HeightRequest="50" WidthRequest="50"/>
                     <Label Text="{Binding LoadingText}" FontSize="Small"/>
                 </StackLayout>
-            </StackLayout>
+            </Grid>
             <StackLayout IsVisible="{Binding IsNormalState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                 <StackLayout IsVisible="{Binding IsMasterStep1}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                     <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
@@ -34,84 +33,76 @@
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="1.5*"/>
+                            <ColumnDefinition Width="2*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
                         <Grid Grid.Row="1" Grid.Column="1" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-
-                            <Label Grid.Row="0" Grid.Column="0" Text="{i18n:Translate RackNewPage_RackNo}" 
-                                       WidthRequest="100" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"></Label>
-                            <Entry Grid.Row="1" Grid.Column="0" x:Name="codeentry" Text="{Binding No, Mode=TwoWay}" Keyboard="Text" Margin="0" 
-                                    BackgroundColor="White" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="100" 
-                                    TextChanged="CodeEntryChanged"/>
-                            <Label Grid.Row="1" Grid.Column="1" Text="{Binding No}" TextColor="Black" FontSize="Large"/>
+                            <Label Grid.Column="0" Text="{i18n:Translate RackNewPage_RackNo}" 
+                                   HorizontalTextAlignment="Start" 
+                                   VerticalTextAlignment="Center" FontSize="Large"></Label>
+                            <Entry Grid.Column="1" x:Name="codeentry" Text="{Binding No, Mode=TwoWay}" Keyboard="Text" 
+                                    BackgroundColor="White" HorizontalOptions="FillAndExpand" VerticalOptions="Center" 
+                                    TextChanged="CodeEntryChanged" FontSize="Large" MaxLength="10"/>
                         </Grid>
                         <Grid Grid.Row="2" Grid.Column="1" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <Label Grid.Row="0" Grid.Column="0" Text="{i18n:Translate RackNewPage_Sections}" HorizontalOptions="Start"/>
-                            <Label Grid.Row="1" Grid.Column="1" Text="{Binding Sections}" TextColor="Black" FontSize="Large" Margin="20,0,0,0"/>
-                            <Slider  Grid.Row="1" Grid.Column="0" Maximum="100" Minimum="1" Value="{Binding Sections, Mode=TwoWay}"></Slider>
+                            <Label Grid.Column="0" Text="{i18n:Translate RackNewPage_Sections}" 
+                                  HorizontalTextAlignment="Start" 
+                                  VerticalTextAlignment="Center" FontSize="Large" Margin="5"></Label>
+                            <Entry Grid.Column="1" FontSize="Large" Text="{Binding Sections, Mode=TwoWay}" Keyboard="Numeric" 
+                                   BackgroundColor="White" HorizontalOptions="FillAndExpand" 
+                                   VerticalOptions="FillAndExpand" MaxLength="5" />
                         </Grid>
                         <Grid Grid.Row="3" Grid.Column="1" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <Label Grid.Row="0" Grid.Column="0" Text="{i18n:Translate RackNewPage_Levels}"   HorizontalOptions="Start"/>
-                            <Label Grid.Row="1" Grid.Column="1" Text="{Binding Levels}" TextColor="Black" FontSize="Large" Margin="20,0,0,0"/>
-                            <Slider  Grid.Row="1" Grid.Column="0" Maximum="10" Minimum="1" Value="{Binding Levels, Mode=TwoWay}"></Slider>
+                            <Label Grid.Column="0" Text="{i18n:Translate RackNewPage_Levels}"  
+                                  HorizontalTextAlignment="Start" 
+                                  VerticalTextAlignment="Center" FontSize="Large" Margin="5"></Label>
+                            <Entry Grid.Column="1" Text="{Binding Levels, Mode=TwoWay}" Keyboard="Numeric"
+                                   BackgroundColor="White" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"  
+                                   FontSize="Large" TextColor="Black" MaxLength="5" />
                         </Grid>
-                        <Grid Grid.Row="4" Grid.Column="1" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand">
+                        <Grid Grid.Row="4" Grid.Column="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <Label  Grid.Row="0" Grid.Column="0" Text="{i18n:Translate RackNewPage_Orientation}" HorizontalOptions="Start"/>
-                            <Picker  Grid.Row="1" Grid.Column="0" x:Name="orientationpicker" 
-                                         HorizontalOptions="FillAndExpand" 
-                                         ItemDisplayBinding="{Binding Name}" 
-                                         SelectedIndexChanged="Picker_OrientationChanged"
-                                         SelectedItem="{Binding RackOrientation, Mode=OneWayToSource,Converter={StaticResource orientationConverter}}"></Picker>
+                            <Label   Grid.Column="0" Text="{i18n:Translate RackNewPage_Orientation}" HorizontalOptions="Start"
+                                     FontSize="Large"
+                                     VerticalOptions="CenterAndExpand"/>
+                            <Picker  Grid.Column="1" x:Name="orientationpicker" 
+                                     HorizontalOptions="FillAndExpand" 
+                                     VerticalOptions="CenterAndExpand"
+                                     ItemDisplayBinding="{Binding Name}" 
+                                     SelectedIndexChanged="Picker_OrientationChanged"
+                                     SelectedItem="{Binding RackOrientation, Mode=OneWayToSource,Converter={StaticResource orientationConverter}}"
+                                     FontSize="Large"></Picker>
                         </Grid>
-                        <Grid Grid.Row="5" Grid.Column="1" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand">
+                        <Grid Grid.Row="5" Grid.Column="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <Label Grid.Row="0" Grid.Column="0" HorizontalOptions="Start" Text="{i18n:Translate RackTemplate_FieldBinTemplateCode}"/>
-                            <Picker Grid.Row="1" Grid.Column="0" x:Name="bintemplatepicker" HorizontalOptions="FillAndExpand" 
-                                                IsEnabled="{Binding BinTemplatesIsLoaded}" 
-                                                VerticalOptions="Start" 
-                                                ItemDisplayBinding="{Binding Code}"
-                                                SelectedItem="{Binding SelectedBinTemplate, Mode=TwoWay}"/>
+                            <Label  Grid.Column="0" HorizontalOptions="Start" Text="{i18n:Translate RackTemplate_FieldBinTemplateCode}"
+                                    VerticalOptions="CenterAndExpand" FontSize="Large"/>
+                            <Picker Grid.Column="1" x:Name="bintemplatepicker" 
+                                    HorizontalOptions="FillAndExpand" 
+                                    VerticalOptions="CenterAndExpand"
+                                    IsEnabled="{Binding BinTemplatesIsLoaded}" 
+                                    ItemDisplayBinding="{Binding Code}"
+                                    SelectedItem="{Binding SelectedBinTemplate, Mode=TwoWay}"
+                                    FontSize="Large"/>
                         </Grid>
                         <Grid Grid.Row="7" Grid.ColumnSpan="3" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                             <Grid.ColumnDefinitions>
@@ -125,7 +116,8 @@
                             </Grid.ColumnDefinitions>
                             <Label Text="{Binding InfoText}" TextColor="DarkRed"  Grid.Column="2" Grid.ColumnSpan="3" 
                                HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"
-                               HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                               HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
+                               FontSize="Large" FontAttributes="Bold"/>
 
                             <Button Grid.Column="6"
                                 HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
@@ -144,17 +136,31 @@
                         </Grid.ColumnDefinitions>
                         <Grid Grid.Column="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="5*"/>
+                                <RowDefinition Height=".5*"/>
+                                <RowDefinition Height="4.5*"/>
                                 <RowDefinition Height="2*"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <ScrollView Grid.Row="0" Padding="5" BackgroundColor="White"
+                            <Grid Grid.Row="0" Margin="3">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="3*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0" Text="{i18n:Translate MasterNewRack_Comment}" 
+                                   HorizontalTextAlignment="Start" 
+                                   VerticalTextAlignment="Center" FontSize="Medium" Margin="10,0,0,0"></Label>
+                                <Entry Grid.Column="1" Text="{Binding Comment, Mode=TwoWay}" Keyboard="Text" 
+                                    BackgroundColor="White" HorizontalOptions="FillAndExpand" VerticalOptions="Center" 
+                                    FontSize="Medium" Margin="3" MaxLength="200"/>
+                            </Grid>
+                            <ScrollView Grid.Row="1" Padding="5" BackgroundColor="White"
                                         HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"  
                                         Orientation="Horizontal" x:Name="rackviewpanel">
                                 <rv:RackSimpleView x:Name="rackview"></rv:RackSimpleView>
                             </ScrollView>
 
-                            <ScrollView  Grid.Row="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Orientation="Horizontal" Margin="5">
+                            <ScrollView  Grid.Row="2" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Orientation="Horizontal" Margin="5">
                                 <Grid Padding="5" RowSpacing="0" ColumnSpacing="20">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="200"/>
@@ -262,7 +268,7 @@
 
                             </ScrollView>
 
-                            <Grid Grid.Row="2" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                            <Grid Grid.Row="3" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="*"/>
@@ -288,7 +294,7 @@
                                 </Button>
                             </Grid>
                         </Grid>
-                        <vc:BinInfoPanel Grid.Column="1" WidthRequest="300" IsVisible="{Binding IsSelectedBins}" x:Name="infopanel" BackgroundColor="White"/>
+                        <rv:BinInfoPanel Grid.Column="1" WidthRequest="300" IsVisible="{Binding IsSelectedBins}" x:Name="infopanel" BackgroundColor="White"/>
                     </Grid>
                 </StackLayout>
             </StackLayout>
