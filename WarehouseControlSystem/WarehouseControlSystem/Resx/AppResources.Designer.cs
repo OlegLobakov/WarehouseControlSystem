@@ -3337,6 +3337,51 @@ namespace WarehouseControlSystem.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete bins errors!.
+        /// </summary>
+        internal static string RacksPlanViewModel_DeleteBinErrors {
+            get {
+                return ResourceManager.GetString("RacksPlanViewModel_DeleteBinErrors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        internal static string RacksPlanViewModel_DeleteCancel {
+            get {
+                return ResourceManager.GetString("RacksPlanViewModel_DeleteCancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        internal static string RacksPlanViewModel_DeleteQuestion {
+            get {
+                return ResourceManager.GetString("RacksPlanViewModel_DeleteQuestion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete rack {0}?.
+        /// </summary>
+        internal static string RacksPlanViewModel_DeleteRack {
+            get {
+                return ResourceManager.GetString("RacksPlanViewModel_DeleteRack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete rack {0} and bins?.
+        /// </summary>
+        internal static string RacksPlanViewModel_DeleteRackAndBins {
+            get {
+                return ResourceManager.GetString("RacksPlanViewModel_DeleteRackAndBins", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Rack.
         /// </summary>
         internal static string RackSplitPage_Field1_Rack {

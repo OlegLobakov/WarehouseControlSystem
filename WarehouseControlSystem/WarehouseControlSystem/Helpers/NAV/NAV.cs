@@ -738,7 +738,7 @@ namespace WarehouseControlSystem.Helpers.NAV
             Task.Run(() => GetIntFromNAV(tcs, sp, cts));
             return tcs.Task;
         }
-        public static Task<int> DeleteRack(Rack rack, CancellationTokenSource cts)
+        public static Task<int> DeleteRack(int rackid, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<int>();
             if (IsConnectionFaild())
@@ -751,7 +751,7 @@ namespace WarehouseControlSystem.Helpers.NAV
             string functionname = "DeleteRack";
             XElement body =
                 new XElement(myns + functionname,
-                new XElement(myns + "iD", rack.ID));
+                new XElement(myns + "iD", rackid));
             SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(() => GetIntFromNAV(tcs, sp, cts));
             return tcs.Task;
@@ -978,7 +978,7 @@ namespace WarehouseControlSystem.Helpers.NAV
 
             return tcs.Task;
         }
-        public static Task<int> DeleteBin(Bin bin, CancellationTokenSource cts)
+        public static Task<int> DeleteBin(string locationcode, string bincode, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<int>();
             if (IsConnectionFaild())
@@ -991,8 +991,8 @@ namespace WarehouseControlSystem.Helpers.NAV
             string functionname = "DeleteBin";
             XElement body =
                 new XElement(myns + functionname,
-                new XElement(myns + "locationCodeFilter", bin.LocationCode),
-                new XElement(myns + "code", bin.Code));
+                new XElement(myns + "locationCodeFilter", locationcode),
+                new XElement(myns + "code", bincode));
             SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(() => GetIntFromNAV(tcs, sp, cts));
             return tcs.Task;

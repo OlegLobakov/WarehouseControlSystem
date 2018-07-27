@@ -1,0 +1,3390 @@
+OBJECT Table 14 Location
+{
+  OBJECT-PROPERTIES
+  {
+    Date=03/17/18;
+    Time=[ 5:20:28 PM];
+    Modified=Yes;
+    Version List=NAVW110.0.00.17501,WCS.01.00.05;
+  }
+  PROPERTIES
+  {
+    DataCaptionFields=Code,Name;
+    OnDelete=VAR
+               TransferRoute@1000 : Record 5742;
+               WhseEmployee@1003 : Record 7301;
+               WorkCenter@1004 : Record 99000754;
+               StockkeepingUnit@1001 : Record 5700;
+             BEGIN
+               StockkeepingUnit.SETRANGE("Location Code",Code);
+               IF NOT StockkeepingUnit.ISEMPTY THEN
+                 ERROR(CannotDeleteLocSKUExistErr,Code);
+
+               WMSCheckWarehouse;
+
+               TransferRoute.SETRANGE("Transfer-from Code",Code);
+               TransferRoute.DELETEALL;
+               TransferRoute.RESET;
+               TransferRoute.SETRANGE("Transfer-to Code",Code);
+               TransferRoute.DELETEALL;
+
+               WhseEmployee.SETRANGE("Location Code",Code);
+               WhseEmployee.DELETEALL(TRUE);
+
+               WorkCenter.SETRANGE("Location Code",Code);
+               IF WorkCenter.FINDSET(TRUE) THEN
+                 REPEAT
+                   WorkCenter.VALIDATE("Location Code",'');
+                   WorkCenter.MODIFY(TRUE);
+                 UNTIL WorkCenter.NEXT = 0;
+             END;
+
+    CaptionML=ENU=Location;
+    LookupPageID=Page15;
+    DrillDownPageID=Page15;
+  }
+  FIELDS
+  {
+    { 1   ;   ;Code                ;Code10        ;CaptionML=ENU=Code;
+                                                   NotBlank=Yes }
+    { 2   ;   ;Name                ;Text50        ;CaptionML=ENU=Name }
+    { 130 ;   ;Default Bin Code    ;Code20        ;TableRelation=Bin.Code WHERE (Location Code=FIELD(Code));
+                                                   CaptionML=ENU=Default Bin Code }
+    { 5700;   ;Name 2              ;Text50        ;CaptionML=ENU=Name 2 }
+    { 5701;   ;Address             ;Text50        ;CaptionML=ENU=Address }
+    { 5702;   ;Address 2           ;Text50        ;CaptionML=ENU=Address 2 }
+    { 5703;   ;City                ;Text30        ;TableRelation=IF (Country/Region Code=CONST()) "Post Code".City
+                                                                 ELSE IF (Country/Region Code=FILTER(<>'')) "Post Code".City WHERE (Country/Region Code=FIELD(Country/Region Code));
+                                                   OnValidate=BEGIN
+                                                                Postcode.ValidateCity(City,"Post Code",County,"Country/Region Code",(CurrFieldNo <> 0) AND GUIALLOWED);
+                                                              END;
+
+                                                   ValidateTableRelation=No;
+                                                   TestTableRelation=No;
+                                                   CaptionML=ENU=City }
+    { 5704;   ;Phone No.           ;Text30        ;ExtendedDatatype=Phone No.;
+                                                   CaptionML=ENU=Phone No. }
+    { 5705;   ;Phone No. 2         ;Text30        ;ExtendedDatatype=Phone No.;
+                                                   CaptionML=ENU=Phone No. 2 }
+    { 5706;   ;Telex No.           ;Text30        ;CaptionML=ENU=Telex No. }
+    { 5707;   ;Fax No.             ;Text30        ;CaptionML=ENU=Fax No. }
+    { 5713;   ;Contact             ;Text50        ;CaptionML=ENU=Contact }
+    { 5714;   ;Post Code           ;Code20        ;TableRelation=IF (Country/Region Code=CONST()) "Post Code"
+                                                                 ELSE IF (Country/Region Code=FILTER(<>'')) "Post Code" WHERE (Country/Region Code=FIELD(Country/Region Code));
+                                                   OnValidate=BEGIN
+                                                                Postcode.ValidatePostCode(City,"Post Code",County,"Country/Region Code",(CurrFieldNo <> 0) AND GUIALLOWED);
+                                                              END;
+
+                                                   ValidateTableRelation=No;
+                                                   TestTableRelation=No;
+                                                   CaptionML=ENU=Post Code }
+    { 5715;   ;County              ;Text30        ;CaptionML=ENU=County }
+    { 5718;   ;E-Mail              ;Text80        ;ExtendedDatatype=E-Mail;
+                                                   CaptionML=ENU=Email }
+    { 5719;   ;Home Page           ;Text90        ;ExtendedDatatype=URL;
+                                                   CaptionML=ENU=Home Page }
+    { 5720;   ;Country/Region Code ;Code10        ;TableRelation=Country/Region;
+                                                   CaptionML=ENU=Country/Region Code }
+    { 5724;   ;Use As In-Transit   ;Boolean       ;OnValidate=BEGIN
+                                                                IF "Use As In-Transit" THEN BEGIN
+                                                                  TESTFIELD("Require Put-away",FALSE);
+                                                                  TESTFIELD("Require Pick",FALSE);
+                                                                  TESTFIELD("Use Cross-Docking",FALSE);
+                                                                  TESTFIELD("Require Receive",FALSE);
+                                                                  TESTFIELD("Require Shipment",FALSE);
+                                                                  TESTFIELD("Bin Mandatory",FALSE);
+                                                                END;
+                                                              END;
+
+                                                   AccessByPermission=TableData 5740=R;
+                                                   CaptionML=ENU=Use As In-Transit }
+    { 5726;   ;Require Put-away    ;Boolean       ;OnValidate=VAR
+                                                                WhseActivHeader@1000 : Record 5766;
+                                                                WhseRcptHeader@1001 : Record 7316;
+                                                              BEGIN
+                                                                WhseRcptHeader.SETRANGE("Location Code",Code);
+                                                                IF NOT WhseRcptHeader.ISEMPTY THEN
+                                                                  ERROR(Text008,FIELDCAPTION("Require Put-away"),xRec."Require Put-away",WhseRcptHeader.TABLECAPTION);
+
+                                                                IF NOT "Require Put-away" THEN BEGIN
+                                                                  TESTFIELD("Directed Put-away and Pick",FALSE);
+                                                                  WhseActivHeader.SETRANGE(Type,WhseActivHeader.Type::"Put-away");
+                                                                  WhseActivHeader.SETRANGE("Location Code",Code);
+                                                                  IF NOT WhseActivHeader.ISEMPTY THEN
+                                                                    ERROR(Text008,FIELDCAPTION("Require Put-away"),TRUE,WhseActivHeader.TABLECAPTION);
+                                                                  "Use Cross-Docking" := FALSE;
+                                                                  "Cross-Dock Bin Code" := '';
+                                                                END ELSE
+                                                                  CreateInboundWhseRequest;
+                                                              END;
+
+                                                   AccessByPermission=TableData 5771=R;
+                                                   CaptionML=ENU=Require Put-away }
+    { 5727;   ;Require Pick        ;Boolean       ;OnValidate=VAR
+                                                                WhseActivHeader@1000 : Record 5766;
+                                                                WhseShptHeader@1001 : Record 7320;
+                                                              BEGIN
+                                                                WhseShptHeader.SETRANGE("Location Code",Code);
+                                                                IF NOT WhseShptHeader.ISEMPTY THEN
+                                                                  ERROR(Text008,FIELDCAPTION("Require Pick"),xRec."Require Pick",WhseShptHeader.TABLECAPTION);
+
+                                                                IF NOT "Require Pick" THEN BEGIN
+                                                                  TESTFIELD("Directed Put-away and Pick",FALSE);
+                                                                  WhseActivHeader.SETRANGE(Type,WhseActivHeader.Type::Pick);
+                                                                  WhseActivHeader.SETRANGE("Location Code",Code);
+                                                                  IF NOT WhseActivHeader.ISEMPTY THEN
+                                                                    ERROR(Text008,FIELDCAPTION("Require Pick"),TRUE,WhseActivHeader.TABLECAPTION);
+                                                                  "Use Cross-Docking" := FALSE;
+                                                                  "Cross-Dock Bin Code" := '';
+                                                                  "Pick According to FEFO" := FALSE;
+                                                                END;
+                                                              END;
+
+                                                   AccessByPermission=TableData 5771=R;
+                                                   CaptionML=ENU=Require Pick }
+    { 5728;   ;Cross-Dock Due Date Calc.;DateFormula;
+                                                   AccessByPermission=TableData 5771=R;
+                                                   CaptionML=ENU=Cross-Dock Due Date Calc. }
+    { 5729;   ;Use Cross-Docking   ;Boolean       ;OnValidate=BEGIN
+                                                                IF "Use Cross-Docking" THEN BEGIN
+                                                                  TESTFIELD("Require Receive");
+                                                                  TESTFIELD("Require Shipment");
+                                                                  TESTFIELD("Require Put-away");
+                                                                  TESTFIELD("Require Pick");
+                                                                END ELSE
+                                                                  "Cross-Dock Bin Code" := '';
+                                                              END;
+
+                                                   AccessByPermission=TableData 5771=R;
+                                                   CaptionML=ENU=Use Cross-Docking }
+    { 5730;   ;Require Receive     ;Boolean       ;OnValidate=VAR
+                                                                WhseRcptHeader@1000 : Record 7316;
+                                                                WhseActivHeader@1001 : Record 5766;
+                                                              BEGIN
+                                                                IF NOT "Require Receive" THEN BEGIN
+                                                                  TESTFIELD("Directed Put-away and Pick",FALSE);
+                                                                  WhseRcptHeader.SETRANGE("Location Code",Code);
+                                                                  IF NOT WhseRcptHeader.ISEMPTY THEN
+                                                                    ERROR(Text008,FIELDCAPTION("Require Receive"),TRUE,WhseRcptHeader.TABLECAPTION);
+                                                                  "Receipt Bin Code" := '';
+                                                                  "Use Cross-Docking" := FALSE;
+                                                                  "Cross-Dock Bin Code" := '';
+                                                                END ELSE BEGIN
+                                                                  WhseActivHeader.SETRANGE(Type,WhseActivHeader.Type::"Put-away");
+                                                                  WhseActivHeader.SETRANGE("Location Code",Code);
+                                                                  IF NOT WhseActivHeader.ISEMPTY THEN
+                                                                    ERROR(Text008,FIELDCAPTION("Require Receive"),FALSE,WhseActivHeader.TABLECAPTION);
+
+                                                                  CreateInboundWhseRequest;
+                                                                END;
+                                                              END;
+
+                                                   AccessByPermission=TableData 7316=R;
+                                                   CaptionML=ENU=Require Receive }
+    { 5731;   ;Require Shipment    ;Boolean       ;OnValidate=VAR
+                                                                WhseShptHeader@1000 : Record 7320;
+                                                                WhseActivHeader@1001 : Record 5766;
+                                                              BEGIN
+                                                                IF NOT "Require Shipment" THEN BEGIN
+                                                                  TESTFIELD("Directed Put-away and Pick",FALSE);
+                                                                  WhseShptHeader.SETRANGE("Location Code",Code);
+                                                                  IF NOT WhseShptHeader.ISEMPTY THEN
+                                                                    ERROR(Text008,FIELDCAPTION("Require Shipment"),TRUE,WhseShptHeader.TABLECAPTION);
+                                                                  "Shipment Bin Code" := '';
+                                                                  "Use Cross-Docking" := FALSE;
+                                                                  "Cross-Dock Bin Code" := '';
+                                                                END ELSE BEGIN
+                                                                  WhseActivHeader.SETRANGE(Type,WhseActivHeader.Type::Pick);
+                                                                  WhseActivHeader.SETRANGE("Location Code",Code);
+                                                                  IF NOT WhseActivHeader.ISEMPTY THEN
+                                                                    ERROR(Text008,FIELDCAPTION("Require Shipment"),FALSE,WhseActivHeader.TABLECAPTION);
+                                                                END;
+                                                              END;
+
+                                                   AccessByPermission=TableData 7320=R;
+                                                   CaptionML=ENU=Require Shipment }
+    { 5732;   ;Bin Mandatory       ;Boolean       ;OnValidate=VAR
+                                                                ItemLedgEntry@1004 : Record 32;
+                                                                WhseEntry@1000 : Record 7312;
+                                                                WhseActivHeader@1001 : Record 5766;
+                                                                WhseShptHeader@1002 : Record 7320;
+                                                                WhseRcptHeader@1003 : Record 7316;
+                                                                WhseIntegrationMgt@1006 : Codeunit 7317;
+                                                                Window@1005 : Dialog;
+                                                              BEGIN
+                                                                IF "Bin Mandatory" AND NOT xRec."Bin Mandatory" THEN BEGIN
+                                                                  Window.OPEN(Text010);
+                                                                  ItemLedgEntry.SETRANGE(Open,TRUE);
+                                                                  ItemLedgEntry.SETRANGE("Location Code",Code);
+                                                                  IF NOT ItemLedgEntry.ISEMPTY THEN
+                                                                    ERROR(Text009,FIELDCAPTION("Bin Mandatory"));
+
+                                                                  "Default Bin Selection" := "Default Bin Selection"::"Fixed Bin";
+                                                                END;
+
+                                                                WhseActivHeader.SETRANGE("Location Code",Code);
+                                                                IF NOT WhseActivHeader.ISEMPTY THEN
+                                                                  ERROR(Text008,FIELDCAPTION("Bin Mandatory"),xRec."Bin Mandatory",WhseActivHeader.TABLECAPTION);
+
+                                                                WhseRcptHeader.SETCURRENTKEY("Location Code");
+                                                                WhseRcptHeader.SETRANGE("Location Code",Code);
+                                                                IF NOT WhseRcptHeader.ISEMPTY THEN
+                                                                  ERROR(Text008,FIELDCAPTION("Bin Mandatory"),xRec."Bin Mandatory",WhseRcptHeader.TABLECAPTION);
+
+                                                                WhseShptHeader.SETCURRENTKEY("Location Code");
+                                                                WhseShptHeader.SETRANGE("Location Code",Code);
+                                                                IF NOT WhseShptHeader.ISEMPTY THEN
+                                                                  ERROR(Text008,FIELDCAPTION("Bin Mandatory"),xRec."Bin Mandatory",WhseShptHeader.TABLECAPTION);
+
+                                                                IF NOT "Bin Mandatory" AND xRec."Bin Mandatory" THEN BEGIN
+                                                                  WhseEntry.SETRANGE("Location Code",Code);
+                                                                  WhseEntry.CALCSUMS("Qty. (Base)");
+                                                                  IF WhseEntry."Qty. (Base)" <> 0 THEN
+                                                                    ERROR(Text002,FIELDCAPTION("Bin Mandatory"));
+                                                                END;
+
+                                                                IF NOT "Bin Mandatory" THEN BEGIN
+                                                                  "Open Shop Floor Bin Code" := '';
+                                                                  "To-Production Bin Code" := '';
+                                                                  "From-Production Bin Code" := '';
+                                                                  "Adjustment Bin Code" := '';
+                                                                  "Receipt Bin Code" := '';
+                                                                  "Shipment Bin Code" := '';
+                                                                  "Cross-Dock Bin Code" := '';
+                                                                  "To-Assembly Bin Code" := '';
+                                                                  "From-Assembly Bin Code" := '';
+                                                                  WhseIntegrationMgt.CheckLocationOnManufBins(Rec);
+                                                                END;
+                                                              END;
+
+                                                   AccessByPermission=TableData 5771=R;
+                                                   CaptionML=ENU=Bin Mandatory }
+    { 5733;   ;Directed Put-away and Pick;Boolean ;OnValidate=VAR
+                                                                WhseActivHeader@1002 : Record 5766;
+                                                                WhseShptHeader@1001 : Record 7320;
+                                                                WhseRcptHeader@1000 : Record 7316;
+                                                              BEGIN
+                                                                WhseActivHeader.SETRANGE("Location Code",Code);
+                                                                IF NOT WhseActivHeader.ISEMPTY THEN
+                                                                  ERROR(Text014,FIELDCAPTION("Directed Put-away and Pick"),WhseActivHeader.TABLECAPTION);
+
+                                                                WhseRcptHeader.SETCURRENTKEY("Location Code");
+                                                                WhseRcptHeader.SETRANGE("Location Code",Code);
+                                                                IF NOT WhseRcptHeader.ISEMPTY THEN
+                                                                  ERROR(Text014,FIELDCAPTION("Directed Put-away and Pick"),WhseRcptHeader.TABLECAPTION);
+
+                                                                WhseShptHeader.SETCURRENTKEY("Location Code");
+                                                                WhseShptHeader.SETRANGE("Location Code",Code);
+                                                                IF NOT WhseShptHeader.ISEMPTY THEN
+                                                                  ERROR(Text014,FIELDCAPTION("Directed Put-away and Pick"),WhseShptHeader.TABLECAPTION);
+
+                                                                IF "Directed Put-away and Pick" THEN BEGIN
+                                                                  TESTFIELD("Use As In-Transit",FALSE);
+                                                                  TESTFIELD("Bin Mandatory");
+                                                                  VALIDATE("Require Receive",TRUE);
+                                                                  VALIDATE("Require Shipment",TRUE);
+                                                                  VALIDATE("Require Put-away",TRUE);
+                                                                  VALIDATE("Require Pick",TRUE);
+                                                                  VALIDATE("Use Cross-Docking",TRUE);
+                                                                  "Default Bin Selection" := "Default Bin Selection"::" ";
+                                                                END ELSE
+                                                                  VALIDATE("Adjustment Bin Code",'');
+
+                                                                IF (NOT "Directed Put-away and Pick") AND xRec."Directed Put-away and Pick" THEN BEGIN
+                                                                  "Default Bin Selection" := "Default Bin Selection"::"Fixed Bin";
+                                                                  "Use Put-away Worksheet" := FALSE;
+                                                                  VALIDATE("Use Cross-Docking",FALSE);
+                                                                END;
+                                                              END;
+
+                                                   AccessByPermission=TableData 5771=R;
+                                                   CaptionML=ENU=Directed Put-away and Pick }
+    { 5734;   ;Default Bin Selection;Option       ;OnValidate=BEGIN
+                                                                IF ("Default Bin Selection" <> xRec."Default Bin Selection") AND ("Default Bin Selection" = "Default Bin Selection"::" ") THEN
+                                                                  TESTFIELD("Directed Put-away and Pick");
+                                                              END;
+
+                                                   AccessByPermission=TableData 5771=R;
+                                                   CaptionML=ENU=Default Bin Selection;
+                                                   OptionCaptionML=ENU=" ,Fixed Bin,Last-Used Bin";
+                                                   OptionString=[ ,Fixed Bin,Last-Used Bin] }
+    { 5790;   ;Outbound Whse. Handling Time;DateFormula;
+                                                   AccessByPermission=TableData 14=R;
+                                                   CaptionML=ENU=Outbound Whse. Handling Time }
+    { 5791;   ;Inbound Whse. Handling Time;DateFormula;
+                                                   AccessByPermission=TableData 14=R;
+                                                   CaptionML=ENU=Inbound Whse. Handling Time }
+    { 7305;   ;Put-away Template Code;Code10      ;TableRelation="Put-away Template Header";
+                                                   CaptionML=ENU=Put-away Template Code }
+    { 7306;   ;Use Put-away Worksheet;Boolean     ;AccessByPermission=TableData 5771=R;
+                                                   CaptionML=ENU=Use Put-away Worksheet }
+    { 7307;   ;Pick According to FEFO;Boolean     ;AccessByPermission=TableData 5771=R;
+                                                   CaptionML=ENU=Pick According to FEFO }
+    { 7308;   ;Allow Breakbulk     ;Boolean       ;AccessByPermission=TableData 5771=R;
+                                                   CaptionML=ENU=Allow Breakbulk }
+    { 7309;   ;Bin Capacity Policy ;Option        ;AccessByPermission=TableData 5771=R;
+                                                   CaptionML=ENU=Bin Capacity Policy;
+                                                   OptionCaptionML=ENU=Never Check Capacity,Allow More Than Max. Capacity,Prohibit More Than Max. Cap.;
+                                                   OptionString=Never Check Capacity,Allow More Than Max. Capacity,Prohibit More Than Max. Cap. }
+    { 7313;   ;Open Shop Floor Bin Code;Code20    ;TableRelation=Bin.Code WHERE (Location Code=FIELD(Code));
+                                                   OnValidate=VAR
+                                                                WhseIntegrationMgt@1000 : Codeunit 7317;
+                                                              BEGIN
+                                                                WhseIntegrationMgt.CheckBinCode(Code,
+                                                                  "Open Shop Floor Bin Code",
+                                                                  FIELDCAPTION("Open Shop Floor Bin Code"),
+                                                                  DATABASE::Location,Code);
+                                                              END;
+
+                                                   CaptionML=ENU=Open Shop Floor Bin Code }
+    { 7314;   ;To-Production Bin Code;Code20      ;TableRelation=Bin.Code WHERE (Location Code=FIELD(Code));
+                                                   OnValidate=VAR
+                                                                WhseIntegrationMgt@1000 : Codeunit 7317;
+                                                              BEGIN
+                                                                WhseIntegrationMgt.CheckBinCode(Code,
+                                                                  "To-Production Bin Code",
+                                                                  FIELDCAPTION("To-Production Bin Code"),
+                                                                  DATABASE::Location,Code);
+                                                              END;
+
+                                                   CaptionML=ENU=To-Production Bin Code }
+    { 7315;   ;From-Production Bin Code;Code20    ;TableRelation=Bin.Code WHERE (Location Code=FIELD(Code));
+                                                   OnValidate=VAR
+                                                                WhseIntegrationMgt@1000 : Codeunit 7317;
+                                                              BEGIN
+                                                                WhseIntegrationMgt.CheckBinCode(Code,
+                                                                  "From-Production Bin Code",
+                                                                  FIELDCAPTION("From-Production Bin Code"),
+                                                                  DATABASE::Location,Code);
+                                                              END;
+
+                                                   CaptionML=ENU=From-Production Bin Code }
+    { 7317;   ;Adjustment Bin Code ;Code20        ;TableRelation=Bin.Code WHERE (Location Code=FIELD(Code));
+                                                   OnValidate=BEGIN
+                                                                IF "Adjustment Bin Code" <> xRec."Adjustment Bin Code" THEN BEGIN
+                                                                  IF "Adjustment Bin Code" = '' THEN
+                                                                    CheckEmptyBin(
+                                                                      xRec."Adjustment Bin Code",FIELDCAPTION("Adjustment Bin Code"))
+                                                                  ELSE
+                                                                    CheckEmptyBin(
+                                                                      "Adjustment Bin Code",FIELDCAPTION("Adjustment Bin Code"));
+
+                                                                  CheckWhseAdjmtJnl;
+                                                                END;
+                                                              END;
+
+                                                   CaptionML=ENU=Adjustment Bin Code }
+    { 7319;   ;Always Create Put-away Line;Boolean;AccessByPermission=TableData 5771=R;
+                                                   CaptionML=ENU=Always Create Put-away Line }
+    { 7320;   ;Always Create Pick Line;Boolean    ;AccessByPermission=TableData 5771=R;
+                                                   CaptionML=ENU=Always Create Pick Line }
+    { 7321;   ;Special Equipment   ;Option        ;AccessByPermission=TableData 5771=R;
+                                                   CaptionML=ENU=Special Equipment;
+                                                   OptionCaptionML=ENU=" ,According to Bin,According to SKU/Item";
+                                                   OptionString=[ ,According to Bin,According to SKU/Item] }
+    { 7323;   ;Receipt Bin Code    ;Code20        ;TableRelation=Bin.Code WHERE (Location Code=FIELD(Code));
+                                                   CaptionML=ENU=Receipt Bin Code }
+    { 7325;   ;Shipment Bin Code   ;Code20        ;TableRelation=Bin.Code WHERE (Location Code=FIELD(Code));
+                                                   CaptionML=ENU=Shipment Bin Code }
+    { 7326;   ;Cross-Dock Bin Code ;Code20        ;TableRelation=Bin.Code WHERE (Location Code=FIELD(Code));
+                                                   CaptionML=ENU=Cross-Dock Bin Code }
+    { 7330;   ;To-Assembly Bin Code;Code20        ;TableRelation=Bin.Code WHERE (Location Code=FIELD(Code));
+                                                   OnValidate=VAR
+                                                                WhseIntegrationMgt@1000 : Codeunit 7317;
+                                                              BEGIN
+                                                                WhseIntegrationMgt.CheckBinCode(Code,
+                                                                  "To-Assembly Bin Code",
+                                                                  FIELDCAPTION("To-Assembly Bin Code"),
+                                                                  DATABASE::Location,Code);
+                                                              END;
+
+                                                   CaptionML=ENU=To-Assembly Bin Code }
+    { 7331;   ;From-Assembly Bin Code;Code20      ;TableRelation=Bin.Code WHERE (Location Code=FIELD(Code));
+                                                   OnValidate=VAR
+                                                                WhseIntegrationMgt@1000 : Codeunit 7317;
+                                                              BEGIN
+                                                                WhseIntegrationMgt.CheckBinCode(Code,
+                                                                  "From-Assembly Bin Code",
+                                                                  FIELDCAPTION("From-Assembly Bin Code"),
+                                                                  DATABASE::Location,Code);
+                                                              END;
+
+                                                   CaptionML=ENU=From-Assembly Bin Code }
+    { 7332;   ;Asm.-to-Order Shpt. Bin Code;Code20;TableRelation=Bin.Code WHERE (Location Code=FIELD(Code));
+                                                   OnValidate=VAR
+                                                                WhseIntegrationMgt@1000 : Codeunit 7317;
+                                                              BEGIN
+                                                                WhseIntegrationMgt.CheckBinCode(Code,
+                                                                  "Asm.-to-Order Shpt. Bin Code",
+                                                                  FIELDCAPTION("Asm.-to-Order Shpt. Bin Code"),
+                                                                  DATABASE::Location,Code);
+                                                              END;
+
+                                                   CaptionML=ENU=Asm.-to-Order Shpt. Bin Code }
+    { 7600;   ;Base Calendar Code  ;Code10        ;TableRelation="Base Calendar";
+                                                   CaptionML=ENU=Base Calendar Code }
+    { 7700;   ;Use ADCS            ;Boolean       ;AccessByPermission=TableData 7700=R;
+                                                   CaptionML=ENU=Use ADCS }
+    { 52001;  ;Plan Width          ;Integer       ;Description=Warehouse Control System }
+    { 52002;  ;Plan Height         ;Integer       ;Description=Warehouse Control System }
+    { 52003;  ;Left                ;Integer       ;Description=Warehouse Control System }
+    { 52004;  ;Top                 ;Integer       ;Description=Warehouse Control System }
+    { 52005;  ;Width               ;Integer       ;Description=Warehouse Control System }
+    { 52006;  ;Height              ;Integer       ;Description=Warehouse Control System }
+    { 52007;  ;Scheme Visible      ;Boolean       ;Description=Warehouse Control System }
+    { 52010;  ;HexColor            ;Text10        ;Description=Warehouse Control System }
+    { 52014;  ;Bin Quantity        ;Integer       ;FieldClass=FlowField;
+                                                   CalcFormula=Count(Bin WHERE (Location Code=FIELD(Code)));
+                                                   Description=Warehouse Control System;
+                                                   Editable=No }
+    { 52015;  ;Zone Quantity       ;Integer       ;FieldClass=FlowField;
+                                                   CalcFormula=Count(Zone WHERE (Location Code=FIELD(Code)));
+                                                   Description=Warehouse Control System;
+                                                   Editable=No }
+  }
+  KEYS
+  {
+    {    ;Code                                    ;Clustered=Yes }
+    {    ;Name                                     }
+    {    ;Use As In-Transit,Bin Mandatory          }
+  }
+  FIELDGROUPS
+  {
+  }
+  CODE
+  {
+    VAR
+      Bin@1000 : Record 7354;
+      Postcode@1001 : Record 225;
+      WhseSetup@1002 : Record 5769;
+      InvtSetup@1003 : Record 313;
+      Location@1004 : Record 14;
+      Text000@1005 : TextConst 'ENU=You cannot delete the %1 %2, because they contain items.';
+      Text001@1006 : TextConst 'ENU=You cannot delete the %1 %2, because one or more Warehouse Activity Lines exist for this %1.';
+      Text002@1007 : TextConst 'ENU=%1 must be Yes, because the bins contain items.';
+      Text003@1009 : TextConst 'ENU=Cancelled.';
+      Text004@1010 : TextConst 'ENU=The total quantity of items in the warehouse is 0, but the Adjustment Bin contains a negative quantity and other bins contain a positive quantity.\';
+      Text005@1012 : TextConst 'ENU=Do you still want to delete this %1?';
+      Text006@1011 : TextConst 'ENU=You cannot change the %1 until the inventory stored in %2 %3 is 0.';
+      Text007@1013 : TextConst 'ENU=You have to delete all Adjustment Warehouse Journal Lines first before you can change the %1.';
+      Text008@1008 : TextConst 'ENU=%1 must be %2, because one or more %3 exist.';
+      Text009@1014 : TextConst 'ENU=You cannot change %1 because there are one or more open ledger entries on this location.';
+      Text010@1015 : TextConst 'ENU=Checking item ledger entries for open entries...';
+      Text011@1016 : TextConst 'ENU=You cannot change the %1 to %2 until the inventory stored in this bin is 0.';
+      Text012@1017 : TextConst 'ENU=Before you can use Online Map, you must fill in the Online Map Setup window.\See Setting Up Online Map in Help.';
+      Text013@1018 : TextConst 'ENU=You cannot delete %1 because there are one or more ledger entries on this location.';
+      Text014@1019 : TextConst 'ENU=You cannot change %1 because one or more %2 exist.';
+      CannotDeleteLocSKUExistErr@1020 : TextConst '@@@=%1: Field(Code);ENU=You cannot delete %1 because one or more stockkeeping units exist at this location.';
+
+    PROCEDURE RequireShipment@5(LocationCode@1000 : Code[10]) : Boolean;
+    BEGIN
+      IF Location.GET(LocationCode) THEN
+        EXIT(Location."Require Shipment");
+      WhseSetup.GET;
+      EXIT(WhseSetup."Require Shipment");
+    END;
+
+    PROCEDURE RequirePicking@1(LocationCode@1000 : Code[10]) : Boolean;
+    BEGIN
+      IF Location.GET(LocationCode) THEN
+        EXIT(Location."Require Pick");
+      WhseSetup.GET;
+      EXIT(WhseSetup."Require Pick");
+    END;
+
+    PROCEDURE RequireReceive@4(LocationCode@1000 : Code[10]) : Boolean;
+    BEGIN
+      IF Location.GET(LocationCode) THEN
+        EXIT(Location."Require Receive");
+      WhseSetup.GET;
+      EXIT(WhseSetup."Require Receive");
+    END;
+
+    PROCEDURE RequirePutaway@2(LocationCode@1000 : Code[10]) : Boolean;
+    BEGIN
+      IF Location.GET(LocationCode) THEN
+        EXIT(Location."Require Put-away");
+      WhseSetup.GET;
+      EXIT(WhseSetup."Require Put-away");
+    END;
+
+    PROCEDURE GetLocationSetup@3(LocationCode@1000 : Code[10];VAR Location2@1001 : Record 14) : Boolean;
+    BEGIN
+      IF NOT GET(LocationCode) THEN
+        WITH Location2 DO BEGIN
+          INIT;
+          WhseSetup.GET;
+          InvtSetup.GET;
+          Code := LocationCode;
+          "Use As In-Transit" := FALSE;
+          "Require Put-away" := WhseSetup."Require Put-away";
+          "Require Pick" := WhseSetup."Require Pick";
+          "Outbound Whse. Handling Time" := InvtSetup."Outbound Whse. Handling Time";
+          "Inbound Whse. Handling Time" := InvtSetup."Inbound Whse. Handling Time";
+          "Require Receive" := WhseSetup."Require Receive";
+          "Require Shipment" := WhseSetup."Require Shipment";
+          EXIT(FALSE);
+        END;
+
+      Location2 := Rec;
+      EXIT(TRUE);
+    END;
+
+    LOCAL PROCEDURE WMSCheckWarehouse@7300();
+    VAR
+      Zone@1005 : Record 7300;
+      Bin@1006 : Record 7354;
+      BinContent@1004 : Record 7302;
+      WhseActivLine@1003 : Record 5767;
+      WarehouseEntry@1002 : Record 7312;
+      WarehouseEntry2@1001 : Record 7312;
+      WhseJnlLine@1000 : Record 7311;
+      ItemLedgerEntry@1007 : Record 32;
+    BEGIN
+      ItemLedgerEntry.SETRANGE("Location Code",Code);
+      ItemLedgerEntry.SETRANGE(Open,TRUE);
+      IF NOT ItemLedgerEntry.ISEMPTY THEN
+        ERROR(Text013,Code);
+
+      WarehouseEntry.SETRANGE("Location Code",Code);
+      WarehouseEntry.CALCSUMS("Qty. (Base)");
+      IF WarehouseEntry."Qty. (Base)" = 0 THEN BEGIN
+        IF "Adjustment Bin Code" <> '' THEN BEGIN
+          WarehouseEntry2.SETRANGE("Bin Code","Adjustment Bin Code");
+          WarehouseEntry2.SETRANGE("Location Code",Code);
+          WarehouseEntry2.CALCSUMS("Qty. (Base)");
+          IF WarehouseEntry2."Qty. (Base)" < 0 THEN
+            IF NOT CONFIRM(Text004 + Text005,FALSE,TABLECAPTION) THEN
+              ERROR(Text003)
+        END;
+      END ELSE
+        ERROR(Text000,TABLECAPTION,Code);
+
+      WhseActivLine.SETRANGE("Location Code",Code);
+      WhseActivLine.SETRANGE("Activity Type",WhseActivLine."Activity Type"::Movement);
+      WhseActivLine.SETFILTER("Qty. Outstanding",'<>0');
+      IF NOT WhseActivLine.ISEMPTY THEN
+        ERROR(Text001,TABLECAPTION,Code);
+
+      WhseJnlLine.SETRANGE("Location Code",Code);
+      WhseJnlLine.SETFILTER(Quantity,'<>0');
+      IF NOT WhseJnlLine.ISEMPTY THEN
+        ERROR(Text001,TABLECAPTION,Code);
+
+      Zone.SETRANGE("Location Code",Code);
+      Zone.DELETEALL;
+      Bin.SETRANGE("Location Code",Code);
+      Bin.DELETEALL;
+      BinContent.SETRANGE("Location Code",Code);
+      BinContent.DELETEALL;
+    END;
+
+    LOCAL PROCEDURE CheckEmptyBin@7302(BinCode@1001 : Code[20];CaptionOfField@1002 : Text[30]);
+    VAR
+      WarehouseEntry@1003 : Record 7312;
+      WhseEntry2@1000 : Record 7312;
+    BEGIN
+      WarehouseEntry.SETCURRENTKEY("Bin Code","Location Code","Item No.");
+      WarehouseEntry.SETRANGE("Bin Code",BinCode);
+      WarehouseEntry.SETRANGE("Location Code",Code);
+      IF WarehouseEntry.FINDFIRST THEN
+        REPEAT
+          WarehouseEntry.SETRANGE("Item No.",WarehouseEntry."Item No.");
+
+          WhseEntry2.SETCURRENTKEY("Item No.","Bin Code","Location Code");
+          WhseEntry2.COPYFILTERS(WarehouseEntry);
+          WhseEntry2.CALCSUMS("Qty. (Base)");
+          IF WhseEntry2."Qty. (Base)" <> 0 THEN BEGIN
+            IF (BinCode = "Adjustment Bin Code") AND (xRec."Adjustment Bin Code" = '') THEN
+              ERROR(Text011,CaptionOfField,BinCode);
+
+            ERROR(Text006,CaptionOfField,Bin.TABLECAPTION,BinCode);
+          END;
+
+          WarehouseEntry.FINDLAST;
+          WarehouseEntry.SETRANGE("Item No.");
+        UNTIL WarehouseEntry.NEXT = 0;
+    END;
+
+    LOCAL PROCEDURE CheckWhseAdjmtJnl@7303();
+    VAR
+      WhseJnlTemplate@1002 : Record 7309;
+      WhseJnlLine@1003 : Record 7311;
+    BEGIN
+      WhseJnlTemplate.SETRANGE(Type,WhseJnlTemplate.Type::Item);
+      IF WhseJnlTemplate.FIND('-') THEN
+        REPEAT
+          WhseJnlLine.SETRANGE("Journal Template Name",WhseJnlTemplate.Name);
+          WhseJnlLine.SETRANGE("Location Code",Code);
+          IF NOT WhseJnlLine.ISEMPTY THEN
+            ERROR(
+              Text007,
+              FIELDCAPTION("Adjustment Bin Code"));
+        UNTIL WhseJnlTemplate.NEXT = 0;
+    END;
+
+    PROCEDURE GetRequirementText@6(FieldNumber@1000 : Integer) : Text[50];
+    VAR
+      Text000@1002 : TextConst 'ENU=Shipment,Receive,Pick,Put-Away';
+    BEGIN
+      CASE FieldNumber OF
+        FIELDNO("Require Shipment"):
+          EXIT(SELECTSTR(1,Text000));
+        FIELDNO("Require Receive"):
+          EXIT(SELECTSTR(2,Text000));
+        FIELDNO("Require Pick"):
+          EXIT(SELECTSTR(3,Text000));
+        FIELDNO("Require Put-away"):
+          EXIT(SELECTSTR(4,Text000));
+      END;
+    END;
+
+    PROCEDURE DisplayMap@7();
+    VAR
+      MapPoint@1001 : Record 800;
+      MapMgt@1000 : Codeunit 802;
+    BEGIN
+      IF MapPoint.FINDFIRST THEN
+        MapMgt.MakeSelection(DATABASE::Location,GETPOSITION)
+      ELSE
+        MESSAGE(Text012);
+    END;
+
+    PROCEDURE IsBWReceive@8() : Boolean;
+    BEGIN
+      EXIT("Bin Mandatory" AND (NOT "Directed Put-away and Pick") AND "Require Receive");
+    END;
+
+    PROCEDURE IsBWShip@12() : Boolean;
+    BEGIN
+      EXIT("Bin Mandatory" AND (NOT "Directed Put-away and Pick") AND "Require Shipment");
+    END;
+
+    PROCEDURE IsBinBWReceiveOrShip@11(BinCode@1000 : Code[20]) : Boolean;
+    BEGIN
+      EXIT(("Receipt Bin Code" <> '') AND (BinCode = "Receipt Bin Code") OR
+        ("Shipment Bin Code" <> '') AND (BinCode = "Shipment Bin Code"));
+    END;
+
+    PROCEDURE IsInTransit@10(LocationCode@1000 : Code[10]) : Boolean;
+    BEGIN
+      IF Location.GET(LocationCode) THEN
+        EXIT(Location."Use As In-Transit");
+      EXIT(FALSE);
+    END;
+
+    LOCAL PROCEDURE CreateInboundWhseRequest@13();
+    VAR
+      TransferHeader@1002 : Record 5740;
+      TransferLine@1004 : Record 5741;
+      WarehouseRequest@1000 : Record 5765;
+      WhseTransferRelease@1003 : Codeunit 5773;
+    BEGIN
+      TransferLine.SETRANGE("Transfer-to Code",Code);
+      IF TransferLine.FINDSET THEN
+        REPEAT
+          IF TransferLine."Quantity Received" <> TransferLine."Quantity Shipped" THEN BEGIN
+            TransferHeader.GET(TransferLine."Document No.");
+            WhseTransferRelease.InitializeWhseRequest(WarehouseRequest,TransferHeader,TransferHeader.Status);
+            WhseTransferRelease.CreateInboundWhseRequest(WarehouseRequest,TransferHeader);
+
+            TransferLine.SETRANGE("Document No.",TransferLine."Document No.");
+            TransferLine.FINDLAST;
+            TransferLine.SETRANGE("Document No.");
+          END;
+        UNTIL TransferLine.NEXT = 0;
+    END;
+
+    BEGIN
+    END.
+  }
+}
+
+OBJECT Table 5769 Warehouse Setup
+{
+  OBJECT-PROPERTIES
+  {
+    Date=03/17/18;
+    Time=[ 5:18:58 PM];
+    Modified=Yes;
+    Version List=NAVW18.00,WCS.01.00.05;
+  }
+  PROPERTIES
+  {
+    CaptionML=ENU=Warehouse Setup;
+  }
+  FIELDS
+  {
+    { 1   ;   ;Primary Key         ;Code10        ;CaptionML=ENU=Primary Key }
+    { 2   ;   ;Whse. Receipt Nos.  ;Code10        ;TableRelation="No. Series";
+                                                   AccessByPermission=TableData 7316=R;
+                                                   CaptionML=ENU=Whse. Receipt Nos. }
+    { 3   ;   ;Whse. Put-away Nos. ;Code10        ;TableRelation="No. Series";
+                                                   AccessByPermission=TableData 7340=R;
+                                                   CaptionML=ENU=Whse. Put-away Nos. }
+    { 5   ;   ;Whse. Pick Nos.     ;Code10        ;TableRelation="No. Series";
+                                                   AccessByPermission=TableData 7342=R;
+                                                   CaptionML=ENU=Whse. Pick Nos. }
+    { 6   ;   ;Whse. Ship Nos.     ;Code10        ;TableRelation="No. Series";
+                                                   AccessByPermission=TableData 7320=R;
+                                                   CaptionML=ENU=Whse. Ship Nos. }
+    { 7   ;   ;Registered Whse. Pick Nos.;Code10  ;TableRelation="No. Series";
+                                                   AccessByPermission=TableData 7342=R;
+                                                   CaptionML=ENU=Registered Whse. Pick Nos. }
+    { 10  ;   ;Registered Whse. Put-away Nos.;Code10;
+                                                   TableRelation="No. Series";
+                                                   AccessByPermission=TableData 7340=R;
+                                                   CaptionML=ENU=Registered Whse. Put-away Nos. }
+    { 13  ;   ;Require Receive     ;Boolean       ;OnValidate=BEGIN
+                                                                IF NOT "Require Receive" THEN
+                                                                  "Require Put-away" := FALSE;
+                                                              END;
+
+                                                   AccessByPermission=TableData 7316=R;
+                                                   CaptionML=ENU=Require Receive }
+    { 14  ;   ;Require Put-away    ;Boolean       ;OnValidate=BEGIN
+                                                                IF "Require Put-away" THEN
+                                                                  "Require Receive" := TRUE;
+                                                              END;
+
+                                                   AccessByPermission=TableData 7340=R;
+                                                   CaptionML=ENU=Require Put-away }
+    { 15  ;   ;Require Pick        ;Boolean       ;OnValidate=BEGIN
+                                                                IF "Require Pick" THEN
+                                                                  "Require Shipment" := TRUE;
+                                                              END;
+
+                                                   AccessByPermission=TableData 7342=R;
+                                                   CaptionML=ENU=Require Pick }
+    { 16  ;   ;Require Shipment    ;Boolean       ;OnValidate=BEGIN
+                                                                IF NOT "Require Shipment" THEN
+                                                                  "Require Pick" := FALSE;
+                                                              END;
+
+                                                   AccessByPermission=TableData 7320=R;
+                                                   CaptionML=ENU=Require Shipment }
+    { 17  ;   ;Last Whse. Posting Ref. No.;Integer;CaptionML=ENU=Last Whse. Posting Ref. No.;
+                                                   Editable=No }
+    { 18  ;   ;Receipt Posting Policy;Option      ;CaptionML=ENU=Receipt Posting Policy;
+                                                   OptionCaptionML=ENU=Posting errors are not processed,Stop and show the first posting error;
+                                                   OptionString=Posting errors are not processed,Stop and show the first posting error }
+    { 19  ;   ;Shipment Posting Policy;Option     ;CaptionML=ENU=Shipment Posting Policy;
+                                                   OptionCaptionML=ENU=Posting errors are not processed,Stop and show the first posting error;
+                                                   OptionString=Posting errors are not processed,Stop and show the first posting error }
+    { 7301;   ;Posted Whse. Receipt Nos.;Code10   ;TableRelation="No. Series";
+                                                   AccessByPermission=TableData 7316=R;
+                                                   CaptionML=ENU=Posted Whse. Receipt Nos. }
+    { 7303;   ;Posted Whse. Shipment Nos.;Code10  ;TableRelation="No. Series";
+                                                   AccessByPermission=TableData 7320=R;
+                                                   CaptionML=ENU=Posted Whse. Shipment Nos. }
+    { 7304;   ;Whse. Internal Put-away Nos.;Code10;TableRelation="No. Series";
+                                                   AccessByPermission=TableData 5771=R;
+                                                   CaptionML=ENU=Whse. Internal Put-away Nos. }
+    { 7306;   ;Whse. Internal Pick Nos.;Code10    ;TableRelation="No. Series";
+                                                   AccessByPermission=TableData 5771=R;
+                                                   CaptionML=ENU=Whse. Internal Pick Nos. }
+    { 7308;   ;Whse. Movement Nos. ;Code10        ;TableRelation="No. Series";
+                                                   AccessByPermission=TableData 5771=R;
+                                                   CaptionML=ENU=Whse. Movement Nos. }
+    { 7309;   ;Registered Whse. Movement Nos.;Code10;
+                                                   TableRelation="No. Series";
+                                                   AccessByPermission=TableData 5771=R;
+                                                   CaptionML=ENU=Registered Whse. Movement Nos. }
+    { 52001;  ;Plan Width          ;Integer        }
+    { 52002;  ;Plan Height         ;Integer        }
+  }
+  KEYS
+  {
+    {    ;Primary Key                             ;Clustered=Yes }
+  }
+  FIELDGROUPS
+  {
+  }
+  CODE
+  {
+
+    PROCEDURE GetNextReference@1() : Integer;
+    BEGIN
+      LOCKTABLE;
+      GET;
+      "Last Whse. Posting Ref. No." := "Last Whse. Posting Ref. No." + 1;
+      MODIFY;
+      EXIT("Last Whse. Posting Ref. No.");
+    END;
+
+    BEGIN
+    END.
+  }
+}
+
+OBJECT Table 7300 Zone
+{
+  OBJECT-PROPERTIES
+  {
+    Date=03/17/18;
+    Time=[ 5:21:16 PM];
+    Modified=Yes;
+    Version List=NAVW18.00,WCS.01.00.05;
+  }
+  PROPERTIES
+  {
+    DataCaptionFields=Location Code,Code,Description;
+    OnDelete=VAR
+               Bin@1000 : Record 7354;
+             BEGIN
+               Bin.SETCURRENTKEY("Location Code","Zone Code");
+               Bin.SETRANGE("Location Code","Location Code");
+               Bin.SETRANGE("Zone Code",Code);
+               Bin.DELETEALL(TRUE);
+             END;
+
+    CaptionML=ENU=Zone;
+    LookupPageID=Page7301;
+  }
+  FIELDS
+  {
+    { 1   ;   ;Location Code       ;Code10        ;TableRelation=Location;
+                                                   CaptionML=ENU=Location Code;
+                                                   NotBlank=Yes;
+                                                   Editable=No }
+    { 2   ;   ;Code                ;Code10        ;CaptionML=ENU=Code;
+                                                   NotBlank=Yes }
+    { 5   ;   ;Description         ;Text50        ;CaptionML=ENU=Description }
+    { 10  ;   ;Bin Type Code       ;Code10        ;TableRelation="Bin Type";
+                                                   CaptionML=ENU=Bin Type Code }
+    { 11  ;   ;Warehouse Class Code;Code10        ;TableRelation="Warehouse Class";
+                                                   CaptionML=ENU=Warehouse Class Code }
+    { 20  ;   ;Special Equipment Code;Code10      ;TableRelation="Special Equipment";
+                                                   CaptionML=ENU=Special Equipment Code }
+    { 21  ;   ;Zone Ranking        ;Integer       ;CaptionML=ENU=Zone Ranking }
+    { 40  ;   ;Cross-Dock Bin Zone ;Boolean       ;CaptionML=ENU=Cross-Dock Bin Zone }
+    { 52001;  ;Plan Width          ;Integer       ;Description=Warehouse Control System }
+    { 52002;  ;Plan Height         ;Integer       ;Description=Warehouse Control System }
+    { 52003;  ;Left                ;Integer       ;Description=Warehouse Control System }
+    { 52004;  ;Top                 ;Integer       ;Description=Warehouse Control System }
+    { 52005;  ;Width               ;Integer       ;Description=Warehouse Control System }
+    { 52006;  ;Height              ;Integer       ;Description=Warehouse Control System }
+    { 52007;  ;Scheme Visible      ;Boolean       ;Description=Warehouse Control System }
+    { 52010;  ;HexColor            ;Text10        ;Description=Warehouse Control System }
+    { 52014;  ;Bin Quantity        ;Integer       ;FieldClass=FlowField;
+                                                   CalcFormula=Count(Bin WHERE (Location Code=FIELD(Location Code),
+                                                                                Zone Code=FIELD(Code)));
+                                                   Description=Warehouse Control System;
+                                                   Editable=No }
+    { 52015;  ;Rack Quantity       ;Integer       ;FieldClass=FlowField;
+                                                   CalcFormula=Count(Rack WHERE (Location Code=FIELD(Location Code),
+                                                                                 Zone Code=FIELD(Code)));
+                                                   Description=Warehouse Control System;
+                                                   Editable=No }
+  }
+  KEYS
+  {
+    {    ;Location Code,Code                      ;Clustered=Yes }
+    {    ;Code                                     }
+    {    ;Description                              }
+  }
+  FIELDGROUPS
+  {
+  }
+  CODE
+  {
+
+    BEGIN
+    END.
+  }
+}
+
+OBJECT Table 7354 Bin
+{
+  OBJECT-PROPERTIES
+  {
+    Date=07/27/18;
+    Time=12:36:42 PM;
+    Modified=Yes;
+    Version List=NAVW110.0.00.16996,WCS.01.00.05;
+  }
+  PROPERTIES
+  {
+    DataCaptionFields=Location Code,Zone Code,Code;
+    OnInsert=BEGIN
+               TESTFIELD("Location Code");
+               GetLocation("Location Code");
+               IF Location."Directed Put-away and Pick" THEN BEGIN
+                 TESTFIELD("Zone Code");
+                 TESTFIELD("Bin Type Code");
+               END ELSE BEGIN
+                 TESTFIELD("Zone Code",'');
+                 TESTFIELD("Bin Type Code",'');
+               END;
+             END;
+
+    OnModify=BEGIN
+               GetLocation("Location Code");
+               IF Location."Directed Put-away and Pick" THEN BEGIN
+                 TESTFIELD("Zone Code");
+                 TESTFIELD("Bin Type Code");
+               END ELSE BEGIN
+                 TESTFIELD("Zone Code",'');
+                 TESTFIELD("Bin Type Code",'');
+               END;
+             END;
+
+    OnDelete=VAR
+               Location@1003 : Record 14;
+               ItemJnlLine@1004 : Record 83;
+             BEGIN
+               CheckEmptyBin(Text008);
+
+               Location.GET("Location Code");
+               IF Location."Adjustment Bin Code" = Code THEN BEGIN
+                 ItemJnlLine.SETCURRENTKEY("Entry Type","Item No.","Variant Code","Location Code");
+                 ItemJnlLine.SETFILTER("Entry Type",'%1|%2|%3|%4',
+                   ItemJnlLine."Entry Type"::"Negative Adjmt.",ItemJnlLine."Entry Type"::Sale,
+                   ItemJnlLine."Entry Type"::"Positive Adjmt.",ItemJnlLine."Entry Type"::Purchase);
+                 ItemJnlLine.SETRANGE("Location Code","Location Code");
+                 IF ItemJnlLine.FINDFIRST THEN
+                   IF NOT CONFIRM(
+                        Text002,FALSE,STRSUBSTNO(ItemJnlLine.TABLECAPTION,TABLECAPTION))
+                   THEN
+                     ERROR(Text003);
+               END;
+
+               BinContent.RESET;
+               BinContent.SETRANGE("Location Code","Location Code");
+               BinContent.SETRANGE("Bin Code",Code);
+               BinContent.DELETEALL;
+             END;
+
+    CaptionML=ENU=Bin;
+    LookupPageID=Page7303;
+  }
+  FIELDS
+  {
+    { 1   ;   ;Location Code       ;Code10        ;TableRelation=Location;
+                                                   CaptionML=ENU=Location Code;
+                                                   NotBlank=Yes;
+                                                   Editable=No }
+    { 2   ;   ;Code                ;Code20        ;CaptionML=ENU=Code;
+                                                   NotBlank=Yes }
+    { 3   ;   ;Description         ;Text50        ;CaptionML=ENU=Description }
+    { 4   ;   ;Zone Code           ;Code10        ;TableRelation=Zone.Code WHERE (Location Code=FIELD(Location Code));
+                                                   OnValidate=BEGIN
+                                                                IF "Zone Code" <> xRec."Zone Code" THEN BEGIN
+                                                                  CheckEmptyBin(Text007);
+                                                                  IF Code = '' THEN
+                                                                    SetUpNewLine;
+                                                                  BinContent.RESET;
+                                                                  BinContent.SETRANGE("Location Code","Location Code");
+                                                                  BinContent.SETRANGE("Bin Code",Code);
+                                                                  BinContent.MODIFYALL("Zone Code","Zone Code");
+                                                                END;
+                                                              END;
+
+                                                   CaptionML=ENU=Zone Code;
+                                                   Editable=No }
+    { 5   ;   ;Adjustment Bin      ;Boolean       ;FieldClass=FlowField;
+                                                   CalcFormula=Exist(Location WHERE (Code=FIELD(Location Code),
+                                                                                     Adjustment Bin Code=FIELD(Code)));
+                                                   CaptionML=ENU=Adjustment Bin;
+                                                   Editable=No }
+    { 10  ;   ;Bin Type Code       ;Code10        ;TableRelation="Bin Type";
+                                                   OnValidate=BEGIN
+                                                                IF "Bin Type Code" <> xRec."Bin Type Code" THEN BEGIN
+                                                                  CheckEmptyBin(Text007);
+                                                                  BinContent.RESET;
+                                                                  BinContent.SETRANGE("Location Code","Location Code");
+                                                                  BinContent.SETRANGE("Bin Code",Code);
+                                                                  BinContent.MODIFYALL("Bin Type Code","Bin Type Code");
+                                                                END;
+                                                              END;
+
+                                                   CaptionML=ENU=Bin Type Code }
+    { 11  ;   ;Warehouse Class Code;Code10        ;TableRelation="Warehouse Class";
+                                                   OnValidate=BEGIN
+                                                                IF "Warehouse Class Code" <> xRec."Warehouse Class Code" THEN BEGIN
+                                                                  CheckEmptyBin(Text007);
+                                                                  BinContent.RESET;
+                                                                  BinContent.SETRANGE("Location Code","Location Code");
+                                                                  BinContent.SETRANGE("Bin Code",Code);
+                                                                  BinContent.MODIFYALL("Warehouse Class Code","Warehouse Class Code");
+                                                                END;
+                                                              END;
+
+                                                   CaptionML=ENU=Warehouse Class Code }
+    { 12  ;   ;Block Movement      ;Option        ;OnValidate=BEGIN
+                                                                IF "Block Movement" <> xRec."Block Movement" THEN BEGIN
+                                                                  BinContent.RESET;
+                                                                  BinContent.SETRANGE("Location Code","Location Code");
+                                                                  BinContent.SETRANGE("Bin Code",Code);
+                                                                  BinContent.MODIFYALL("Block Movement","Block Movement");
+                                                                END;
+                                                              END;
+
+                                                   CaptionML=ENU=Block Movement;
+                                                   OptionCaptionML=ENU=" ,Inbound,Outbound,All";
+                                                   OptionString=[ ,Inbound,Outbound,All] }
+    { 20  ;   ;Special Equipment Code;Code10      ;TableRelation="Special Equipment";
+                                                   CaptionML=ENU=Special Equipment Code }
+    { 21  ;   ;Bin Ranking         ;Integer       ;OnValidate=VAR
+                                                                WhseActivLine@1000 : Record 5767;
+                                                              BEGIN
+                                                                IF "Bin Ranking" <> xRec."Bin Ranking" THEN BEGIN
+                                                                  BinContent.RESET;
+                                                                  BinContent.SETRANGE("Location Code","Location Code");
+                                                                  BinContent.SETRANGE("Bin Code",Code);
+                                                                  BinContent.MODIFYALL("Bin Ranking","Bin Ranking");
+
+                                                                  WhseActivLine.SETCURRENTKEY("Bin Code","Location Code");
+                                                                  WhseActivLine.SETRANGE("Bin Code",Code);
+                                                                  WhseActivLine.SETRANGE("Location Code","Location Code");
+                                                                  WhseActivLine.MODIFYALL("Bin Ranking","Bin Ranking");
+                                                                END;
+                                                              END;
+
+                                                   CaptionML=ENU=Bin Ranking }
+    { 22  ;   ;Maximum Cubage      ;Decimal       ;OnValidate=BEGIN
+                                                                CheckMaxQtyBinContent(FALSE);
+                                                              END;
+
+                                                   CaptionML=ENU=Maximum Cubage;
+                                                   DecimalPlaces=0:5;
+                                                   MinValue=0;
+                                                   BlankZero=Yes }
+    { 23  ;   ;Maximum Weight      ;Decimal       ;OnValidate=BEGIN
+                                                                CheckMaxQtyBinContent(TRUE);
+                                                              END;
+
+                                                   CaptionML=ENU=Maximum Weight;
+                                                   DecimalPlaces=0:5;
+                                                   MinValue=0;
+                                                   BlankZero=Yes }
+    { 30  ;   ;Empty               ;Boolean       ;InitValue=Yes;
+                                                   CaptionML=ENU=Empty;
+                                                   Editable=No }
+    { 32  ;   ;Item Filter         ;Code20        ;FieldClass=FlowFilter;
+                                                   TableRelation=Item;
+                                                   CaptionML=ENU=Item Filter }
+    { 33  ;   ;Variant Filter      ;Code10        ;FieldClass=FlowFilter;
+                                                   TableRelation="Stockkeeping Unit"."Variant Code" WHERE (Location Code=FIELD(Location Code),
+                                                                                                           Item No.=FIELD(Item Filter));
+                                                   CaptionML=ENU=Variant Filter }
+    { 34  ;   ;Default             ;Boolean       ;FieldClass=FlowField;
+                                                   CalcFormula=Exist("Bin Content" WHERE (Location Code=FIELD(Location Code),
+                                                                                          Bin Code=FIELD(Code),
+                                                                                          Item No.=FIELD(Item Filter),
+                                                                                          Variant Code=FIELD(Variant Filter),
+                                                                                          Default=CONST(Yes)));
+                                                   CaptionML=ENU=Default;
+                                                   Editable=No }
+    { 40  ;   ;Cross-Dock Bin      ;Boolean       ;OnValidate=BEGIN
+                                                                IF "Cross-Dock Bin" <> xRec."Cross-Dock Bin" THEN BEGIN
+                                                                  BinContent.RESET;
+                                                                  BinContent.SETRANGE("Location Code","Location Code");
+                                                                  BinContent.SETRANGE("Bin Code",Code);
+                                                                  BinContent.MODIFYALL("Cross-Dock Bin","Cross-Dock Bin");
+                                                                END;
+                                                              END;
+
+                                                   CaptionML=ENU=Cross-Dock Bin }
+    { 41  ;   ;Dedicated           ;Boolean       ;OnValidate=BEGIN
+                                                                IF Dedicated <> xRec.Dedicated THEN BEGIN
+                                                                  CheckEmptyBin(Text007);
+                                                                  BinContent.RESET;
+                                                                  BinContent.SETRANGE("Location Code","Location Code");
+                                                                  BinContent.SETRANGE("Bin Code",Code);
+                                                                  BinContent.MODIFYALL(Dedicated,Dedicated);
+                                                                END;
+                                                              END;
+
+                                                   CaptionML=ENU=Dedicated }
+    { 52002;  ;Section             ;Integer       ;Description=Warehouse Control System }
+    { 52003;  ;Level               ;Integer       ;Description=Warehouse Control System }
+    { 52004;  ;Depth               ;Integer       ;Description=Warehouse Control System }
+    { 52005;  ;Section Span        ;Integer       ;Description=Warehouse Control System }
+    { 52006;  ;Level Span          ;Integer       ;Description=Warehouse Control System }
+    { 52007;  ;Depth Span          ;Integer       ;Description=Warehouse Control System }
+    { 52008;  ;Rack ID             ;Integer       ;Description=Warehouse Control System }
+  }
+  KEYS
+  {
+    {    ;Location Code,Code                      ;Clustered=Yes }
+    {    ;Bin Type Code                            }
+    {    ;Location Code,Warehouse Class Code,Bin Ranking }
+    {    ;Location Code,Zone Code,Code             }
+    {    ;Code                                     }
+  }
+  FIELDGROUPS
+  {
+  }
+  CODE
+  {
+    VAR
+      Location@1009 : Record 14;
+      Zone@1000 : Record 7300;
+      Text000@1001 : TextConst 'ENU="You cannot %1 the %2 with %3 = %4, %5 = %6, because the %2 contains items."';
+      Text001@1002 : TextConst 'ENU="You cannot %1 the %2 with %3 = %4, %5 = %6, because one or more %7 exists for this %2."';
+      Text002@1003 : TextConst 'ENU=One or more %1 exists for this bin. Do you still want to delete this %2?';
+      Text003@1004 : TextConst 'ENU=Cancelled.';
+      BinContent@1010 : Record 7302;
+      Item@1012 : Record 27;
+      WMSMgt@1005 : Codeunit 7302;
+      Text005@1006 : TextConst 'ENU=The total cubage %1 of the %2 in the bin contents exceeds the entered %3 %4.\Do you still want to enter this %3?';
+      Text006@1007 : TextConst 'ENU=The total weight %1 of the %2 in the bin contents exceeds the entered %3 %4.\Do you still want to enter this %3?';
+      Text007@1008 : TextConst 'ENU=modify';
+      Text008@1011 : TextConst 'ENU=delete';
+
+    PROCEDURE SetUpNewLine@8();
+    BEGIN
+      GetLocation("Location Code");
+      IF Location."Directed Put-away and Pick" THEN
+        IF GetZone("Location Code","Zone Code") THEN BEGIN
+          "Bin Type Code" := Zone."Bin Type Code";
+          "Warehouse Class Code" := Zone."Warehouse Class Code";
+          "Special Equipment Code" := Zone."Special Equipment Code";
+          "Bin Ranking" := Zone."Zone Ranking";
+          "Cross-Dock Bin" := Zone."Cross-Dock Bin Zone";
+        END;
+    END;
+
+    LOCAL PROCEDURE GetZone@1(LocationCode@1000 : Code[10];ZoneCode@1001 : Code[10]) : Boolean;
+    BEGIN
+      IF (LocationCode = '') OR (ZoneCode = '') THEN
+        EXIT(FALSE);
+      IF (Zone."Location Code" <> LocationCode) OR
+         (Zone.Code <> ZoneCode)
+      THEN
+        IF NOT Zone.GET("Location Code","Zone Code") THEN
+          EXIT(FALSE);
+
+      EXIT(TRUE);
+    END;
+
+    PROCEDURE CalcCubageAndWeight@3(VAR Cubage@1000 : Decimal;VAR Weight@1007 : Decimal;CalledbyPosting@1012 : Boolean);
+    VAR
+      PostedCubage@1001 : Decimal;
+      PostedWeight@1002 : Decimal;
+      WhseActivityWeight@1006 : Decimal;
+      WhseActivityCubage@1005 : Decimal;
+      JournalWeight@1004 : Decimal;
+      JournalCubage@1003 : Decimal;
+      WhseRcptWeight@1009 : Decimal;
+      WhseRcptCubage@1008 : Decimal;
+      WhseShptWeight@1011 : Decimal;
+      WhseShptCubage@1010 : Decimal;
+      WhseIntPickWeight@1014 : Decimal;
+      WhseIntPickCubage@1013 : Decimal;
+    BEGIN
+      IF ("Maximum Cubage" <> 0) OR ("Maximum Weight" <> 0) THEN BEGIN
+        CalcPostedCubageAndWeight(PostedCubage,PostedWeight);
+        IF NOT CalledbyPosting THEN BEGIN
+          CalcPutAwayOnWhseActivity(WhseActivityWeight,WhseActivityCubage);
+          CalcPutAwayOnWhseJnl(JournalWeight,JournalCubage);
+          CalcPutAwayOnWhseRcpt(WhseRcptWeight,WhseRcptCubage);
+          CalcPutAwayOnWhseShpt(WhseShptWeight,WhseShptCubage);
+          CalcPutAwayOnWhseIntPick(WhseIntPickWeight,WhseIntPickCubage);
+        END;
+        IF "Maximum Cubage" <> 0 THEN
+          Cubage :=
+            "Maximum Cubage" -
+            (PostedCubage + WhseActivityCubage + JournalCubage +
+             WhseRcptCubage + WhseShptCubage + WhseIntPickCubage);
+
+        IF "Maximum Weight" <> 0 THEN
+          Weight :=
+            "Maximum Weight" -
+            (PostedWeight + WhseActivityWeight + JournalWeight +
+             WhseRcptWeight + WhseShptWeight + WhseIntPickWeight);
+      END;
+    END;
+
+    LOCAL PROCEDURE CalcPostedCubageAndWeight@5(VAR PostedCubage@1000 : Decimal;VAR PostedWeight@1002 : Decimal);
+    VAR
+      WhseEntry@1001 : Record 7312;
+    BEGIN
+      WhseEntry.SETCURRENTKEY("Bin Code","Location Code");
+      WhseEntry.SETRANGE("Bin Code",Code);
+      WhseEntry.SETRANGE("Location Code","Location Code");
+      WhseEntry.CALCSUMS(Cubage,Weight);
+      PostedCubage := WhseEntry.Cubage;
+      PostedWeight := WhseEntry.Weight;
+    END;
+
+    LOCAL PROCEDURE CalcPutAwayOnWhseActivity@21(VAR WhseActivWeight@1002 : Decimal;VAR WhseActivCubage@1000 : Decimal);
+    VAR
+      WhseActivLine@1001 : Record 5767;
+    BEGIN
+      WhseActivLine.SETCURRENTKEY("Bin Code","Location Code","Action Type");
+      WhseActivLine.SETRANGE("Bin Code",Code);
+      WhseActivLine.SETRANGE("Location Code","Location Code");
+      WhseActivLine.SETRANGE("Action Type",WhseActivLine."Action Type"::Place);
+      WhseActivLine.CALCSUMS(Cubage,Weight);
+      WhseActivCubage := WhseActivLine.Cubage;
+      WhseActivWeight := WhseActivLine.Weight;
+
+      WhseActivLine.SETRANGE("Action Type",WhseActivLine."Action Type"::Take);
+      WhseActivLine.SETFILTER("Breakbulk No.",'<>0');
+      WhseActivLine.CALCSUMS(Cubage,Weight);
+      WhseActivCubage := WhseActivCubage - WhseActivLine.Cubage;
+      WhseActivWeight := WhseActivWeight - WhseActivLine.Weight;
+    END;
+
+    LOCAL PROCEDURE CalcPutAwayOnWhseJnl@22(VAR JournalWeight@1002 : Decimal;VAR JournalCubage@1001 : Decimal);
+    VAR
+      WhseJnlLine@1000 : Record 7311;
+    BEGIN
+      WhseJnlLine.SETCURRENTKEY("To Bin Code","Location Code");
+      WhseJnlLine.SETRANGE("To Bin Code",Code);
+      WhseJnlLine.SETRANGE("Location Code","Location Code");
+      WhseJnlLine.CALCSUMS(Cubage,Weight);
+      JournalCubage := WhseJnlLine.Cubage;
+      JournalWeight := WhseJnlLine.Weight;
+    END;
+
+    LOCAL PROCEDURE CalcPutAwayOnWhseRcpt@11(VAR WhseRcptWeight@1002 : Decimal;VAR WhseRcptCubage@1000 : Decimal);
+    VAR
+      WhseRcptLine@1001 : Record 7317;
+    BEGIN
+      WhseRcptLine.SETCURRENTKEY("Bin Code","Location Code");
+      WhseRcptLine.SETRANGE("Bin Code",Code);
+      WhseRcptLine.SETRANGE("Location Code","Location Code");
+      WhseRcptLine.CALCSUMS(Cubage,Weight);
+      WhseRcptCubage := WhseRcptLine.Cubage;
+      WhseRcptWeight := WhseRcptLine.Weight;
+    END;
+
+    LOCAL PROCEDURE CalcPutAwayOnWhseShpt@13(VAR WhseShptWeight@1002 : Decimal;VAR WhseShptCubage@1000 : Decimal);
+    VAR
+      WhseShptLine@1001 : Record 7321;
+    BEGIN
+      WhseShptLine.SETCURRENTKEY("Bin Code","Location Code");
+      WhseShptLine.SETRANGE("Bin Code",Code);
+      WhseShptLine.SETRANGE("Location Code","Location Code");
+      WhseShptLine.CALCSUMS(Cubage,Weight);
+      WhseShptCubage := WhseShptLine.Cubage;
+      WhseShptWeight := WhseShptLine.Weight;
+    END;
+
+    LOCAL PROCEDURE CalcPutAwayOnWhseIntPick@12(VAR WhseIntPickWeight@1002 : Decimal;VAR WhseIntPickCubage@1000 : Decimal);
+    VAR
+      WhseIntPickLine@1001 : Record 7334;
+    BEGIN
+      WhseIntPickLine.SETCURRENTKEY("To Bin Code","Location Code");
+      WhseIntPickLine.SETRANGE("To Bin Code",Code);
+      WhseIntPickLine.SETRANGE("Location Code","Location Code");
+      WhseIntPickLine.CALCSUMS(Cubage,Weight);
+      WhseIntPickCubage := WhseIntPickLine.Cubage;
+      WhseIntPickWeight := WhseIntPickLine.Weight;
+    END;
+
+    LOCAL PROCEDURE GetItem@2(ItemNo@1000 : Code[20]);
+    BEGIN
+      IF ItemNo <> Item."No." THEN
+        Item.GET(ItemNo);
+    END;
+
+    LOCAL PROCEDURE CheckMaxQtyBinContent@4(CheckWeight@1000 : Boolean);
+    VAR
+      TotalCubage@1002 : Decimal;
+      TotalWeight@1003 : Decimal;
+      Cubage@1004 : Decimal;
+      Weight@1005 : Decimal;
+    BEGIN
+      IF ("Maximum Cubage" <> 0) OR ("Maximum Weight" <> 0) THEN BEGIN
+        BinContent.RESET;
+        BinContent.SETRANGE("Location Code","Location Code");
+        BinContent.SETRANGE("Bin Code",Code);
+        IF BinContent.FIND('-') THEN
+          REPEAT
+            WMSMgt.CalcCubageAndWeight(
+              BinContent."Item No.",BinContent."Unit of Measure Code",
+              BinContent."Max. Qty.",Cubage,Weight);
+            TotalCubage := TotalCubage + Cubage;
+            TotalWeight := TotalWeight + Weight;
+          UNTIL BinContent.NEXT = 0;
+
+        IF (NOT CheckWeight) AND ("Maximum Cubage" > 0) AND ("Maximum Cubage" - TotalCubage < 0) THEN
+          IF NOT CONFIRM(Text005,FALSE,
+               TotalCubage,BinContent.FIELDCAPTION("Max. Qty."),
+               FIELDCAPTION("Maximum Cubage"),"Maximum Cubage")
+          THEN
+            ERROR(Text003);
+        IF CheckWeight AND ("Maximum Weight" > 0) AND ("Maximum Weight" - TotalWeight < 0) THEN
+          IF NOT CONFIRM(Text006,FALSE,
+               TotalWeight,BinContent.FIELDCAPTION("Max. Qty."),
+               FIELDCAPTION("Maximum Weight"),"Maximum Weight")
+          THEN
+            ERROR(Text003);
+      END;
+    END;
+
+    PROCEDURE CheckWhseClass@6(ItemNo@1000 : Code[20];IgnoreError@1001 : Boolean) : Boolean;
+    BEGIN
+      GetItem(ItemNo);
+      IF IgnoreError THEN
+        EXIT("Warehouse Class Code" = Item."Warehouse Class Code");
+      TESTFIELD("Warehouse Class Code",Item."Warehouse Class Code");
+      EXIT(TRUE);
+    END;
+
+    LOCAL PROCEDURE CheckEmptyBin@9(ErrorText@1003 : Text[250]);
+    VAR
+      WarehouseEntry@1002 : Record 7312;
+      WarehouseJnl@1001 : Record 7311;
+      WhseActivLine@1000 : Record 5767;
+      WhseRcptLine@1004 : Record 7317;
+      WhseShptLine@1005 : Record 7321;
+    BEGIN
+      WarehouseEntry.SETCURRENTKEY("Bin Code","Location Code");
+      WarehouseEntry.SETRANGE("Bin Code",Code);
+      WarehouseEntry.SETRANGE("Location Code","Location Code");
+      WarehouseEntry.CALCSUMS("Qty. (Base)");
+      IF WarehouseEntry."Qty. (Base)" <> 0 THEN
+        ERROR(
+          Text000,
+          ErrorText,TABLECAPTION,FIELDCAPTION("Location Code"),
+          "Location Code",FIELDCAPTION(Code),Code);
+
+      WhseActivLine.SETRANGE("Bin Code",Code);
+      WhseActivLine.SETRANGE("Location Code","Location Code");
+      WhseActivLine.SETRANGE("Activity Type",WhseActivLine."Activity Type"::Movement);
+      IF NOT WhseActivLine.ISEMPTY THEN
+        ERROR(
+          Text001,
+          ErrorText,TABLECAPTION,FIELDCAPTION("Location Code"),"Location Code",
+          FIELDCAPTION(Code),Code,WhseActivLine.TABLECAPTION);
+
+      WarehouseJnl.SETRANGE("Location Code","Location Code");
+      WarehouseJnl.SETRANGE("From Bin Code",Code);
+      IF NOT WarehouseJnl.ISEMPTY THEN
+        ERROR(
+          Text001,
+          ErrorText,TABLECAPTION,FIELDCAPTION("Location Code"),"Location Code",
+          FIELDCAPTION(Code),Code,WarehouseJnl.TABLECAPTION);
+
+      WarehouseJnl.RESET;
+      WarehouseJnl.SETRANGE("To Bin Code",Code);
+      WarehouseJnl.SETRANGE("Location Code","Location Code");
+      IF NOT WarehouseJnl.ISEMPTY THEN
+        ERROR(
+          Text001,
+          ErrorText,TABLECAPTION,FIELDCAPTION("Location Code"),"Location Code",
+          FIELDCAPTION(Code),Code,WarehouseJnl.TABLECAPTION);
+
+      WhseRcptLine.SETRANGE("Bin Code",Code);
+      WhseRcptLine.SETRANGE("Location Code","Location Code");
+      IF NOT WhseRcptLine.ISEMPTY THEN
+        ERROR(
+          Text001,
+          ErrorText,TABLECAPTION,FIELDCAPTION("Location Code"),"Location Code",
+          FIELDCAPTION(Code),Code,WhseRcptLine.TABLECAPTION);
+
+      WhseShptLine.SETRANGE("Bin Code",Code);
+      WhseShptLine.SETRANGE("Location Code","Location Code");
+      IF NOT WhseShptLine.ISEMPTY THEN
+        ERROR(
+          Text001,
+          ErrorText,TABLECAPTION,FIELDCAPTION("Location Code"),"Location Code",
+          FIELDCAPTION(Code),Code,WhseShptLine.TABLECAPTION);
+    END;
+
+    PROCEDURE CheckIncreaseBin@7(BinCode@1009 : Code[20];ItemNo@1006 : Code[20];Qty@1005 : Decimal;DeductCubage@1013 : Decimal;DeductWeight@1012 : Decimal;PutawayCubage@1008 : Decimal;PutawayWeight@1007 : Decimal;CalledbyPosting@1010 : Boolean;IgnoreError@1000 : Boolean) : Boolean;
+    VAR
+      WhseActivLine@1001 : Record 5767;
+      WMSMgt@1002 : Codeunit 7302;
+      AvailableWeight@1003 : Decimal;
+      AvailableCubage@1004 : Decimal;
+    BEGIN
+      IF "Block Movement" IN ["Block Movement"::Inbound,"Block Movement"::All] THEN
+        FIELDERROR("Block Movement");
+
+      GetLocation("Location Code");
+      IF Code = Location."Adjustment Bin Code" THEN
+        EXIT;
+
+      IF ItemNo <> '' THEN
+        IF NOT CheckWhseClass(ItemNo,IgnoreError) THEN
+          EXIT(FALSE);
+
+      IF (Qty <> 0) AND (("Maximum Cubage" <> 0) OR ("Maximum Weight" <> 0)) THEN
+        IF Location."Bin Capacity Policy" IN
+           [Location."Bin Capacity Policy"::"Allow More Than Max. Capacity",
+            Location."Bin Capacity Policy"::"Prohibit More Than Max. Cap."]
+        THEN BEGIN
+          CalcCubageAndWeight(AvailableCubage,AvailableWeight,CalledbyPosting);
+          IF NOT CalledbyPosting THEN BEGIN
+            AvailableCubage := AvailableCubage + DeductCubage;
+            AvailableWeight := AvailableWeight + DeductWeight;
+          END;
+
+          IF ("Maximum Cubage" <> 0) AND (PutawayCubage > AvailableCubage) THEN
+            WMSMgt.CheckPutAwayAvailability(
+              BinCode,WhseActivLine.FIELDCAPTION(Cubage),TABLECAPTION,PutawayCubage,AvailableCubage,
+              (Location."Bin Capacity Policy" =
+               Location."Bin Capacity Policy"::"Prohibit More Than Max. Cap.") AND CalledbyPosting);
+
+          IF ("Maximum Weight" <> 0) AND (PutawayWeight > AvailableWeight) THEN
+            WMSMgt.CheckPutAwayAvailability(
+              BinCode,WhseActivLine.FIELDCAPTION(Weight),TABLECAPTION,PutawayWeight,AvailableWeight,
+              (Location."Bin Capacity Policy" =
+               Location."Bin Capacity Policy"::"Prohibit More Than Max. Cap.") AND CalledbyPosting);
+        END;
+      EXIT(TRUE);
+    END;
+
+    LOCAL PROCEDURE GetLocation@10(LocationCode@1000 : Code[10]);
+    BEGIN
+      IF Location.Code <> LocationCode THEN
+        Location.GET(LocationCode);
+    END;
+
+    BEGIN
+    END.
+  }
+}
+
+OBJECT Table 51200 Rack
+{
+  OBJECT-PROPERTIES
+  {
+    Date=07/27/18;
+    Time=12:39:00 PM;
+    Modified=Yes;
+    Version List=WCS.01.00.05;
+  }
+  PROPERTIES
+  {
+    OnInsert=BEGIN
+               "Create UserID" := USERID;
+               "Create DataTime" := CURRENTDATETIME;
+             END;
+
+    OnModify=BEGIN
+               "Modify UserID" := USERID;
+               "Modify DateTime" := CURRENTDATETIME;
+             END;
+
+  }
+  FIELDS
+  {
+    { 1   ;   ;Location Code       ;Code10        ;TableRelation=Location }
+    { 2   ;   ;Zone Code           ;Code10        ;TableRelation=Zone.Code }
+    { 3   ;   ;No                  ;Code10         }
+    { 4   ;   ;Sections            ;Integer        }
+    { 5   ;   ;Levels              ;Integer        }
+    { 6   ;   ;Depth               ;Integer        }
+    { 7   ;   ;Left                ;Integer        }
+    { 8   ;   ;Top                 ;Integer        }
+    { 9   ;   ;Width               ;Integer        }
+    { 10  ;   ;Height              ;Integer        }
+    { 11  ;   ;Rack Orientation    ;Integer        }
+    { 12  ;   ;Scheme Visible      ;Boolean        }
+    { 13  ;   ;Create DataTime     ;DateTime       }
+    { 14  ;   ;Create UserID       ;Code50         }
+    { 15  ;   ;Modify DateTime     ;DateTime       }
+    { 16  ;   ;Modify UserID       ;Code50         }
+    { 17  ;   ;ID                  ;Integer        }
+    { 18  ;   ;Comment             ;Text250        }
+  }
+  KEYS
+  {
+    {    ;ID                                       }
+    {    ;Location Code,Zone Code,No              ;Clustered=Yes }
+  }
+  FIELDGROUPS
+  {
+  }
+  CODE
+  {
+
+    BEGIN
+    END.
+  }
+}
+
+OBJECT Codeunit 50076 WarehouseControlSystem
+{
+  OBJECT-PROPERTIES
+  {
+    Date=07/27/18;
+    Time=12:45:39 PM;
+    Modified=Yes;
+    Version List=WCS.01.00.05;
+  }
+  PROPERTIES
+  {
+    SingleInstance=Yes;
+    OnRun=VAR
+            WSMRack@1101981000 : Record 51200;
+            i@1101981001 : Integer;
+            Bin@1101981002 : Record 7354;
+          BEGIN
+          END;
+
+  }
+  CODE
+  {
+    VAR
+      Text000@1101981023 : TextConst 'ENU=Failed to add a node.';
+      Text001@1101981022 : TextConst 'ENU=Failed to add the element: %1.';
+      Text002@1101981021 : TextConst 'ENU=Failed to add the attribute: %1.';
+      Text003@1101981020 : TextConst 'ENU=%1 is not a valid value for the %2 field.';
+      Text004@1101981019 : TextConst 'ENU=The field %2 in the record %1 can only contain %3 characters. (%4).';
+      Text005@1101981018 : TextConst 'ENU=Miniform %1 not found.';
+      Text006@1101981017 : TextConst 'ENU=There must be one miniform that is set to %1.';
+      Text007@1101981005 : TextConst 'ENU=<%1> not used.';
+      Text008@1101981000 : TextConst 'RUS=Bin %1 already exist!';
+      "---- UDF Functions ----"@1101981014 : Integer;
+      UDFResponse@1101981002 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlDocument";
+      UDFRootNode@1101981001 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      UDFCurrentNode@1101981003 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      UDFResponseDocument@1101981004 : Text;
+      "---- UDS-------"@1101981015 : Integer;
+      UDSListResponse@1101981009 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlDocument";
+      UDSListRootNode@1101981008 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      UDSListCurrentNode@1101981007 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      UDSListResponseDocument@1101981006 : Text;
+      "---- UDS Respone -----"@1101981016 : Integer;
+      UDSResponse@1101981013 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlDocument";
+      UDSRootNode@1101981012 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      UDSCurrentNode@1101981011 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      UDSResponseDocument@1101981010 : Text;
+
+    PROCEDURE APIVersion@1101981009() : Integer;
+    BEGIN
+      EXIT(1000);
+    END;
+
+    LOCAL PROCEDURE "----- UDS ------"@1101981034();
+    BEGIN
+      //------------------------------------------------------------------------------------
+      //  User Defined Selection
+      //------------------------------------------------------------------------------------
+    END;
+
+    LOCAL PROCEDURE UserDefinedSelectionList@1101981036(LocationCode@1101981003 : Code[20];ZoneCode@1101981002 : Code[20]);
+    VAR
+      Bin@1101981000 : Record 7354;
+      WarehouseActivityLine@1101981001 : Record 5767;
+      WhseInternalPickLine@1101981004 : Record 7334;
+      InternalMovementLine@1101981005 : Record 7347;
+      binquantity@1101981006 : Integer;
+      ipquantity@1101981007 : Integer;
+      movquantity@1101981008 : Integer;
+      blockedquantity@1101981009 : Integer;
+      alquantity@1101981010 : Integer;
+      pickupquantity@1101981011 : Integer;
+      putawayquantity@1101981012 : Integer;
+      movementquantity@1101981013 : Integer;
+    BEGIN
+      //Example
+      Bin.RESET;
+      Bin.SETCURRENTKEY("Location Code","Zone Code",Code);
+      Bin.SETRANGE("Location Code",LocationCode);
+      Bin.SETRANGE("Zone Code",ZoneCode);
+      binquantity := Bin.COUNT;
+      Bin.SETFILTER("Block Movement",'>0');
+      blockedquantity := Bin.COUNT;
+
+      WhseInternalPickLine.RESET;
+      WhseInternalPickLine.SETRANGE("Location Code",LocationCode);
+      WhseInternalPickLine.SETRANGE("To Zone Code",ZoneCode);
+      ipquantity := WhseInternalPickLine.COUNT;
+
+      InternalMovementLine.RESET;
+      InternalMovementLine.SETRANGE("Location Code",LocationCode);
+      movquantity := InternalMovementLine.COUNT;
+
+      WarehouseActivityLine.RESET;
+      WarehouseActivityLine.SETRANGE("Location Code",LocationCode);
+      WarehouseActivityLine.SETRANGE("Zone Code",ZoneCode);
+      WarehouseActivityLine.SETRANGE("Action Type",WarehouseActivityLine."Activity Type"::"Put-away");
+      putawayquantity := WarehouseActivityLine.COUNT;
+      WarehouseActivityLine.SETRANGE("Action Type",WarehouseActivityLine."Activity Type"::Pick);
+      pickupquantity := WarehouseActivityLine.COUNT;
+      WarehouseActivityLine.SETRANGE("Action Type",WarehouseActivityLine."Activity Type"::Movement);
+      movementquantity := WarehouseActivityLine.COUNT;
+
+      //list
+      //Button(1,'Empty',     'show empty bins',  '#0f4b7d',binquantity);
+      //Button(2,'Int. Pick', 'internal pick',    '#0f4b7d',ipquantity);
+      //Button(3,'Int. Mvm',  'internal movement',  '#0f4b7d',movquantity);
+      //Button(4,'Blocked',   'show blocked bins',    '#990000',blockedquantity);
+      //Button(5,'Put-away',  'In put-away',    '#006400',putawayquantity);
+      //Button(6,'Pick',      'In pick',        '#328332',pickupquantity);
+      //Button(7,'Movement',  'In movement',   '#328332',movementquantity);
+
+      Button(1,'Empty',     'Показать пустые',  '#0f4b7d',binquantity);
+      Button(2,'Int. Pick', 'Внутр. подбор',    '#0f4b7d',ipquantity);
+      Button(3,'Int. Mvm',  'Внутр. перемещ.',  '#0f4b7d',movquantity);
+      Button(4,'Blocked',   'Заблокированы',    '#990000',blockedquantity);
+      Button(5,'Put-away',  'В размещениях',    '#006400',putawayquantity);
+      Button(6,'Pick',      'В подборе',        '#328332',pickupquantity);
+      Button(7,'Movement',  'В перемещениях',   '#328332',movementquantity);
+    END;
+
+    PROCEDURE RunUDS@1101981047(LocationCode@1101981002 : Code[20];ZoneCode@1101981001 : Code[20];FunctionIndex@1101981000 : Integer;VAR ResponseDocument@1101981003 : Text);
+    VAR
+      BinContent@1101981004 : Record 7302;
+      Bin@1101981005 : Record 7354;
+      Rack@1101981006 : Record 51200;
+      i@1101981007 : Integer;
+      Quantity@1101981008 : Integer;
+      WarehouseActivityLine@1101981009 : Record 5767;
+      WhseInternalPickLine@1101981010 : Record 7334;
+      InternalMovementLine@1101981011 : Record 7347;
+    BEGIN
+      CLEAR(UDSResponse);
+      UDSResponse := UDSResponse.XmlDocument;
+      UDSResponse.LoadXml('<UDS/>');
+      UDSRootNode := UDSResponse.DocumentElement;
+      CASE FunctionIndex OF
+        1: BEGIN
+               //Empty
+               Bin.RESET;
+               Bin.SETRANGE("Location Code",LocationCode);
+               Bin.SETRANGE("Zone Code",ZoneCode);
+               Bin.SETRANGE(Empty,TRUE);
+               IF Bin.FINDFIRST THEN
+                 REPEAT
+                   AddUDSData(FunctionIndex,Bin."Rack ID", Bin.Section,Bin.Level,Bin.Depth,1,'#FF1493');
+                 UNTIL Bin.NEXT = 0;
+             END;
+          2: BEGIN
+               //Int. Mvm
+               Bin.RESET;
+               Bin.SETRANGE("Location Code",LocationCode);
+               Bin.SETRANGE("Zone Code",ZoneCode);
+               IF Bin.FINDFIRST THEN
+                 REPEAT
+                   WhseInternalPickLine.RESET;
+                   WhseInternalPickLine.SETRANGE("Location Code",LocationCode);
+                   WhseInternalPickLine.SETRANGE("To Bin Code",Bin.Code);
+                   Quantity := WhseInternalPickLine.COUNT;
+                   IF Quantity <> 0 THEN
+                     AddUDSData(FunctionIndex,Bin."Rack ID", Bin.Section,Bin.Level,Bin.Depth,Quantity,'#990000');
+                 UNTIL  Bin.NEXT = 0;
+           END;
+          3: BEGIN
+               //Int. Mvm
+               Bin.RESET;
+               Bin.SETRANGE("Location Code",LocationCode);
+               Bin.SETRANGE("Zone Code",ZoneCode);
+               IF Bin.FINDFIRST THEN
+                 REPEAT
+                   InternalMovementLine.RESET;
+                   InternalMovementLine.SETRANGE("Location Code",LocationCode);
+                   InternalMovementLine.SETRANGE("To Bin Code",Bin.Code);
+                   Quantity := InternalMovementLine.COUNT;
+                   IF Quantity <> 0 THEN
+                     AddUDSData(FunctionIndex,Bin."Rack ID", Bin.Section,Bin.Level,Bin.Depth,Quantity,'#990000');
+                 UNTIL  Bin.NEXT = 0;
+           END;
+          4: BEGIN
+               //"Blocked"
+               Bin.RESET;
+               Bin.SETRANGE("Location Code",LocationCode);
+               Bin.SETRANGE("Zone Code",ZoneCode);
+               Bin.SETFILTER("Block Movement",'>0');
+               IF Bin.FINDFIRST THEN
+                 REPEAT
+                   AddUDSData(FunctionIndex,Bin."Rack ID", Bin.Section,Bin.Level,Bin.Depth,1,'#990000');
+                 UNTIL  Bin.NEXT = 0;
+           END;
+          5: BEGIN
+             //"Put-away"
+               Bin.RESET;
+               Bin.SETRANGE("Location Code",LocationCode);
+               Bin.SETRANGE("Zone Code",ZoneCode);
+               IF Bin.FINDFIRST THEN
+                 REPEAT
+                   WarehouseActivityLine.RESET;
+                   WarehouseActivityLine.SETRANGE("Location Code",LocationCode);
+                   WarehouseActivityLine.SETRANGE("Zone Code",ZoneCode);
+                   WarehouseActivityLine.SETRANGE("Bin Code",Bin.Code);
+                   WarehouseActivityLine.SETRANGE("Action Type",WarehouseActivityLine."Activity Type"::"Put-away");
+                   Quantity := WarehouseActivityLine.COUNT;
+                   IF Quantity <> 0 THEN
+                     AddUDSData(FunctionIndex,Bin."Rack ID", Bin.Section,Bin.Level,Bin.Depth,Quantity,'#006400');
+                 UNTIL  Bin.NEXT = 0;
+           END;
+          6: BEGIN
+             //Pick
+               Bin.RESET;
+               Bin.SETRANGE("Location Code",LocationCode);
+               Bin.SETRANGE("Zone Code",ZoneCode);
+               IF Bin.FINDFIRST THEN
+                 REPEAT
+                   WarehouseActivityLine.RESET;
+                   WarehouseActivityLine.SETRANGE("Location Code",LocationCode);
+                   WarehouseActivityLine.SETRANGE("Zone Code",ZoneCode);
+                   WarehouseActivityLine.SETRANGE("Bin Code",Bin.Code);
+                   WarehouseActivityLine.SETRANGE("Action Type",WarehouseActivityLine."Activity Type"::Pick);
+                   Quantity := WarehouseActivityLine.COUNT;
+                   IF Quantity <> 0 THEN
+                     AddUDSData(FunctionIndex,Bin."Rack ID", Bin.Section,Bin.Level,Bin.Depth,Quantity,'#328332');
+                 UNTIL  Bin.NEXT = 0;
+           END;
+          7: BEGIN
+               //Movement
+               Bin.RESET;
+               Bin.SETRANGE("Location Code",LocationCode);
+               Bin.SETRANGE("Zone Code",ZoneCode);
+               IF Bin.FINDFIRST THEN
+                 REPEAT
+                   WarehouseActivityLine.RESET;
+                   WarehouseActivityLine.SETRANGE("Location Code",LocationCode);
+                   WarehouseActivityLine.SETRANGE("Zone Code",ZoneCode);
+                   WarehouseActivityLine.SETRANGE("Bin Code",Bin.Code);
+                   WarehouseActivityLine.SETRANGE("Action Type",WarehouseActivityLine."Activity Type"::Movement);
+                   Quantity := WarehouseActivityLine.COUNT;
+                   IF Quantity <> 0 THEN
+                     AddUDSData(FunctionIndex,Bin."Rack ID",Bin.Section,Bin.Level, Bin.Depth,Quantity,'#66a266');
+                 UNTIL  Bin.NEXT = 0;
+           END;
+      END;
+      ResponseDocument := UDSResponse.OuterXml;
+    END;
+
+    LOCAL PROCEDURE "---- UDF -----"@1101981045();
+    BEGIN
+      //------------------------------------------------------------------------------------
+      //  User Defined Function in Racks
+      //------------------------------------------------------------------------------------
+    END;
+
+    LOCAL PROCEDURE UserDefinedFunctionList@1101981043(LocationCode@1101981001 : Code[20];ZoneCode@1101981000 : Code[20];RackID@1101981002 : Integer);
+    BEGIN
+      AddFunction(1,'Block','selected bins','Заблокировать ячейки?');
+      AddFunction(2,'Unlock','selected bins','Разблокировать ячейки?');
+      AddFunction(3,'Create ','internal pick','Создать внутренний подбор?');
+      AddFunction(4,'Create ','internal movement','Создать внутреннее перемещение');
+      AddFunction(5,'Move > ','all content to right bin','Переместить содержимое вправо?');
+      AddFunction(6,'Move < ','all content to left bin','Переместить содержимое влево?');
+    END;
+
+    PROCEDURE RunFunction@1101981012(functionindex@1101981000 : Integer;LocationCode@1101981001 : Code[20];ZoneCode@1101981002 : Code[20];RackID@1101981003 : Integer;BinCode@1101981004 : Code[20];ItemNo@1101981005 : Code[20];VariantCode@1101981006 : Code[20];Quantity@1101981007 : Decimal) : Text;
+    VAR
+      Bin@1101981008 : Record 7354;
+    BEGIN
+      CASE functionindex OF
+        1: BEGIN
+             Bin.RESET;
+             Bin.SETRANGE("Location Code",LocationCode);
+             Bin.SETRANGE(Code,BinCode);
+             IF Bin.FINDSET THEN
+               REPEAT
+                 Bin.VALIDATE("Block Movement",Bin."Block Movement"::All);
+                 Bin.MODIFY(TRUE);
+               UNTIL Bin.NEXT = 0;
+           END;
+        2: BEGIN
+             Bin.RESET;
+             Bin.SETRANGE("Location Code",LocationCode);
+             Bin.SETRANGE(Code,BinCode);
+             IF Bin.FINDSET THEN
+               REPEAT
+                 Bin.VALIDATE("Block Movement",Bin."Block Movement"::" ");
+                 Bin.MODIFY(TRUE);
+               UNTIL Bin.NEXT = 0;
+           END;
+        3: BEGIN
+           END;
+      END;
+      EXIT('Function '+FORMAT(functionindex)+' is executed');
+    END;
+
+    LOCAL PROCEDURE "----Parameters------"@1101981025();
+    BEGIN
+    END;
+
+    PROCEDURE GetPlanWidth@1101981026() : Integer;
+    VAR
+      WarehouseSetup@1101981000 : Record 5769;
+    BEGIN
+      WarehouseSetup.GET;
+      EXIT(WarehouseSetup."Plan Width");
+    END;
+
+    PROCEDURE GetPlanHeight@1101981027() : Integer;
+    VAR
+      WarehouseSetup@1101981000 : Record 5769;
+    BEGIN
+      WarehouseSetup.GET;
+      EXIT(WarehouseSetup."Plan Height");
+    END;
+
+    PROCEDURE SetPlanWidth@1101981029(value@1101981001 : Integer);
+    VAR
+      WarehouseSetup@1101981000 : Record 5769;
+    BEGIN
+      WarehouseSetup.GET;
+      WarehouseSetup."Plan Width" := value;
+      WarehouseSetup.MODIFY(FALSE);
+    END;
+
+    PROCEDURE SetPlanHeight@1101981028(value@1101981001 : Integer);
+    VAR
+      WarehouseSetup@1101981000 : Record 5769;
+    BEGIN
+      WarehouseSetup.GET;
+      WarehouseSetup."Plan Height" := value;
+      WarehouseSetup.MODIFY(FALSE);
+    END;
+
+    LOCAL PROCEDURE "---- Location -------"@1101981095();
+    BEGIN
+    END;
+
+    PROCEDURE CreateLocation@1101981000(Code@1101981001 : Code[10];Name@1101981002 : Text;Address@1101981009 : Text;PhoneNo@1101981010 : Text;HexColor@1101981011 : Text;PlanWidth@1101981003 : Integer;PlanHeight@1101981004 : Integer;Left@1101981013 : Integer;Top@1101981014 : Integer;Width@1101981015 : Integer;Height@1101981016 : Integer;SchemeVisible@1101981017 : Boolean;BinMandatory@1101981012 : Boolean;RequireReceive@1101981005 : Boolean;RequireShipment@1101981006 : Boolean;RequirePick@1101981007 : Boolean;RequirePutaway@1101981008 : Boolean);
+    VAR
+      Location@1101981000 : Record 14;
+    BEGIN
+      Location.INIT;
+      Location.VALIDATE(Code,Code);
+      Location.INSERT(TRUE);
+      Location.VALIDATE(Name,COPYSTR(Name,1,50));
+      Location.VALIDATE("Name 2",COPYSTR(Name,51,50));
+      Location.VALIDATE(Address,COPYSTR(Address,1,50));
+      Location.VALIDATE("Address 2",COPYSTR(Address,51,50));
+      Location.VALIDATE("Phone No.",COPYSTR(PhoneNo,1,30));
+      Location.VALIDATE("Bin Mandatory",BinMandatory);
+      Location.VALIDATE("Directed Put-away and Pick",TRUE);
+      Location.VALIDATE("Require Receive",RequireReceive);
+      Location.VALIDATE("Require Shipment",RequireShipment);
+      Location.VALIDATE("Require Pick",RequirePick);
+      Location.VALIDATE("Require Put-away",RequirePutaway);
+      Location.VALIDATE(HexColor,COPYSTR(HexColor,1,30));
+      Location.VALIDATE(Left,Left);
+      Location.VALIDATE(Top,Top);
+      Location.VALIDATE(Width,Width);
+      Location.VALIDATE(Height,Height);
+      Location.VALIDATE("Plan Width",PlanWidth);
+      Location.VALIDATE("Plan Height",PlanHeight);
+      Location.VALIDATE("Scheme Visible",SchemeVisible);
+      Location.MODIFY(TRUE);
+    END;
+
+    PROCEDURE ModifyLocation@1101981016(Code@1101981016 : Code[10];PrevCode@1101981017 : Code[10];Name@1101981015 : Text;Address@1101981014 : Text;PhoneNo@1101981013 : Text;HexColor@1101981012 : Text;PlanWidth@1101981011 : Integer;PlanHeight@1101981010 : Integer;Left@1101981009 : Integer;Top@1101981008 : Integer;Width@1101981007 : Integer;Height@1101981006 : Integer;SchemeVisible@1101981018 : Boolean;BinMandatory@1101981005 : Boolean;RequireReceive@1101981004 : Boolean;RequireShipment@1101981003 : Boolean;RequirePick@1101981002 : Boolean;RequirePutaway@1101981001 : Boolean);
+    VAR
+      Location@1101981000 : Record 14;
+    BEGIN
+      IF Code <> PrevCode THEN BEGIN
+        Location.GET(PrevCode);
+        Location.RENAME(Code);
+      END ELSE BEGIN
+        Location.GET(Code)
+      END;
+      IF COPYSTR(Name,1,50)<>Location.Name THEN
+        Location.VALIDATE(Name,COPYSTR(Name,1,50));
+      IF COPYSTR(Name,51,50)<>Location."Name 2" THEN
+        Location.VALIDATE("Name 2",COPYSTR(Name,51,50));
+      IF COPYSTR(Address,1,50)<>Location.Address THEN
+        Location.VALIDATE(Address,COPYSTR(Address,1,50));
+      IF COPYSTR(Address,51,50)<>Location."Address 2" THEN
+        Location.VALIDATE("Address 2",COPYSTR(Address,51,50));
+      IF COPYSTR(PhoneNo,1,30)<>Location."Phone No." THEN
+        Location.VALIDATE("Phone No.",COPYSTR(PhoneNo,1,30));
+      IF Location."Bin Mandatory" <> BinMandatory THEN
+        Location.VALIDATE("Bin Mandatory",BinMandatory);
+      IF Location."Require Receive" <> RequireReceive THEN
+        Location.VALIDATE("Require Receive",RequireReceive);
+      IF Location."Require Shipment"<>RequireShipment THEN
+        Location.VALIDATE("Require Shipment",RequireShipment);
+      IF Location."Require Pick"<>RequirePick THEN
+        Location.VALIDATE("Require Pick",RequirePick);
+      IF Location."Require Put-away"<>RequirePutaway THEN
+        Location.VALIDATE("Require Put-away",RequirePutaway);
+      Location.VALIDATE(HexColor,COPYSTR(HexColor,1,30));
+      Location.VALIDATE(Left,Left);
+      Location.VALIDATE(Top,Top);
+      Location.VALIDATE(Width,Width);
+      Location.VALIDATE(Height,Height);
+      Location.VALIDATE("Plan Width",PlanWidth);
+      Location.VALIDATE("Plan Height",PlanHeight);
+      Location.VALIDATE("Scheme Visible",SchemeVisible);
+      Location.MODIFY(TRUE);
+    END;
+
+    PROCEDURE DeleteLocation@1101981001(Code@1101981001 : Code[10]);
+    VAR
+      Location@1101981000 : Record 14;
+    BEGIN
+      IF NOT Location.GET(Code) THEN
+        ERROR(Text001);
+      Location.DELETE(TRUE);
+    END;
+
+    PROCEDURE SetLocationVisible@1101981094(Code@1101981001 : Code[10];Visible@1101981002 : Boolean);
+    VAR
+      Location@1101981000 : Record 14;
+    BEGIN
+      IF Location.GET(Code) THEN BEGIN
+        Location."Scheme Visible" := Visible;
+        Location.MODIFY(FALSE);
+      END;
+    END;
+
+    PROCEDURE GetLocationCount@1101981089(CodeFilter@1101981002 : Text;OnlyVisibled@1101981001 : Boolean) : Integer;
+    VAR
+      Location@1101981000 : Record 14;
+    BEGIN
+      IF CodeFilter<>'' THEN
+        Location.SETFILTER(Code,CodeFilter);
+      IF OnlyVisibled THEN
+        Location.SETRANGE("Scheme Visible",TRUE);
+      EXIT(Location.COUNT);
+    END;
+
+    PROCEDURE GetLocationList@1101981088(CodeFilter@1101981006 : Text;OnlyVisibled@1101981007 : Boolean;EntriesPosition@1101981008 : Integer;EntriesCount@1101981009 : Integer;VAR ResponseDocument@1101981005 : Text);
+    VAR
+      Response@1101981000 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlDocument";
+      RootNode@1101981002 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      ListNode@1101981001 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      LocationNode@1101981004 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      Location@1101981003 : Record 14;
+      Position@1101981010 : Integer;
+      Counter@1101981011 : Integer;
+    BEGIN
+      Response := Response.XmlDocument;
+      Response.LoadXml('<Locations/>');
+      RootNode := Response.DocumentElement;
+      Position := 1;
+      Counter := 1;
+      Location.RESET;
+      IF CodeFilter<>'' THEN
+        Location.SETFILTER(Code,CodeFilter);
+      IF OnlyVisibled THEN
+        Location.SETRANGE("Scheme Visible",TRUE);
+      IF Location.FINDSET(FALSE) THEN
+        REPEAT
+          IF (Position>=EntriesPosition) THEN BEGIN
+            IF Counter <= EntriesCount THEN BEGIN
+              IF XMLAddElement(RootNode,'L','','',LocationNode) > 0 THEN
+                ERROR(Text000);
+              XMLAddAttribute(LocationNode,'Code',Location.Code);
+              XMLAddAttribute(LocationNode,'Name',Location.Name+Location."Name 2");
+              XMLAddAttribute(LocationNode,'Address',Location.Address+Location."Address 2");
+              XMLAddAttribute(LocationNode,'PhoneNo',Location."Phone No.");
+              XMLAddAttribute(LocationNode,'HexColor',Location.HexColor);
+              XMLAddAttribute(LocationNode,'Left',FORMAT(Location.Left));
+              XMLAddAttribute(LocationNode,'Top',FORMAT(Location.Top));
+              XMLAddAttribute(LocationNode,'Width',FORMAT(Location.Width));
+              XMLAddAttribute(LocationNode,'Height',FORMAT(Location.Height));
+              XMLAddAttribute(LocationNode,'PlanWidth',FORMAT(Location."Plan Width"));
+              XMLAddAttribute(LocationNode,'PlanHeight',FORMAT(Location."Plan Height"));
+              XMLAddAttribute(LocationNode,'BinMandatory',Bool2Txt(Location."Bin Mandatory"));
+              XMLAddAttribute(LocationNode,'RequireReceive',Bool2Txt(Location."Require Receive"));
+              XMLAddAttribute(LocationNode,'RequireShipment',Bool2Txt(Location."Require Shipment"));
+              XMLAddAttribute(LocationNode,'RequirePick',Bool2Txt(Location."Require Pick"));
+              XMLAddAttribute(LocationNode,'RequirePutaway',Bool2Txt(Location."Require Put-away"));
+              XMLAddAttribute(LocationNode,'UseAsInTransit',Bool2Txt(Location."Use As In-Transit"));
+              Location.CALCFIELDS("Zone Quantity","Bin Quantity");
+              XMLAddAttribute(LocationNode,'ZoneQuantity',FORMAT(Location."Zone Quantity"));
+              XMLAddAttribute(LocationNode,'BinQuantity',FORMAT(Location."Bin Quantity"));
+              XMLAddAttribute(LocationNode,'SchemeVisible',Bool2Txt(Location."Scheme Visible"));
+              Counter+=1;
+            END ELSE
+              BREAK;
+          END;
+          Position+=1;
+        UNTIL Location.NEXT = 0;
+      ResponseDocument := Response.OuterXml;
+    END;
+
+    LOCAL PROCEDURE "---- Zone -------"@1101981100();
+    BEGIN
+    END;
+
+    PROCEDURE CreateZone@1101981002(LocationCode@1101981002 : Code[10];Code@1101981003 : Code[10];Description@1101981004 : Text;BinTypeCode@1101981005 : Code[10];ZoneRanking@1101981006 : Integer;CrossDockBinZone@1101981007 : Boolean;SpecialEquipmentCode@1101981008 : Code[10];WarehouseClassCode@1101981009 : Code[10];HexColor@1101981017 : Text;PlanWidth@1101981016 : Integer;PlanHeight@1101981015 : Integer;Left@1101981014 : Integer;Top@1101981013 : Integer;Width@1101981012 : Integer;Height@1101981011 : Integer;SchemeVisible@1101981018 : Boolean);
+    VAR
+      Location@1101981000 : Record 14;
+      Zone@1101981001 : Record 7300;
+      "Bin Type"@1101981010 : Record 7303;
+    BEGIN
+      Zone.INIT;
+      Zone."Location Code" := LocationCode;
+      Zone.Code := Code;
+      Zone.INSERT(TRUE);
+      Zone.VALIDATE(Description,COPYSTR(Description,1,50));
+      Zone.VALIDATE("Bin Type Code",BinTypeCode);
+      Zone.VALIDATE("Zone Ranking",ZoneRanking);
+      Zone.VALIDATE("Cross-Dock Bin Zone",CrossDockBinZone);
+      Zone.VALIDATE("Special Equipment Code",SpecialEquipmentCode);
+      Zone.VALIDATE("Warehouse Class Code",WarehouseClassCode);
+      Zone.VALIDATE(HexColor,COPYSTR(HexColor,1,30));
+      Zone.VALIDATE(Left,Left);
+      Zone.VALIDATE(Top,Top);
+      Zone.VALIDATE(Width,Width);
+      Zone.VALIDATE(Height,Height);
+      Zone.VALIDATE("Plan Width",PlanWidth);
+      Zone.VALIDATE("Plan Height",PlanHeight);
+      Zone."Scheme Visible" := SchemeVisible;
+      Zone.MODIFY(TRUE);
+    END;
+
+    PROCEDURE ModifyZone@1101981008(LocationCode@1101981002 : Code[10];Code@1101981003 : Code[10];PrevCode@1101981018 : Code[10];Description@1101981004 : Text;BinTypeCode@1101981005 : Code[10];ZoneRanking@1101981006 : Integer;CrossDockBinZone@1101981007 : Boolean;SpecialEquipmentCode@1101981008 : Code[10];WarehouseClassCode@1101981009 : Code[10];HexColor@1101981017 : Text;PlanWidth@1101981016 : Integer;PlanHeight@1101981015 : Integer;Left@1101981014 : Integer;Top@1101981013 : Integer;Width@1101981012 : Integer;Height@1101981011 : Integer;SchemeVisible@1101981019 : Boolean);
+    VAR
+      Location@1101981000 : Record 14;
+      Zone@1101981001 : Record 7300;
+      "Bin Type"@1101981010 : Record 7303;
+    BEGIN
+      IF Code <> PrevCode THEN BEGIN
+        Zone.GET(LocationCode,PrevCode);
+        Zone.RENAME(LocationCode,Code);
+      END ELSE BEGIN
+        Zone.GET(LocationCode,Code)
+      END;
+      IF Zone.Description<>COPYSTR(Description,1,50) THEN
+        Zone.VALIDATE(Description,COPYSTR(Description,1,50));
+      IF Zone."Bin Type Code"<>BinTypeCode THEN
+        Zone.VALIDATE("Bin Type Code",BinTypeCode);
+      IF Zone."Zone Ranking"<>ZoneRanking THEN
+        Zone.VALIDATE("Zone Ranking",ZoneRanking);
+      IF Zone."Cross-Dock Bin Zone"<>CrossDockBinZone THEN
+        Zone.VALIDATE("Cross-Dock Bin Zone",CrossDockBinZone);
+      IF Zone."Special Equipment Code"<>SpecialEquipmentCode THEN
+        Zone.VALIDATE("Special Equipment Code",SpecialEquipmentCode);
+      IF Zone."Warehouse Class Code"<>WarehouseClassCode THEN
+        Zone.VALIDATE("Warehouse Class Code",WarehouseClassCode);
+      Zone.VALIDATE(HexColor,COPYSTR(HexColor,1,30));
+      Zone.VALIDATE(Left,Left);
+      Zone.VALIDATE(Top,Top);
+      Zone.VALIDATE(Width,Width);
+      Zone.VALIDATE(Height,Height);
+      Zone.VALIDATE("Plan Width",PlanWidth);
+      Zone.VALIDATE("Plan Height",PlanHeight);
+      Zone."Scheme Visible" := SchemeVisible;
+      Zone.MODIFY(TRUE);
+    END;
+
+    PROCEDURE DeleteZone@1101981003(LocationCode@1101981000 : Code[10];Code@1101981001 : Code[10]);
+    VAR
+      Zone@1101981002 : Record 7300;
+    BEGIN
+      Zone.SETRANGE("Location Code",LocationCode);
+      Zone.SETRANGE(Code,Code);
+      Zone.DELETEALL(TRUE);
+    END;
+
+    PROCEDURE SetZoneVisible@1101981018(LocationCode@1101981000 : Code[10];Code@1101981001 : Code[10];Visible@1101981003 : Boolean);
+    VAR
+      Zone@1101981002 : Record 7300;
+    BEGIN
+      IF Zone.GET(LocationCode,Code) THEN BEGIN
+        Zone."Scheme Visible" := Visible;
+        Zone.MODIFY(FALSE);
+      END;
+    END;
+
+    PROCEDURE GetZoneCount@1101981102(LocationFilter@1101981002 : Text;CodeFilter@1101981001 : Text;OnlyVisibled@1101981003 : Boolean) : Integer;
+    VAR
+      Zone@1101981000 : Record 7300;
+    BEGIN
+      Zone.RESET;
+      IF LocationFilter<>'' THEN
+        Zone.SETFILTER("Location Code",LocationFilter);
+      IF CodeFilter<>'' THEN
+        Zone.SETFILTER(Code,CodeFilter);
+      IF OnlyVisibled THEN
+        Zone.SETRANGE("Scheme Visible",TRUE);
+      EXIT(Zone.COUNT);
+    END;
+
+    PROCEDURE GetZoneList@1101981101(LocationFilter@1101981000 : Text;CodeFilter@1101981001 : Text;OnlyVisibled@1101981008 : Boolean;EntriesPosition@1101981010 : Integer;EntriesCount@1101981009 : Integer;VAR ResponseDocument@1101981002 : Text);
+    VAR
+      Response@1101981007 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlDocument";
+      RootNode@1101981006 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      ListNode@1101981005 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      ZoneNode@1101981004 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      Zone@1101981003 : Record 7300;
+      Position@1101981012 : Integer;
+      Counter@1101981011 : Integer;
+    BEGIN
+      Response := Response.XmlDocument;
+      Response.LoadXml('<Zones/>');
+      RootNode := Response.DocumentElement;
+      Position := 1;
+      Counter := 1;
+      Zone.RESET;
+      IF LocationFilter<>'' THEN
+        Zone.SETFILTER("Location Code",LocationFilter);
+      IF CodeFilter<>'' THEN
+        Zone.SETFILTER(Code,CodeFilter);
+      IF OnlyVisibled THEN
+        Zone.SETRANGE("Scheme Visible",TRUE);
+      IF Zone.FINDSET(FALSE) THEN
+        REPEAT
+          IF (Position>=EntriesPosition) THEN BEGIN
+            IF Counter <= EntriesCount THEN BEGIN
+              IF XMLAddElement(RootNode,'Z','','',ZoneNode) > 0 THEN
+                 ERROR(Text000);
+              XMLAddAttribute(ZoneNode,'LocationCode',Zone."Location Code");
+              XMLAddAttribute(ZoneNode,'Code',Zone.Code);
+              XMLAddAttribute(ZoneNode,'Description',Zone.Description);
+              XMLAddAttribute(ZoneNode,'BinTypeCode',Zone."Bin Type Code");
+              XMLAddAttribute(ZoneNode,'CrossDockBinZone',Bool2Txt(Zone."Cross-Dock Bin Zone"));
+              XMLAddAttribute(ZoneNode,'HexColor',Zone.HexColor);
+              XMLAddAttribute(ZoneNode,'Left',FORMAT(Zone.Left));
+              XMLAddAttribute(ZoneNode,'Top',FORMAT(Zone.Top));
+              XMLAddAttribute(ZoneNode,'Width',FORMAT(Zone.Width));
+              XMLAddAttribute(ZoneNode,'Height',FORMAT(Zone.Height));
+              XMLAddAttribute(ZoneNode,'PlanWidth',FORMAT(Zone."Plan Width"));
+              XMLAddAttribute(ZoneNode,'PlanHeight',FORMAT(Zone."Plan Height"));
+              XMLAddAttribute(ZoneNode,'SpecialEquipmentCode',Zone."Special Equipment Code");
+              XMLAddAttribute(ZoneNode,'WarehouseClassCode',Zone."Warehouse Class Code");
+              Zone.CALCFIELDS("Bin Quantity","Rack Quantity");
+              XMLAddAttribute(ZoneNode,'BinQuantity',FORMAT(Zone."Bin Quantity"));
+              XMLAddAttribute(ZoneNode,'RackQuantity',FORMAT(Zone."Rack Quantity"));
+              XMLAddAttribute(ZoneNode,'SchemeVisible',Bool2Txt(Zone."Scheme Visible"));
+              Counter+=1;
+            END ELSE
+              BREAK;
+          END;
+          Position+=1;
+        UNTIL Zone.NEXT = 0;
+      ResponseDocument := Response.OuterXml;
+    END;
+
+    LOCAL PROCEDURE "------ Bins --------"@1101981111();
+    BEGIN
+    END;
+
+    PROCEDURE CreateBin@1101981006(BinTemplateCode@1101981003 : Code[20];BinCode@1101981006 : Code[20];RackID@1101981016 : Integer;Section@1101981002 : Integer;Level@1101981001 : Integer;Depth@1101981000 : Integer;SectionSpan@1101981013 : Integer;LevelSpan@1101981014 : Integer;DepthSpan@1101981015 : Integer);
+    VAR
+      BinTemplate@1101981007 : Record 7335;
+      BinCreateWkshLine@1101981004 : Record 7338;
+      LineNo@1101981005 : Integer;
+      BinCreationWkshName@1101981008 : Record 7337;
+      BinCreationWkshTemplate@1101981009 : Record 7336;
+      CurrTemplateName@1101981010 : Code[10];
+      CurrWorksheetName@1101981011 : Code[10];
+      Bin@1101981012 : Record 7354;
+      Location@1101981017 : Record 14;
+    BEGIN
+      BinTemplate.GET(BinTemplateCode);
+
+      CurrTemplateName := 'WCS';
+      CurrWorksheetName := 'WCS';
+      BinCreationWkshTemplate.RESET;
+      BinCreationWkshTemplate.SETRANGE(Name,CurrTemplateName);
+      IF NOT BinCreationWkshTemplate.FINDFIRST THEN BEGIN
+        BinCreationWkshTemplate.INIT;
+        BinCreationWkshTemplate.Name := CurrTemplateName;
+        BinCreationWkshTemplate.INSERT(TRUE);
+        BinCreationWkshTemplate.Description := 'WCS Bins Creation';
+        BinCreationWkshTemplate.VALIDATE(Type,BinCreationWkshTemplate.Type::Bin);
+        BinCreationWkshTemplate.MODIFY(TRUE);
+      END;
+
+      BinCreationWkshName.RESET;
+      BinCreationWkshName.SETRANGE("Worksheet Template Name",CurrTemplateName);
+      BinCreationWkshName.SETRANGE(Name,CurrWorksheetName);
+      BinCreationWkshName.SETRANGE("Location Code",BinTemplate."Location Code");
+      IF NOT BinCreationWkshName.FINDFIRST THEN BEGIN
+        BinCreationWkshName.INIT;
+        BinCreationWkshName."Worksheet Template Name" := CurrTemplateName;
+        BinCreationWkshName.Name := CurrWorksheetName;
+        BinCreationWkshName."Location Code" := BinTemplate."Location Code";
+        BinCreationWkshName.INSERT(TRUE);
+      END;
+
+      BinCreateWkshLine.RESET;
+      BinCreateWkshLine.SETRANGE("Worksheet Template Name",CurrTemplateName);
+      BinCreateWkshLine.SETRANGE(Name,CurrWorksheetName);
+      BinCreateWkshLine.SETRANGE("Location Code",BinTemplate."Location Code");
+      IF BinCreateWkshLine.FINDLAST THEN
+        LineNo := BinCreateWkshLine."Line No." + 10000
+      ELSE
+        LineNo := 10000;
+
+      BinCreateWkshLine.INIT;
+      BinCreateWkshLine."Worksheet Template Name" := CurrTemplateName;
+      BinCreateWkshLine.Name := CurrWorksheetName;
+      BinCreateWkshLine."Location Code" := BinTemplate."Location Code";
+      BinCreateWkshLine.Dedicated := BinTemplate.Dedicated;
+      BinCreateWkshLine."Zone Code" := BinTemplate."Zone Code";
+      BinCreateWkshLine.Description := BinTemplate."Bin Description";
+      BinCreateWkshLine."Bin Type Code" := BinTemplate."Bin Type Code";
+      BinCreateWkshLine."Warehouse Class Code" := BinTemplate."Warehouse Class Code";
+      BinCreateWkshLine."Block Movement" := BinTemplate."Block Movement";
+      BinCreateWkshLine."Special Equipment Code" := BinTemplate."Special Equipment Code";
+      BinCreateWkshLine."Bin Ranking" := BinTemplate."Bin Ranking";
+      BinCreateWkshLine."Maximum Cubage" := BinTemplate."Maximum Cubage";
+      BinCreateWkshLine."Maximum Weight" := BinTemplate."Maximum Weight";
+
+      BinCreateWkshLine."Line No." := LineNo;
+      BinCreateWkshLine."Bin Code" := BinCode;
+      IF Bin.GET(BinCreateWkshLine."Location Code",BinCreateWkshLine."Bin Code") THEN
+        ERROR(Text008,BinCreateWkshLine."Bin Code");
+
+      //COPY FROM CU(7318 Bin Create)
+      Bin.INIT;
+      Bin.Code := BinCreateWkshLine."Bin Code";
+      Bin.Description := BinCreateWkshLine.Description;
+      Bin."Location Code" := BinCreateWkshLine."Location Code";
+      Bin.Dedicated := BinCreateWkshLine.Dedicated;
+      Location.GET(BinCreateWkshLine."Location Code");
+      IF Location."Directed Put-away and Pick" THEN BEGIN
+        Bin."Zone Code" := BinCreateWkshLine."Zone Code";
+        Bin."Bin Type Code" := BinCreateWkshLine."Bin Type Code";
+        Bin."Warehouse Class Code" := BinCreateWkshLine."Warehouse Class Code";
+        Bin."Block Movement" := BinCreateWkshLine."Block Movement";
+        Bin."Special Equipment Code" := BinCreateWkshLine."Special Equipment Code";
+        Bin."Bin Ranking" := BinCreateWkshLine."Bin Ranking";
+        Bin."Maximum Cubage" := BinCreateWkshLine."Maximum Cubage";
+        Bin."Maximum Weight" := BinCreateWkshLine."Maximum Weight";
+        Bin."Cross-Dock Bin" := BinCreateWkshLine."Cross-Dock Bin";
+      END;
+
+      Bin."Rack ID" := RackID;
+      Bin.Section := Section;
+      Bin.Level := Level;
+      Bin.Depth := Depth;
+      Bin."Section Span" := SectionSpan;
+      Bin."Level Span" := LevelSpan;
+      Bin."Depth Span" := DepthSpan;
+      Bin.INSERT(TRUE);
+    END;
+
+    PROCEDURE ModifyBin@1101981023(LocationCode@1101981003 : Code[20];BinCode@1101981006 : Code[20];PrevBinCode@1101981017 : Code[20];RackID@1101981016 : Integer;Section@1101981002 : Integer;Level@1101981001 : Integer;Depth@1101981000 : Integer;SectionSpan@1101981013 : Integer;LevelSpan@1101981014 : Integer;DepthSpan@1101981015 : Integer;BinRanking@1101981018 : Integer;MaximumCubage@1101981019 : Decimal;MaximumWeight@1101981020 : Decimal;BlockMovement@1101981021 : Integer;BinTypeCode@1101981022 : Code[20];WarehouseClassCode@1101981024 : Code[10];SpecialEquipmentCode@1101981025 : Code[10]);
+    VAR
+      BinTemplate@1101981007 : Record 7335;
+      BinCreateWkshLine@1101981004 : Record 7338;
+      LineNo@1101981005 : Integer;
+      BinCreationWkshName@1101981008 : Record 7337;
+      BinCreationWkshTemplate@1101981009 : Record 7336;
+      CurrTemplateName@1101981010 : Code[10];
+      CurrWorksheetName@1101981011 : Code[10];
+      Bin@1101981012 : Record 7354;
+    BEGIN
+      IF BinCode <> PrevBinCode THEN BEGIN
+        Bin.GET(LocationCode,PrevBinCode);
+        Bin.RENAME(LocationCode,BinCode);
+      END ELSE BEGIN
+        Bin.GET(LocationCode,BinCode)
+      END;
+      Bin."Rack ID" := RackID;
+      Bin.Section := Section;
+      Bin.Level := Level;
+      Bin.Depth := Depth;
+      Bin."Section Span" := SectionSpan;
+      Bin."Level Span" := LevelSpan;
+      Bin."Depth Span" := DepthSpan;
+      IF BinRanking <> Bin."Bin Ranking" THEN
+        Bin.VALIDATE("Bin Ranking",BinRanking);
+      IF MaximumCubage <> Bin."Maximum Cubage" THEN
+        Bin.VALIDATE("Maximum Cubage",MaximumCubage);
+      IF MaximumWeight <> Bin."Maximum Weight" THEN
+        Bin.VALIDATE("Maximum Weight",MaximumWeight);
+      IF BlockMovement <> Bin."Block Movement" THEN
+        Bin.VALIDATE("Block Movement",BlockMovement);
+      IF BinTypeCode <> Bin."Bin Type Code" THEN
+        Bin.VALIDATE("Bin Type Code",BinTypeCode);
+      //IF Dedicated <> Bin.Dedicated THEN
+      //  Bin.VALIDATE(Dedicated,Dedicated);
+      IF WarehouseClassCode <> Bin."Warehouse Class Code" THEN
+        Bin.VALIDATE("Warehouse Class Code",WarehouseClassCode);
+      IF SpecialEquipmentCode <> Bin."Special Equipment Code" THEN
+        Bin.VALIDATE("Special Equipment Code",SpecialEquipmentCode);
+
+      Bin.MODIFY(TRUE);
+    END;
+
+    PROCEDURE DeleteBin@1101981007(LocationCodeFilter@1101981003 : Text;Code@1101981000 : Code[10]);
+    VAR
+      Bin@1101981004 : Record 7354;
+    BEGIN
+      Bin.RESET;
+      Bin.SETRANGE("Location Code",LocationCodeFilter);
+      Bin.SETRANGE(Code,Code);
+      Bin.DELETEALL(TRUE);
+    END;
+
+    PROCEDURE GetBinCount@1101981112(LocationCodeFilter@1101981002 : Text;ZoneCodeFilter@1101981001 : Text;RackIDFilter@1101981000 : Text;BinCodeFilter@1101981004 : Text) : Integer;
+    VAR
+      Bin@1101981003 : Record 7354;
+    BEGIN
+      Bin.RESET;
+      IF LocationCodeFilter<>'' THEN
+        Bin.SETFILTER("Location Code",LocationCodeFilter);
+      IF ZoneCodeFilter<>'' THEN
+        Bin.SETFILTER("Zone Code",ZoneCodeFilter);
+      IF RackIDFilter<>'' THEN
+        Bin.SETFILTER("Rack ID",RackIDFilter);
+      IF BinCodeFilter<>'' THEN
+        Bin.SETFILTER(Code,BinCodeFilter);
+      EXIT(Bin.COUNT);
+    END;
+
+    PROCEDURE GetBinList@1101981113(LocationCodeFilter@1101981005 : Text;ZoneCodeFilter@1101981004 : Text;RackIDFilter@1101981003 : Text;BinCodeFilter@1101981009 : Text;EntriesPosition@1101981011 : Integer;EntriesCount@1101981010 : Integer;VAR ResponseDocument@1101981001 : Text);
+    VAR
+      Response@1101981008 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlDocument";
+      RootNode@1101981007 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      ListNode@1101981006 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      BinNode@1101981002 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      Bin@1101981000 : Record 7354;
+      Position@1101981013 : Integer;
+      Counter@1101981012 : Integer;
+    BEGIN
+      Response := Response.XmlDocument;
+      Response.LoadXml('<Bins/>');
+      RootNode := Response.DocumentElement;
+      Position := 1;
+      Counter := 1;
+      Bin.RESET;
+      IF LocationCodeFilter<>'' THEN
+        Bin.SETRANGE("Location Code",LocationCodeFilter);
+      IF ZoneCodeFilter<>'' THEN
+        Bin.SETRANGE("Zone Code",ZoneCodeFilter);
+      IF RackIDFilter<>'' THEN
+        Bin.SETFILTER("Rack ID",RackIDFilter);
+      IF BinCodeFilter<>'' THEN
+        Bin.SETFILTER(Code,BinCodeFilter);
+      IF Bin.FINDSET(FALSE) THEN
+        REPEAT
+          IF (Position>=EntriesPosition) THEN BEGIN
+            IF Counter <= EntriesCount THEN BEGIN
+              IF XMLAddElement(RootNode,'B','','',BinNode) > 0 THEN
+                ERROR(Text000);
+              XMLAddAttribute(BinNode,'LocationCode',Bin."Location Code");
+              XMLAddAttribute(BinNode,'ZoneCode',Bin."Zone Code");
+              XMLAddAttribute(BinNode,'Code',Bin.Code);
+              XMLAddAttribute(BinNode,'Description',Bin.Description);
+              XMLAddAttribute(BinNode,'BinType',Bin."Bin Type Code");
+              XMLAddAttribute(BinNode,'Empty',Bool2Txt(Bin.Empty));
+              XMLAddAttribute(BinNode,'BlockMovement',Option2Txt(Bin."Block Movement"));
+              XMLAddAttribute(BinNode,'RackID',FORMAT(Bin."Rack ID"));
+              XMLAddAttribute(BinNode,'Section',FORMAT(Bin.Section));
+              XMLAddAttribute(BinNode,'Level',FORMAT(Bin.Level));
+              XMLAddAttribute(BinNode,'Depth',FORMAT(Bin.Depth));
+              XMLAddAttribute(BinNode,'LevelSpan',FORMAT(Bin."Level Span"));
+              XMLAddAttribute(BinNode,'SectionSpan',FORMAT(Bin."Section Span"));
+              XMLAddAttribute(BinNode,'DepthSpan',FORMAT(Bin."Depth Span"));
+              XMLAddAttribute(BinNode,'BinRanking',FORMAT(Bin."Bin Ranking"));
+              XMLAddAttribute(BinNode,'MaximumCubage',FORMAT(Bin."Maximum Cubage"));
+              XMLAddAttribute(BinNode,'MaximumWeight',FORMAT(Bin."Maximum Weight"));
+              XMLAddAttribute(BinNode,'AdjustmentBin',Bool2Txt(Bin."Adjustment Bin"));
+              XMLAddAttribute(BinNode,'WarehouseClassCode',Bin."Warehouse Class Code");
+              XMLAddAttribute(BinNode,'SpecialEquipmentCode',Bin."Special Equipment Code");
+              Counter+=1;
+            END ELSE
+              BREAK;
+          END;
+          Position+=1;
+        UNTIL Bin.NEXT = 0;
+      ResponseDocument := Response.OuterXml;
+    END;
+
+    LOCAL PROCEDURE "---- Rack ------"@1101981121();
+    BEGIN
+    END;
+
+    PROCEDURE CreateRack@1101981004(LocationCode@1101981000 : Code[10];ZoneCode@1101981001 : Code[10];No@1101981002 : Code[10];Sections@1101981003 : Integer;Levels@1101981004 : Integer;Depth@1101981005 : Integer;Left@1101981006 : Integer;Top@1101981007 : Integer;Width@1101981008 : Integer;Height@1101981009 : Integer;RackOrientation@1101981010 : Integer;SchemeVisible@1101981012 : Boolean;Comment@1101981014 : Text) : Integer;
+    VAR
+      Rack@1101981011 : Record 51200;
+      ID@1101981013 : Integer;
+    BEGIN
+      Rack.RESET;
+      IF Rack.FINDLAST THEN
+        ID := Rack.ID + 1
+      ELSE
+        ID := 1;
+      Rack.INIT;
+      Rack.ID := ID;
+      Rack.INSERT(TRUE);
+      Rack."Location Code" := LocationCode;
+      Rack."Zone Code" := ZoneCode;
+      Rack.No := No;
+      Rack.Sections := Sections;
+      Rack.Levels := Levels;
+      Rack.Depth := Depth;
+      Rack.Left := Left;
+      Rack.Top := Top;
+      Rack.Width := Width;
+      Rack.Height := Height;
+      Rack."Rack Orientation" := RackOrientation;
+      Rack."Scheme Visible" := SchemeVisible;
+      Rack.Comment := Comment;
+      Rack.MODIFY(TRUE);
+      EXIT(ID);
+    END;
+
+    PROCEDURE ModifyRack@1101981123(ID@1101981014 : Integer;No@1101981012 : Code[10];Sections@1101981007 : Integer;Levels@1101981006 : Integer;Depth@1101981005 : Integer;Left@1101981004 : Integer;Top@1101981003 : Integer;Width@1101981002 : Integer;Height@1101981001 : Integer;RackOrientation@1101981000 : Integer;SchemeVisible@1101981013 : Boolean;Comment@1101981008 : Text);
+    VAR
+      Rack@1101981011 : Record 51200;
+    BEGIN
+      Rack.GET(ID);
+      Rack.No := No;
+      Rack.Sections := Sections;
+      Rack.Levels := Levels;
+      Rack.Depth := Depth;
+      Rack.Left := Left;
+      Rack.Top := Top;
+      Rack.Width := Width;
+      Rack.Height := Height;
+      Rack."Rack Orientation" := RackOrientation;
+      Rack."Scheme Visible" := SchemeVisible;
+      Rack.Comment := Comment;
+      Rack.MODIFY(TRUE);
+    END;
+
+    PROCEDURE DeleteRack@1101981122(ID@1101981000 : Integer);
+    VAR
+      Rack@1101981003 : Record 51200;
+    BEGIN
+      IF Rack.GET(ID) THEN
+        Rack.DELETE(TRUE);
+    END;
+
+    PROCEDURE SetRackVisible@1101981017(ID@1101981000 : Integer;Visible@1101981004 : Boolean);
+    VAR
+      Rack@1101981003 : Record 51200;
+    BEGIN
+      IF Rack.GET(ID) THEN BEGIN
+        Rack."Scheme Visible" := Visible;
+        Rack.MODIFY(FALSE);
+      END;
+    END;
+
+    PROCEDURE GetRackCount@1101981124(LocationCodeFilter@1101981001 : Text;ZoneCodeFilter@1101981000 : Text;NOFilter@1101981004 : Text;OnlyVisibled@1101981003 : Boolean) : Integer;
+    VAR
+      Rack@1101981002 : Record 51200;
+    BEGIN
+      Rack.RESET;
+      IF LocationCodeFilter<>'' THEN
+        Rack.SETFILTER("Location Code",LocationCodeFilter);
+      IF ZoneCodeFilter<>'' THEN
+        Rack.SETFILTER("Zone Code",ZoneCodeFilter);
+      IF NOFilter<>'' THEN
+        Rack.SETFILTER(No,NOFilter);
+      IF OnlyVisibled THEN
+        Rack.SETRANGE("Scheme Visible",TRUE);
+      EXIT(Rack.COUNT);
+    END;
+
+    PROCEDURE GetRackList@1101981125(LocationCodeFilter@1101981001 : Text;ZoneCodeFilter@1101981000 : Text;OnlyVisibled@1101981008 : Boolean;EntriesPosition@1101981010 : Integer;EntriesCount@1101981009 : Integer;VAR ResponseDocument@1101981007 : Text);
+    VAR
+      Response@1101981006 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlDocument";
+      RootNode@1101981005 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      ListNode@1101981004 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      RackNode@1101981003 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      Rack@1101981002 : Record 51200;
+      Position@1101981012 : Integer;
+      Counter@1101981011 : Integer;
+    BEGIN
+      Response := Response.XmlDocument;
+      Response.LoadXml('<Racks/>');
+      RootNode := Response.DocumentElement;
+      Position := 1;
+      Counter := 1;
+      Rack.RESET;
+      IF LocationCodeFilter<>'' THEN
+        Rack.SETRANGE("Location Code",LocationCodeFilter);
+      IF ZoneCodeFilter<>'' THEN
+        Rack.SETRANGE("Zone Code",ZoneCodeFilter);
+      IF OnlyVisibled THEN
+        Rack.SETRANGE("Scheme Visible",TRUE);
+      IF Rack.FINDSET(FALSE) THEN
+        REPEAT
+          IF (Position>=EntriesPosition) THEN BEGIN
+            IF Counter <= EntriesCount THEN BEGIN
+              IF XMLAddElement(RootNode,'R','','',RackNode) > 0 THEN
+                ERROR(Text000);
+              XMLAddAttribute(RackNode,'ID',FORMAT(Rack.ID));
+              XMLAddAttribute(RackNode,'LocationCode',Rack."Location Code");
+              XMLAddAttribute(RackNode,'ZoneCode',Rack."Zone Code");
+              XMLAddAttribute(RackNode,'No',Rack.No);
+              XMLAddAttribute(RackNode,'Sections',FORMAT(Rack.Sections));
+              XMLAddAttribute(RackNode,'Levels',FORMAT(Rack.Levels));
+              XMLAddAttribute(RackNode,'Depth',FORMAT(Rack.Depth));
+              XMLAddAttribute(RackNode,'Left',FORMAT(Rack.Left));
+              XMLAddAttribute(RackNode,'Top',FORMAT(Rack.Top));
+              XMLAddAttribute(RackNode,'SchemeVisible',Bool2Txt(Rack."Scheme Visible"));
+              XMLAddAttribute(RackNode,'RackOrientation',FORMAT(Rack."Rack Orientation"));
+              IF Rack.Comment<>'' THEN
+                XMLAddAttribute(RackNode,'Comment',FORMAT(Rack.Comment));
+              Counter+=1;
+            END ELSE
+              BREAK;
+          END;
+          Position+=1;
+        UNTIL Rack.NEXT = 0;
+      ResponseDocument := Response.OuterXml;
+    END;
+
+    LOCAL PROCEDURE "---- Bin Template ------"@1101981133();
+    BEGIN
+    END;
+
+    PROCEDURE CreateBinTemplate@1101981019(LocationCode@1101981000 : Code[10];ZoneCode@1101981001 : Code[10];Code@1101981002 : Code[10];Description@1101981003 : Text[50];BinTypeCode@1101981004 : Code[10];WarehouseClassCode@1101981005 : Code[10];BlockMovement@1101981006 : Integer;SpecialEquipmentCode@1101981007 : Code[10];BinRanking@1101981008 : Integer;MaximumCubage@1101981009 : Decimal;MaximumWeight@1101981010 : Decimal;Dedicated1@1101981012 : Boolean);
+    VAR
+      BinTemplate@1101981011 : Record 7335;
+    BEGIN
+      BinTemplate.INIT;
+      BinTemplate.Code := Code;
+      BinTemplate.INSERT(TRUE);
+      BinTemplate.VALIDATE("Location Code",LocationCode);
+      BinTemplate.VALIDATE("Zone Code",ZoneCode);
+      BinTemplate.VALIDATE(Description,Description);
+      BinTemplate.VALIDATE("Bin Type Code",BinTypeCode);
+      BinTemplate.VALIDATE("Warehouse Class Code",WarehouseClassCode);
+      BinTemplate.VALIDATE("Block Movement",BlockMovement);
+      BinTemplate.VALIDATE("Special Equipment Code",SpecialEquipmentCode);
+      BinTemplate.VALIDATE("Bin Ranking",BinRanking);
+      BinTemplate.VALIDATE("Maximum Cubage",MaximumCubage);
+      BinTemplate.VALIDATE("Maximum Weight",MaximumWeight);
+      BinTemplate.VALIDATE(Dedicated,Dedicated1);
+      BinTemplate.MODIFY(TRUE);
+    END;
+
+    PROCEDURE ModifyBinTemplate@1101981134(LocationCode@1101981000 : Code[10];ZoneCode@1101981001 : Code[10];Code@1101981002 : Code[10];Description@1101981003 : Text[50];BinTypeCode@1101981004 : Code[10];WarehouseClassCode@1101981005 : Code[10];BlockMovement@1101981006 : Integer;SpecialEquipmentCode@1101981007 : Code[10];BinRanking@1101981008 : Integer;MaximumCubage@1101981009 : Decimal;MaximumWeight@1101981010 : Decimal;Dedicated1@1101981012 : Boolean);
+    VAR
+      BinTemplate@1101981011 : Record 7335;
+    BEGIN
+      IF BinTemplate.GET(Code) THEN BEGIN
+        BinTemplate.VALIDATE("Location Code",LocationCode);
+        BinTemplate.VALIDATE("Zone Code",ZoneCode);
+        BinTemplate.VALIDATE(Description,Description);
+        BinTemplate.VALIDATE("Bin Type Code",BinTypeCode);
+        BinTemplate.VALIDATE("Warehouse Class Code",WarehouseClassCode);
+        BinTemplate.VALIDATE("Block Movement",BlockMovement);
+        BinTemplate.VALIDATE("Special Equipment Code",SpecialEquipmentCode);
+        BinTemplate.VALIDATE("Bin Ranking",BinRanking);
+        BinTemplate.VALIDATE("Maximum Cubage",MaximumCubage);
+        BinTemplate.VALIDATE("Maximum Weight",MaximumWeight);
+        BinTemplate.VALIDATE(Dedicated,Dedicated1);
+        BinTemplate.MODIFY(TRUE);
+      END;
+    END;
+
+    PROCEDURE DeleteBinTemplate@1101981020(Code@1101981000 : Code[10]);
+    VAR
+      BinTemplate@1101981001 : Record 7335;
+    BEGIN
+      IF BinTemplate.GET(Code) THEN
+        BinTemplate.DELETE(TRUE);
+    END;
+
+    PROCEDURE GetBinTemplateCount@1101981135() : Integer;
+    VAR
+      BinTemplate@1101981000 : Record 7335;
+    BEGIN
+      EXIT(BinTemplate.COUNT);
+    END;
+
+    PROCEDURE GetBinTemplateList@1101981136(EntriesPosition@1101981007 : Integer;EntriesCount@1101981006 : Integer;VAR ResponseDocument@1101981000 : Text);
+    VAR
+      Response@1101981005 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlDocument";
+      RootNode@1101981004 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      ListNode@1101981003 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      BinTemplateNode@1101981002 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      BinTemplate@1101981001 : Record 7335;
+      Position@1101981009 : Integer;
+      Counter@1101981008 : Integer;
+    BEGIN
+      Response := Response.XmlDocument;
+      Response.LoadXml('<BinTemplates/>');
+      RootNode := Response.DocumentElement;
+      Position := 1;
+      Counter := 1;
+      BinTemplate.RESET;
+      IF BinTemplate.FINDSET(FALSE) THEN
+        REPEAT
+          IF (Position>=EntriesPosition) THEN BEGIN
+            IF Counter <= EntriesCount THEN BEGIN
+              IF XMLAddElement(RootNode,'BT','','',BinTemplateNode) > 0 THEN
+                ERROR(Text000);
+              XMLAddAttribute(BinTemplateNode,'Code',BinTemplate.Code);
+              XMLAddAttribute(BinTemplateNode,'Description',BinTemplate.Description);
+              XMLAddAttribute(BinTemplateNode,'BinTypeCode',BinTemplate."Bin Type Code");
+              XMLAddAttribute(BinTemplateNode,'BlockMovement',Option2Txt(BinTemplate."Block Movement"));
+              XMLAddAttribute(BinTemplateNode,'BinDescription',BinTemplate."Bin Description");
+              XMLAddAttribute(BinTemplateNode,'LocationCode',BinTemplate."Location Code");
+              XMLAddAttribute(BinTemplateNode,'ZoneCode',BinTemplate."Zone Code");
+              XMLAddAttribute(BinTemplateNode,'MaximumCubage',FORMAT(BinTemplate."Maximum Cubage"));
+              XMLAddAttribute(BinTemplateNode,'MaximumWeight',FORMAT(BinTemplate."Maximum Weight"));
+              XMLAddAttribute(BinTemplateNode,'SpecialEquipmentCode',BinTemplate."Special Equipment Code");
+              XMLAddAttribute(BinTemplateNode,'WarehouseClassCode',BinTemplate."Warehouse Class Code");
+              XMLAddAttribute(BinTemplateNode,'BinRanking',FORMAT(BinTemplate."Bin Ranking"));
+              XMLAddAttribute(BinTemplateNode,'Dedicated',Bool2Txt(BinTemplate.Dedicated));
+              Counter+=1;
+            END ELSE
+              BREAK;
+          END;
+          Position+=1;
+        UNTIL BinTemplate.NEXT = 0;
+      ResponseDocument := Response.OuterXml;
+    END;
+
+    LOCAL PROCEDURE "---- Bin Type -------"@1101981148();
+    BEGIN
+    END;
+
+    PROCEDURE GetBinTypeCount@1101981149() : Integer;
+    VAR
+      BinType@1101981000 : Record 7303;
+    BEGIN
+      EXIT(BinType.COUNT);
+    END;
+
+    PROCEDURE GetBinTypeList@1101981150(EntriesPosition@1101981007 : Integer;EntriesCount@1101981006 : Integer;VAR ResponseDocument@1101981000 : Text);
+    VAR
+      Response@1101981005 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlDocument";
+      RootNode@1101981004 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      ListNode@1101981003 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      BinTypeNode@1101981002 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      BinType@1101981001 : Record 7303;
+      Position@1101981009 : Integer;
+      Counter@1101981008 : Integer;
+    BEGIN
+      Response := Response.XmlDocument;
+      Response.LoadXml('<BinTypes/>');
+      RootNode := Response.DocumentElement;
+      Position := 1;
+      Counter := 1;
+      BinType.RESET;
+      IF BinType.FINDSET(FALSE) THEN
+        REPEAT
+          IF (Position>=EntriesPosition) THEN BEGIN
+            IF Counter <= EntriesCount THEN BEGIN
+              IF XMLAddElement(RootNode,'BT','','',BinTypeNode) > 0 THEN
+                ERROR(Text000);
+              XMLAddAttribute(BinTypeNode,'Code',BinType.Code);
+              XMLAddAttribute(BinTypeNode,'Description',BinType.Description);
+              XMLAddAttribute(BinTypeNode,'Pick',Bool2Txt(BinType.Pick));
+              XMLAddAttribute(BinTypeNode,'PutAway',Bool2Txt(BinType."Put Away"));
+              XMLAddAttribute(BinTypeNode,'Receive',Bool2Txt(BinType.Receive));
+              XMLAddAttribute(BinTypeNode,'Ship',Bool2Txt(BinType.Ship));
+              Counter+=1;
+            END ELSE
+              BREAK;
+          END;
+          Position+=1;
+        UNTIL BinType.NEXT = 0;
+      ResponseDocument := Response.OuterXml;
+    END;
+
+    LOCAL PROCEDURE "---- Bin Content ------"@1101981154();
+    BEGIN
+    END;
+
+    PROCEDURE GetBinContentCount@1101981155(LocationCodeFilter@1101981001 : Text;ZoneCodeFilter@1101981002 : Text;BinCodeFilter@1101981003 : Text;ItemNoFilter@1101981004 : Text;VariantCodeFilter@1101981005 : Text) : Integer;
+    VAR
+      BinContent@1101981000 : Record 7302;
+    BEGIN
+      BinContent.RESET;
+      IF LocationCodeFilter<>'' THEN
+        BinContent.SETFILTER("Location Code",LocationCodeFilter);
+      IF ZoneCodeFilter<>'' THEN
+        BinContent.SETFILTER("Zone Code",ZoneCodeFilter);
+      IF BinCodeFilter<>'' THEN
+        BinContent.SETFILTER("Bin Code",BinCodeFilter);
+      IF ItemNoFilter<>'' THEN
+        BinContent.SETFILTER("Item No.",ItemNoFilter);
+      IF VariantCodeFilter<>'' THEN
+        BinContent.SETFILTER("Variant Code",VariantCodeFilter);
+      EXIT(BinContent.COUNT);
+    END;
+
+    PROCEDURE GetBinContentList@1101981156(LocationCodeFilter@1101981010 : Text;ZoneCodeFilter@1101981009 : Text;BinCodeFilter@1101981008 : Text;ItemNoFilter@1101981007 : Text;VariantCodeFilter@1101981006 : Text;EntriesPosition@1101981012 : Integer;EntriesCount@1101981011 : Integer;VAR ResponseDocument@1101981001 : Text);
+    VAR
+      BinContent@1101981000 : Record 7302;
+      Response@1101981005 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlDocument";
+      RootNode@1101981004 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      ListNode@1101981003 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      BinContentNode@1101981002 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      Position@1101981014 : Integer;
+      Counter@1101981013 : Integer;
+      Item@1101981015 : Record 27;
+      Description1@1101981016 : Text;
+      ItemVariant@1101981017 : Record 5401;
+    BEGIN
+      Response := Response.XmlDocument;
+      Response.LoadXml('<BinContent/>');
+      RootNode := Response.DocumentElement;
+      Position := 1;
+      Counter := 1;
+      BinContent.RESET;
+      BinContent.SETCURRENTKEY("Location Code","Bin Code","Item No.","Variant Code","Unit of Measure Code");
+      IF LocationCodeFilter<>'' THEN
+        BinContent.SETFILTER("Location Code",LocationCodeFilter);
+      IF BinCodeFilter<>'' THEN
+        BinContent.SETFILTER("Bin Code",BinCodeFilter);
+      IF ItemNoFilter<>'' THEN
+        BinContent.SETFILTER("Item No.",ItemNoFilter);
+      IF VariantCodeFilter<>'' THEN
+        BinContent.SETFILTER("Variant Code",VariantCodeFilter);
+      IF ZoneCodeFilter<>'' THEN
+        BinContent.SETFILTER("Zone Code",ZoneCodeFilter);
+      IF BinContent.FINDSET(FALSE) THEN
+        REPEAT
+          IF (Position>=EntriesPosition) THEN BEGIN
+            IF Counter <= EntriesCount THEN BEGIN
+              IF XMLAddElement(RootNode,'BC','','',BinContentNode) > 0 THEN
+                ERROR(Text000);
+              XMLAddAttribute(BinContentNode,'LocationCode',BinContent."Location Code");
+              XMLAddAttribute(BinContentNode,'ZoneCode',BinContent."Zone Code");
+              XMLAddAttribute(BinContentNode,'BinCode',BinContent."Bin Code");
+              XMLAddAttribute(BinContentNode,'BinType',BinContent."Bin Type Code");
+              XMLAddAttribute(BinContentNode,'BlockMovement',Option2Txt(BinContent."Block Movement"));
+              XMLAddAttribute(BinContentNode,'ItemNo',BinContent."Item No.");
+              XMLAddAttribute(BinContentNode,'VariantCode',BinContent."Variant Code");
+              Description1 := '';
+              IF BinContent."Variant Code"='' THEN BEGIN
+                IF Item.GET(BinContent."Item No.") THEN
+                  Description1 := Item.Description+Item."Description 2";
+              END ELSE BEGIN
+                IF ItemVariant.GET(BinContent."Item No.",BinContent."Variant Code") THEN
+                  Description1 := ItemVariant.Description+ItemVariant."Description 2";
+              END;
+              XMLAddAttribute(BinContentNode,'Description',Description1);
+              BinContent.CALCFIELDS("Neg. Adjmt. Qty.","Pick Qty.","Pos. Adjmt. Qty.","Put-away Qty.",Quantity,"Quantity (Base)");
+              XMLAddAttribute(BinContentNode,'NegAdjmtQty',FORMAT(BinContent."Neg. Adjmt. Qty."));
+              XMLAddAttribute(BinContentNode,'PickQty',FORMAT(BinContent."Pick Qty."));
+              XMLAddAttribute(BinContentNode,'PosAdjmtQty',FORMAT(BinContent."Pos. Adjmt. Qty."));
+              XMLAddAttribute(BinContentNode,'PutawayQty',FORMAT(BinContent."Put-away Qty."));
+              XMLAddAttribute(BinContentNode,'Quantity',FORMAT(BinContent.Quantity));
+              XMLAddAttribute(BinContentNode,'QuantityBase',FORMAT(BinContent."Quantity (Base)"));
+              XMLAddAttribute(BinContentNode,'UnitofMeasureCode',BinContent."Unit of Measure Code");
+              Counter+=1;
+            END ELSE
+              BREAK;
+          END;
+          Position+=1;
+        UNTIL BinContent.NEXT = 0;
+      ResponseDocument := Response.OuterXml;
+    END;
+
+    LOCAL PROCEDURE "---- Item Idemtifier -----"@1101981166();
+    BEGIN
+    END;
+
+    PROCEDURE GetItemIdentifierCount@1101981167(BarCodeFilter@1101981000 : Text;ItemNoFilter@1101981001 : Text;VariantCodeFilter@1101981002 : Text) : Integer;
+    VAR
+      ItemIdentifier@1101981003 : Record 7704;
+    BEGIN
+      ItemIdentifier.RESET;
+      IF BarCodeFilter<>'' THEN
+        ItemIdentifier.SETFILTER(Code,BarCodeFilter);
+      IF ItemNoFilter<>'' THEN
+        ItemIdentifier.SETFILTER("Item No.",ItemNoFilter);
+      IF VariantCodeFilter<>'' THEN
+        ItemIdentifier.SETFILTER("Variant Code",VariantCodeFilter);
+      EXIT(ItemIdentifier.COUNT);
+    END;
+
+    PROCEDURE GetItemIdentifierList@1101981168(BarCodeFilter@1101981002 : Text;ItemNoFilter@1101981001 : Text;VariantCodeFilter@1101981000 : Text;EntriesPosition@1101981010 : Integer;EntriesCount@1101981009 : Integer;VAR ResponseDocument@1101981003 : Text);
+    VAR
+      ItemIdentifier@1101981008 : Record 7704;
+      Response@1101981007 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlDocument";
+      RootNode@1101981006 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      ListNode@1101981005 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      ItemIdentifiertNode@1101981004 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      Position@1101981012 : Integer;
+      Counter@1101981011 : Integer;
+    BEGIN
+      Response := Response.XmlDocument;
+      Response.LoadXml('<BinContent/>');
+      RootNode := Response.DocumentElement;
+      Position := 1;
+      Counter := 1;
+      ItemIdentifier.RESET;
+      IF BarCodeFilter<>'' THEN
+        ItemIdentifier.SETFILTER(Code,BarCodeFilter);
+      IF ItemNoFilter<>'' THEN
+        ItemIdentifier.SETFILTER("Item No.",ItemNoFilter);
+      IF VariantCodeFilter<>'' THEN
+        ItemIdentifier.SETFILTER("Variant Code",VariantCodeFilter);
+      IF ItemIdentifier.FINDSET(FALSE) THEN
+        REPEAT
+          IF (Position>=EntriesPosition) THEN BEGIN
+            IF Counter <= EntriesCount THEN BEGIN
+              IF XMLAddElement(RootNode,'II','','',ItemIdentifiertNode) > 0 THEN
+                ERROR(Text000);
+              XMLAddAttribute(ItemIdentifiertNode,'BarCode',ItemIdentifier.Code);
+              XMLAddAttribute(ItemIdentifiertNode,'ItemNo',ItemIdentifier."Item No.");
+              XMLAddAttribute(ItemIdentifiertNode,'VariantCode',ItemIdentifier."Variant Code");
+              XMLAddAttribute(ItemIdentifiertNode,'UoM',ItemIdentifier."Unit of Measure Code");
+              Counter+=1;
+            END ELSE
+              BREAK;
+          END;
+          Position+=1;
+        UNTIL ItemIdentifier.NEXT = 0;
+      ResponseDocument := Response.OuterXml;
+    END;
+
+    LOCAL PROCEDURE "---- Warehouse Class ----"@1101981174();
+    BEGIN
+    END;
+
+    PROCEDURE GetWarehouseClassCount@1101981175() : Integer;
+    VAR
+      WarehouseClass@1101981000 : Record 7304;
+    BEGIN
+      EXIT(WarehouseClass.COUNT);
+    END;
+
+    PROCEDURE GetWarehouseClassList@1101981176(EntriesPosition@1101981007 : Integer;EntriesCount@1101981006 : Integer;VAR ResponseDocument@1101981005 : Text);
+    VAR
+      Response@1101981004 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlDocument";
+      RootNode@1101981003 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      ListNode@1101981002 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      WarehouseClassNode@1101981001 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      WarehouseClass@1101981000 : Record 7304;
+      Position@1101981009 : Integer;
+      Counter@1101981008 : Integer;
+    BEGIN
+      Response := Response.XmlDocument;
+      Response.LoadXml('<WarehouseClasses/>');
+      RootNode := Response.DocumentElement;
+      Position := 1;
+      Counter := 1;
+      WarehouseClass.RESET;
+      IF WarehouseClass.FINDSET(FALSE) THEN
+        REPEAT
+          IF (Position>=EntriesPosition) THEN BEGIN
+            IF Counter <= EntriesCount THEN BEGIN
+              IF XMLAddElement(RootNode,'WC','','',WarehouseClassNode) > 0 THEN
+                ERROR(Text000);
+              XMLAddAttribute(WarehouseClassNode,'Code',WarehouseClass.Code);
+              XMLAddAttribute(WarehouseClassNode,'Description',WarehouseClass.Description);
+              Counter+=1;
+            END ELSE
+              BREAK;
+          END;
+          Position+=1;
+        UNTIL WarehouseClass.NEXT = 0;
+      ResponseDocument := Response.OuterXml;
+    END;
+
+    LOCAL PROCEDURE "---- Special Equipment ----"@1101981177();
+    BEGIN
+    END;
+
+    PROCEDURE GetSpecialEquipmentCount@1101981178() : Integer;
+    VAR
+      SpecialEquipment@1101981000 : Record 7305;
+    BEGIN
+      EXIT(SpecialEquipment.COUNT);
+    END;
+
+    PROCEDURE GetSpecialEquipmentList@1101981179(EntriesPosition@1101981007 : Integer;EntriesCount@1101981006 : Integer;VAR ResponseDocument@1101981005 : Text);
+    VAR
+      Response@1101981004 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlDocument";
+      RootNode@1101981003 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      ListNode@1101981002 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      SpecialEquipmentNode@1101981001 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      SpecialEquipment@1101981000 : Record 7305;
+      Position@1101981009 : Integer;
+      Counter@1101981008 : Integer;
+    BEGIN
+      Response := Response.XmlDocument;
+      Response.LoadXml('<SpecialEquipments/>');
+      RootNode := Response.DocumentElement;
+      Position := 1;
+      Counter := 1;
+      SpecialEquipment.RESET;
+      IF SpecialEquipment.FINDSET(FALSE) THEN
+        REPEAT
+          IF (Position>=EntriesPosition) THEN BEGIN
+            IF Counter <= EntriesCount THEN BEGIN
+              IF XMLAddElement(RootNode,'SE','','',SpecialEquipmentNode) > 0 THEN
+                ERROR(Text000);
+              XMLAddAttribute(SpecialEquipmentNode,'Code',SpecialEquipment.Code);
+              XMLAddAttribute(SpecialEquipmentNode,'Description',SpecialEquipment.Description);
+              Counter+=1;
+            END ELSE
+              BREAK;
+          END;
+          Position+=1;
+        UNTIL SpecialEquipment.NEXT = 0;
+      ResponseDocument := Response.OuterXml;
+    END;
+
+    LOCAL PROCEDURE "---- Warehouse Entry ----"@1101981183();
+    BEGIN
+    END;
+
+    PROCEDURE GetWarehouseEntryCount@1101981184(LocationCodeFilter@1101981004 : Text;ZoneCodeFilter@1101981003 : Text;BinCodeFilter@1101981002 : Text;ItemNoFilter@1101981001 : Text;VariantCodeFilter@1101981000 : Text) : Integer;
+    VAR
+      WarehouseEntry@1101981005 : Record 7312;
+    BEGIN
+      WarehouseEntry.RESET;
+      IF LocationCodeFilter<>'' THEN
+        WarehouseEntry.SETFILTER("Location Code",LocationCodeFilter);
+      IF ZoneCodeFilter<>'' THEN
+        WarehouseEntry.SETFILTER("Zone Code",ZoneCodeFilter);
+      IF BinCodeFilter<>'' THEN
+        WarehouseEntry.SETFILTER("Bin Code",BinCodeFilter);
+      IF ItemNoFilter<>'' THEN
+        WarehouseEntry.SETFILTER("Item No.",ItemNoFilter);
+      IF VariantCodeFilter<>'' THEN
+        WarehouseEntry.SETFILTER("Variant Code",VariantCodeFilter);
+      EXIT(WarehouseEntry.COUNT);
+    END;
+
+    PROCEDURE GetWarehouseEntryList@1101981185(LocationCodeFilter@1101981004 : Text;ZoneCodeFilter@1101981003 : Text;BinCodeFilter@1101981002 : Text;ItemNoFilter@1101981001 : Text;VariantCodeFilter@1101981000 : Text;EntriesPosition@1101981012 : Integer;EntriesCount@1101981011 : Integer;VAR ResponseDocument@1101981005 : Text);
+    VAR
+      Response@1101981010 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlDocument";
+      RootNode@1101981009 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      ListNode@1101981008 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      WarehouseEntryNode@1101981007 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      WarehouseEntry@1101981006 : Record 7312;
+      Position@1101981014 : Integer;
+      Counter@1101981013 : Integer;
+    BEGIN
+      Response := Response.XmlDocument;
+      Response.LoadXml('<WarehouseEntry/>');
+      RootNode := Response.DocumentElement;
+      Position := 1;
+      Counter := 1;
+      WarehouseEntry.RESET;
+      IF LocationCodeFilter<>'' THEN
+        WarehouseEntry.SETFILTER("Location Code",LocationCodeFilter);
+      IF ZoneCodeFilter<>'' THEN
+        WarehouseEntry.SETFILTER("Zone Code",ZoneCodeFilter);
+      IF BinCodeFilter<>'' THEN
+        WarehouseEntry.SETFILTER("Bin Code",BinCodeFilter);
+      IF ItemNoFilter<>'' THEN
+        WarehouseEntry.SETFILTER("Item No.",ItemNoFilter);
+      IF VariantCodeFilter<>'' THEN
+        WarehouseEntry.SETFILTER("Variant Code",VariantCodeFilter);
+      IF WarehouseEntry.FINDSET(FALSE) THEN
+        REPEAT
+          IF (Position>=EntriesPosition) THEN BEGIN
+            IF Counter <= EntriesCount THEN BEGIN
+              IF XMLAddElement(RootNode,'WE','','',WarehouseEntryNode) > 0 THEN
+                ERROR(Text000);
+              XMLAddAttribute(WarehouseEntryNode,'LocationCode',WarehouseEntry."Location Code");
+              XMLAddAttribute(WarehouseEntryNode,'ZoneCode',WarehouseEntry."Zone Code");
+              XMLAddAttribute(WarehouseEntryNode,'BinCode',WarehouseEntry."Bin Code");
+              XMLAddAttribute(WarehouseEntryNode,'ItemNo',WarehouseEntry."Item No.");
+              XMLAddAttribute(WarehouseEntryNode,'VariantCode',WarehouseEntry."Variant Code");
+              XMLAddAttribute(WarehouseEntryNode,'Description',WarehouseEntry.Description);
+              XMLAddAttribute(WarehouseEntryNode,'EntryType',Option2Txt(WarehouseEntry."Entry Type"));
+              XMLAddAttribute(WarehouseEntryNode,'RegisteringDate',FORMAT(WarehouseEntry."Registering Date"));
+              XMLAddAttribute(WarehouseEntryNode,'SourceNo',WarehouseEntry."Source No.");
+              XMLAddAttribute(WarehouseEntryNode,'Quantity',FORMAT(WarehouseEntry.Quantity));
+              XMLAddAttribute(WarehouseEntryNode,'QuantityBase',FORMAT(WarehouseEntry."Qty. (Base)"));
+              XMLAddAttribute(WarehouseEntryNode,'UnitofMeasureCode',WarehouseEntry."Unit of Measure Code");
+              Counter+=1;
+            END ELSE
+              BREAK;
+          END;
+          Position+=1;
+        UNTIL WarehouseEntry.NEXT = 0;
+      ResponseDocument := Response.OuterXml;
+    END;
+
+    LOCAL PROCEDURE "--- Search -----"@1101981032();
+    BEGIN
+      //---------------------------------------------------
+      //        SEARCH ENGINE
+      //---------------------------------------------------
+    END;
+
+    PROCEDURE Search@1101981033(LocationCode@1101981009 : Code[20];Request@1101981006 : Text;VAR ResponseDocument@1101981005 : Text);
+    VAR
+      Response@1101981000 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlDocument";
+      RootNode@1101981002 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      ListNode@1101981001 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      CurrentNode@1101981004 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      Location@1101981003 : Record 14;
+      Position@1101981010 : Integer;
+      Counter@1101981011 : Integer;
+      BinContent@1101981007 : Record 7302;
+      ItemIdentificator@1101981008 : Record 7704;
+      Bin@1101981012 : Record 7354;
+      ItemTemp@1101981013 : TEMPORARY Record 27;
+      Item@1101981014 : Record 27;
+      Limit@1101981015 : Integer;
+    BEGIN
+      Response := Response.XmlDocument;
+      Response.LoadXml('<Search/>');
+      RootNode := Response.DocumentElement;
+      Counter := 1;
+      Limit := 100;
+      ItemTemp.RESET;
+
+      Item.RESET;
+      Item.SETFILTER("No.",'*'+Request+'*');
+      IF Item.FINDSET(FALSE) THEN
+        REPEAT
+          ItemTemp."No." := Item."No.";
+          ItemTemp.INSERT(FALSE);
+        UNTIL Item.NEXT = 0;
+
+      Item.RESET;
+      Item.SETFILTER(Description,'*@'+Request+'*');
+      IF Item.FINDSET(FALSE) THEN
+        REPEAT
+          ItemTemp."No." := Item."No.";
+          ItemTemp.INSERT(FALSE);
+        UNTIL Item.NEXT = 0;
+
+      ItemIdentificator.RESET;
+      ItemIdentificator.SETFILTER(Code,'*'+Request+'*');
+      IF ItemIdentificator.FINDSET(FALSE) THEN
+        REPEAT
+          IF Item.GET(ItemIdentificator."Item No.") THEN BEGIN
+            ItemTemp."No." := Item."No.";
+            IF ItemTemp.INSERT(FALSE) THEN;
+          END;
+        UNTIL ItemIdentificator.NEXT = 0;
+
+      XMLAddAttribute(RootNode,'ITTC',FORMAT(ItemTemp.COUNT));
+      ItemTemp.RESET;
+      IF ItemTemp.FINDSET(FALSE) THEN
+        REPEAT
+            BinContent.RESET;
+            BinContent.SETCURRENTKEY("Location Code","Item No.","Variant Code","Cross-Dock Bin","Qty. per Unit of Measure","Bin Ranking");
+            BinContent.SETRANGE("Location Code",LocationCode);
+            BinContent.SETFILTER("Item No.",ItemTemp."No.");
+            IF BinContent.FINDSET(FALSE) THEN
+              REPEAT
+                BinContent.CALCFIELDS(Quantity);
+                IF BinContent.Quantity > 0 THEN BEGIN
+                  IF Bin.GET(BinContent."Location Code",BinContent."Bin Code") THEN BEGIN
+                    IF Counter <= Limit THEN BEGIN
+                      IF XMLAddElement(RootNode,'RESP','','',CurrentNode) > 0 THEN
+                        ERROR(Text000);
+
+                      XMLAddAttribute(CurrentNode,'L',BinContent."Location Code");
+                      XMLAddAttribute(CurrentNode,'Z',BinContent."Zone Code");
+                      XMLAddAttribute(CurrentNode,'B',BinContent."Bin Code");
+                      XMLAddAttribute(CurrentNode,'R',FORMAT(Bin."Rack ID"));
+                      XMLAddAttribute(CurrentNode,'S',FORMAT(Bin.Section));
+                      XMLAddAttribute(CurrentNode,'LV',FORMAT(Bin.Level));
+                      XMLAddAttribute(CurrentNode,'D',FORMAT(Bin.Depth));
+                      XMLAddAttribute(CurrentNode,'Q',FORMAT(BinContent.Quantity));
+                      Counter +=1;
+                    END ELSE
+                      BREAK;
+                  END;
+                END;
+              UNTIL BinContent.NEXT = 0;
+        UNTIL ItemTemp.NEXT= 0;
+
+      ResponseDocument := Response.OuterXml;
+    END;
+
+    LOCAL PROCEDURE "UDS-------"@1101981052();
+    BEGIN
+    END;
+
+    PROCEDURE LoadUserDefinedSelectionList@1101981042(LocationCode@1101981003 : Code[20];ZoneCode@1101981002 : Code[20];VAR ResponseDocument@1101981000 : Text);
+    BEGIN
+      CLEAR(UDSListResponse);
+      UDSListResponse := UDSListResponse.XmlDocument;
+      UDSListResponse.LoadXml('<UDS/>');
+      UDSListRootNode := UDSListResponse.DocumentElement;
+      UserDefinedSelectionList(LocationCode,ZoneCode);
+      ResponseDocument := UDSListResponse.OuterXml;
+    END;
+
+    LOCAL PROCEDURE Button@1101981041(UDSID@1101981004 : Integer;Name@1101981000 : Text;Detail@1101981001 : Text;HexColor@1101981002 : Text;Value@1101981003 : Integer);
+    BEGIN
+      IF XMLAddElement(UDSListRootNode,'U','','',UDSListCurrentNode) > 0 THEN
+        ERROR(Text000);
+      XMLAddAttribute(UDSListCurrentNode,'ID',FORMAT(UDSID));
+      XMLAddAttribute(UDSListCurrentNode,'Name',FORMAT(Name));
+      XMLAddAttribute(UDSListCurrentNode,'Detail',FORMAT(Detail));
+      XMLAddAttribute(UDSListCurrentNode,'HexColor',FORMAT(HexColor));
+      XMLAddAttribute(UDSListCurrentNode,'Value',FORMAT(Value));
+    END;
+
+    LOCAL PROCEDURE AddUDSData@1101981050(UDSID@1101981006 : Integer;RackID@1101981000 : Integer;Section@1101981001 : Integer;Level@1101981002 : Integer;Depth@1101981003 : Integer;Quantity@1101981004 : Integer;Color@1101981005 : Text);
+    BEGIN
+      IF XMLAddElement(UDSRootNode,'U','','',UDSCurrentNode) > 0 THEN
+                        ERROR(Text000);
+      XMLAddAttribute(UDSCurrentNode,'F',FORMAT(UDSID));
+      XMLAddAttribute(UDSCurrentNode,'R',FORMAT(RackID));
+      XMLAddAttribute(UDSCurrentNode,'S',FORMAT(Section));
+      XMLAddAttribute(UDSCurrentNode,'L',FORMAT(Level));
+      XMLAddAttribute(UDSCurrentNode,'D',FORMAT(Depth));
+      XMLAddAttribute(UDSCurrentNode,'Q',FORMAT(Quantity));
+      XMLAddAttribute(UDSCurrentNode,'C',Color);
+    END;
+
+    LOCAL PROCEDURE "UDF-------"@1101981046();
+    BEGIN
+    END;
+
+    PROCEDURE LoadUserDefinedFunctionList@1101981066(LocationCode@1101981003 : Code[20];ZoneCode@1101981002 : Code[20];RackID@1101981001 : Integer;VAR ResponseDocument@1101981000 : Text);
+    BEGIN
+      CLEAR(UDFResponse);
+      UDFResponse := UDFResponse.XmlDocument;
+      UDFResponse.LoadXml('<UDF/>');
+      UDFRootNode := UDFResponse.DocumentElement;
+      UserDefinedFunctionList(LocationCode,ZoneCode,RackID);
+      ResponseDocument := UDFResponse.OuterXml;
+    END;
+
+    LOCAL PROCEDURE AddFunction@1101981065(UDSID@1101981004 : Integer;Name@1101981000 : Text;Detail@1101981001 : Text;Confirm@1101981003 : Text);
+    BEGIN
+      IF XMLAddElement(UDFRootNode,'F','','',UDFCurrentNode) > 0 THEN
+        ERROR(Text000);
+      XMLAddAttribute(UDFCurrentNode,'ID',FORMAT(UDSID));
+      XMLAddAttribute(UDFCurrentNode,'Name',FORMAT(Name));
+      XMLAddAttribute(UDFCurrentNode,'Detail',FORMAT(Detail));
+      XMLAddAttribute(UDFCurrentNode,'Confirm',FORMAT(Confirm));
+    END;
+
+    LOCAL PROCEDURE "XML-------------------------"@1101981005();
+    BEGIN
+    END;
+
+    LOCAL PROCEDURE XMLAddElement@1(VAR XMLNode@1001 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";NodeName@1002 : Text;NodeText@1003 : Text;NameSpace@1004 : Text;VAR CreatedXMLNode@1005 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode") ExitStatus@1000 : Integer;
+    VAR
+      NewChildNode@1006 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+    BEGIN
+      NewChildNode := XMLNode.OwnerDocument.CreateNode('element',NodeName,NameSpace);
+      IF ISNULL(NewChildNode) THEN BEGIN
+        ExitStatus := 50;
+        EXIT;
+      END;
+      IF NodeText <> '' THEN
+        NewChildNode.InnerText := NodeText;
+      XMLNode.AppendChild(NewChildNode);
+      CreatedXMLNode := NewChildNode;
+      ExitStatus := 0;
+    END;
+
+    LOCAL PROCEDURE XMLAddAttribute@2(VAR XMLNode@1001 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";Name@1002 : Text;NodeValue@1003 : Text) ExitStatus@1000 : Integer;
+    VAR
+      XMLNewAttributeNode@1004 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+    BEGIN
+      XMLNewAttributeNode := XMLNode.OwnerDocument.CreateAttribute(Name);
+      IF ISNULL(XMLNewAttributeNode) THEN BEGIN
+        ExitStatus := 60;
+        EXIT(ExitStatus)
+      END;
+      IF NodeValue <> '' THEN
+        XMLNewAttributeNode.Value := NodeValue;
+      XMLNode.Attributes.SetNamedItem(XMLNewAttributeNode);
+    END;
+
+    LOCAL PROCEDURE XMLFindNode@3(XMLRootNode@1000 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";NodePath@1001 : Text;VAR FoundXMLNode@1002 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode") : Boolean;
+    BEGIN
+      IF ISNULL(XMLRootNode) THEN
+        EXIT(FALSE);
+      FoundXMLNode := XMLRootNode.SelectSingleNode(NodePath);
+      IF ISNULL(FoundXMLNode) THEN
+        EXIT(FALSE);
+      EXIT(TRUE)
+    END;
+
+    LOCAL PROCEDURE XMLFindNodeText@5(XMLRootNode@1000 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";NodePath@1001 : Text) : Text;
+    VAR
+      FoundXMLNode@1002 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+    BEGIN
+      IF ISNULL(XMLRootNode) THEN
+        EXIT('');
+      FoundXMLNode := XMLRootNode.SelectSingleNode(NodePath);
+      IF ISNULL(FoundXMLNode) THEN
+        EXIT('');
+      EXIT(FoundXMLNode.InnerText);
+    END;
+
+    LOCAL PROCEDURE XMLFindNodes@4(XMLRootNode@1000 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";NodePath@1001 : Text;VAR ReturnedXMLNodeList@1002 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNodeList") : Boolean;
+    BEGIN
+      ReturnedXMLNodeList := XMLRootNode.SelectNodes(NodePath);
+      IF ISNULL(ReturnedXMLNodeList) THEN
+        EXIT(FALSE);
+      EXIT(TRUE);
+    END;
+
+    LOCAL PROCEDURE XMLAddGroupNode@6(VAR XMLNode@1001 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";NodeName@1002 : Text);
+    VAR
+      XMLNewChild@1003 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlDocument";
+    BEGIN
+      XMLAddElement(XMLNode,NodeName,'','',XMLNewChild);
+      XMLNode := XMLNewChild;
+    END;
+
+    LOCAL PROCEDURE XMLAddNode@7(VAR XMLNode@1001 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";NodeName@1002 : Text;NodeText@1003 : Text);
+    VAR
+      XMLNewChild@1004 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+    BEGIN
+      XMLAddElement(XMLNode,NodeName,NodeText,'',XMLNewChild);
+    END;
+
+    LOCAL PROCEDURE XMLAddLastNode@8(VAR XMLNode@1001 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";NodeName@1002 : Text;NodeText@1003 : Text);
+    VAR
+      XMLNewChild@1004 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+    BEGIN
+      XMLAddElement(XMLNode,NodeName,NodeText,'',XMLNewChild);
+      XMLNode := XMLNode.ParentNode;
+    END;
+
+    LOCAL PROCEDURE XMLGetNodeAttribute@33(CurrNode@1004 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";AttributeName@1003 : Text) AttribValue@1001 : Text;
+    VAR
+      oTempNode@1002 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      NodeAttributes@1000 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNamedNodeMap";
+    BEGIN
+      NodeAttributes := CurrNode.Attributes;
+      oTempNode := NodeAttributes.GetNamedItem(AttributeName);
+      IF NOT ISNULL(oTempNode) THEN
+        AttribValue := oTempNode.Value
+      ELSE
+        AttribValue := '';
+    END;
+
+    LOCAL PROCEDURE XMLSetNodeAttribute@39(CurrNode@1004 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";AttributeName@1003 : Text;AttribValue@1001 : Text);
+    VAR
+      oTempNode@1002 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      NodeAttributes@1000 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNamedNodeMap";
+    BEGIN
+      NodeAttributes := CurrNode.Attributes;
+      oTempNode := NodeAttributes.GetNamedItem(AttributeName);
+      oTempNode.Value := AttribValue;
+    END;
+
+    LOCAL PROCEDURE "---- Supl. -----"@1101981013();
+    BEGIN
+    END;
+
+    LOCAL PROCEDURE Txt2Int@1101981022(Text@1101981000 : Text) rv : Integer;
+    BEGIN
+      rv :=0;
+      IF EVALUATE(rv,Text) THEN;
+    END;
+
+    LOCAL PROCEDURE Txt2Bool@1101981014(Text@1101981000 : Text) rv : Boolean;
+    BEGIN
+      rv := FALSE;
+      IF EVALUATE(rv,Text) THEN;
+    END;
+
+    LOCAL PROCEDURE Txt2Dec@1101981015(text@1101981000 : Text) rv : Decimal;
+    VAR
+      DecSymbol@1101981001 : Text;
+      txt1@1101981003 : Text;
+      chr1@1101981002 : Char;
+    BEGIN
+      txt1 := FORMAT(0.1);
+      chr1 := txt1[2];
+      DecSymbol := FORMAT(chr1);
+      rv := 0;
+      txt1 := CONVERTSTR(text,'.',DecSymbol);
+      txt1 := CONVERTSTR(txt1,',',DecSymbol);
+      IF EVALUATE(rv,txt1) THEN;
+    END;
+
+    LOCAL PROCEDURE Txt2RecordID@1101981021(ridtext@1101981000 : Text;VAR RecordID@1101981001 : RecordID);
+    VAR
+      recidempty@1101981002 : RecordID;
+    BEGIN
+      CLEAR(recidempty);
+      IF EVALUATE(recidempty,ridtext) THEN;
+      RecordID := recidempty;
+    END;
+
+    LOCAL PROCEDURE Bool2Txt@1101981091(Value@1101981000 : Boolean) : Text;
+    BEGIN
+      IF Value THEN
+        EXIT('1')
+      ELSE
+        EXIT('0');
+    END;
+
+    LOCAL PROCEDURE Option2Txt@1101981118(Value@1101981000 : Option) : Text;
+    VAR
+      i@1101981001 : Integer;
+    BEGIN
+      i := Value;
+      EXIT(FORMAT(i));
+    END;
+
+    EVENT UDFResponse@1101981002::NodeInserting@94(sender@1101981001 : Variant;e@1101981000 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNodeChangedEventArgs");
+    BEGIN
+    END;
+
+    EVENT UDFResponse@1101981002::NodeInserted@95(sender@1101981001 : Variant;e@1101981000 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNodeChangedEventArgs");
+    BEGIN
+    END;
+
+    EVENT UDFResponse@1101981002::NodeRemoving@96(sender@1101981001 : Variant;e@1101981000 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNodeChangedEventArgs");
+    BEGIN
+    END;
+
+    EVENT UDFResponse@1101981002::NodeRemoved@97(sender@1101981001 : Variant;e@1101981000 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNodeChangedEventArgs");
+    BEGIN
+    END;
+
+    EVENT UDFResponse@1101981002::NodeChanging@98(sender@1101981001 : Variant;e@1101981000 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNodeChangedEventArgs");
+    BEGIN
+    END;
+
+    EVENT UDFResponse@1101981002::NodeChanged@99(sender@1101981001 : Variant;e@1101981000 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNodeChangedEventArgs");
+    BEGIN
+    END;
+
+    EVENT UDSListResponse@1101981009::NodeInserting@94(sender@1101981001 : Variant;e@1101981000 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNodeChangedEventArgs");
+    BEGIN
+    END;
+
+    EVENT UDSListResponse@1101981009::NodeInserted@95(sender@1101981001 : Variant;e@1101981000 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNodeChangedEventArgs");
+    BEGIN
+    END;
+
+    EVENT UDSListResponse@1101981009::NodeRemoving@96(sender@1101981001 : Variant;e@1101981000 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNodeChangedEventArgs");
+    BEGIN
+    END;
+
+    EVENT UDSListResponse@1101981009::NodeRemoved@97(sender@1101981001 : Variant;e@1101981000 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNodeChangedEventArgs");
+    BEGIN
+    END;
+
+    EVENT UDSListResponse@1101981009::NodeChanging@98(sender@1101981001 : Variant;e@1101981000 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNodeChangedEventArgs");
+    BEGIN
+    END;
+
+    EVENT UDSListResponse@1101981009::NodeChanged@99(sender@1101981001 : Variant;e@1101981000 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNodeChangedEventArgs");
+    BEGIN
+    END;
+
+    EVENT UDSResponse@1101981013::NodeInserting@94(sender@1101981001 : Variant;e@1101981000 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNodeChangedEventArgs");
+    BEGIN
+    END;
+
+    EVENT UDSResponse@1101981013::NodeInserted@95(sender@1101981001 : Variant;e@1101981000 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNodeChangedEventArgs");
+    BEGIN
+    END;
+
+    EVENT UDSResponse@1101981013::NodeRemoving@96(sender@1101981001 : Variant;e@1101981000 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNodeChangedEventArgs");
+    BEGIN
+    END;
+
+    EVENT UDSResponse@1101981013::NodeRemoved@97(sender@1101981001 : Variant;e@1101981000 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNodeChangedEventArgs");
+    BEGIN
+    END;
+
+    EVENT UDSResponse@1101981013::NodeChanging@98(sender@1101981001 : Variant;e@1101981000 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNodeChangedEventArgs");
+    BEGIN
+    END;
+
+    EVENT UDSResponse@1101981013::NodeChanged@99(sender@1101981001 : Variant;e@1101981000 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNodeChangedEventArgs");
+    BEGIN
+    END;
+
+    BEGIN
+    {
+      // ----------------------------------------------------------------------------------
+      // Copyright ╓ 2018, Oleg Lobakov, Contacts: <oleg.lobakov@gmail.com>
+      // Licensed under the GNU GENERAL PUBLIC LICENSE, Version 3.0 (the "License");
+      // you may not use this file except in compliance with the License.
+      // You may obtain a copy of the License at
+      // https://github.com/OlegLobakov/WarehouseControlSystem/blob/master/LICENSE
+      // Unless required by applicable law or agreed to in writing, software
+      // distributed under the License is distributed on an "AS IS" BASIS,
+      // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+      // See the License for the specific language governing permissions and
+      // limitations under the License.
+      // ----------------------------------------------------------------------------------
+    }
+    END.
+  }
+}
+

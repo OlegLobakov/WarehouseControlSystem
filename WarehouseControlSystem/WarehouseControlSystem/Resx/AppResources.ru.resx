@@ -1445,4 +1445,19 @@
   <data name="MasterNewRack_Comment" xml:space="preserve">
     <value>Примечание</value>
   </data>
+  <data name="RacksPlanViewModel_DeleteCancel" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="RacksPlanViewModel_DeleteQuestion" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="RacksPlanViewModel_DeleteRack" xml:space="preserve">
+    <value>Удалить стеллаж {0}?</value>
+  </data>
+  <data name="RacksPlanViewModel_DeleteRackAndBins" xml:space="preserve">
+    <value>Удалить стеллаж {0} и ячейки?</value>
+  </data>
+  <data name="RacksPlanViewModel_DeleteBinErrors" xml:space="preserve">
+    <value>Ошибки удаления учеек!</value>
+  </data>
 </root>

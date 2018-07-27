@@ -292,6 +292,7 @@ namespace WarehouseControlSystem.ViewModel
             try
             {
                 LocationViewModel lvm = (LocationViewModel)obj;
+                LoadAnimation = true;
                 State = ModelState.Loading;
                 await NAV.DeleteLocation(lvm.Code, ACD.Default).ConfigureAwait(true);
                 LocationViewModels.Remove(lvm);
