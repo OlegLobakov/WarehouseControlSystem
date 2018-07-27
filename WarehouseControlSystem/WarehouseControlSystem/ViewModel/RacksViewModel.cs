@@ -23,7 +23,7 @@ using System.Collections.ObjectModel;
 using Plugin.Connectivity;
 using WarehouseControlSystem.Helpers.NAV;
 using WarehouseControlSystem.Resx;
-using WarehouseControlSystem.View.Pages.RackScheme;
+using WarehouseControlSystem.View.Pages.Racks.Scheme;
 using System.Windows.Input;
 using System.Threading;
 
@@ -66,7 +66,7 @@ namespace WarehouseControlSystem.ViewModel
                 ObservableCollection<RackViewModel> nlist = new ObservableCollection<RackViewModel>();
                 foreach (Rack rack in racks)
                 {
-                    RackViewModel rvm = new RackViewModel(Navigation, rack, false);
+                    RackViewModel rvm = new RackViewModel(Navigation, rack);
                     nlist.Add(rvm);
                 }
                 RackViewModels = nlist;

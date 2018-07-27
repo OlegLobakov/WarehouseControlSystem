@@ -21,8 +21,8 @@ using Xamarin.Forms;
 using WarehouseControlSystem.Helpers.NAV;
 using WarehouseControlSystem.Resx;
 using System.Windows.Input;
-using WarehouseControlSystem.View.Pages.ZonesScheme;
-using WarehouseControlSystem.View.Pages.RackScheme;
+using WarehouseControlSystem.View.Pages.Zones;
+using WarehouseControlSystem.View.Pages.Racks.Scheme;
 using System.Threading.Tasks;
 
 namespace WarehouseControlSystem.ViewModel

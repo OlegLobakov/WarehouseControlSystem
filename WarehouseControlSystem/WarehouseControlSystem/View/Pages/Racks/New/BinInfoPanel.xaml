@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WarehouseControlSystem.View.Pages.Racks.New.BinInfoPanel"
+             xmlns:i18n="clr-namespace:WarehouseControlSystem;assembly=WarehouseControlSystem">
+    <ContentView.Content>
+        <StackLayout BackgroundColor="LightGray" Padding="3,0,0,0">
+            <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="White" Padding="10,6,10,6">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <StackLayout Grid.Row="0" Orientation="Horizontal">
+                    <Label Text="Код ячейки" Margin="10"  VerticalOptions="Center"/>
+                    <Entry Text="{Binding TemplateCode, Mode=TwoWay}" Keyboard="Text" 
+                       HorizontalOptions="FillAndExpand" VerticalOptions="Center" x:Name="singlebinentry" Margin="10" 
+                       IsEnabled="{Binding EditedBinCodeIsEnabled}"/>
+                </StackLayout>
+                <ScrollView Grid.Row="1" Orientation="Vertical">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <StackLayout Grid.Row="1" Orientation="Vertical">
+                            <Label Text="{i18n:Translate BinEditView_FieldBinType}" 
+                               HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
+                            <Picker x:Name="bintypepicker" 
+                                HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
+                                BackgroundColor="Snow"
+                                ItemsSource="{Binding BinTypes}"
+                                IsEnabled="{Binding BinTypesIsEnabled}"
+                                SelectedItem="{Binding TemplateBinType}">
+                            </Picker>
+                        </StackLayout>
+                        <StackLayout Grid.Row="2" Orientation="Vertical">
+                            <Label Text="{i18n:Translate BinEditView_FieldWarehouseClass}" 
+                               HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
+                            <Picker x:Name="warehouseclassespicker" 
+                                HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
+                                BackgroundColor="Snow"
+                                ItemsSource="{Binding WarehouseClasses}"
+                                IsEnabled="{Binding WarehouseClassesIsEnabled}"
+                                SelectedItem="{Binding TemplateWarehouseClassCode}">
+
+                            </Picker>
+                        </StackLayout>
+                        <StackLayout Grid.Row="3" Orientation="Vertical">
+                            <Label Text="{i18n:Translate BinEditView_FieldSpecialEquipment}" 
+                               HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
+                            <Picker x:Name="specialequipmentpicker" 
+                                HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
+                                BackgroundColor="Snow"
+                                ItemsSource="{Binding SpecialEquipments}"
+                                IsEnabled="{Binding SpecialEquipmentsIsEnabled}"
+                                SelectedItem="{Binding TemplateSpecialEquipmentCode}">
+                            </Picker>
+                        </StackLayout>
+                        <StackLayout Grid.Row="4" Orientation="Vertical">
+                            <Label Text="{i18n:Translate BinEditView_FieldBinRanking}" 
+                               HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
+                            <Entry Text="{Binding TemplateBinRanking, Mode=TwoWay}" Keyboard="Numeric"  HorizontalOptions="Fill" />
+                        </StackLayout>
+                        <StackLayout Grid.Row="5" Orientation="Vertical">
+                            <Label Text="{i18n:Translate BinEditView_FieldMaximumCubage}" 
+                               HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
+                            <Entry Text="{Binding TemplateMaximumCubage, Mode=TwoWay}" Keyboard="Numeric" HorizontalOptions="Fill"/>
+                        </StackLayout>
+                        <StackLayout Grid.Row="6" Orientation="Vertical">
+                            <Label Text="{i18n:Translate BinEditView_FieldMaximumWeight}" 
+                               HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
+                            <Entry Text="{Binding TemplateMaximumWeight, Mode=TwoWay}" Keyboard="Numeric" HorizontalOptions="FillAndExpand"/>
+                        </StackLayout>
+                        <StackLayout Grid.Row="7" Orientation="Horizontal">
+                            <Label Text="{i18n:Translate BinEditView_FieldAdjustmentBin}" 
+                               HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
+                            <Switch IsToggled="{Binding TemplateAdjustmentBin, Mode=TwoWay}" HorizontalOptions="EndAndExpand" VerticalOptions="Center"></Switch>
+                        </StackLayout>
+                        <StackLayout Grid.Row="8" Orientation="Horizontal">
+                            <Label Text="{i18n:Translate BinEditView_FieldNoSize}" 
+                               HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
+                            <Switch IsToggled="{Binding NoSize, Mode=TwoWay}" HorizontalOptions="EndAndExpand" VerticalOptions="Center"></Switch>
+                        </StackLayout>
+                        <StackLayout Grid.Row="9" Orientation="Horizontal">
+                            <Label Text="{i18n:Translate BinEditView_FieldDefault}" 
+                               HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
+                            <Switch IsToggled="{Binding TemplateDefault, Mode=TwoWay}" HorizontalOptions="EndAndExpand" VerticalOptions="Center"></Switch>
+                        </StackLayout>
+                    </Grid>
+                </ScrollView>
+                <Grid Grid.Row="2" Padding="3" VerticalOptions="FillAndExpand" RowSpacing="3">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Button Grid.Row="1" Grid.Column="0" Text="{i18n:Translate RackNewPage_ButtonsCombine}" Margin="5" 
+                        BorderRadius="0" FontSize="Medium"  
+                        BackgroundColor="#cfcfcf" Command="{Binding CombineBinsCommand}"/>
+                    <Button Grid.Row="2" Grid.Column="0" Text="{i18n:Translate RackNewPage_ButtonsDelete}" Margin="5"  
+                        BorderRadius="0" FontSize="Medium"  
+                        BackgroundColor="#cfcfcf" Command="{Binding DeleteBinsCommand}"/>
+                </Grid>
+            </Grid>
+
+        </StackLayout>
+     </ContentView.Content>
+</ContentView>

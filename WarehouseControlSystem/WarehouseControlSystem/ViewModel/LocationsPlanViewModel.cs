@@ -19,8 +19,8 @@ using WarehouseControlSystem.ViewModel.Base;
 using WarehouseControlSystem.Helpers.NAV;
 using WarehouseControlSystem.Model;
 using WarehouseControlSystem.Model.NAV;
-using WarehouseControlSystem.View.Pages.LocationsScheme;
-using WarehouseControlSystem.View.Pages.ZonesScheme;
+using WarehouseControlSystem.View.Pages.Locations;
+using WarehouseControlSystem.View.Pages.Zones;
 using System.Collections.ObjectModel;
 using Xamarin.Forms;
 using WarehouseControlSystem.Resx;
@@ -292,6 +292,7 @@ namespace WarehouseControlSystem.ViewModel
             try
             {
                 LocationViewModel lvm = (LocationViewModel)obj;
+                LoadAnimation = true;
                 State = ModelState.Loading;
                 await NAV.DeleteLocation(lvm.Code, ACD.Default).ConfigureAwait(true);
                 LocationViewModels.Remove(lvm);

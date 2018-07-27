@@ -34,7 +34,7 @@
     <PackageReference Include="Xam.Plugin.DeviceInfo" Version="4.0.0.13" />
     <PackageReference Include="Xam.Plugins.Messaging" Version="5.2.0" />
     <PackageReference Include="Xam.Plugins.Settings" Version="3.1.1" />
-    <PackageReference Include="Xamarin.Forms" Version="3.1.0.583944" />
+    <PackageReference Include="Xamarin.Forms" Version="3.1.0.637273" />
     <PackageReference Include="ZXing.Net.Mobile.Forms" Version="2.4.1" />
   </ItemGroup>
 
@@ -52,25 +52,31 @@
     <Compile Update="View\Content\BinInfoPanelRackCard.xaml.cs">
       <DependentUpon>BinInfoPanelRackCard.xaml</DependentUpon>
     </Compile>
+    <Compile Update="View\Content\EmptySpaceViewInRack.xaml.cs">
+      <DependentUpon>EmptySpaceViewInRack.xaml</DependentUpon>
+    </Compile>
     <Compile Update="View\Content\BinViewInRack.xaml.cs">
       <DependentUpon>BinViewInRack.xaml</DependentUpon>
     </Compile>
     <Compile Update="View\Content\InnerSubSchemeView.xaml.cs">
       <DependentUpon>InnerSubSchemeView.xaml</DependentUpon>
     </Compile>
-    <Compile Update="View\Pages\LocationsScheme\LocationCardPage.xaml.cs">
+    <Compile Update="View\Pages\Locations\LocationCardPage.xaml.cs">
       <DependentUpon>LocationCardPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="View\Pages\RackScheme\RackCardPage.xaml.cs">
+    <Compile Update="View\Pages\Racks\Edit\RackEditPage.xaml.cs">
+      <DependentUpon>RackEditPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="View\Pages\Racks\Card\RackCardPage.xaml.cs">
       <DependentUpon>RackCardPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="View\Pages\RackScheme\RackSchemeView.xaml.cs">
+    <Compile Update="View\Pages\Racks\Scheme\RackSchemeView.xaml.cs">
       <DependentUpon>RackSchemeView.xaml</DependentUpon>
     </Compile>
-    <Compile Update="View\Pages\RackScheme\MasterNewRack\RackSimpleView.xaml.cs">
+    <Compile Update="View\Pages\Racks\New\RackSimpleView.xaml.cs">
       <DependentUpon>RackSimpleView.xaml</DependentUpon>
     </Compile>
-    <Compile Update="View\Pages\ZonesScheme\ZoneCardPage.xaml.cs">
+    <Compile Update="View\Pages\Zones\ZoneCardPage.xaml.cs">
       <DependentUpon>ZoneCardPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -87,10 +93,13 @@
       <LastGenOutput>AppResources.ru.Designer.cs</LastGenOutput>
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="View\Content\StepIntegerValueView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="View\Content\UserDefinedSelectionView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="View\Pages\RackScheme\MasterNewRack\MasterNewRackPage.xaml">
+    <EmbeddedResource Update="View\Pages\Racks\New\MasterNewRackPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

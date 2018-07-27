@@ -23,10 +23,11 @@ using System.Collections.ObjectModel;
 using Plugin.Connectivity;
 using WarehouseControlSystem.Helpers.NAV;
 using WarehouseControlSystem.Resx;
-using WarehouseControlSystem.View.Pages.RackScheme;
+using WarehouseControlSystem.View.Pages.Racks;
 using System.Windows.Input;
 using System.Threading;
-using WarehouseControlSystem.View.Pages.RackScheme.MasterNewRack;
+using WarehouseControlSystem.View.Pages.Racks.New;
+using WarehouseControlSystem.View.Pages.Racks.Card;
 
 namespace WarehouseControlSystem.ViewModel
 {
@@ -100,7 +101,7 @@ namespace WarehouseControlSystem.ViewModel
             RackListCommand = new Command(async () => await RackList().ConfigureAwait(false));
             NewRackCommand = new Command(async () => await NewRack().ConfigureAwait(false));
             EditRackCommand = new Command(EditRack);
-            DeleteRackCommand = new Command(DeleteRack);
+            DeleteRackCommand = new Command(async (obj) => await DeleteRack(obj).ConfigureAwait(false));
 
             PlanWidth = zone.PlanWidth;
             PlanHeight = zone.PlanHeight;
@@ -165,7 +166,7 @@ namespace WarehouseControlSystem.ViewModel
                 State = ModelState.Normal;
                 foreach (Rack rack in racks)
                 {
-                    RackViewModel rvm = new RackViewModel(Navigation, rack, false);
+                    RackViewModel rvm = new RackViewModel(Navigation, rack);
                     rvm.OnTap += Rvm_OnTap;
                     RackViewModels.Add(rvm);
                 }
@@ -312,7 +313,7 @@ namespace WarehouseControlSystem.ViewModel
         {
             foreach (UserDefinedSelectionResult udsr in list)
             {
-                RackViewModel rvm = RackViewModels.ToList().Find(x => x.No == udsr.RackNo);
+                RackViewModel rvm = RackViewModels.ToList().Find(x => x.ID == udsr.RackID);
                 if (rvm is RackViewModel)
                 {
                     SubSchemeSelect sss = new SubSchemeSelect()
@@ -378,13 +379,13 @@ namespace WarehouseControlSystem.ViewModel
                 SchemeVisible = true,
             };
 
-            RackViewModel rvm = new RackViewModel(Navigation, newrack, true)
+            RackViewModel rvm = new RackViewModel(Navigation, newrack)
             {
                 LocationCode = Zone.LocationCode,
                 ZoneCode = Zone.Code,
             };
 
-            MasterRackNewViewModel mrnvm = new MasterRackNewViewModel(rvm, true);
+            MasterRackNewViewModel mrnvm = new MasterRackNewViewModel(rvm);
             MasterNewRackPage mnrp = new MasterNewRackPage(mrnvm);
 
             await Navigation.PushAsync(mnrp);
@@ -395,10 +396,72 @@ namespace WarehouseControlSystem.ViewModel
             System.Diagnostics.Debug.WriteLine(obj.ToString());
         }
 
-        public void DeleteRack(object obj)
+        public async Task DeleteRack(object obj)
         {
+            if (NotNetOrConnection)
+            {
+                return;
+            }
+
             RackViewModel rvm = (RackViewModel)obj;
-            ErrorText = "";
+
+            var action = await App.Current.MainPage.DisplayActionSheet(
+                AppResources.RacksPlanViewModel_DeleteQuestion,
+                AppResources.RacksPlanViewModel_DeleteCancel, 
+                "Delete1",
+                String.Format(AppResources.RacksPlanViewModel_DeleteRack,rvm.No),
+                String.Format(AppResources.RacksPlanViewModel_DeleteRackAndBins, rvm.No));
+
+            var answer = await App.Current.MainPage.DisplayAlert("Переменная action", action, "Yes", "No");
+
+            bool df = false;
+
+            if (df)
+            {
+                string bindeleteerrors = "";
+                try
+                {
+                    State = ModelState.Loading;
+                    LoadAnimation = true;
+
+                    await NAV.DeleteRack(rvm.ID, ACD.Default).ConfigureAwait(true);
+                    RackViewModels.Remove(rvm);
+
+                    if (true)
+                    { 
+                        foreach (BinViewModel bvm in rvm.BinsViewModel.BinViewModels)
+                        {
+                            try
+                            {
+                                await NAV.DeleteBin(bvm.LocationCode, bvm.Code, ACD.Default).ConfigureAwait(true);
+                            }
+                            catch (Exception exp)
+                            {
+                                bindeleteerrors += bvm.Code + " : " + exp.InnerException.Message + Environment.NewLine + Environment.NewLine;
+                            }
+                        }
+                    }
+
+                    State = ModelState.Normal;
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine(e.Message);
+                    ErrorText = e.Message;
+                    State = ModelState.Error;
+                }
+                finally
+                {
+                    LoadAnimation = false;
+                }
+
+                if (!string.IsNullOrEmpty(bindeleteerrors))
+                {
+                    ErrorText = AppResources.RacksPlanViewModel_DeleteBinErrors + "  " + Environment.NewLine + bindeleteerrors;
+                    State = ModelState.Error;
+                }
+            }
+            
         }
 
         public async Task SaveZoneParams()

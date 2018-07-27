@@ -693,8 +693,26 @@ namespace WarehouseControlSystem.Helpers.NAV
                 new XElement(myns + "width", rack.Width),
                 new XElement(myns + "height", rack.Height),
                 new XElement(myns + "rackOrientation", (int)rack.RackOrientation),
-                new XElement(myns + "schemeVisible", rack.SchemeVisible)
-             };
+                new XElement(myns + "schemeVisible", rack.SchemeVisible),
+                new XElement(myns + "comment", rack.Comment),
+                new XElement(myns + "numberingPrefix", rack.NumberingPrefix),
+                new XElement(myns + "rackSectionSeparator", rack.RackSectionSeparator),
+                new XElement(myns + "sectionLevelSeparator", rack.SectionLevelSeparator),
+                new XElement(myns + "levelDepthSeparator", rack.LevelDepthSeparator),
+                new XElement(myns + "reversSectionNumbering", rack.ReversSectionNumbering),
+                new XElement(myns + "reversLevelNumbering", rack.ReversLevelNumbering),
+                new XElement(myns + "reversDepthNumbering", rack.ReversDepthNumbering),
+                new XElement(myns + "numberingSectionBegin", rack.NumberingSectionBegin),
+                new XElement(myns + "numberingLevelBegin", rack.NumberingLevelBegin),
+                new XElement(myns + "numberingDepthBegin", rack.NumberingDepthBegin),
+                new XElement(myns + "numberingSectionDigitsQty", rack.NumberingSectionDigitsQuantity),
+                new XElement(myns + "numberingLevelDigitsQty", rack.NumberingLevelDigitsQuantity),
+                new XElement(myns + "numberingDepthDigitsQty", rack.NumberingDepthDigitsQuantity),
+                new XElement(myns + "stepNumberingSection", rack.StepNumberingSection),
+                new XElement(myns + "stepNumberingLevel", rack.StepNumberingLevel),
+                new XElement(myns + "stepNumberingDepth", rack.StepNumberingDepth),
+                new XElement(myns + "binTemplateCode", rack.BinTemplateCode)
+            };
         }
         public static Task<int> CreateRack(Rack rack, CancellationTokenSource cts)
         {
@@ -730,16 +748,14 @@ namespace WarehouseControlSystem.Helpers.NAV
             string functionname = "ModifyRack";
             XElement body =
                 new XElement(myns + functionname,
-                new XElement(myns + "locationCode", rack.LocationCode),
-                new XElement(myns + "zoneCode", rack.ZoneCode),
+                new XElement(myns + "iD", rack.ID),
                 new XElement(myns + "no", rack.No),
-                new XElement(myns + "prevNo", rack.PrevNo),
                 SetRackParams(myns, rack));
             SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(() => GetIntFromNAV(tcs, sp, cts));
             return tcs.Task;
         }
-        public static Task<int> DeleteRack(Rack rack, CancellationTokenSource cts)
+        public static Task<int> DeleteRack(int rackid, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<int>();
             if (IsConnectionFaild())
@@ -752,9 +768,7 @@ namespace WarehouseControlSystem.Helpers.NAV
             string functionname = "DeleteRack";
             XElement body =
                 new XElement(myns + functionname,
-                new XElement(myns + "locationCode", rack.LocationCode),
-                new XElement(myns + "zoneCode", rack.ZoneCode),
-                new XElement(myns + "no", rack.No));
+                new XElement(myns + "iD", rackid));
             SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(() => GetIntFromNAV(tcs, sp, cts));
             return tcs.Task;
@@ -772,9 +786,7 @@ namespace WarehouseControlSystem.Helpers.NAV
             string functionname = "SetRackVisible";
             XElement body =
                 new XElement(myns + functionname,
-                    new XElement(myns + "locationCode", rack.LocationCode),
-                    new XElement(myns + "zoneCode", rack.ZoneCode),
-                    new XElement(myns + "no", rack.No),
+                    new XElement(myns + "iD", rack.ID),
                     new XElement(myns + "visible", rack.SchemeVisible));
             SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(() => GetIntFromNAV(tcs, sp, cts));
@@ -850,7 +862,8 @@ namespace WarehouseControlSystem.Helpers.NAV
             foreach (XAttribute currentatribute in currentnode.Attributes())
             {
                 GetRackFromXML1(rack, currentatribute);
-                GetRackFromXML2(rack, currentatribute);                
+                GetRackFromXML2(rack, currentatribute);
+                GetRackFromXML3(rack, currentatribute);
             }
             return rack;
         }
@@ -858,6 +871,9 @@ namespace WarehouseControlSystem.Helpers.NAV
         {
             switch (currentatribute.Name.LocalName)
             {
+                case "ID":
+                    rack.ID = StringToInt(currentatribute.Value);
+                    break;
                 case "LocationCode":
                     rack.LocationCode = currentatribute.Value;
                     break;
@@ -866,7 +882,6 @@ namespace WarehouseControlSystem.Helpers.NAV
                     break;
                 case "No":
                     rack.No = currentatribute.Value;
-                    rack.PrevNo = rack.No;
                     break;
                 case "Sections":
                     rack.Sections = StringToInt(currentatribute.Value);
@@ -883,8 +898,10 @@ namespace WarehouseControlSystem.Helpers.NAV
         {
             switch (currentatribute.Name.LocalName)
             {
+                case "Comment":
+                    rack.Comment = currentatribute.Value;
+                    break;
                 case "Left":
-
                     rack.Left = StringToInt(currentatribute.Value);
                     break;
                 case "Top":
@@ -915,6 +932,69 @@ namespace WarehouseControlSystem.Helpers.NAV
                     break;
             }
         }
+        private static void GetRackFromXML3(Rack rack, XAttribute currentatribute)
+        {
+            switch (currentatribute.Name.LocalName)
+            {
+                case "NumberingPrefix":
+                    rack.NumberingPrefix = currentatribute.Value;
+                    break;
+
+                case "RackSectionSeparator":
+                    rack.RackSectionSeparator = currentatribute.Value;
+                    break;
+                case "SectionLevelSeparator":
+                    rack.SectionLevelSeparator = currentatribute.Value;
+                    break;
+                case "LevelDepthSeparator":
+                    rack.LevelDepthSeparator = currentatribute.Value;
+                    break;
+
+                case "ReversSectionNumbering":
+                    rack.ReversSectionNumbering = StringToBool(currentatribute.Value);
+                    break;
+                case "ReversLevelNumbering":
+                    rack.ReversLevelNumbering = StringToBool(currentatribute.Value);
+                    break;
+                case "ReversDepthNumbering":
+                    rack.ReversDepthNumbering = StringToBool(currentatribute.Value);
+                    break;
+
+                case "NumberingSectionBegin":
+                    rack.NumberingSectionBegin = StringToInt(currentatribute.Value);
+                    break;
+                case "NumberingLevelBegin":
+                    rack.NumberingLevelBegin = StringToInt(currentatribute.Value);
+                    break;
+                case "NumberingDepthBegin":
+                    rack.NumberingDepthBegin = StringToInt(currentatribute.Value);
+                    break;
+
+                case "NumberingSectionDigitsQty":
+                    rack.NumberingSectionDigitsQuantity = StringToInt(currentatribute.Value);
+                    break;
+                case "NumberingLevelDigitsQty":
+                    rack.NumberingLevelDigitsQuantity = StringToInt(currentatribute.Value);
+                    break;
+                case "NumberingDepthDigitsQty":
+                    rack.NumberingDepthDigitsQuantity = StringToInt(currentatribute.Value);
+                    break;
+
+                case "StepNumberingSection":
+                    rack.StepNumberingSection = StringToInt(currentatribute.Value);
+                    break;
+                case "StepNumberingLevel":
+                    rack.StepNumberingLevel = StringToInt(currentatribute.Value);
+                    break;
+                case "StepNumberingDepth":
+                    rack.StepNumberingDepth = StringToInt(currentatribute.Value);
+                    break;
+
+                case "BinTemplateCode":
+                    rack.BinTemplateCode = currentatribute.Value;
+                    break;
+            }
+        }
         #endregion
 
         #region Bin
@@ -933,7 +1013,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                 new XElement(myns + functionname,
                 new XElement(myns + "binTemplateCode", bintemplate.Code),
                 new XElement(myns + "binCode", bin.Code),
-                new XElement(myns + "rackNo", bin.RackNo),
+                new XElement(myns + "rackID", bin.RackID),
                 new XElement(myns + "section", bin.Section),
                 new XElement(myns + "level", bin.Level),
                 new XElement(myns + "depth", bin.Depth),
@@ -960,7 +1040,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                     new XElement(myns + "locationCode", bin.LocationCode),
                     new XElement(myns + "binCode", bin.Code),
                     new XElement(myns + "prevBinCode", bin.PrevCode),
-                    new XElement(myns + "rackNo", bin.RackNo),
+                    new XElement(myns + "rackID", bin.RackID),
                     new XElement(myns + "section", bin.Section),
                     new XElement(myns + "level", bin.Level),
                     new XElement(myns + "depth", bin.Depth),
@@ -979,7 +1059,7 @@ namespace WarehouseControlSystem.Helpers.NAV
 
             return tcs.Task;
         }
-        public static Task<int> DeleteBin(Bin bin, CancellationTokenSource cts)
+        public static Task<int> DeleteBin(string locationcode, string bincode, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<int>();
             if (IsConnectionFaild())
@@ -992,15 +1072,13 @@ namespace WarehouseControlSystem.Helpers.NAV
             string functionname = "DeleteBin";
             XElement body =
                 new XElement(myns + functionname,
-                new XElement(myns + "locationCodeFilter", bin.LocationCode),
-                new XElement(myns + "zoneCodeFilter", bin.Code),
-                new XElement(myns + "rackCodeFilter", bin.PrevCode),
-                new XElement(myns + "code", bin.RackNo));
+                new XElement(myns + "locationCodeFilter", locationcode),
+                new XElement(myns + "code", bincode));
             SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(() => GetIntFromNAV(tcs, sp, cts));
             return tcs.Task;
         }
-        public static Task<int> GetBinCount(string locationfilter, string codefilter, string rackcodefilter, string bincodefilter, CancellationTokenSource cts)
+        public static Task<int> GetBinCount(string locationfilter, string codefilter, string rackidfilter, string bincodefilter, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<int>();
             if (IsConnectionFaild())
@@ -1015,7 +1093,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                 new XElement(myns + functionname,
                 new XElement(myns + "locationCodeFilter", locationfilter),
                 new XElement(myns + "zoneCodeFilter", codefilter),
-                new XElement(myns + "rackCodeFilter", rackcodefilter),
+                new XElement(myns + "rackIDFilter", rackidfilter),
                 new XElement(myns + "binCodeFilter", bincodefilter));
             SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(() => GetIntFromNAV(tcs, sp, cts));
@@ -1036,7 +1114,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                 new XElement(myns + functionname,
                     new XElement(myns + "locationCodeFilter", Filter.LocationCodeFilter),
                     new XElement(myns + "zoneCodeFilter", Filter.ZoneCodeFilter),
-                    new XElement(myns + "rackCodeFilter", Filter.RackCodeFilter),
+                    new XElement(myns + "rackIDFilter", Filter.RackIDFilter),
                     new XElement(myns + "binCodeFilter", Filter.BinCodeFilter),
                     PositionCount(myns, Filter.ItemsPosition, Filter.ItemsCount));
             SoapParams sp = new SoapParams(functionname, body, myns);
@@ -1100,8 +1178,8 @@ namespace WarehouseControlSystem.Helpers.NAV
                 case "BlockMovement":
                     bin.BlockMovement = StringToInt(currentatribute.Value);
                     break;
-                case "RackNo":
-                    bin.RackNo = currentatribute.Value;
+                case "RackID":
+                    bin.RackID = StringToInt(currentatribute.Value);
                     break;
             }
         }
@@ -2053,7 +2131,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                         }
                     case "R":
                         {
-                            uds.RackNo = currentatribute.Value;
+                            uds.RackID = StringToInt(currentatribute.Value);
                             break;
                         }
                     case "S":
@@ -2087,7 +2165,7 @@ namespace WarehouseControlSystem.Helpers.NAV
         }
         #endregion
         #region UserDefinedFunctions
-        public static Task<List<UserDefinedFunction>> LoadUserDefinedFunctionList(string locationCode, string zoneCode, string rackno, CancellationTokenSource cts)
+        public static Task<List<UserDefinedFunction>> LoadUserDefinedFunctionList(string locationCode, string zoneCode, int rackid, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<List<UserDefinedFunction>>();
 
@@ -2103,7 +2181,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                 new XElement(myns + functionname,
                     new XElement(myns + "locationCode", locationCode),
                     new XElement(myns + "zoneCode", zoneCode),
-                    new XElement(myns + "rackNo", rackno),
+                    new XElement(myns + "rackID", rackid),
                     new XElement(myns + "responseDocument", ""));
             SoapParams sp = new SoapParams(functionname, body, myns);
             Task.Run(() => LoadUserDefinedFunctionListNAV(tcs, sp, cts));
@@ -2177,7 +2255,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                     new XElement(myns + "functionindex", i),
                     new XElement(myns + "locationCode", Filter.LocationCodeFilter),
                     new XElement(myns + "zoneCode", Filter.ZoneCodeFilter),
-                    new XElement(myns + "rackNo", Filter.RackCodeFilter),
+                    new XElement(myns + "rackID", Filter.RackIDFilter),
                     new XElement(myns + "binCode", Filter.BinCodeFilter),
                     new XElement(myns + "itemNo", Filter.ItemNoFilter),
                     new XElement(myns + "variantCode", Filter.VariantCodeFilter),
@@ -2264,7 +2342,7 @@ namespace WarehouseControlSystem.Helpers.NAV
                     searchresponse.BinCode = currentatribute.Value;
                     break;
                 case "R":
-                    searchresponse.RackNo = currentatribute.Value;
+                    searchresponse.RackID = StringToInt(currentatribute.Value);
                     break;
             }
         }

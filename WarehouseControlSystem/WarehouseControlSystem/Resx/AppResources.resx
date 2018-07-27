@@ -1431,4 +1431,34 @@
   <data name="RackCardPage_Toolbar_UnSelect" xml:space="preserve">
     <value>Unselect</value>
   </data>
+  <data name="RackNewPage_RackDigits" xml:space="preserve">
+    <value>Number Format</value>
+  </data>
+  <data name="RackNewPage_RackLevelDigitsQuantity" xml:space="preserve">
+    <value>Level Num. Quantity</value>
+  </data>
+  <data name="RackNewPage_RackSectionDigitsQuantity" xml:space="preserve">
+    <value>Section Num. Quantity</value>
+  </data>
+  <data name="RackNewPage_StepLevelNumbering" xml:space="preserve">
+    <value>Step Level Numbering</value>
+  </data>
+  <data name="MasterNewRack_Comment" xml:space="preserve">
+    <value>Comment</value>
+  </data>
+  <data name="RacksPlanViewModel_DeleteCancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="RacksPlanViewModel_DeleteQuestion" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="RacksPlanViewModel_DeleteRack" xml:space="preserve">
+    <value>Delete rack {0}?</value>
+  </data>
+  <data name="RacksPlanViewModel_DeleteRackAndBins" xml:space="preserve">
+    <value>Delete rack {0} and bins?</value>
+  </data>
+  <data name="RacksPlanViewModel_DeleteBinErrors" xml:space="preserve">
+    <value>Delete bins errors!</value>
+  </data>
 </root>

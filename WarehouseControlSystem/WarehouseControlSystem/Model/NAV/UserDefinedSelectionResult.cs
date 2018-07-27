@@ -19,7 +19,7 @@ namespace WarehouseControlSystem.Model
     public class UserDefinedSelectionResult
     {
         public int FunctionID { get; set; }
-        public string RackNo { get; set; }
+        public int RackID { get; set; }
         public int Section { get; set; }
         public int Level { get; set; }
         public int Depth { get; set; }

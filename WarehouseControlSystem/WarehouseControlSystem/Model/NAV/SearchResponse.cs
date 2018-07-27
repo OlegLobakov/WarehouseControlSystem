@@ -23,7 +23,7 @@ namespace WarehouseControlSystem.Model.NAV
     {
         public string ZoneCode { get; set; } = "";
         public string BinCode { get; set; } = "";
-        public string RackNo { get; set; } = "";
+        public int RackID { get; set; }
 
         public int Section { get; set; }
         public int Level { get; set; }

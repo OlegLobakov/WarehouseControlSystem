@@ -33,6 +33,20 @@ namespace WarehouseControlSystem.ViewModel
         private Location Location { get; set; }
         private Zone Zone { get; set; }
 
+        public string LocationCode
+        {
+            get { return locationcode; }
+            set
+            {
+                if (locationcode != value)
+                {
+                    locationcode = value;
+                    OnPropertyChanged(nameof(LocationCode));
+                }
+            }
+        }
+        string locationcode;
+        
         public string Description
         {
             get { return description; }
@@ -442,7 +456,7 @@ namespace WarehouseControlSystem.ViewModel
         {
             if (Global.SearchResponses is List<SearchResponse>)
             {
-                List<SearchResponse> list = Global.SearchResponses.FindAll(x => x.ZoneCode == Code && x.RackNo == rack.No);
+                List<SearchResponse> list = Global.SearchResponses.FindAll(x => x.ZoneCode == Code && x.RackID == rack.ID);
                 if (list is List<SearchResponse>)
                 {
                     sse.Selection = new List<SubSchemeSelect>();

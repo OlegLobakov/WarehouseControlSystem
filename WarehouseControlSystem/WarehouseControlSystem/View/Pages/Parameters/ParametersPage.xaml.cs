@@ -201,5 +201,11 @@ namespace WarehouseControlSystem.View.Pages.Parameters
                 DependencyService.Get<ILocalize>().SetLocale(ci); // set the Thread for locale-aware methods
             }
         }
+
+        protected override void OnDisappearing()
+        {
+            Global.SaveParameters();
+            base.OnDisappearing();
+        }
     }
 }

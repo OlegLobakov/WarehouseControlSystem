@@ -11,7 +11,7 @@ namespace WarehouseControlSystem.Helpers.NAV
     {
         public string LocationCodeFilter { get; set; } = "";
         public string ZoneCodeFilter { get; set; } = "";
-        public string RackCodeFilter { get; set; } = "";
+        public string RackIDFilter { get; set; } = "";
         public string BinCodeFilter { get; set; } = "";
         public string ItemNoFilter { get; set; } = "";
         public string VariantCodeFilter { get; set; } = "";

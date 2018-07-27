@@ -1735,6 +1735,15 @@ namespace WarehouseControlSystem.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Comment.
+        /// </summary>
+        internal static string MasterNewRack_Comment {
+            get {
+                return ResourceManager.GetString("MasterNewRack_Comment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to BinTemplate is not defined!.
         /// </summary>
         internal static string MasterNewRack_ControlBinTemplate {
@@ -3139,11 +3148,38 @@ namespace WarehouseControlSystem.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Number Format.
+        /// </summary>
+        internal static string RackNewPage_RackDigits {
+            get {
+                return ResourceManager.GetString("RackNewPage_RackDigits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Level Num. Quantity.
+        /// </summary>
+        internal static string RackNewPage_RackLevelDigitsQuantity {
+            get {
+                return ResourceManager.GetString("RackNewPage_RackLevelDigitsQuantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Rack Code.
         /// </summary>
         internal static string RackNewPage_RackNo {
             get {
                 return ResourceManager.GetString("RackNewPage_RackNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Section Num. Quantity.
+        /// </summary>
+        internal static string RackNewPage_RackSectionDigitsQuantity {
+            get {
+                return ResourceManager.GetString("RackNewPage_RackSectionDigitsQuantity", resourceCulture);
             }
         }
         
@@ -3189,6 +3225,15 @@ namespace WarehouseControlSystem.Resx {
         internal static string RackNewPage_StartSectionNumbering {
             get {
                 return ResourceManager.GetString("RackNewPage_StartSectionNumbering", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Step Level Numbering.
+        /// </summary>
+        internal static string RackNewPage_StepLevelNumbering {
+            get {
+                return ResourceManager.GetString("RackNewPage_StepLevelNumbering", resourceCulture);
             }
         }
         
@@ -3288,6 +3333,51 @@ namespace WarehouseControlSystem.Resx {
         internal static string RacksFieldParamsPage_Title {
             get {
                 return ResourceManager.GetString("RacksFieldParamsPage_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete bins errors!.
+        /// </summary>
+        internal static string RacksPlanViewModel_DeleteBinErrors {
+            get {
+                return ResourceManager.GetString("RacksPlanViewModel_DeleteBinErrors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        internal static string RacksPlanViewModel_DeleteCancel {
+            get {
+                return ResourceManager.GetString("RacksPlanViewModel_DeleteCancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        internal static string RacksPlanViewModel_DeleteQuestion {
+            get {
+                return ResourceManager.GetString("RacksPlanViewModel_DeleteQuestion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete rack {0}?.
+        /// </summary>
+        internal static string RacksPlanViewModel_DeleteRack {
+            get {
+                return ResourceManager.GetString("RacksPlanViewModel_DeleteRack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete rack {0} and bins?.
+        /// </summary>
+        internal static string RacksPlanViewModel_DeleteRackAndBins {
+            get {
+                return ResourceManager.GetString("RacksPlanViewModel_DeleteRackAndBins", resourceCulture);
             }
         }
         

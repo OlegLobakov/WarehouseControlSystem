@@ -28,18 +28,45 @@ namespace WarehouseControlSystem.ViewModel
     {
         public Bin Bin { get; set; }
 
-        public string RackNo
+        public string LocationCode
         {
-            get { return rackno; }
+            get { return locationcode; }
             set
             {
-                if (rackno != value)
+                if (locationcode != value)
                 {
-                    rackno = value;
-                    OnPropertyChanged(nameof(RackNo));
+                    locationcode = value;
+                    OnPropertyChanged(nameof(LocationCode));
                 }
             }
-        } string rackno;
+        } string locationcode;
+        public string ZoneCode
+        {
+            get { return zonecode; }
+            set
+            {
+                if (zonecode != value)
+                {
+                    zonecode = value;
+                    OnPropertyChanged(nameof(ZoneCode));
+                }
+            }
+        } string zonecode;
+
+        public int RackID
+
+        {
+            get { return rackid; }
+            set
+            {
+                if (rackid != value)
+                {
+                    rackid = value;
+                    OnPropertyChanged(nameof(RackID));
+                }
+            }
+        }
+        int rackid;
 
         public int Section
         {
@@ -463,7 +490,7 @@ namespace WarehouseControlSystem.ViewModel
         public void FillFields(Bin bin)
         {
             LocationCode = bin.LocationCode;
-            RackNo = bin.RackNo;
+            RackID = bin.RackID;
             Code = bin.Code;
             Section = bin.Section;
             Level = bin.Level;
@@ -493,7 +520,7 @@ namespace WarehouseControlSystem.ViewModel
         public void SaveFields(Bin bin)
         {
             bin.LocationCode = LocationCode;
-            bin.RackNo = RackNo;
+            bin.RackID = RackID;
             bin.Code = Code;
             bin.Section = Section;
             bin.Level = Level;

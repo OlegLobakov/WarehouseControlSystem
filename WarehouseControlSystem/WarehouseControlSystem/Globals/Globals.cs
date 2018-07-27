@@ -53,6 +53,8 @@ namespace WarehouseControlSystem
 
         public static string CompliantPlug { get; set; }
 
+
+
         public static void Init()
         {
             LoadParameters();
