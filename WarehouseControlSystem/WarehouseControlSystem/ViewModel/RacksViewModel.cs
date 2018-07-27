@@ -66,7 +66,7 @@ namespace WarehouseControlSystem.ViewModel
                 ObservableCollection<RackViewModel> nlist = new ObservableCollection<RackViewModel>();
                 foreach (Rack rack in racks)
                 {
-                    RackViewModel rvm = new RackViewModel(Navigation, rack, false);
+                    RackViewModel rvm = new RackViewModel(Navigation, rack);
                     nlist.Add(rvm);
                 }
                 RackViewModels = nlist;

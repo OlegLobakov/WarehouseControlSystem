@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<d:SchemeBaseView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="clr-namespace:WarehouseControlSystem.View.Pages.Base"                
+             x:Class="WarehouseControlSystem.View.Pages.Racks.RackScheme.RackSchemeView">
+  <ContentView.Content>
+        <!--<ContentView x:Name="fieldcontentiew" Padding="1" BackgroundColor="Gray" 
+                     HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            --><!--<ContentView.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding TapCommand}"/>
+            </ContentView.GestureRecognizers>--><!--
+        </ContentView>-->
+        <StackLayout Padding="1" Spacing="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <StackLayout.Triggers>
+                <DataTrigger Binding="{Binding Selected}" TargetType="StackLayout" Value="true">
+                    <Setter Property="BackgroundColor" Value="Red"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Selected}" TargetType="StackLayout" Value="false">
+                    <Setter Property="BackgroundColor" Value="#3d567c"/>
+                </DataTrigger>
+            </StackLayout.Triggers>
+            
+            <Grid  x:Name="grid" ColumnSpacing="2" RowSpacing="2" Padding="1"
+               BackgroundColor="White" 
+               HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding TapCommand}"/>
+                </Grid.GestureRecognizers>
+                <Grid.Triggers>
+                    <DataTrigger Binding="{Binding Selected}" TargetType="Grid" Value="true">
+                        <Setter Property="IsVisible" Value="false"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Selected}" TargetType="Grid" Value="false">
+                        <Setter Property="IsVisible" Value="true"/>
+                    </DataTrigger>
+                </Grid.Triggers>
+            </Grid>
+        </StackLayout>
+    </ContentView.Content>
+</d:SchemeBaseView>

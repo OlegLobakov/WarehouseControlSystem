@@ -17,15 +17,9 @@ using System.Text;
 using System.Threading.Tasks;
 using WarehouseControlSystem.ViewModel.Base;
 using WarehouseControlSystem.Helpers.NAV;
-using WarehouseControlSystem.Model;
 using WarehouseControlSystem.Model.NAV;
-using WarehouseControlSystem.View.Pages.LocationsScheme;
-using WarehouseControlSystem.View.Pages.ZonesScheme;
-using System.Collections.ObjectModel;
 using Xamarin.Forms;
 using WarehouseControlSystem.Resx;
-using System.Windows.Input;
-using System.Threading;
 
 namespace WarehouseControlSystem.ViewModel
 {

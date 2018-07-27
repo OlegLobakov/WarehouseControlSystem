@@ -27,37 +27,6 @@ namespace WarehouseControlSystem.ViewModel
 {
     public class RackViewModel : NAVBaseViewModel
     {
-        private Rack SourceRack { get; set; }
-        public string LocationCode
-        {
-            get { return locationcode; }
-            set
-            {
-                if (locationcode != value)
-                {
-                    locationcode = value;
-                    BinsViewModel.LocationCode = locationcode;
-                    OnPropertyChanged(nameof(LocationCode));
-                }
-            }
-        }
-        string locationcode;
-
-        public string ZoneCode
-        {
-            get { return zonecode; }
-            set
-            {
-                if (zonecode != value)
-                {
-                    zonecode = value;
-                    BinsViewModel.ZoneCode = zonecode;
-                    OnPropertyChanged(nameof(ZoneCode));
-                }
-            }
-        }
-        string zonecode;
-
         public int ID
         {
             get { return id; }
@@ -86,6 +55,33 @@ namespace WarehouseControlSystem.ViewModel
             }
         } string no;
 
+        public string LocationCode
+        {
+            get { return locationcode; }
+            set
+            {
+                if (locationcode != value)
+                {
+                    locationcode = value;
+                    BinsViewModel.LocationCode = locationcode;
+                    OnPropertyChanged(nameof(LocationCode));
+                }
+            }
+        } string locationcode;
+        public string ZoneCode
+        {
+            get { return zonecode; }
+            set
+            {
+                if (zonecode != value)
+                {
+                    zonecode = value;
+                    BinsViewModel.ZoneCode = zonecode;
+                    OnPropertyChanged(nameof(ZoneCode));
+                }
+            }
+        } string zonecode;
+
         public int Sections
         {
             get { return sections; }
@@ -93,9 +89,16 @@ namespace WarehouseControlSystem.ViewModel
             {
                 if (sections != value)
                 {
-                    sections = value;
-                    Changed = true;
-                    OnPropertyChanged(nameof(Sections));
+                    if ((value >= 1) && (value <= 100))
+                    {
+                        sections = value;
+                        Changed = true;
+                        OnPropertyChanged(nameof(Sections));
+                    }
+                    else
+                    {
+                        OnPropertyChanged(nameof(Sections));
+                    }
                 }
             }
         } int sections;
@@ -106,9 +109,16 @@ namespace WarehouseControlSystem.ViewModel
             {
                 if (levels != value)
                 {
-                    levels = value;
-                    Changed = true;
-                    OnPropertyChanged(nameof(Levels));
+                    if ((value >= 1) && (value <= 100))
+                    {
+                        levels = value;
+                        Changed = true;
+                        OnPropertyChanged(nameof(Levels));
+                    }
+                    else
+                    {
+                        OnPropertyChanged(nameof(Levels));
+                    }
                 }
             }
         } int levels;
@@ -119,12 +129,20 @@ namespace WarehouseControlSystem.ViewModel
             {
                 if (depth != value)
                 {
-                    depth = value;
-                    Changed = true;
-                    OnPropertyChanged(nameof(Depth));
+                    if ((value >= 1) && (value <= 10))
+                    {
+                        depth = value;
+                        Changed = true;
+                        OnPropertyChanged(nameof(Depth));
+                    }
+                    else
+                    {
+                        OnPropertyChanged(nameof(Depth));
+                    }
                 }
             }
         } int depth;
+
         public RackOrientationEnum RackOrientation
         {
             get { return rackorientation; }
@@ -150,8 +168,7 @@ namespace WarehouseControlSystem.ViewModel
                     OnPropertyChanged(nameof(comment));
                 }
             }
-        }
-        string comment;
+        } string comment;
 
         public bool SchemeVisible
         {
@@ -167,6 +184,254 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } bool schemevisible;
+
+        public string NumberingPrefix
+        {
+            get { return numberingprefix; }
+            set
+            {
+                if (numberingprefix != value)
+                {
+                    numberingprefix = value;
+                    Renumbering();
+                    OnPropertyChanged(nameof(NumberingPrefix));
+                }
+            }
+        } string numberingprefix;
+
+        public string RackSectionSeparator
+        {
+            get { return racksectionseparator; }
+            set
+            {
+                if (racksectionseparator != value)
+                {
+                    racksectionseparator = value;
+                    Renumbering();
+                    OnPropertyChanged("RackSectionSeparator");
+                }
+            }
+        } string racksectionseparator;
+        public string SectionLevelSeparator
+        {
+            get { return sectionlevelseparator; }
+            set
+            {
+                if (sectionlevelseparator != value)
+                {
+                    sectionlevelseparator = value;
+                    Renumbering();
+                    OnPropertyChanged("SectionLevelSeparator");
+                }
+            }
+        } string sectionlevelseparator;
+        public string LevelDepthSeparator
+        {
+            get { return leveldepthseparator; }
+            set
+            {
+                if (leveldepthseparator != value)
+                {
+                    leveldepthseparator = value;
+                    Renumbering();
+                    OnPropertyChanged("LevelDepthSeparator");
+                }
+            }
+        } string leveldepthseparator;
+
+        public bool ReversSectionNumbering
+        {
+            get { return reverssectionnumbering; }
+            set
+            {
+                if (reverssectionnumbering != value)
+                {
+                    reverssectionnumbering = value;
+                    Renumbering();
+                    OnPropertyChanged("ReversSectionNumbering");
+                }
+            }
+        } bool reverssectionnumbering;
+        public bool ReversLevelNumbering
+        {
+            get { return reverslevelbering; }
+            set
+            {
+                if (reverslevelbering != value)
+                {
+                    reverslevelbering = value;
+                    Renumbering();
+                    OnPropertyChanged("ReversLevelNumbering");
+                }
+            }
+        } bool reverslevelbering;
+        public bool ReversDepthNumbering
+        {
+            get { return reversdepthnumbering; }
+            set
+            {
+                if (reversdepthnumbering != value)
+                {
+                    reversdepthnumbering = value;
+                    Renumbering();
+                    OnPropertyChanged("ReversDepthNumbering");
+                }
+            }
+        } bool reversdepthnumbering;
+
+        public int NumberingSectionBegin
+        {
+            get { return numberingsectionbegin; }
+            set
+            {
+                if (numberingsectionbegin != value)
+                {
+                    numberingsectionbegin = value;
+                    Renumbering();
+                    OnPropertyChanged("NumberingSectionBegin");
+                }
+            }
+        } int numberingsectionbegin = 1;
+        public int NumberingLevelBegin
+        {
+            get { return numberinglevelbegin; }
+            set
+            {
+                if (numberinglevelbegin != value)
+                {
+                    numberinglevelbegin = value;
+                    Renumbering();
+                    OnPropertyChanged("NumberingLevelBegin");
+                }
+            }
+        } int numberinglevelbegin = 1;
+        public int NumberingDepthBegin
+        {
+            get { return numberingdepthbegin; }
+            set
+            {
+                if (numberingdepthbegin != value)
+                {
+                    numberingdepthbegin = value;
+                    Renumbering();
+                    OnPropertyChanged("NumberingDepthBegin");
+                }
+            }
+        } int numberingdepthbegin = 1;
+
+        public int NumberingSectionDigitsQuantity
+        {
+            get { return numberingsectiondigitsquantity; }
+            set
+            {
+                if (numberingsectiondigitsquantity != value)
+                {
+                    if ((value >= 1) && (value <= 10))
+                    {
+                        numberingsectiondigitsquantity = value;
+                        Renumbering();
+                        OnPropertyChanged(nameof(NumberingSectionDigitsQuantity));
+                    }
+                    else
+                    {
+                        OnPropertyChanged(nameof(NumberingSectionDigitsQuantity));
+                    }
+                }
+            }
+        } int numberingsectiondigitsquantity = 2;
+        public int NumberingLevelDigitsQuantity
+        {
+            get { return numberingleveldigitsquantity; }
+            set
+            {
+                if (numberingleveldigitsquantity != value)
+                {
+                    if ((value >= 1) && (value <= 10))
+                    {
+                        numberingleveldigitsquantity = value;
+                        Renumbering();
+                        OnPropertyChanged(nameof(NumberingLevelDigitsQuantity));
+                    }
+                    else
+                    {
+                        OnPropertyChanged(nameof(NumberingLevelDigitsQuantity));
+                    }
+                }
+            }
+        } int numberingleveldigitsquantity = 1;
+        public int NumberingDepthDigitsQuantity
+        {
+            get { return numberingdepthdigitsquantity; }
+            set
+            {
+                if (numberingdepthdigitsquantity != value)
+                {
+                    if ((value >= 1) && (value <= 10))
+                    {
+                        numberingdepthdigitsquantity = value;
+                        Renumbering();
+                        OnPropertyChanged(nameof(NumberingDepthDigitsQuantity));
+                    }
+                    else
+                    {
+                        OnPropertyChanged(nameof(NumberingDepthDigitsQuantity));
+                    }
+                }
+            }
+        } int numberingdepthdigitsquantity = 1;
+
+        public int StepNumberingSection
+        {
+            get { return stepnumberingsection; }
+            set
+            {
+                if (stepnumberingsection != value)
+                {
+                    stepnumberingsection = value;
+                    Renumbering();
+                    OnPropertyChanged("StepNumberingSection");
+                }
+            }
+        } int stepnumberingsection = 1;
+        public int StepNumberingLevel
+        {
+            get { return stepnumberinglevel; }
+            set
+            {
+                if (stepnumberinglevel != value)
+                {
+                    stepnumberinglevel = value;
+                    Renumbering();
+                    OnPropertyChanged("StepNumberingLevel");
+                }
+            }
+        } int stepnumberinglevel = 1;
+        public int StepNumberingDepth
+        {
+            get { return stepnumberingdepth; }
+            set
+            {
+                if (stepnumberingdepth != value)
+                {
+                    stepnumberingdepth = value;
+                    Renumbering();
+                    OnPropertyChanged("StepNumberingDepth");
+                }
+            }
+        } int stepnumberingdepth = 1;
+
+        public string BinTemplateCode
+        {
+            get { return bintemplatecode; }
+            set
+            {
+                if (bintemplatecode != value)
+                {
+                    bintemplatecode = value;
+                    OnPropertyChanged("BinTemplateCode");
+                }
+            }
+        } string bintemplatecode;
 
         public double SchemeWidth
         {
@@ -216,8 +481,7 @@ namespace WarehouseControlSystem.ViewModel
                     OnPropertyChanged(nameof(SearchResult));
                 }
             }
-        }
-        string searchresult;
+        } string searchresult;
 
         public ICommand TapCommand { protected set; get; }
         public event Action<RackViewModel> OnTap;
@@ -238,16 +502,17 @@ namespace WarehouseControlSystem.ViewModel
         public List<SubSchemeSelect> SubSchemeSelects { get; set; } = new List<SubSchemeSelect>();
         public List<SubSchemeSelect> UDSSelects { get; set; } = new List<SubSchemeSelect>();
 
-        public RackViewModel(INavigation navigation, Rack rack, bool createmode1) : base(navigation)
+        public bool IsNumberingEnabled { get; set; }
+        public bool IsCreateBinsEnabled { get; set; }
+
+        public RackViewModel(INavigation navigation, Rack rack) : base(navigation)
         {
-            SourceRack = rack;
             IsSaveToNAVEnabled = false;
-            CreateMode = createmode1;
             BinsViewModel = new BinsViewModel(navigation);
             BinsViewModel.LocationCode = rack.LocationCode;
             BinsViewModel.ZoneCode = rack.ZoneCode;
             TapCommand = new Command<object>(Tap);
-            FillFields(SourceRack);
+            FillFields(rack);
             State = ModelState.Undefined;
             Changed = false;
             GetSearchSelection();
@@ -256,6 +521,7 @@ namespace WarehouseControlSystem.ViewModel
 
         public void FillFields(Rack rack)
         {
+
             ID = rack.ID;
             LocationCode = rack.LocationCode;
             ZoneCode = rack.ZoneCode;
@@ -270,6 +536,35 @@ namespace WarehouseControlSystem.ViewModel
             Width = rack.Width;
             Height = rack.Height;
             Comment = rack.Comment;
+
+            bool savevalue = IsNumberingEnabled;
+            IsNumberingEnabled = false;
+
+            NumberingPrefix = rack.NumberingPrefix;
+
+            RackSectionSeparator = rack.RackSectionSeparator;
+            SectionLevelSeparator = rack.SectionLevelSeparator;
+            LevelDepthSeparator = rack.LevelDepthSeparator;
+
+            ReversSectionNumbering = rack.ReversSectionNumbering;
+            ReversLevelNumbering = rack.ReversLevelNumbering;
+            ReversDepthNumbering = rack.ReversDepthNumbering;
+
+            NumberingSectionBegin = rack.NumberingSectionBegin;
+            NumberingLevelBegin = rack.NumberingLevelBegin;
+            NumberingDepthBegin = rack.NumberingDepthBegin;
+
+            NumberingSectionDigitsQuantity = rack.NumberingSectionDigitsQuantity;
+            NumberingLevelDigitsQuantity = rack.NumberingLevelDigitsQuantity;
+            NumberingDepthDigitsQuantity = rack.NumberingDepthDigitsQuantity;
+
+            StepNumberingSection = rack.StepNumberingSection;
+            StepNumberingLevel = rack.StepNumberingLevel;
+            StepNumberingDepth = rack.StepNumberingDepth;
+
+            BinTemplateCode = rack.BinTemplateCode;
+
+            IsNumberingEnabled = savevalue;
         }
 
         public void SaveFields(Rack rack)
@@ -288,6 +583,91 @@ namespace WarehouseControlSystem.ViewModel
             rack.Width = Width;
             rack.Height = Height;
             rack.Comment = Comment;
+
+            rack.NumberingPrefix = NumberingPrefix;
+
+            rack.RackSectionSeparator = RackSectionSeparator;
+            rack.SectionLevelSeparator = SectionLevelSeparator;
+            rack.LevelDepthSeparator = LevelDepthSeparator;
+
+            rack.ReversSectionNumbering = ReversSectionNumbering;
+            rack.ReversLevelNumbering = ReversLevelNumbering;
+            rack.ReversDepthNumbering = ReversDepthNumbering;
+
+            rack.NumberingSectionBegin = NumberingSectionBegin;
+            rack.NumberingLevelBegin = NumberingLevelBegin;
+            rack.NumberingDepthBegin = NumberingDepthBegin;
+
+            rack.NumberingSectionDigitsQuantity = NumberingSectionDigitsQuantity;
+            rack.NumberingLevelDigitsQuantity = NumberingLevelDigitsQuantity;
+            rack.NumberingDepthDigitsQuantity = NumberingDepthDigitsQuantity;
+
+            rack.StepNumberingSection = StepNumberingSection;
+            rack.StepNumberingLevel = StepNumberingLevel;
+            rack.StepNumberingDepth = StepNumberingDepth;
+
+            rack.BinTemplateCode = BinTemplateCode;
+        }
+
+        public void CreateBins()
+        {
+            BinsViewModel.CreateBins(Depth, Levels, Sections);
+        }
+
+        public void RecreateBins(int prevdepth, int newdepth, int prevlevels, int newlevels, int prevsections, int newsections)
+        {
+            if (IsCreateBinsEnabled)
+            {
+                BinsViewModel.RecreateBins(prevdepth, newdepth, prevlevels, newlevels, prevsections, newsections);
+            }
+        }
+
+        public async void Renumbering()
+        {
+            if (IsNumberingEnabled)
+            {
+                BinsViewModel.UnSelect();
+                foreach (BinViewModel bvm in BinsViewModel.BinViewModels)
+                {
+                    SetNumber(bvm);
+                }
+                await BinsViewModel.CheckBins(ACD).ConfigureAwait(true);
+            }
+        }
+
+        public async void NumberingEmptyBins()
+        {
+            List<BinViewModel> list = BinsViewModel.BinViewModels.FindAll(x => x.Code == "");
+            if (list is List<BinViewModel>)
+            {
+                foreach (BinViewModel bvm in list)
+                {
+                    SetNumber(bvm);
+                    await BinsViewModel.CheckBin(bvm, ACD);
+                }
+            }
+        }
+
+        private void SetNumber(BinViewModel bvm)
+        {
+            System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("en-us");
+
+            int sectionname = NumberingSectionBegin + (bvm.Section - 1) * StepNumberingSection;
+            if (ReversSectionNumbering)
+            {
+                sectionname = NumberingSectionBegin + (Sections - bvm.Section) * StepNumberingSection; ;
+            }
+
+            int levelname = NumberingLevelBegin + (Levels - bvm.Level) * StepNumberingLevel;
+            if (ReversLevelNumbering)
+            {
+                levelname = NumberingLevelBegin + (bvm.Level - 1) * StepNumberingLevel; ;
+            }
+
+            string sectionlabel = sectionname.ToString("D" + NumberingSectionDigitsQuantity.ToString(), ci);
+            string lavellabel = levelname.ToString("D" + NumberingLevelDigitsQuantity.ToString(), ci);
+
+            bvm.Code = NumberingPrefix + racksectionseparator + sectionlabel + sectionlevelseparator + lavellabel;
         }
 
         public void Tap(object sender)

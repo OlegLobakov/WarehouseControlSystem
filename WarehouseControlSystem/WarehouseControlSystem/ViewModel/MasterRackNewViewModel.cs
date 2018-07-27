@@ -29,134 +29,6 @@ namespace WarehouseControlSystem.ViewModel
     {
         public RackViewModel NewModel { get; set; }
 
-        public string LocationCode
-        {
-            get { return locationcode; }
-            set
-            {
-                if (locationcode != value)
-                {
-                    locationcode = value;
-                    OnPropertyChanged(nameof(LocationCode));
-                }
-            }
-        }
-        string locationcode;
-        public string ZoneCode
-        {
-            get { return zonecode; }
-            set
-            {
-                if (zonecode != value)
-                {
-                    zonecode = value;
-                    OnPropertyChanged(nameof(ZoneCode));
-                }
-            }
-        }
-        string zonecode;
-
-        public string No
-        {
-            get { return no; }
-            set
-            {
-                if (no != value)
-                {
-                    no = value;
-                    Changed = true;
-                    OnPropertyChanged(nameof(No));
-                }
-            }
-        } string no;
-
-        public bool CanChangeLocationAndZone
-        {
-            get { return canchangelocationAndzone; }
-            set
-            {
-                if (canchangelocationAndzone != value)
-                {
-                    canchangelocationAndzone = value;
-                    OnPropertyChanged(nameof(CanChangeLocationAndZone));
-                }
-            }
-        } bool canchangelocationAndzone;
-
-        public int Sections
-        {
-            get { return sections; }
-            set
-            {
-                if (sections != value)
-                {
-                    if ((value >= 1) && (value <= 100))
-                    {
-                        sections = value;
-                        Changed = true;
-                        OnPropertyChanged(nameof(Sections));
-                    }
-                    else
-                    {
-                        OnPropertyChanged(nameof(Sections));
-                    }
-                }
-            }
-        } int sections;
-        public int Levels
-        {
-            get { return levels; }
-            set
-            {
-                if (levels != value)
-                {
-                    if ((value >= 1) && (value <= 100))
-                    {
-                        levels = value;
-                        Changed = true;
-                        OnPropertyChanged(nameof(Levels));
-                    }
-                    else
-                    {
-                        OnPropertyChanged(nameof(Levels));
-                    }
-                }
-            }
-        } int levels;
-        public int Depth
-        {
-            get { return depth; }
-            set
-            {
-                if (depth != value)
-                {
-                    if ((value >= 1) && (value <= 10))
-                    {
-                        depth = value;
-                        Changed = true;
-                        OnPropertyChanged(nameof(Depth));
-                    }
-                    else
-                    {
-                        OnPropertyChanged(nameof(Depth));
-                    }
-                }
-            }
-        } int depth;
-        public RackOrientationEnum RackOrientation
-        {
-            get { return rackorientation; }
-            set
-            {
-                if (rackorientation != value)
-                {
-                    rackorientation = value;
-                    Changed = true;
-                    OnPropertyChanged(nameof(RackOrientation));
-                }
-            }
-        } RackOrientationEnum rackorientation;
-
         public int MasterStep
         {
             get { return masterstep; }
@@ -216,252 +88,6 @@ namespace WarehouseControlSystem.ViewModel
         public ICommand Step2Command { protected set; get; }
         public ICommand Step3Command { protected set; get; }
 
-        public string NumberingPrefix
-        {
-            get { return numberingprefix; }
-            set
-            {
-                if (numberingprefix != value)
-                {
-                    numberingprefix = value;
-                    Renumbering();
-                    OnPropertyChanged(nameof(NumberingPrefix));
-                }
-            }
-        } string numberingprefix;
-
-        public string RackSectionSeparator
-        {
-            get { return racksectionseparator; }
-            set
-            {
-                if (racksectionseparator != value)
-                {
-                    racksectionseparator = value;
-                    Renumbering();
-                    OnPropertyChanged("RackSectionSeparator");
-                }
-            }
-        } string racksectionseparator;
-        public string SectionLevelSeparator
-        {
-            get { return sectionlevelseparator; }
-            set
-            {
-                if (sectionlevelseparator != value)
-                {
-                    sectionlevelseparator = value;
-                    Renumbering();
-                    OnPropertyChanged("SectionLevelSeparator");
-                }
-            }
-        } string sectionlevelseparator;
-        public string LevelDepthSeparator
-        {
-            get { return leveldepthseparator; }
-            set
-            {
-                if (leveldepthseparator != value)
-                {
-                    leveldepthseparator = value;
-                    Renumbering();
-                    OnPropertyChanged("LevelDepthSeparator");
-                }
-            }
-        } string leveldepthseparator;
-
-        public bool ReversSectionNumbering
-        {
-            get { return reverssectionnumbering; }
-            set
-            {
-                if (reverssectionnumbering != value)
-                {
-                    reverssectionnumbering = value;
-                    Renumbering();
-                    OnPropertyChanged("ReversSectionNumbering");
-                }
-            }
-        } bool reverssectionnumbering;
-        public bool ReversLevelNumbering
-        {
-            get { return reverslevelbering; }
-            set
-            {
-                if (reverslevelbering != value)
-                {
-                    reverslevelbering = value;
-                    Renumbering();
-                    OnPropertyChanged("ReversLevelNumbering");
-                }
-            }
-        } bool reverslevelbering;
-        public bool ReversDepthNumbering
-        {
-            get { return reversdepthnumbering; }
-            set
-            {
-                if (reversdepthnumbering != value)
-                {
-                    reversdepthnumbering = value;
-                    Renumbering();
-                    OnPropertyChanged("ReversDepthNumbering");
-                }
-            }
-        } bool reversdepthnumbering;
-
-        public int NumberingSectionBegin
-        {
-            get { return numberingsectionbegin; }
-            set
-            {
-                if (numberingsectionbegin != value)
-                {
-                    numberingsectionbegin = value;
-                    Renumbering();
-                    OnPropertyChanged("NumberingSectionBegin");
-                }
-            }
-        } int numberingsectionbegin = 1;
-        public int NumberingLevelBegin
-        {
-            get { return numberinglevelbegin; }
-            set
-            {
-                if (numberinglevelbegin != value)
-                {
-                    numberinglevelbegin = value;
-                    Renumbering();
-                    OnPropertyChanged("NumberingLevelBegin");
-                }
-            }
-        } int numberinglevelbegin = 1;
-        public int NumberingDepthBegin
-        {
-            get { return numberingdepthbegin; }
-            set
-            {
-                if (numberingdepthbegin != value)
-                {
-                    numberingdepthbegin = value;
-                    Renumbering();
-                    OnPropertyChanged("NumberingDepthBegin");
-                }
-            }
-        } int numberingdepthbegin = 1;
-
-        public int NumberingSectionDigitsQuantity
-        {
-            get { return numberingsectiondigitsquantity; }
-            set
-            {
-                if (numberingsectiondigitsquantity != value)
-                {
-                    if ((value >= 1) && (value <= 10))
-                    {
-                        numberingsectiondigitsquantity = value;
-                        Renumbering();
-                        OnPropertyChanged(nameof(NumberingSectionDigitsQuantity));
-                    }
-                    else
-                    {
-                        OnPropertyChanged(nameof(NumberingSectionDigitsQuantity));
-                    }
-                }
-            }
-        } int numberingsectiondigitsquantity = 2;
-        public int NumberingLevelDigitsQuantity
-        {
-            get { return numberingleveldigitsquantity; }
-            set
-            {
-                if (numberingleveldigitsquantity != value)
-                {
-                    if ((value >= 1) && (value <= 10))
-                    {
-                        numberingleveldigitsquantity = value;
-                        Renumbering();
-                        OnPropertyChanged(nameof(NumberingLevelDigitsQuantity));
-                    }
-                    else
-                    {
-                        OnPropertyChanged(nameof(NumberingLevelDigitsQuantity));
-                    }
-                }
-            }
-        } int numberingleveldigitsquantity = 1;
-        public int NumberingDepthDigitsQuantity
-        {
-            get { return numberingdepthdigitsquantity; }
-            set
-            {
-                if (numberingdepthdigitsquantity != value)
-                {
-                    if ((value >= 1) && (value <= 10))
-                    {
-                        numberingdepthdigitsquantity = value;
-                        Renumbering();
-                        OnPropertyChanged(nameof(NumberingDepthDigitsQuantity));
-                    }
-                    else
-                    {
-                        OnPropertyChanged(nameof(NumberingDepthDigitsQuantity));
-                    }
-                }
-            }
-        } int numberingdepthdigitsquantity = 1;
-
-        public int StepNumberingSection
-        {
-            get { return stepnumberingsection; }
-            set
-            {
-                if (stepnumberingsection != value)
-                {
-                    stepnumberingsection = value;
-                    Renumbering();
-                    OnPropertyChanged("StepNumberingSection");
-                }
-            }
-        } int stepnumberingsection = 1;
-        public int StepNumberingLevel
-        {
-            get { return stepnumberinglevel; }
-            set
-            {
-                if (stepnumberinglevel != value)
-                {
-                    stepnumberinglevel = value;
-                    Renumbering();
-                    OnPropertyChanged("StepNumberingLevel");
-                }
-            }
-        } int stepnumberinglevel = 1;
-
-        public bool LocationsIsLoaded
-        {
-            get { return locationsisloaded; }
-            set
-            {
-                if (locationsisloaded != value)
-                {
-                    locationsisloaded = value;
-                    OnPropertyChanged(nameof(LocationsIsLoaded));
-                }
-            }
-        } bool locationsisloaded;
-        public bool ZonesIsLoaded
-        {
-            get { return zonesisloaded; }
-            set
-            {
-                if (zonesisloaded != value)
-                {
-                    zonesisloaded = value;
-                    OnPropertyChanged(nameof(ZonesIsLoaded));
-                }
-            }
-        } bool zonesisloaded;
         public bool BinTemplatesIsLoaded
         {
             get { return bintemplatesisloaded; }
@@ -474,22 +100,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } bool bintemplatesisloaded;
-
-        public bool ShowInfoPanel
-        {
-            get { return showinfopanel; }
-            set
-            {
-                if (showinfopanel != value)
-                {
-                    showinfopanel = value;
-                    OnPropertyChanged(nameof(ShowInfoPanel));
-                }
-            }
-        } bool showinfopanel;
-
         public ObservableCollection<BinTemplate> BinTemplates { get; set; } = new ObservableCollection<BinTemplate>();
-
         public BinTemplate SelectedBinTemplate {
             get { return selecteditem; }
             set
@@ -503,19 +114,6 @@ namespace WarehouseControlSystem.ViewModel
             }
         } BinTemplate selecteditem;
 
-        public bool IsBusy
-        {
-            get { return isbusy; }
-            set
-            {
-                if (isbusy != value)
-                {
-                    isbusy = value;
-                    OnPropertyChanged("IsBusy");
-                }
-            }
-        } bool isbusy;
-
         public bool ConflictBinChange
         {
             get { return conflictbinchange; }
@@ -528,111 +126,24 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } bool conflictbinchange;
-        //public bool ConflictRackChange
-        //{
-        //    get { return conflictrackchange; }
-        //    set
-        //    {
-        //        if (conflictrackchange != value)
-        //        {
-        //            conflictrackchange = value;
-        //            OnPropertyChanged(nameof(ConflictRackChange));
-        //        }
-        //    }
-        //} bool conflictrackchange;
 
-        public MasterRackNewViewModel(RackViewModel rvm, bool createmode1) : base(rvm.Navigation)
+        public MasterRackNewViewModel(RackViewModel rvm) : base(rvm.Navigation)
         {
-            NewModel = rvm;
-            IsSaveToNAVEnabled = false;
-            RackSectionSeparator = Settings.DefaultRackSectionSeparator;
-            SectionLevelSeparator = Settings.DefaultSectionLevelSeparator;
-            LevelDepthSeparator = Settings.DefaultLevelDepthSeparator;
-
-            Sections = rvm.Sections;
-            Levels = rvm.Levels;
-            Depth = rvm.Depth;
-            RackOrientation = rvm.RackOrientation;
-            LocationCode = rvm.LocationCode;
-            ZoneCode = rvm.ZoneCode;
-
-            CreateMode = createmode1;
-
+            NewModel = rvm;          
             Step1Command = new Command(Step1);
             Step2Command = new Command(Step2);
             Step3Command = new Command(async () => await Step3().ConfigureAwait(true));
-
             State = ModelState.Undefined;
-            Changed = false;
-            IsSaveToNAVEnabled = true;
-        }
-
-        public void RecreateBins(int prevdepth, int newdepth, int prevlevels, int newlevels, int prevsections, int newsections)
-        {
-            if (CreateMode)
-            {
-                NewModel.BinsViewModel.RecreateBins(prevdepth, newdepth, prevlevels, newlevels, prevsections, newsections);
-            }
-        }
-
-        public async void Renumbering()
-        {
-            if (CreateMode)
-            {
-                NewModel.BinsViewModel.UnSelect();
-                foreach (BinViewModel bvm in NewModel.BinsViewModel.BinViewModels)
-                {
-                    SetNumber(bvm);
-                }
-                await NewModel.BinsViewModel.CheckBins(ACD).ConfigureAwait(true);
-            }
-        }
-
-        public async void NumberingEmptyBins()
-        {
-            List<BinViewModel> list = NewModel.BinsViewModel.BinViewModels.FindAll(x => x.Code == "");
-            if (list is List<BinViewModel>)
-            {
-                foreach (BinViewModel bvm in list)
-                {
-                    SetNumber(bvm);
-                    await NewModel.BinsViewModel.CheckBin(bvm, ACD);
-                }
-            }
-        }
-
-        private void SetNumber(BinViewModel bvm)
-        {
-            System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("en-us");
-
-            int sectionname = NumberingSectionBegin + (bvm.Section - 1) * StepNumberingSection;
-            if (ReversSectionNumbering)
-            {
-                sectionname = NumberingSectionBegin + (Sections - bvm.Section) * StepNumberingSection; ;
-            }
-
-            int levelname = NumberingLevelBegin + (Levels - bvm.Level) * StepNumberingLevel;
-            if (ReversLevelNumbering)
-            {
-                levelname = NumberingLevelBegin + (bvm.Level - 1) * StepNumberingLevel; ;
-            }
-
-            string sectionlabel = sectionname.ToString("D" + NumberingSectionDigitsQuantity.ToString(), ci);
-            string lavellabel = levelname.ToString("D" + NumberingLevelDigitsQuantity.ToString(), ci);
-
-            bvm.Code = NumberingPrefix + racksectionseparator + sectionlabel + sectionlevelseparator + lavellabel;
         }
 
         public async Task Load()
         {
-            IsBusy = true;
             try
             {
                 await LoadBinTemplates().ConfigureAwait(true);
                 await LoadBinTypesList().ConfigureAwait(true);
                 await LoadWarehouseClassesList().ConfigureAwait(true);
                 await LoadSpecialEquipmentsList().ConfigureAwait(true);
-                IsBusy = false;
             }
             catch (OperationCanceledException e)
             {
@@ -658,17 +169,17 @@ namespace WarehouseControlSystem.ViewModel
                     foreach (BinTemplate bt in bintemplates)
                     {
                         bool selected = true;
-                        if (!string.IsNullOrEmpty(LocationCode))
+                        if (!string.IsNullOrEmpty(NewModel.LocationCode))
                         {
-                            if (bt.LocationCode != LocationCode)
+                            if (bt.LocationCode != NewModel.LocationCode)
                             {
                                 selected = false;
                             }
                         }
 
-                        if (!string.IsNullOrEmpty(ZoneCode))
+                        if (!string.IsNullOrEmpty(NewModel.ZoneCode))
                         {
-                            if (bt.ZoneCode != ZoneCode)
+                            if (bt.ZoneCode != NewModel.ZoneCode)
                             {
                                 selected = false;
                             }
@@ -700,42 +211,32 @@ namespace WarehouseControlSystem.ViewModel
         private async Task LoadBinTypesList()
         {
             List<BinType> bintypes = await NAV.GetBinTypeList(1, int.MaxValue, ACD.Default).ConfigureAwait(true);
-            if (!IsDisposed)
+            NewModel.BinsViewModel.BinTypes.Clear();
+            foreach (BinType bt in bintypes)
             {
-                //ObservableCollection<string> bts = new ObservableCollection<string>();
-                NewModel.BinsViewModel.BinTypes.Clear();
-                foreach (BinType bt in bintypes)
-                {
-                    NewModel.BinsViewModel.BinTypes.Add(bt.Code);
-                }
-                NewModel.BinsViewModel.BinTypesIsEnabled = bintypes.Count > 0;
+                NewModel.BinsViewModel.BinTypes.Add(bt.Code);
             }
+            NewModel.BinsViewModel.BinTypesIsEnabled = bintypes.Count > 0;
         }
         private async Task LoadWarehouseClassesList()
         {
             List<WarehouseClass> warehouseclasses = await NAV.GetWarehouseClassList(1, int.MaxValue, ACD.Default).ConfigureAwait(true);
-            if (!IsDisposed)
+            NewModel.BinsViewModel.WarehouseClasses.Clear();
+            foreach (WarehouseClass wc in warehouseclasses)
             {
-                NewModel.BinsViewModel.WarehouseClasses.Clear();
-                foreach (WarehouseClass wc in warehouseclasses)
-                {
-                    NewModel.BinsViewModel.WarehouseClasses.Add(wc.Code);
-                }
-                NewModel.BinsViewModel.WarehouseClassesIsEnabled = warehouseclasses.Count > 0;
+                NewModel.BinsViewModel.WarehouseClasses.Add(wc.Code);
             }
+            NewModel.BinsViewModel.WarehouseClassesIsEnabled = warehouseclasses.Count > 0;
         }
         private async Task LoadSpecialEquipmentsList()
         {
             List<SpecialEquipment> specialequipments = await NAV.GetSpecialEquipmentList(1, int.MaxValue, ACD.Default).ConfigureAwait(true);
-            if (!IsDisposed)
+            NewModel.BinsViewModel.SpecialEquipments.Clear();
+            foreach (SpecialEquipment se in specialequipments)
             {
-                NewModel.BinsViewModel.SpecialEquipments.Clear();
-                foreach (SpecialEquipment se in specialequipments)
-                {
-                    NewModel.BinsViewModel.SpecialEquipments.Add(se.Code);
-                }
-                NewModel.BinsViewModel.SpecialEquipmentsIsEnabled = specialequipments.Count > 0;
+                NewModel.BinsViewModel.SpecialEquipments.Add(se.Code);
             }
+            NewModel.BinsViewModel.SpecialEquipmentsIsEnabled = specialequipments.Count > 0;
         }
 
         public void ChangeBinTemplate(BinTemplate bt)
@@ -758,13 +259,13 @@ namespace WarehouseControlSystem.ViewModel
                 check = false;
             }
 
-            if (RackOrientation == RackOrientationEnum.Undefined)
+            if (NewModel.RackOrientation == RackOrientationEnum.Undefined)
             {
                 InfoText = AppResources.MasterNewRack_ControlRackOrientation;
                 check = false;
             }
 
-            if (string.IsNullOrEmpty(No))
+            if (string.IsNullOrEmpty(NewModel.No))
             {
                 InfoText = AppResources.MasterNewRack_ControlNo;
                 check = false;
@@ -772,15 +273,10 @@ namespace WarehouseControlSystem.ViewModel
 
             if (check)
             {
-                NewModel.No = No;
-                NewModel.Sections = Sections;
-                NewModel.Levels = Levels;
-                NewModel.Depth = Depth;
-                NewModel.RackOrientation = RackOrientation;
                 NewModel.BinsViewModel.BinTemplate = SelectedBinTemplate;
-                NewModel.BinsViewModel.CreateBins(Depth, Levels, Sections);
-                NumberingPrefix = No;
-                Renumbering();
+                NewModel.CreateBins();
+                NewModel.NumberingPrefix = NewModel.No;
+                NewModel.Renumbering();
                 MessagingCenter.Send<MasterRackNewViewModel>(this, "UpdateRackView");
                 MasterStep = 2;
             }
@@ -796,9 +292,11 @@ namespace WarehouseControlSystem.ViewModel
         public async Task CheckNo()
         {
             InfoText = "";
-            if ((LocationCode != "") && (ZoneCode != "") && (No != ""))
+            if ((NewModel.LocationCode != "") &&
+                (NewModel.ZoneCode != "") &&
+                (NewModel.No != ""))
             {
-                int exist = await NAV.GetRackCount(LocationCode, ZoneCode, No, false, ACD.Default).ConfigureAwait(true);
+                int exist = await NAV.GetRackCount(NewModel.LocationCode, NewModel.ZoneCode, NewModel.No, false, ACD.Default).ConfigureAwait(true);
                 if (exist > 0)
                 {
                     InfoText = AppResources.RackNewPage_CodeAlreadyExist;
@@ -840,7 +338,7 @@ namespace WarehouseControlSystem.ViewModel
                 bmv.SaveFields();
                 LoadingText = AppResources.RackNewPage_LoadingProgressBin + " " + bmv.Bin.Code;
 
-                int binexist = await NAV.GetBinCount(LocationCode, "", "", bmv.Bin.Code, ACD.Default).ConfigureAwait(true);
+                int binexist = await NAV.GetBinCount(NewModel.LocationCode, "", "", bmv.Bin.Code, ACD.Default).ConfigureAwait(true);
                 if (binexist > 0)
                 {
                     if (ConflictBinChange)

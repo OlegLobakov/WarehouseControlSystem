@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<d:SchemeBaseView  xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WarehouseControlSystem.View.Pages.Zones.ZoneView"
+              xmlns:d="clr-namespace:WarehouseControlSystem.View.Pages.Base"
+   xmlns:vc="clr-namespace:WarehouseControlSystem.View.Content">
+    <ContentView.Content>
+        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Padding="0" BackgroundColor="DarkGray">
+            <StackLayout.Triggers>
+                <DataTrigger Binding="{Binding Color}" TargetType="StackLayout" Value="{StaticResource SchemeBlockWhiteColor}">
+                    <Setter Property="Padding" Value="1"/>
+                </DataTrigger>
+            </StackLayout.Triggers>
+
+            <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="{Binding Color}">
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding TapCommand}"/>
+                </StackLayout.GestureRecognizers>
+                <StackLayout.Triggers>
+                    <DataTrigger Binding="{Binding Selected}" TargetType="StackLayout" Value="true">
+                        <Setter Property="BackgroundColor" Value="Red"/>
+                    </DataTrigger>
+                </StackLayout.Triggers>
+
+                <Grid x:Name="grid" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding TapCommand}"/>
+                    </Grid.GestureRecognizers>
+                    <!--<Label Grid.Row="0" x:Name="codelabel" Text="{Binding Code}" FontSize="17" 
+                       HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
+                       HorizontalTextAlignment="Start" VerticalTextAlignment="Center" TextColor="White" Margin="10,5,0,0">
+                        <Label.Triggers>
+                            <DataTrigger Binding="{Binding Color}" TargetType="Label" Value="{StaticResource SchemeBlockWhiteColor}">
+                                <Setter Property="TextColor" Value="Black"/>
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>-->
+
+                    <Label Grid.Row="0" x:Name="namelabel" Text="{Binding Description}"  FontSize="Medium" 
+                       HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" FontAttributes="Bold"
+                       HorizontalTextAlignment="Start" VerticalTextAlignment="Center" TextColor="White" Margin="10">
+                        <Label.Triggers>
+                            <DataTrigger Binding="{Binding Color}" TargetType="Label" Value="{StaticResource SchemeBlockWhiteColor}">
+                                <Setter Property="TextColor" Value="Black"/>
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+
+                    <vc:InnerSubSchemeView                         
+                        Grid.Row="2" Margin="10,5,10,5"
+                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"  
+                        PlanWidth="{Binding PlanWidth}"
+                        PlanHeight="{Binding PlanHeight}"
+                        SubSchemeElements="{Binding SubSchemeElements}"  
+                        IsVisible="{Binding RacksIsLoaded}"
+                        SubSchemeBackgroundColor="{Binding Color}"
+                        UpdateScheme="{Binding RacksIsLoaded}"/>
+
+                    <StackLayout Grid.Row="3" Orientation="Horizontal">
+                        <Label Text="{Binding EditModeText}" TextColor="White" 
+                           HorizontalOptions="Start" VerticalOptions="Center"  
+                           IsVisible="{Binding Selected}" Margin="10,0,0,0"/>
+                        <Image  x:Name="iconelement" 
+                            HorizontalOptions="EndAndExpand" VerticalOptions="End" 
+                            Aspect="AspectFit" 
+                            IsVisible="{Binding Selected}" Margin="5">
+                            <Image.Source>
+                                <OnPlatform x:TypeArguments="FileImageSource">
+                                    <On Platform="UWP">
+                                        <FileImageSource File="Assets/Images/ic_action_zoom_out_map.png"/>
+                                    </On>
+                                    <On Platform="iOS,Android">
+                                        <FileImageSource File="ic_action_zoom_out_map.png"/>
+                                    </On>
+                                </OnPlatform>
+                            </Image.Source>
+                        </Image>
+                    </StackLayout>
+                </Grid>
+            </StackLayout>
+        </StackLayout>
+    </ContentView.Content>
+</d:SchemeBaseView>

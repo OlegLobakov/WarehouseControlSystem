@@ -12,21 +12,12 @@
 // ----------------------------------------------------------------------------------
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using WarehouseControlSystem.View.Pages.LocationsScheme;
+using WarehouseControlSystem.View.Pages.Locations;
 using WarehouseControlSystem.View.Pages.Contacts;
 using WarehouseControlSystem.View.Pages.Connections;
 using WarehouseControlSystem.View.Pages.Parameters;
-using WarehouseControlSystem.View.Pages.RackScheme;
-using WarehouseControlSystem.View.Pages.ZonesScheme;
 using WarehouseControlSystem.ViewModel;
-using WarehouseControlSystem.Model.NAV;
-using WarehouseControlSystem.View.Pages.Find;
-using System;
-using WarehouseControlSystem.Helpers.NAV;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 
 namespace WarehouseControlSystem
 {

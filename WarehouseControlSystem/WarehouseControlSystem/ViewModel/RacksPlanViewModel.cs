@@ -23,10 +23,10 @@ using System.Collections.ObjectModel;
 using Plugin.Connectivity;
 using WarehouseControlSystem.Helpers.NAV;
 using WarehouseControlSystem.Resx;
-using WarehouseControlSystem.View.Pages.RackScheme;
+using WarehouseControlSystem.View.Pages.Racks;
 using System.Windows.Input;
 using System.Threading;
-using WarehouseControlSystem.View.Pages.RackScheme.MasterNewRack;
+using WarehouseControlSystem.View.Pages.Racks.RackNew;
 
 namespace WarehouseControlSystem.ViewModel
 {
@@ -165,7 +165,7 @@ namespace WarehouseControlSystem.ViewModel
                 State = ModelState.Normal;
                 foreach (Rack rack in racks)
                 {
-                    RackViewModel rvm = new RackViewModel(Navigation, rack, false);
+                    RackViewModel rvm = new RackViewModel(Navigation, rack);
                     rvm.OnTap += Rvm_OnTap;
                     RackViewModels.Add(rvm);
                 }
@@ -378,13 +378,13 @@ namespace WarehouseControlSystem.ViewModel
                 SchemeVisible = true,
             };
 
-            RackViewModel rvm = new RackViewModel(Navigation, newrack, true)
+            RackViewModel rvm = new RackViewModel(Navigation, newrack)
             {
                 LocationCode = Zone.LocationCode,
                 ZoneCode = Zone.Code,
             };
 
-            MasterRackNewViewModel mrnvm = new MasterRackNewViewModel(rvm, true);
+            MasterRackNewViewModel mrnvm = new MasterRackNewViewModel(rvm);
             MasterNewRackPage mnrp = new MasterNewRackPage(mrnvm);
 
             await Navigation.PushAsync(mnrp);

@@ -694,8 +694,25 @@ namespace WarehouseControlSystem.Helpers.NAV
                 new XElement(myns + "height", rack.Height),
                 new XElement(myns + "rackOrientation", (int)rack.RackOrientation),
                 new XElement(myns + "schemeVisible", rack.SchemeVisible),
-                new XElement(myns + "comment", rack.Comment)
-             };
+                new XElement(myns + "comment", rack.Comment),
+                new XElement(myns + "numberingPrefix", rack.NumberingPrefix),
+                new XElement(myns + "rackSectionSeparator", rack.RackSectionSeparator),
+                new XElement(myns + "sectionLevelSeparator", rack.SectionLevelSeparator),
+                new XElement(myns + "levelDepthSeparator", rack.LevelDepthSeparator),
+                new XElement(myns + "reversSectionNumbering", rack.ReversSectionNumbering),
+                new XElement(myns + "reversLevelNumbering", rack.ReversLevelNumbering),
+                new XElement(myns + "reversDepthNumbering", rack.ReversDepthNumbering),
+                new XElement(myns + "numberingSectionBegin", rack.NumberingSectionBegin),
+                new XElement(myns + "numberingLevelBegin", rack.NumberingLevelBegin),
+                new XElement(myns + "numberingDepthBegin", rack.NumberingDepthBegin),
+                new XElement(myns + "numberingSectionDigitsQty", rack.NumberingSectionDigitsQuantity),
+                new XElement(myns + "numberingLevelDigitsQty", rack.NumberingLevelDigitsQuantity),
+                new XElement(myns + "numberingDepthDigitsQty", rack.NumberingDepthDigitsQuantity),
+                new XElement(myns + "stepNumberingSection", rack.StepNumberingSection),
+                new XElement(myns + "stepNumberingLevel", rack.StepNumberingLevel),
+                new XElement(myns + "stepNumberingDepth", rack.StepNumberingDepth),
+                new XElement(myns + "binTemplateCode", rack.BinTemplateCode)
+            };
         }
         public static Task<int> CreateRack(Rack rack, CancellationTokenSource cts)
         {
@@ -845,7 +862,8 @@ namespace WarehouseControlSystem.Helpers.NAV
             foreach (XAttribute currentatribute in currentnode.Attributes())
             {
                 GetRackFromXML1(rack, currentatribute);
-                GetRackFromXML2(rack, currentatribute);                
+                GetRackFromXML2(rack, currentatribute);
+                GetRackFromXML3(rack, currentatribute);
             }
             return rack;
         }
@@ -911,6 +929,69 @@ namespace WarehouseControlSystem.Helpers.NAV
                         default:
                             throw new InvalidOperationException("Impossible value");
                     }
+                    break;
+            }
+        }
+        private static void GetRackFromXML3(Rack rack, XAttribute currentatribute)
+        {
+            switch (currentatribute.Name.LocalName)
+            {
+                case "NumberingPrefix":
+                    rack.NumberingPrefix = currentatribute.Value;
+                    break;
+
+                case "RackSectionSeparator":
+                    rack.RackSectionSeparator = currentatribute.Value;
+                    break;
+                case "SectionLevelSeparator":
+                    rack.SectionLevelSeparator = currentatribute.Value;
+                    break;
+                case "LevelDepthSeparator":
+                    rack.LevelDepthSeparator = currentatribute.Value;
+                    break;
+
+                case "ReversSectionNumbering":
+                    rack.ReversSectionNumbering = StringToBool(currentatribute.Value);
+                    break;
+                case "ReversLevelNumbering":
+                    rack.ReversLevelNumbering = StringToBool(currentatribute.Value);
+                    break;
+                case "ReversDepthNumbering":
+                    rack.ReversDepthNumbering = StringToBool(currentatribute.Value);
+                    break;
+
+                case "NumberingSectionBegin":
+                    rack.NumberingSectionBegin = StringToInt(currentatribute.Value);
+                    break;
+                case "NumberingLevelBegin":
+                    rack.NumberingLevelBegin = StringToInt(currentatribute.Value);
+                    break;
+                case "NumberingDepthBegin":
+                    rack.NumberingDepthBegin = StringToInt(currentatribute.Value);
+                    break;
+
+                case "NumberingSectionDigitsQty":
+                    rack.NumberingSectionDigitsQuantity = StringToInt(currentatribute.Value);
+                    break;
+                case "NumberingLevelDigitsQty":
+                    rack.NumberingLevelDigitsQuantity = StringToInt(currentatribute.Value);
+                    break;
+                case "NumberingDepthDigitsQty":
+                    rack.NumberingDepthDigitsQuantity = StringToInt(currentatribute.Value);
+                    break;
+
+                case "StepNumberingSection":
+                    rack.StepNumberingSection = StringToInt(currentatribute.Value);
+                    break;
+                case "StepNumberingLevel":
+                    rack.StepNumberingLevel = StringToInt(currentatribute.Value);
+                    break;
+                case "StepNumberingDepth":
+                    rack.StepNumberingDepth = StringToInt(currentatribute.Value);
+                    break;
+
+                case "BinTemplateCode":
+                    rack.BinTemplateCode = currentatribute.Value;
                     break;
             }
         }

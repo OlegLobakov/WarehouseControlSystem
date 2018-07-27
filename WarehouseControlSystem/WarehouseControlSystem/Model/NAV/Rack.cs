@@ -36,8 +36,6 @@ namespace WarehouseControlSystem.Model.NAV
             }
         } RackOrientationEnum rackorientation;
 
-        public string BinTemplateCode { get; set; } = "";
-
         public int Sections
         {
             get
@@ -75,15 +73,36 @@ namespace WarehouseControlSystem.Model.NAV
             }
         } int depth;
 
-        public int SectionSlotSize { get; set; }
-        public int LevelSlotSize { get; set; }
-
         public int Left { get; set; }
         public int Top { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
 
         public bool SchemeVisible { get; set; }
+
+        public string NumberingPrefix { get; set; } = "";
+
+        public string RackSectionSeparator { get; set; } = "";
+        public string SectionLevelSeparator { get; set; } = "";
+        public string LevelDepthSeparator { get; set; } = "";
+
+        public bool ReversSectionNumbering { get; set; }
+        public bool ReversLevelNumbering { get; set; }
+        public bool ReversDepthNumbering { get; set; }
+
+        public int NumberingSectionBegin { get; set; }
+        public int NumberingLevelBegin { get; set; }
+        public int NumberingDepthBegin { get; set; }
+
+        public int NumberingSectionDigitsQuantity { get; set; }
+        public int NumberingLevelDigitsQuantity { get; set; }
+        public int NumberingDepthDigitsQuantity { get; set; }
+
+        public int StepNumberingSection { get; set; }
+        public int StepNumberingLevel { get; set; }
+        public int StepNumberingDepth { get; set; }
+
+        public string BinTemplateCode { get; set; } = "";
 
         public Rack()
         {
@@ -93,6 +112,11 @@ namespace WarehouseControlSystem.Model.NAV
             Sections = Settings.DefaultRackSections;
             Levels = Settings.DefaultRackLevels;
             Depth = Settings.DefaultRackDepth;
+
+            RackSectionSeparator = Settings.DefaultRackSectionSeparator;
+            SectionLevelSeparator = Settings.DefaultSectionLevelSeparator;
+            LevelDepthSeparator = Settings.DefaultLevelDepthSeparator;
+
         }
 
         public void RecalculateSize()
@@ -118,16 +142,40 @@ namespace WarehouseControlSystem.Model.NAV
                 ZoneCode = ZoneCode,
                 No = No,
                 RackOrientation = RackOrientation,
-                BinTemplateCode = BinTemplateCode,
+
                 Sections = Sections,
                 Levels = Levels,
                 Depth = Depth,
-                SectionSlotSize = SectionSlotSize,
-                LevelSlotSize = LevelSlotSize,
+
                 Left = Left,
                 Top = Top,
+
                 SchemeVisible = SchemeVisible,
                 Comment = Comment,
+
+                NumberingPrefix = NumberingPrefix,
+
+                RackSectionSeparator = RackSectionSeparator,
+                SectionLevelSeparator = SectionLevelSeparator,
+                LevelDepthSeparator = LevelDepthSeparator,
+
+                ReversSectionNumbering = ReversSectionNumbering,
+                ReversLevelNumbering = ReversLevelNumbering,
+                ReversDepthNumbering = ReversDepthNumbering,
+
+                NumberingSectionBegin = NumberingSectionBegin,
+                NumberingLevelBegin = NumberingLevelBegin,
+                NumberingDepthBegin = NumberingDepthBegin,
+
+                NumberingSectionDigitsQuantity = NumberingSectionDigitsQuantity,
+                NumberingLevelDigitsQuantity = NumberingLevelDigitsQuantity,
+                NumberingDepthDigitsQuantity = NumberingDepthDigitsQuantity,
+
+                StepNumberingSection = StepNumberingSection,
+                StepNumberingLevel = StepNumberingLevel,
+                StepNumberingDepth = StepNumberingDepth,
+
+                BinTemplateCode = BinTemplateCode,
             };
         }
 
@@ -138,16 +186,40 @@ namespace WarehouseControlSystem.Model.NAV
             to.ZoneCode = ZoneCode;
             to.No = No;
             to.RackOrientation = RackOrientation;
-            to.BinTemplateCode = BinTemplateCode;
+            
             to.Sections = Sections;
             to.Levels = Levels;
             to.Depth = Depth;
-            to.SectionSlotSize = SectionSlotSize;
-            to.LevelSlotSize = LevelSlotSize;
+
             to.Left = Left;
             to.Top = Top;
+
             to.SchemeVisible = SchemeVisible;
             to.Comment = Comment;
+
+            to.NumberingPrefix = NumberingPrefix;
+
+            to.RackSectionSeparator = RackSectionSeparator;
+            to.SectionLevelSeparator = SectionLevelSeparator;
+            to.LevelDepthSeparator = LevelDepthSeparator;
+
+            to.ReversSectionNumbering = ReversSectionNumbering;
+            to.ReversLevelNumbering = ReversLevelNumbering;
+            to.ReversDepthNumbering = ReversDepthNumbering;
+
+            to.NumberingSectionBegin = NumberingSectionBegin;
+            to.NumberingLevelBegin = NumberingLevelBegin;
+            to.NumberingDepthBegin = NumberingDepthBegin;
+
+            to.NumberingSectionDigitsQuantity = NumberingSectionDigitsQuantity;
+            to.NumberingLevelDigitsQuantity = NumberingLevelDigitsQuantity;
+            to.NumberingDepthDigitsQuantity = NumberingDepthDigitsQuantity;
+
+            to.StepNumberingSection = StepNumberingSection;
+            to.StepNumberingLevel = StepNumberingLevel;
+            to.StepNumberingDepth = StepNumberingDepth;
+
+            to.BinTemplateCode = BinTemplateCode;
         }
     }
 }

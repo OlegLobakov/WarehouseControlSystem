@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WarehouseControlSystem.View.Pages.Racks.RackCard">
+    <ContentView.Content>
+        <StackLayout  Padding="2" BackgroundColor="DarkGray">
+            <Grid  x:Name="grid" BackgroundColor="White" Padding="3" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"></Grid>
+        </StackLayout>
+    </ContentView.Content>
+</ContentView>
