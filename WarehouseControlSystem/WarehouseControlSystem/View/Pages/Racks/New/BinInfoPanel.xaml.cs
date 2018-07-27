@@ -23,7 +23,7 @@ using WarehouseControlSystem.ViewModel;
 using WarehouseControlSystem.Model.NAV;
 using WarehouseControlSystem.Helpers.NAV;
 
-namespace WarehouseControlSystem.View.Pages.Racks.RackNew
+namespace WarehouseControlSystem.View.Pages.Racks.New
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class BinInfoPanel : ContentView

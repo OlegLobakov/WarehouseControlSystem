@@ -19,7 +19,7 @@ using WarehouseControlSystem.Model.NAV;
 using WarehouseControlSystem.ViewModel;
 using WarehouseControlSystem.View.Pages.Base;
 
-namespace WarehouseControlSystem.View.Pages.Racks.RackScheme
+namespace WarehouseControlSystem.View.Pages.Racks.Scheme
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class RackSchemeView : SchemeBaseView

@@ -26,7 +26,8 @@ using WarehouseControlSystem.Resx;
 using WarehouseControlSystem.View.Pages.Racks;
 using System.Windows.Input;
 using System.Threading;
-using WarehouseControlSystem.View.Pages.Racks.RackNew;
+using WarehouseControlSystem.View.Pages.Racks.New;
+using WarehouseControlSystem.View.Pages.Racks.Card;
 
 namespace WarehouseControlSystem.ViewModel
 {

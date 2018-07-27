@@ -11,7 +11,7 @@ using WarehouseControlSystem.Helpers.NAV;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace WarehouseControlSystem.View.Pages.Racks.RackNew
+namespace WarehouseControlSystem.View.Pages.Racks.New
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MasterNewRackPage : ContentPage

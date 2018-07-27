@@ -2,9 +2,9 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:i18n="clr-namespace:WarehouseControlSystem;assembly=WarehouseControlSystem"
-             xmlns:rv="clr-namespace:WarehouseControlSystem.View.Pages.Racks.RackNew"
+             xmlns:rv="clr-namespace:WarehouseControlSystem.View.Pages.Racks.New"
              xmlns:convertors="clr-namespace:WarehouseControlSystem.Helpers.Converters"
-             x:Class="WarehouseControlSystem.View.Pages.Racks.RackNew.MasterNewRackPage">
+             x:Class="WarehouseControlSystem.View.Pages.Racks.New.MasterNewRackPage">
     <ContentPage.Resources>
         <ResourceDictionary>
             <convertors:RackOrientationConverter x:Key="orientationConverter" />

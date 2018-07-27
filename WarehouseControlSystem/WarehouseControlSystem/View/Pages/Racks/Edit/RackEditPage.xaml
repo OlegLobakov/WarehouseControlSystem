@@ -2,9 +2,9 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:rv="clr-namespace:WarehouseControlSystem.View.Pages.Racks"
-             xmlns:vc="clr-namespace:WarehouseControlSystem.View.Pages.Racks.RackNew"
+             xmlns:vc="clr-namespace:WarehouseControlSystem.View.Pages.Racks.New"
              xmlns:convertors="clr-namespace:WarehouseControlSystem.Helpers.Converters"
-             x:Class="WarehouseControlSystem.View.Pages.Racks.RackEdit.RackEditPage"
+             x:Class="WarehouseControlSystem.View.Pages.Racks.Edit.RackEditPage"
              xmlns:i18n="clr-namespace:WarehouseControlSystem;assembly=WarehouseControlSystem">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -74,7 +74,7 @@
                         <ScrollView Grid.Row="2"  
                                 Orientation="Horizontal" BackgroundColor="White"
                                 x:Name="rackviewpanel">
-                            <rv:RackView x:Name="rackview"></rv:RackView>
+                            <!--<rv:RackView x:Name="rackview"></rv:RackView>-->
                         </ScrollView>
 
                         <StackLayout Grid.Row="3" VerticalOptions="End">

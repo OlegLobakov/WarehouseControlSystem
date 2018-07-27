@@ -64,16 +64,16 @@
     <Compile Update="View\Pages\Locations\LocationCardPage.xaml.cs">
       <DependentUpon>LocationCardPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="View\Pages\Racks\RackEdit\RackEditPage.xaml.cs">
+    <Compile Update="View\Pages\Racks\Edit\RackEditPage.xaml.cs">
       <DependentUpon>RackEditPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="View\Pages\Racks\RackCard\RackCardPage.xaml.cs">
+    <Compile Update="View\Pages\Racks\Card\RackCardPage.xaml.cs">
       <DependentUpon>RackCardPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="View\Pages\Racks\RackScheme\RackSchemeView.xaml.cs">
+    <Compile Update="View\Pages\Racks\Scheme\RackSchemeView.xaml.cs">
       <DependentUpon>RackSchemeView.xaml</DependentUpon>
     </Compile>
-    <Compile Update="View\Pages\Racks\RackNew\RackSimpleView.xaml.cs">
+    <Compile Update="View\Pages\Racks\New\RackSimpleView.xaml.cs">
       <DependentUpon>RackSimpleView.xaml</DependentUpon>
     </Compile>
     <Compile Update="View\Pages\Zones\ZoneCardPage.xaml.cs">
@@ -99,7 +99,7 @@
     <EmbeddedResource Update="View\Content\UserDefinedSelectionView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="View\Pages\Racks\RackNew\MasterNewRackPage.xaml">
+    <EmbeddedResource Update="View\Pages\Racks\New\MasterNewRackPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

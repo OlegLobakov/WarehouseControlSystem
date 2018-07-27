@@ -4,7 +4,7 @@
              xmlns:hs="clr-namespace:WarehouseControlSystem.Helpers.Containers.HorizontalListView"
              xmlns:components="clr-namespace:WarehouseControlSystem.View.Content"
              xmlns:d="clr-namespace:WarehouseControlSystem.View.Pages.Base"
-             x:Class="WarehouseControlSystem.View.Pages.Racks.RackScheme.RacksSchemePage"
+             x:Class="WarehouseControlSystem.View.Pages.Racks.Scheme.RacksSchemePage"
              xmlns:i18n="clr-namespace:WarehouseControlSystem;assembly=WarehouseControlSystem">
     <ContentPage.ToolbarItems>
         <ToolbarItem  Order="Secondary"  Priority="20" Text="{i18n:Translate RackSchemePage_Toolbar_New}" Command="{Binding NewRackCommand}" >

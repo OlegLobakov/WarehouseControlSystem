@@ -23,7 +23,7 @@ using System.Collections.ObjectModel;
 using Plugin.Connectivity;
 using WarehouseControlSystem.Helpers.NAV;
 using WarehouseControlSystem.Resx;
-using WarehouseControlSystem.View.Pages.RackScheme;
+using WarehouseControlSystem.View.Pages.Racks.Scheme;
 using System.Windows.Input;
 using System.Threading;
 

@@ -24,7 +24,7 @@ using WarehouseControlSystem.View.Pages.Find;
 using WarehouseControlSystem.ViewModel.Base;
 using System.Threading.Tasks;
 
-namespace WarehouseControlSystem.View.Pages.RackCard
+namespace WarehouseControlSystem.View.Pages.Racks.Card
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class RackCardPage : ContentPage

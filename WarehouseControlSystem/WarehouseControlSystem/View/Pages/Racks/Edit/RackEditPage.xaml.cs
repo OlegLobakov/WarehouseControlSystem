@@ -20,7 +20,7 @@ using WarehouseControlSystem.ViewModel;
 using WarehouseControlSystem.Model.NAV;
 using WarehouseControlSystem.Helpers.NAV;
 
-namespace WarehouseControlSystem.View.Pages.Racks.RackEdit
+namespace WarehouseControlSystem.View.Pages.Racks.Edit
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class RackEditPage : ContentPage
@@ -47,7 +47,7 @@ namespace WarehouseControlSystem.View.Pages.Racks.RackEdit
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-            rackview.Update(model);
+           /// rackview.Update(model);
             model.State = ViewModel.Base.ModelState.Normal;
             //await model.Load();
         }

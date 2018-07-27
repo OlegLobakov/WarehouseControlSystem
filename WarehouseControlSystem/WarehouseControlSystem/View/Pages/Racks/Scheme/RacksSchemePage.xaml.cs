@@ -21,7 +21,7 @@ using WarehouseControlSystem.ViewModel;
 using WarehouseControlSystem.View.Pages.Find;
 using WarehouseControlSystem.View.Pages.Base;
 
-namespace WarehouseControlSystem.View.Pages.Racks.RackScheme
+namespace WarehouseControlSystem.View.Pages.Racks.Scheme
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class RacksSchemePage : SchemeBasePlanPage

@@ -17,7 +17,7 @@ using Xamarin.Forms.Xaml;
 using WarehouseControlSystem.ViewModel;
 using WarehouseControlSystem.View.Content;
 
-namespace WarehouseControlSystem.View.Pages.Racks.RackCard
+namespace WarehouseControlSystem.View.Pages.Racks.Card
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class RackView : ContentView

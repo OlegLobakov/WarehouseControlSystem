@@ -22,7 +22,7 @@ using WarehouseControlSystem.Helpers.NAV;
 using WarehouseControlSystem.Resx;
 using System.Windows.Input;
 using WarehouseControlSystem.View.Pages.Zones;
-using WarehouseControlSystem.View.Pages.Racks;
+using WarehouseControlSystem.View.Pages.Racks.Scheme;
 using System.Threading.Tasks;
 
 namespace WarehouseControlSystem.ViewModel
