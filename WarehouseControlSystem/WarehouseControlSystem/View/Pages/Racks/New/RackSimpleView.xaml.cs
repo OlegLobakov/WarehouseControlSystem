@@ -155,7 +155,7 @@ namespace WarehouseControlSystem.View.Pages.Racks.New
                     BinViewModel finded = model.BinsViewModel.BinViewModels.Find(x => x.Level == i && x.Section == j);
                     if (finded is BinViewModel)
                     {
-                        BinView bev = new BinView(finded);
+                        BinInNewRackView bev = new BinInNewRackView(finded);
                         grid.Children.Add(bev, finded.Section, finded.Section + finded.SectionSpan, finded.Level, finded.Level + finded.LevelSpan);
                     }
                     else

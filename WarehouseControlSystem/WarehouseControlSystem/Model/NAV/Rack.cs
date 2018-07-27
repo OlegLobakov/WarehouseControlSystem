@@ -82,25 +82,25 @@ namespace WarehouseControlSystem.Model.NAV
 
         public string NumberingPrefix { get; set; } = "";
 
-        public string RackSectionSeparator { get; set; } = "";
-        public string SectionLevelSeparator { get; set; } = "";
-        public string LevelDepthSeparator { get; set; } = "";
+        public string RackSectionSeparator { get; set; } 
+        public string SectionLevelSeparator { get; set; } 
+        public string LevelDepthSeparator { get; set; }
 
         public bool ReversSectionNumbering { get; set; }
         public bool ReversLevelNumbering { get; set; }
         public bool ReversDepthNumbering { get; set; }
 
-        public int NumberingSectionBegin { get; set; }
-        public int NumberingLevelBegin { get; set; }
-        public int NumberingDepthBegin { get; set; }
+        public int NumberingSectionBegin { get; set; } = 1;
+        public int NumberingLevelBegin { get; set; } = 1;
+        public int NumberingDepthBegin { get; set; } = 1;
 
-        public int NumberingSectionDigitsQuantity { get; set; }
-        public int NumberingLevelDigitsQuantity { get; set; }
-        public int NumberingDepthDigitsQuantity { get; set; }
+        public int NumberingSectionDigitsQuantity { get; set; } = 2;
+        public int NumberingLevelDigitsQuantity { get; set; } = 1;
+        public int NumberingDepthDigitsQuantity { get; set; } = 1;
 
-        public int StepNumberingSection { get; set; }
-        public int StepNumberingLevel { get; set; }
-        public int StepNumberingDepth { get; set; }
+        public int StepNumberingSection { get; set; } = 1;
+        public int StepNumberingLevel { get; set; } = 1;
+        public int StepNumberingDepth { get; set; } = 1;
 
         public string BinTemplateCode { get; set; } = "";
 
@@ -109,6 +109,7 @@ namespace WarehouseControlSystem.Model.NAV
             Left = 0;
             Top = 0;
             RackOrientation = RackOrientationEnum.Undefined;
+
             Sections = Settings.DefaultRackSections;
             Levels = Settings.DefaultRackLevels;
             Depth = Settings.DefaultRackDepth;
@@ -116,7 +117,6 @@ namespace WarehouseControlSystem.Model.NAV
             RackSectionSeparator = Settings.DefaultRackSectionSeparator;
             SectionLevelSeparator = Settings.DefaultSectionLevelSeparator;
             LevelDepthSeparator = Settings.DefaultLevelDepthSeparator;
-
         }
 
         public void RecalculateSize()

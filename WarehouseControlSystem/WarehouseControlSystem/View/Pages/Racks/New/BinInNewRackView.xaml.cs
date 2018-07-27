@@ -21,37 +21,17 @@ using Xamarin.Forms.Xaml;
 using WarehouseControlSystem.Model;
 using WarehouseControlSystem.ViewModel;
 
-namespace WarehouseControlSystem.View.Content
+namespace WarehouseControlSystem.View.Pages.Racks.New
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class BinViewInRack : ContentView
+    public partial class BinInNewRackView : ContentView
     {
-        readonly BinViewModel model;
-        public double CodeFontSize
-        {
-            get { return codefontsize; }
-            set
-            {
-                if (codefontsize != value)
-                {
-                    codefontsize = value;
-                    OnPropertyChanged(nameof(CodeFontSize));
-                }
-            }
-        }
-        double codefontsize;
-
-        public BinViewInRack(BinViewModel bvm)
+        private readonly BinViewModel model;
+        public BinInNewRackView(BinViewModel bvm)
         {
             model = bvm;
             BindingContext = model;
             InitializeComponent();
-        }
-
-        private void StackLayout_SizeChanged(object sender, EventArgs e)
-        {
-            StackLayout sl = (StackLayout)sender;
-            CodeFontSize = sl.Width / 5;
         }
     }
 }

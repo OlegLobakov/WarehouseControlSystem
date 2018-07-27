@@ -405,18 +405,17 @@ namespace WarehouseControlSystem.ViewModel
 
             RackViewModel rvm = (RackViewModel)obj;
 
+            string variant1 = String.Format(AppResources.RacksPlanViewModel_DeleteRack, rvm.No);
+            string variant2 = String.Format(AppResources.RacksPlanViewModel_DeleteRackAndBins, rvm.No);
+
             var action = await App.Current.MainPage.DisplayActionSheet(
                 AppResources.RacksPlanViewModel_DeleteQuestion,
                 AppResources.RacksPlanViewModel_DeleteCancel, 
-                "Delete1",
-                String.Format(AppResources.RacksPlanViewModel_DeleteRack,rvm.No),
-                String.Format(AppResources.RacksPlanViewModel_DeleteRackAndBins, rvm.No));
+                null,
+                variant1,
+                variant2);
 
-            var answer = await App.Current.MainPage.DisplayAlert("Переменная action", action, "Yes", "No");
-
-            bool df = false;
-
-            if (df)
+            if ((action != null) && (action != AppResources.RacksPlanViewModel_DeleteCancel))
             {
                 string bindeleteerrors = "";
                 try
@@ -427,17 +426,24 @@ namespace WarehouseControlSystem.ViewModel
                     await NAV.DeleteRack(rvm.ID, ACD.Default).ConfigureAwait(true);
                     RackViewModels.Remove(rvm);
 
-                    if (true)
-                    { 
-                        foreach (BinViewModel bvm in rvm.BinsViewModel.BinViewModels)
+                    if (action == variant2)
+                    {
+                        NAVFilter navfilter = new NAVFilter
+                        {
+                            LocationCodeFilter = rvm.LocationCode,
+                            ZoneCodeFilter = rvm.ZoneCode,
+                            RackIDFilter = rvm.ID.ToString()
+                        };
+                        List<Bin> binsinrack = await NAV.GetBinList(navfilter, ACD.Default).ConfigureAwait(true);
+                        foreach(Bin bin in binsinrack)
                         {
                             try
                             {
-                                await NAV.DeleteBin(bvm.LocationCode, bvm.Code, ACD.Default).ConfigureAwait(true);
+                                await NAV.DeleteBin(bin.LocationCode, bin.Code, ACD.Default).ConfigureAwait(true);
                             }
                             catch (Exception exp)
                             {
-                                bindeleteerrors += bvm.Code + " : " + exp.InnerException.Message + Environment.NewLine + Environment.NewLine;
+                                bindeleteerrors += bin.Code + " : " + exp.InnerException.Message + Environment.NewLine + Environment.NewLine;
                             }
                         }
                     }

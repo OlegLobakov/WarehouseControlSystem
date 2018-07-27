@@ -26,12 +26,32 @@ namespace WarehouseControlSystem.View.Content
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class BinView : ContentView
     {
-        private readonly BinViewModel model;
+        readonly BinViewModel model;
+        public double CodeFontSize
+        {
+            get { return codefontsize; }
+            set
+            {
+                if (codefontsize != value)
+                {
+                    codefontsize = value;
+                    OnPropertyChanged(nameof(CodeFontSize));
+                }
+            }
+        }
+        double codefontsize;
+
         public BinView(BinViewModel bvm)
         {
             model = bvm;
             BindingContext = model;
             InitializeComponent();
+        }
+
+        private void StackLayout_SizeChanged(object sender, EventArgs e)
+        {
+            StackLayout sl = (StackLayout)sender;
+            CodeFontSize = sl.Width / 5;
         }
     }
 }

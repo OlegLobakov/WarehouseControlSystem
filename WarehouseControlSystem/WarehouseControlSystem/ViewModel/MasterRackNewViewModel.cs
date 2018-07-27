@@ -274,8 +274,10 @@ namespace WarehouseControlSystem.ViewModel
             if (check)
             {
                 NewModel.BinsViewModel.BinTemplate = SelectedBinTemplate;
+                NewModel.BinTemplateCode = SelectedBinTemplate.Code;
                 NewModel.CreateBins();
                 NewModel.NumberingPrefix = NewModel.No;
+                NewModel.IsNumberingEnabled = true;
                 NewModel.Renumbering();
                 MessagingCenter.Send<MasterRackNewViewModel>(this, "UpdateRackView");
                 MasterStep = 2;

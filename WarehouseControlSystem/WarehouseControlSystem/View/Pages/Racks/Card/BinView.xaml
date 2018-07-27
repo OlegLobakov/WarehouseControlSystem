@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>   
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="WarehouseControlSystem.View.Content.BinViewInRack"
+             x:Class="WarehouseControlSystem.View.Content.BinView"
              x:Name="ThisBinView">
   <ContentView.Content>
         <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" SizeChanged="StackLayout_SizeChanged">
@@ -16,11 +16,12 @@
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Selected}" TargetType="StackLayout" Value="false">
                     <Setter Property="Padding" Value="0"  />
-                    <Setter Property="BackgroundColor" Value="Transparent"  />
+                    <Setter Property="BackgroundColor" Value="Transparent" />
                 </DataTrigger>
             </StackLayout.Triggers>
 
-            <Grid x:Name="grid" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="{Binding Color}" Opacity="1">
+            <Grid x:Name="grid" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
+                  BackgroundColor="{Binding Color}" Opacity="1">
                 <Grid.Triggers>
                     <DataTrigger Binding="{Binding Blocked}" TargetType="Grid" Value="true">
                         <Setter Property="BackgroundColor" Value="#ff9a99"/>
@@ -34,15 +35,20 @@
                 </Grid.Triggers>
                 
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="4*"/>
+                    <RowDefinition Height="8*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <Label Grid.Row="0" x:Name="codelabel" Text="{Binding Code}" 
+
+                <StackLayout Grid.Row="0" IsVisible="{Binding IsContent}" BackgroundColor="{StaticResource PageHeaderBarBackgoundColor}">
+                    
+                </StackLayout>
+                
+                <Label Grid.Row="1" x:Name="codelabel" Text="{Binding Code}" 
                        FontSize="{Binding Path=CodeFontSize, Source={x:Reference Name=ThisBinView}}" 
                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
-                       HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="7,2,0,0">
+                       HorizontalTextAlignment="Start" VerticalTextAlignment="Start" Margin="7,2,0,0">
                     <Label.Triggers>
                         <DataTrigger Binding="{Binding IsSearchQuantityVisible}" TargetType="Label" Value="true">
                             <Setter Property="TextColor" Value="White"/>
@@ -52,19 +58,6 @@
 
                 <ActivityIndicator Grid.Row="2" IsVisible="{Binding LoadAnimation}" IsRunning="{Binding LoadAnimation}" 
                                    HeightRequest="30" WidthRequest="30" HorizontalOptions="Center" VerticalOptions="Center"/>
-
-                <Image Grid.Row="0" x:Name="iconelement" HorizontalOptions="End" VerticalOptions="CenterAndExpand" Aspect="AspectFill" Margin="0,2,5,0" IsVisible="{Binding IsContent}">
-                    <Image.Source>
-                        <OnPlatform x:TypeArguments="FileImageSource">
-                            <On Platform="UWP">
-                                <FileImageSource File="Assets/Images/ic_action_view_module_light.png"/>
-                            </On>
-                            <On Platform="iOS,Android">
-                                <FileImageSource File="ic_action_view_module_light.png"/>
-                            </On>
-                        </OnPlatform>
-                    </Image.Source>
-                </Image>
 
                 <Label Grid.Row="3" Text="{Binding SearchQuantity}" Margin="0,0,5,5" HorizontalOptions="End" 
                        TextColor="White"

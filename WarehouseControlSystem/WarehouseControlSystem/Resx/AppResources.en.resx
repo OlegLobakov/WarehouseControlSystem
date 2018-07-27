@@ -1464,4 +1464,22 @@
   <data name="RacksPlanViewModel_DeleteBinErrors" xml:space="preserve">
     <value>Delete bins errors!</value>
   </data>
+  <data name="LocationsPlanViewModel_DeleteCancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="LocationsPlanViewModel_DeleteLocation" xml:space="preserve">
+    <value>Delete Location {0}?</value>
+  </data>
+  <data name="LocationsPlanViewModel_DeleteQuestion" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="ZonesPlanViewModel_DeleteCancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="ZonesPlanViewModel_DeleteQuestion" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="ZonesPlanViewModel_DeleteZone" xml:space="preserve">
+    <value>Delete zone {0}?</value>
+  </data>
 </root>

@@ -154,7 +154,9 @@
                                 <Label Grid.Column="0" Text="{i18n:Translate MasterNewRack_Comment}" 
                                    HorizontalTextAlignment="Start" 
                                    VerticalTextAlignment="Center" FontSize="Medium" Margin="10,0,0,0"></Label>
-                                <Entry Grid.Column="1" Text="{Binding Comment, Mode=TwoWay}" Keyboard="Text" 
+                                <Entry Grid.Column="1" Text="{Binding Comment, Mode=TwoWay}" 
+                                    BindingContext="{Binding NewModel}"
+                                    Keyboard="Text" 
                                     BackgroundColor="White" HorizontalOptions="FillAndExpand" VerticalOptions="Center" 
                                     FontSize="Medium" Margin="3" MaxLength="200"/>
                             </Grid>
@@ -164,7 +166,7 @@
                                 <rv:RackSimpleView x:Name="rackview"></rv:RackSimpleView>
                             </ScrollView>
                             <ScrollView  Grid.Row="2" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Orientation="Horizontal" Margin="5">
-                                <Grid Padding="5" RowSpacing="0" ColumnSpacing="20" BindingContext="{Binding NewModel}">
+                                <Grid Padding="5" RowSpacing="0" ColumnSpacing="20">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="200"/>
                                         <ColumnDefinition Width="200"/>
@@ -188,65 +190,98 @@
 
                                     <Label  Grid.Column="0" Grid.Row="2" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
                                                 Text="{i18n:Translate RackNewPage_ConflictBins}"/>
-                                    <Switch Grid.Column="0" Grid.Row="3" HorizontalOptions="Start" VerticalOptions="Center" 
-                                                IsToggled="{Binding ConflictBinChange, Mode=TwoWay}"></Switch>
+                                    <Switch Grid.Column="0" Grid.Row="3"
+                                            HorizontalOptions="Start" VerticalOptions="Center" 
+                                            IsToggled="{Binding ConflictBinChange, Mode=TwoWay}"></Switch>
 
 
                                     <Label Grid.Column="1" Grid.Row="0" Text="{i18n:Translate RackNewPage_Numeration}"/>
 
-                                    <Label  Grid.Column="1" Grid.Row="2" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
-                                                Text="{i18n:Translate RackNewPage_InversNumebringSections}"/>
-                                    <Switch Grid.Column="1" Grid.Row="3" HorizontalOptions="Start" VerticalOptions="Center" 
-                                                IsToggled="{Binding ReversSectionNumbering, Mode=TwoWay}"></Switch>
+                                    <Label  Grid.Column="1" Grid.Row="2" 
+                                            HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
+                                            Text="{i18n:Translate RackNewPage_InversNumebringSections}"/>
+                                    <Switch Grid.Column="1" Grid.Row="3" 
+                                            BindingContext="{Binding NewModel}"
+                                            HorizontalOptions="Start" VerticalOptions="Center" 
+                                            IsToggled="{Binding ReversSectionNumbering, Mode=TwoWay}"></Switch>
 
-                                    <Label  Grid.Column="1" Grid.Row="4" HorizontalTextAlignment="Start"  
-                                                Text="{i18n:Translate RackNewPage_InversNumebringLevels}"/>
-                                    <Switch Grid.Column="1" Grid.Row="5" HorizontalOptions="Start" 
-                                                IsToggled="{Binding ReversLevelNumbering, Mode=TwoWay}"></Switch>
+                                    <Label  Grid.Column="1" Grid.Row="4" 
+                                            HorizontalTextAlignment="Start"  
+                                            Text="{i18n:Translate RackNewPage_InversNumebringLevels}"/>
+                                    <Switch Grid.Column="1" Grid.Row="5" 
+                                            HorizontalOptions="Start" 
+                                            BindingContext="{Binding NewModel}"
+                                            IsToggled="{Binding ReversLevelNumbering, Mode=TwoWay}"></Switch>
 
 
 
-                                    <Label Grid.Column="2" Grid.Row="0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
-                                               Text="{i18n:Translate RackNewPage_PrefixNumbering}"/>
-                                    <Entry Grid.Column="2" Grid.Row="1" Text="{Binding NumberingPrefix, Mode=TwoWay}" 
+                                    <Label Grid.Column="2" Grid.Row="0" 
+                                           HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
+                                           Text="{i18n:Translate RackNewPage_PrefixNumbering}"/>
+                                    <Entry Grid.Column="2" Grid.Row="1" 
+                                           Text="{Binding NumberingPrefix, Mode=TwoWay}" 
+                                           BindingContext="{Binding NewModel}"
                                            BackgroundColor="White" MaxLength="10" />
 
-                                    <Label Grid.Column="2" Grid.Row="2" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
-                                               Text="{i18n:Translate RackNewPage_StartSectionNumbering}"/>
+                                    <Label Grid.Column="2" Grid.Row="2" 
+                                           HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
+                                           Text="{i18n:Translate RackNewPage_StartSectionNumbering}"/>
 
-                                    <Entry Grid.Column="2" Grid.Row="3" Text="{Binding NumberingSectionBegin, Mode=TwoWay}" Keyboard="Numeric" BackgroundColor="White" />
+                                    <Entry Grid.Column="2" Grid.Row="3" 
+                                           BindingContext="{Binding NewModel}"
+                                           Text="{Binding NumberingSectionBegin, Mode=TwoWay}" 
+                                           Keyboard="Numeric" BackgroundColor="White" />
 
-                                    <Label Grid.Column="2" Grid.Row="4" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
-                                               Text="{i18n:Translate RackNewPage_StartLevelsNumbering}"/>
+                                    <Label Grid.Column="2" Grid.Row="4" 
+                                           HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
+                                           Text="{i18n:Translate RackNewPage_StartLevelsNumbering}"/>
 
-                                    <Entry Grid.Column="2" Grid.Row="5" Text="{Binding NumberingLevelBegin, Mode=TwoWay}" Keyboard="Numeric" BackgroundColor="White" />
-
-
-
-                                    <Label Grid.Column="3" Grid.Row="0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
-                                               Text="{i18n:Translate RackNewPage_RackDigits}"/>
-                                    <Label Grid.Column="3" Grid.Row="2" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
-                                               Text="{i18n:Translate RackNewPage_RackSectionDigitsQuantity}"/>
-
-                                    <Entry Grid.Column="3" Grid.Row="3" Text="{Binding NumberingSectionDigitsQuantity, Mode=TwoWay}" Keyboard="Numeric" BackgroundColor="White" />
-
-                                    <Label Grid.Column="3" Grid.Row="4" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
-                                               Text="{i18n:Translate RackNewPage_RackLevelDigitsQuantity}"/>
-
-                                    <Entry Grid.Column="3" Grid.Row="5" Text="{Binding NumberingLevelDigitsQuantity, Mode=TwoWay}" Keyboard="Numeric" BackgroundColor="White" />
+                                    <Entry Grid.Column="2" Grid.Row="5" 
+                                           BindingContext="{Binding NewModel}"
+                                           Text="{Binding NumberingLevelBegin, Mode=TwoWay}" 
+                                           Keyboard="Numeric" BackgroundColor="White" />
 
 
-                                    <Label Grid.Column="4" Grid.Row="0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
+
+                                    <Label Grid.Column="3" Grid.Row="0" 
+                                           HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
+                                           Text="{i18n:Translate RackNewPage_RackDigits}"/>
+                                    <Label Grid.Column="3" Grid.Row="2" 
+                                           HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
+                                           Text="{i18n:Translate RackNewPage_RackSectionDigitsQuantity}"/>
+
+                                    <Entry Grid.Column="3" Grid.Row="3" 
+                                           BindingContext="{Binding NewModel}"
+                                           Text="{Binding NumberingSectionDigitsQuantity, Mode=TwoWay}" 
+                                           Keyboard="Numeric" BackgroundColor="White" />
+
+                                    <Label Grid.Column="3" Grid.Row="4" 
+                                           HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
+                                           Text="{i18n:Translate RackNewPage_RackLevelDigitsQuantity}"/>
+
+                                    <Entry Grid.Column="3" Grid.Row="5" 
+                                           BindingContext="{Binding NewModel}"
+                                           Text="{Binding NumberingLevelDigitsQuantity, Mode=TwoWay}" 
+                                           Keyboard="Numeric" BackgroundColor="White" />
+
+
+                                    <Label Grid.Column="4" Grid.Row="0" 
+                                           HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
                                                Text="{i18n:Translate RackNewPage_RackSectionSeparator}"/>
 
-                                    <Entry Grid.Column="4" Grid.Row="1" Text="{Binding RackSectionSeparator, Mode=TwoWay}" MaxLength="5"
-                                               Keyboard="Numeric" BackgroundColor="White" />
+                                    <Entry Grid.Column="4" Grid.Row="1" 
+                                           BindingContext="{Binding NewModel}"
+                                           Text="{Binding RackSectionSeparator, Mode=TwoWay}" MaxLength="5"
+                                           Keyboard="Numeric" BackgroundColor="White" />
 
-                                    <Label Grid.Column="4" Grid.Row="2" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
-                                               Text="{i18n:Translate RackNewPage_SectionLevelSeparator}"/>
+                                    <Label Grid.Column="4" Grid.Row="2" 
+                                           HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
+                                           Text="{i18n:Translate RackNewPage_SectionLevelSeparator}"/>
 
-                                    <Entry Grid.Column="4" Grid.Row="3" Text="{Binding SectionLevelSeparator, Mode=TwoWay}"   MaxLength="5"
-                                               Keyboard="Numeric" BackgroundColor="White" />
+                                    <Entry Grid.Column="4" Grid.Row="3" 
+                                           BindingContext="{Binding NewModel}"
+                                           Text="{Binding SectionLevelSeparator, Mode=TwoWay}"   MaxLength="5"
+                                           Keyboard="Numeric" BackgroundColor="White" />
 
                                     <!--<Label Grid.Column="4" Grid.Row="4" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
                                                Text="{i18n:Translate RackNewPage_LevelDepthSeparator}"/>
@@ -254,17 +289,23 @@
                                     <Entry Grid.Column="4" Grid.Row="5" Text="{Binding LevelDepthSeparator, Mode=TwoWay}"  MaxLength="5"
                                                Keyboard="Numeric" BackgroundColor="White" />-->
 
-                                    <Label Grid.Column="5" Grid.Row="2" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
-                                               Text="{i18n:Translate RackNewPage_StepSectionNumbering}"/>
+                                    <Label Grid.Column="5" Grid.Row="2" 
+                                           HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
+                                           Text="{i18n:Translate RackNewPage_StepSectionNumbering}"/>
 
-                                    <Entry Grid.Column="5" Grid.Row="3" Text="{Binding StepNumberingSection, Mode=TwoWay}" 
-                                               Keyboard="Numeric" BackgroundColor="White" />
+                                    <Entry Grid.Column="5" Grid.Row="3" 
+                                           BindingContext="{Binding NewModel}"
+                                           Text="{Binding StepNumberingSection, Mode=TwoWay}" 
+                                           Keyboard="Numeric" BackgroundColor="White" />
 
-                                    <Label Grid.Column="5" Grid.Row="4" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
-                                               Text="{i18n:Translate RackNewPage_StepLevelNumbering}"/>
+                                    <Label Grid.Column="5" Grid.Row="4" 
+                                           HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
+                                           Text="{i18n:Translate RackNewPage_StepLevelNumbering}"/>
 
-                                    <Entry Grid.Column="5" Grid.Row="5" Text="{Binding StepNumberingLevel, Mode=TwoWay}" 
-                                               Keyboard="Numeric" BackgroundColor="White" />
+                                    <Entry Grid.Column="5" Grid.Row="5" 
+                                           BindingContext="{Binding NewModel}"
+                                           Text="{Binding StepNumberingLevel, Mode=TwoWay}" 
+                                           Keyboard="Numeric" BackgroundColor="White" />
                                 </Grid>
 
                             </ScrollView>

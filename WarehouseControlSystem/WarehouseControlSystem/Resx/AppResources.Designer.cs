@@ -1330,6 +1330,33 @@ namespace WarehouseControlSystem.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        internal static string LocationsPlanViewModel_DeleteCancel {
+            get {
+                return ResourceManager.GetString("LocationsPlanViewModel_DeleteCancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete Location {0}?.
+        /// </summary>
+        internal static string LocationsPlanViewModel_DeleteLocation {
+            get {
+                return ResourceManager.GetString("LocationsPlanViewModel_DeleteLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        internal static string LocationsPlanViewModel_DeleteQuestion {
+            get {
+                return ResourceManager.GetString("LocationsPlanViewModel_DeleteQuestion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit.
         /// </summary>
         internal static string LocationsSchemePage_Menu_EditLocation {
@@ -3936,6 +3963,33 @@ namespace WarehouseControlSystem.Resx {
         internal static string ZoneSchemePage_Title {
             get {
                 return ResourceManager.GetString("ZoneSchemePage_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        internal static string ZonesPlanViewModel_DeleteCancel {
+            get {
+                return ResourceManager.GetString("ZonesPlanViewModel_DeleteCancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        internal static string ZonesPlanViewModel_DeleteQuestion {
+            get {
+                return ResourceManager.GetString("ZonesPlanViewModel_DeleteQuestion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete zone {0}?.
+        /// </summary>
+        internal static string ZonesPlanViewModel_DeleteZone {
+            get {
+                return ResourceManager.GetString("ZonesPlanViewModel_DeleteZone", resourceCulture);
             }
         }
         

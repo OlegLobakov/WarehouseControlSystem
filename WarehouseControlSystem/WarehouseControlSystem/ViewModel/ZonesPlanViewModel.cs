@@ -278,25 +278,37 @@ namespace WarehouseControlSystem.ViewModel
                 return;
             }
 
-            try
+            ZoneViewModel zvm = (ZoneViewModel)obj;
+
+            string request = String.Format(AppResources.ZonesPlanViewModel_DeleteZone, zvm.Name);
+
+            var action = await App.Current.MainPage.DisplayAlert(
+                AppResources.ZonesPlanViewModel_DeleteQuestion,
+                request,
+                "OK",
+                AppResources.ZonesPlanViewModel_DeleteCancel);
+
+            if (action)
             {
-                ZoneViewModel zvm = (ZoneViewModel)obj;
-                State = ModelState.Loading;
-                Zone zone = new Zone();
-                zvm.SaveFields(zone);
-                await NAV.DeleteZone(zone, ACD.Default).ConfigureAwait(true);
-                ZoneViewModels.Remove(zvm);
-                State = ModelState.Normal;
-            }
-            catch (Exception e)
-            {
-                System.Diagnostics.Debug.WriteLine(e.Message);
-                ErrorText = e.Message;
-                State = ModelState.Error;
-            }
-            finally
-            {
-                LoadAnimation = false;
+                try
+                {
+                    State = ModelState.Loading;
+                    Zone zone = new Zone();
+                    zvm.SaveFields(zone);
+                    await NAV.DeleteZone(zone, ACD.Default).ConfigureAwait(true);
+                    ZoneViewModels.Remove(zvm);
+                    State = ModelState.Normal;
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine(e.Message);
+                    ErrorText = e.Message;
+                    State = ModelState.Error;
+                }
+                finally
+                {
+                    LoadAnimation = false;
+                }
             }
         }
 

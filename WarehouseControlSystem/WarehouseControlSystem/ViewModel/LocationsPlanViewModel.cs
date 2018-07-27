@@ -289,24 +289,36 @@ namespace WarehouseControlSystem.ViewModel
                 return;
             }
 
-            try
+            LocationViewModel lvm = (LocationViewModel)obj;
+
+            string request = String.Format(AppResources.LocationsPlanViewModel_DeleteLocation, lvm.Name);
+
+            var action = await App.Current.MainPage.DisplayAlert(
+                AppResources.LocationsPlanViewModel_DeleteQuestion,
+                request,
+                "OK",
+                AppResources.LocationsPlanViewModel_DeleteCancel);
+
+            if (action)
             {
-                LocationViewModel lvm = (LocationViewModel)obj;
-                LoadAnimation = true;
-                State = ModelState.Loading;
-                await NAV.DeleteLocation(lvm.Code, ACD.Default).ConfigureAwait(true);
-                LocationViewModels.Remove(lvm);
-                State = ModelState.Normal;
-            }
-            catch (Exception e)
-            {
-                System.Diagnostics.Debug.WriteLine(e.Message);
-                ErrorText = e.Message;
-                State = ModelState.Error;
-            }
-            finally
-            {
-                LoadAnimation = false;
+                try
+                {
+                    LoadAnimation = true;
+                    State = ModelState.Loading;
+                    await NAV.DeleteLocation(lvm.Code, ACD.Default).ConfigureAwait(true);
+                    LocationViewModels.Remove(lvm);
+                    State = ModelState.Normal;
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine(e.Message);
+                    ErrorText = e.Message;
+                    State = ModelState.Error;
+                }
+                finally
+                {
+                    LoadAnimation = false;
+                }
             }
         }
 

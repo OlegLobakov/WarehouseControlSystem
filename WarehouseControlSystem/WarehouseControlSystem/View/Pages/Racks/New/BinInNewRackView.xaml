@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="WarehouseControlSystem.View.Content.BinView">
+             x:Class="WarehouseControlSystem.View.Pages.Racks.New.BinInNewRackView">
   <ContentView.Content>
         <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
             <StackLayout.GestureRecognizers>
@@ -31,7 +31,6 @@
                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
                        HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="7,2,0,0"/>
                 
-                <!--<Label Grid.Row="1" x:Name="messagelabel" Text="{Binding Message}" IsVisible="{Binding ShowMessage}" FontSize="Small" BackgroundColor="#c9c2b8" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="5,0,5,0"/>-->
                 <Image Grid.Row="2" x:Name="iconelement" HorizontalOptions="CenterAndExpand" 
                        VerticalOptions="CenterAndExpand" Aspect="AspectFit"
                        IsVisible="{Binding IsExist}">
@@ -46,7 +45,6 @@
                         </OnPlatform>
                     </Image.Source>
                 </Image>
-                <!--<Label Grid.Row="2"  HorizontalOptions="End" VerticalOptions="End" FontSize="Large" IsVisible="{Binding IconVisible}" Text="{Binding BinContentQuantity}"/>-->
             </Grid>
         </StackLayout>
   </ContentView.Content>

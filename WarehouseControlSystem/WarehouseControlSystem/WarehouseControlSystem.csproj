@@ -55,8 +55,8 @@
     <Compile Update="View\Content\EmptySpaceViewInRack.xaml.cs">
       <DependentUpon>EmptySpaceViewInRack.xaml</DependentUpon>
     </Compile>
-    <Compile Update="View\Content\BinViewInRack.xaml.cs">
-      <DependentUpon>BinViewInRack.xaml</DependentUpon>
+    <Compile Update="View\Pages\Racks\Card\BinView.xaml.cs">
+      <DependentUpon>BinView.xaml</DependentUpon>
     </Compile>
     <Compile Update="View\Content\InnerSubSchemeView.xaml.cs">
       <DependentUpon>InnerSubSchemeView.xaml</DependentUpon>
@@ -69,6 +69,9 @@
     </Compile>
     <Compile Update="View\Pages\Racks\Card\RackCardPage.xaml.cs">
       <DependentUpon>RackCardPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="View\Pages\Racks\New\BinInNewRackView.xaml.cs">
+      <DependentUpon>BinInNewRackView.xaml</DependentUpon>
     </Compile>
     <Compile Update="View\Pages\Racks\Scheme\RackSchemeView.xaml.cs">
       <DependentUpon>RackSchemeView.xaml</DependentUpon>

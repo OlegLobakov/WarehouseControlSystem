@@ -149,16 +149,8 @@ namespace WarehouseControlSystem.View.Pages.Racks.Card
                     BinViewModel finded = model.BinsViewModel.BinViewModels.Find(x => x.Level == i && x.Section == j);
                     if (finded is BinViewModel)
                     {
-                        if (model.CreateMode)
-                        {
-                            BinView bev = new BinView(finded);
-                            grid.Children.Add(bev, finded.Section, finded.Section + finded.SectionSpan, finded.Level, finded.Level + finded.LevelSpan);
-                        }
-                        else
-                        {
-                            BinViewInRack bev = new BinViewInRack(finded);
-                            grid.Children.Add(bev, finded.Section, finded.Section + finded.SectionSpan, finded.Level, finded.Level + finded.LevelSpan);
-                        }
+                        BinView bev = new BinView(finded);
+                        grid.Children.Add(bev, finded.Section, finded.Section + finded.SectionSpan, finded.Level, finded.Level + finded.LevelSpan);
                     }
                 }
             }
