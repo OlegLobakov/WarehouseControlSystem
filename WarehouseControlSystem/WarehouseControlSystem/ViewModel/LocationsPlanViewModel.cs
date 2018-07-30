@@ -79,7 +79,7 @@ namespace WarehouseControlSystem.ViewModel
                 PlanHeight = await NAV.GetPlanHeight(ACD.Default).ConfigureAwait(true);
                 CheckPlanSizes();
                 List<Location> list = await NAV.GetLocationList("", true, 1, int.MaxValue, ACD.Default).ConfigureAwait(true);
-                if ((list is List<Location>) && (!IsDisposed))
+                if ((list is List<Location>) && (NotDisposed))
                 {
                     FillModel(list);
                 }

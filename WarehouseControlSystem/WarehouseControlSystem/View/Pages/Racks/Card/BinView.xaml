@@ -20,8 +20,7 @@
                 </DataTrigger>
             </StackLayout.Triggers>-->
 
-            <Grid x:Name="grid" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
-                  BackgroundColor="{Binding Color}" Opacity="1">
+            <Grid x:Name="grid" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="{Binding Color}" Opacity="1">
                 <Grid.Triggers>
                     <DataTrigger Binding="{Binding Blocked}" TargetType="Grid" Value="true">
                         <Setter Property="BackgroundColor" Value="#ff9a99"/>
@@ -69,7 +68,7 @@
                        FontSize="{Binding Path=CodeFontSize, Source={x:Reference Name=ThisBinView}}"
                        IsVisible="{Binding IsSearchQuantityVisible}"></Label>
 
-                <Grid Grid.Row="2" ColumnSpacing="0" RowSpacing="0" IsVisible="{Binding IsContent}">
+                <Grid Grid.Row="2" ColumnSpacing="0" RowSpacing="0" IsVisible="{Binding IsContent}" HorizontalOptions="FillAndExpand">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>

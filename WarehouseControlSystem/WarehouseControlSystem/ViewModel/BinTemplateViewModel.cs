@@ -338,7 +338,7 @@ namespace WarehouseControlSystem.ViewModel
         private async Task LoadBinTypesList()
         {
             List<BinType> loadedbintypes = await NAV.GetBinTypeList(1, int.MaxValue, ACD.Default).ConfigureAwait(true);
-            if ((!IsDisposed) && (loadedbintypes is List<BinType>))
+            if ((NotDisposed) && (loadedbintypes is List<BinType>))
             {
                 BinTypes.Clear();
                 foreach (BinType bintype in loadedbintypes)
@@ -356,7 +356,7 @@ namespace WarehouseControlSystem.ViewModel
         private async Task LoadLocationsList()
         {
             List<Location> loadedlocations = await NAV.GetLocationList("", false, 1, int.MaxValue, ACD.Default).ConfigureAwait(true);
-            if ((!IsDisposed) && (loadedlocations is List<Location>))
+            if ((NotDisposed) && (loadedlocations is List<Location>))
             {
                 Locations.Clear();
                 foreach (Location location in loadedlocations)
@@ -374,7 +374,7 @@ namespace WarehouseControlSystem.ViewModel
         private async Task LoadZonesList()
         {
             List<Zone> list = await NAV.GetZoneList(LocationCode, "", false, 1, int.MaxValue, ACD.Default).ConfigureAwait(true);
-            if ((!IsDisposed) && (list is List<Zone>))
+            if ((NotDisposed) && (list is List<Zone>))
             {
                 Zones.Clear();
                 foreach (Zone zone in list)
@@ -402,7 +402,7 @@ namespace WarehouseControlSystem.ViewModel
                 try
                 {
                     List<Zone> list = await NAV.GetZoneList(location.Code, "", false, 1, int.MaxValue, ACD.Default).ConfigureAwait(true);
-                    if (!IsDisposed)
+                    if (NotDisposed)
                     {
                         if (list is List<Zone>)
                         {

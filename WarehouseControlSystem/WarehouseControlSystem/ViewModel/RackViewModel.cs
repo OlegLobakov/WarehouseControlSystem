@@ -748,35 +748,6 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
-        //private async Task SaveBin(BinViewModel bmv, bool changeexisting)
-        //{
-        //    try
-        //    {
-        //        bmv.SaveFields();
-        //        LoadingText = AppResources.RackNewPage_LoadingProgressBin + " " + bmv.Bin.Code;
-
-        //        int binexist = await NAV.GetBinCount(LocationCode, "", "", bmv.Bin.Code, ACD.Default).ConfigureAwait(true);
-        //        if (binexist > 0)
-        //        {
-        //            if (changeexisting)
-        //            {
-        //                LoadingText = AppResources.RackNewPage_LoadingProgressModifyBin + " " + bmv.Bin.Code;
-        //                bmv.Bin.PrevCode = bmv.Bin.Code;
-        //                await NAV.ModifyBin(bmv.Bin, ACD.Default).ConfigureAwait(true);
-        //            }
-        //        }
-        //        else
-        //        {
-        //            LoadingText = AppResources.RackNewPage_LoadingProgressBin + " " + bmv.Bin.Code;
-        //            await NAV.CreateBin(BinsViewModel.BinTemplate, bmv.Bin, ACD.Default).ConfigureAwait(true);
-        //        }
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        throw e;
-        //    }
-        //}
-
         #region User Defined Functions
         UserDefinedFunctionViewModel udfvmselected;
 
@@ -872,6 +843,7 @@ namespace WarehouseControlSystem.ViewModel
 
         public override void DisposeModel()
         {
+            base.DisposeModel();
             if (OnTap is Action<RackViewModel>)
             {
                 Delegate[] clientList = OnTap.GetInvocationList();
@@ -881,7 +853,6 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
             BinsViewModel.DisposeModel();
-            base.DisposeModel();
         }
     }
 }

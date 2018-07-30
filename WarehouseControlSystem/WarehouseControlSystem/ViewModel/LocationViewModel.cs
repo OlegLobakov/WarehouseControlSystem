@@ -432,7 +432,7 @@ namespace WarehouseControlSystem.ViewModel
 
         private void AddSubSchemeElements(List<Zone> zones)
         {
-            if (!IsDisposed)
+            if (NotDisposed)
             {
                 SubSchemeElements.Clear();
                 foreach (Zone zone in zones)

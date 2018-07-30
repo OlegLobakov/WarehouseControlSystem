@@ -228,7 +228,7 @@ namespace WarehouseControlSystem.ViewModel.Base
         public ICommand CancelCommand { protected set; get; }
         public ICommand CancelChangesCommand { protected set; get; }
 
-        public bool IsDisposed { get; set; } = false;
+        public bool NotDisposed { get; set; } = true;
 
         public AsyncCancelationDispatcher ACD { get; set; }
 
@@ -253,7 +253,7 @@ namespace WarehouseControlSystem.ViewModel.Base
         public virtual void DisposeModel()
         {
             ACD.CancelAll();
-            IsDisposed = true;
+            NotDisposed = false;
         }
 
         public static string ColorToHex(Color color)

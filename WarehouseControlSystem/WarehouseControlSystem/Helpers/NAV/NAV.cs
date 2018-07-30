@@ -1374,6 +1374,11 @@ namespace WarehouseControlSystem.Helpers.NAV
                             bi.Value3 = currentatribute.Value;
                             break;
                         }
+                    case "ImageURL":
+                        {
+                            bi.ImageURL = currentatribute.Value;
+                            break;
+                        }
                 }
             }
             return bi;

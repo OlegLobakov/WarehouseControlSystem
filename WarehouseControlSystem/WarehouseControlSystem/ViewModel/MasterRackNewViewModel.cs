@@ -163,7 +163,7 @@ namespace WarehouseControlSystem.ViewModel
             try
             {
                 List<BinTemplate> bintemplates = await NAV.GetBinTemplateList(1, int.MaxValue, ACD.Default).ConfigureAwait(true);
-                if (!IsDisposed)
+                if (NotDisposed)
                 {
                     BinTemplates.Clear();
                     foreach (BinTemplate bt in bintemplates)

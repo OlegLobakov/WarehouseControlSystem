@@ -107,7 +107,20 @@ namespace WarehouseControlSystem.ViewModel
 
         public List<BinViewModel> BinViewModels { get; set; } = new List<BinViewModel>();
         public List<EmptySpaceViewModel> EmptySpacesViewModels { get; set; } = new List<EmptySpaceViewModel>();
-        public BinViewModel LastSelectedBinViewModel { get; set; }
+        //public BinViewModel LastSelectedBinViewModel { get; set; }
+        public string LastSelectedBinCode
+        {
+            get { return lastselectedbincode; }
+            set
+            {
+                if (lastselectedbincode != value)
+                {
+                    lastselectedbincode = value;
+                    OnPropertyChanged(nameof(LastSelectedBinCode));
+                }
+            }
+        }
+        string lastselectedbincode;
 
         public ObservableCollection<BinContentGrouping> SelectedBinContent
         {
@@ -133,7 +146,18 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } ObservableCollection<UserDefinedFunctionViewModel> userdefinedfunctions;
-        public ObservableCollection<BinInfoViewModel> BinInfo { get; set; } = new ObservableCollection<BinInfoViewModel>();
+        public ObservableCollection<BinInfoViewModel> BinInfo
+        {
+            get { return bininfo; }
+            set
+            {
+                if (bininfo != value)
+                {
+                    bininfo = value;
+                    OnPropertyChanged(nameof(BinInfo));
+                }
+            }
+        } ObservableCollection<BinInfoViewModel> bininfo;
 
         public RackViewModel LinkToRackViewModel { get; set; }
 
@@ -781,7 +805,7 @@ namespace WarehouseControlSystem.ViewModel
                     RackIDFilter = RackID.ToString()
                 };
                 List<Bin> bins = await NAV.GetBinList(navfilter, acd.Default).ConfigureAwait(true);
-                if (!IsDisposed)
+                if (NotDisposed)
                 {
                     if (bins.Count > 0)
                     {
@@ -821,29 +845,18 @@ namespace WarehouseControlSystem.ViewModel
             {
                 try
                 {
-                    string value = await NAV.GetBinBottomRightValue(bvm.LocationCode, bvm.Code, acd.Default).ConfigureAwait(true);
-                    if (!IsDisposed)
+                    string locationcode = bvm.LocationCode;
+                    string bincode = bvm.Code;
+                    string valueright = await NAV.GetBinBottomRightValue(locationcode, bincode, acd.Default).ConfigureAwait(true);
+                    string valueleft = await NAV.GetBinBottomLeftValue(locationcode, bincode, acd.Default).ConfigureAwait(true);
+                    if (NotDisposed)
                     {
-                        bvm.BottomRightValue = value;
+                        bvm.BottomRightValue = valueright;
+                        bvm.BottomLeftValue = valueleft;
                     }
-                }
-                catch (OperationCanceledException e)
-                {
-                    System.Diagnostics.Debug.WriteLine(e.Message);
-                    throw e;
-                }
-                catch (Exception e)
-                {
-                    System.Diagnostics.Debug.WriteLine(e.Message);
-                    throw e;
-                }
-
-                try
-                {
-                    string value = await NAV.GetBinBottomLeftValue(bvm.LocationCode, bvm.Code, acd.Default).ConfigureAwait(true);
-                    if (!IsDisposed)
+                    else
                     {
-                        bvm.BottomLeftValue = value;
+                        break;
                     }
                 }
                 catch (OperationCanceledException e)
@@ -910,17 +923,20 @@ namespace WarehouseControlSystem.ViewModel
             try
             {
                 List<UserDefinedFunction> list = await NAV.LoadUserDefinedFunctionList(LocationCode, ZoneCode, RackID, acd.Default).ConfigureAwait(true);
-                if (list is List<UserDefinedFunction>)
+                if (NotDisposed)
                 {
-                    ObservableCollection<UserDefinedFunctionViewModel> nlist = new ObservableCollection<UserDefinedFunctionViewModel>();
-
-                    foreach (UserDefinedFunction udf in list)
+                    if (list is List<UserDefinedFunction>)
                     {
-                        UserDefinedFunctionViewModel udfvm = new UserDefinedFunctionViewModel(Navigation, udf);
-                        nlist.Add(udfvm);
-                    }
+                        ObservableCollection<UserDefinedFunctionViewModel> nlist = new ObservableCollection<UserDefinedFunctionViewModel>();
 
-                    UserDefinedFunctions = nlist;
+                        foreach (UserDefinedFunction udf in list)
+                        {
+                            UserDefinedFunctionViewModel udfvm = new UserDefinedFunctionViewModel(Navigation, udf);
+                            nlist.Add(udfvm);
+                        }
+
+                        UserDefinedFunctions = nlist;
+                    }
                 }
             }
             catch (OperationCanceledException e)
@@ -1031,7 +1047,7 @@ namespace WarehouseControlSystem.ViewModel
                 try
                 {
                     List<BinInfo> bininfo = await NAV.GetBinInfo(bvm.LocationCode, bvm.Code, ACD.Default).ConfigureAwait(true);
-                    if (!IsDisposed)
+                    if (NotDisposed)
                     {
                         FillBinInfo(bvm, bininfo);
                     }
@@ -1049,6 +1065,7 @@ namespace WarehouseControlSystem.ViewModel
 
             if (bvm.Selected)
             {
+                LastSelectedBinCode = bvm.Code;
                 MessagingCenter.Send(bvm, "BinsViewModel.BinSelected");
             }
 
@@ -1058,6 +1075,19 @@ namespace WarehouseControlSystem.ViewModel
             if (selectedbvm is BinViewModel)
             {
                 SetTemplateBySelectedBin(selectedbvm);
+            }
+        }
+
+        private void FillBinContent(BinViewModel bvm, List<BinContent> bincontent)
+        {
+            if ((NotDisposed) && (bincontent.Count > 0))
+            {
+                bvm.BinContent.Clear();
+                foreach (BinContent bc in bincontent)
+                {
+                    BinContentShortViewModel bcsvm = new BinContentShortViewModel(Navigation, bc);
+                    bvm.BinContent.Add(bcsvm);
+                }
             }
         }
 
@@ -1080,22 +1110,10 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
-        private void FillBinContent(BinViewModel bvm, List<BinContent> bincontent)
-        {
-            if ((!IsDisposed) && (bincontent.Count > 0))
-            {
-                bvm.BinContent.Clear();
-                foreach (BinContent bc in bincontent)
-                {
-                    BinContentShortViewModel bcsvm = new BinContentShortViewModel(Navigation,bc);
-                    bvm.BinContent.Add(bcsvm);
-                }
 
-            }
-        }
         private void FillBinInfo(BinViewModel bvm, List<BinInfo> bininfo)
         {
-            if ((!IsDisposed) && (bininfo.Count > 0))
+            if ((NotDisposed) && (bininfo.Count > 0))
             {
                 ObservableCollection<BinInfoViewModel> nlist = new ObservableCollection<BinInfoViewModel>();
                 foreach (BinInfo bvm1 in bininfo)
@@ -1103,6 +1121,22 @@ namespace WarehouseControlSystem.ViewModel
                     nlist.Add(new BinInfoViewModel(bvm1, Navigation));
                 }
                 BinInfo = nlist;
+
+                foreach (BinInfoViewModel bivm in BinInfo)
+                {
+                    if (!string.IsNullOrEmpty(bivm.ImageURL))
+                    {
+                        try
+                        {
+                            bivm.ImageSource = ImageSource.FromUri(new Uri(bivm.ImageURL));
+                            bivm.ImageIsVisible = true;
+                        }
+                        catch (Exception exp)
+                        {
+                            System.Diagnostics.Debug.WriteLine(exp.Message);
+                        }
+                    }
+                }
             }
         }
 
@@ -1164,11 +1198,11 @@ namespace WarehouseControlSystem.ViewModel
             {
                 bvm.DisposeModel();
             }
-            BinViewModels.Clear();
         }
 
         public override void DisposeModel()
         {
+            base.DisposeModel();
             BinViewModelsDispose();
 
             if (OnBinClick is Action<BinsViewModel>)
@@ -1179,8 +1213,6 @@ namespace WarehouseControlSystem.ViewModel
                     OnBinClick -= (d as Action<BinsViewModel>);
                 }
             }
-
-            base.DisposeModel();
         }
     }
 }

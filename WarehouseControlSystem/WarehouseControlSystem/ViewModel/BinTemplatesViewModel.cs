@@ -59,7 +59,7 @@ namespace WarehouseControlSystem.ViewModel
             {
                 State = ModelState.Loading;
                 List<BinTemplate> bintemplates = await NAV.GetBinTemplateList(1, int.MaxValue, ACD.Default);
-                if ((!IsDisposed) && (bintemplates is List<BinTemplate>))
+                if ((NotDisposed) && (bintemplates is List<BinTemplate>))
                 {
                     BinTemplates.Clear();
                     foreach (BinTemplate bt in bintemplates)
@@ -106,7 +106,7 @@ namespace WarehouseControlSystem.ViewModel
                 BinTemplateViewModel btvm = (BinTemplateViewModel)sender;
                 State = ModelState.Loading;
                 await NAV.DeleteBinTemplate(btvm.BinTemplate, ACD.Default).ConfigureAwait(true);
-                if (!IsDisposed)
+                if (NotDisposed)
                 {
                     BinTemplates.Remove(btvm);
                     SelectedTemplate = null;

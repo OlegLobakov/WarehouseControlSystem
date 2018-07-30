@@ -351,12 +351,14 @@ namespace WarehouseControlSystem.ViewModel
             try
             {
                 LocationsIsBeingLoaded = true;
-                List<Location> locations = await NAV.GetLocationList("", false, 1, int.MaxValue, ACD.Default).ConfigureAwait(true);
-                AddLocations(locations);
-
                 BinTypesIsBeingLoaded = true;
+                List<Location> locations = await NAV.GetLocationList("", false, 1, int.MaxValue, ACD.Default).ConfigureAwait(true);
                 List<BinType> bintypes = await NAV.GetBinTypeList(1, int.MaxValue, ACD.Default).ConfigureAwait(true);
-                AddBinTypes(bintypes);
+                if (NotDisposed)
+                {
+                    AddLocations(locations);
+                    AddBinTypes(bintypes);
+                }
             }
             catch (Exception e)
             {
@@ -412,7 +414,10 @@ namespace WarehouseControlSystem.ViewModel
             try
             {
                 List<Rack> racks = await NAV.GetRackList(LocationCode, Code, true, 1, int.MaxValue, ACD.Default).ConfigureAwait(true);
-                FillRacks(racks);
+                if (NotDisposed)
+                {
+                    FillRacks(racks);
+                }
             }
             catch (Exception e)
             {
@@ -426,17 +431,14 @@ namespace WarehouseControlSystem.ViewModel
 
         private void FillRacks(List<Rack> racks)
         {
-            if (!IsDisposed)
+            SubSchemeElements.Clear();
+            foreach (Rack rack in racks)
             {
-                SubSchemeElements.Clear();
-                foreach (Rack rack in racks)
-                {
-                    SubSchemeElement sse = CreateSSE(rack);
-                    CheckGlobalSearch(rack, sse);
-                    SubSchemeElements.Add(sse);
-                }
-                RacksIsLoaded = SubSchemeElements.Count > 0;
+                SubSchemeElement sse = CreateSSE(rack);
+                CheckGlobalSearch(rack, sse);
+                SubSchemeElements.Add(sse);
             }
+            RacksIsLoaded = SubSchemeElements.Count > 0;
         }
 
         private SubSchemeElement CreateSSE(Rack rack)

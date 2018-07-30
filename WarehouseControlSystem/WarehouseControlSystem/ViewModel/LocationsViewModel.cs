@@ -40,7 +40,7 @@ namespace WarehouseControlSystem.ViewModel
             {
                 State = ModelState.Loading;
                 List<Location> list = await NAV.GetLocationList("", false, 1, int.MaxValue, ACD.Default).ConfigureAwait(true);
-                if ((!IsDisposed) && (list is List<Location>))
+                if ((NotDisposed) && (list is List<Location>))
                 {
                     FillModel(list);
                 }

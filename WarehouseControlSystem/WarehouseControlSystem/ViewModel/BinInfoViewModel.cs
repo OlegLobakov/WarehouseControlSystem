@@ -92,6 +92,50 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
         string value3;
+
+        public bool ImageIsVisible
+        {
+            get { return imageisvisible; }
+            set
+            {
+                if (imageisvisible != value)
+                {
+                    imageisvisible = value;
+                    OnPropertyChanged(nameof(ImageIsVisible));
+                }
+            }
+        }
+        bool imageisvisible;
+
+        public ImageSource ImageSource
+        {
+            get { return imagesource; }
+            set
+            {
+                if (imagesource != value)
+                {
+                    imagesource = value;
+                    OnPropertyChanged(nameof(ImageSource));
+                }
+            }
+        }
+        ImageSource imagesource;
+
+
+        public string ImageURL
+        {
+            get { return imageurl; }
+            set
+            {
+                if (imageurl != value)
+                {
+                    imageurl = value;
+                    OnPropertyChanged(nameof(ImageURL));
+                }
+            }
+        }
+        string imageurl;
+
         public BinInfoViewModel(BinInfo bi, INavigation navigation) : base(navigation)
         {
             Caption = bi.Caption;
@@ -100,6 +144,7 @@ namespace WarehouseControlSystem.ViewModel
             Value1 = bi.Value1;
             Value2 = bi.Value2;
             value3 = bi.Value3;
+            ImageURL = bi.ImageURL;
         }
     }
 }
