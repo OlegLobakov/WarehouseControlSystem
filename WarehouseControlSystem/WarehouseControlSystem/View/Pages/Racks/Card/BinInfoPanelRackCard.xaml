@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="WarehouseControlSystem.View.Content.BinInfoPanelRackCard"
+             x:Class="WarehouseControlSystem.View.Pages.Racks.Card.BinInfoPanelRackCard"
              xmlns:i18n="clr-namespace:WarehouseControlSystem;assembly=WarehouseControlSystem">
     <ContentView.Content>
         <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Padding="5" WidthRequest="300">
@@ -11,6 +11,7 @@
             </Grid.RowDefinitions>
             <Grid Grid.Row="0" ColumnSpacing="0" RowSpacing="0" HeightRequest="40">
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
@@ -24,8 +25,19 @@
                         </DataTrigger>
                     </Button.Triggers>
                 </Button>
-
+                
                 <Button Grid.Column="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
+                        Text="{i18n:Translate BinInfoPanelRackCard_BinInfo}" BackgroundColor="Transparent"
+                        Command="{Binding BinInfoViewCommand}" TextColor="Black">
+                    <Button.Triggers>
+                        <DataTrigger Binding="{Binding IsBinInfoVisible}" TargetType="Button" Value="true">
+                            <Setter Property="BackgroundColor" Value="{StaticResource PageHeaderBarBackgoundColor}"/>
+                            <Setter Property="TextColor" Value="White"/>
+                        </DataTrigger>
+                    </Button.Triggers>
+                </Button>
+                
+                <Button Grid.Column="2" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
                         Text="{i18n:Translate BinInfoPanelRackCard_Functions}" BackgroundColor="Transparent"
                         Command="{Binding FunctionsViewCommand}" TextColor="Black">
                     <Button.Triggers>
@@ -35,6 +47,7 @@
                         </DataTrigger>
                     </Button.Triggers>
                 </Button>
+                
             </Grid>
 
 
@@ -116,6 +129,57 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            
+            <ListView Grid.Row="1" 
+                      ItemsSource="{Binding BinInfo}"
+                      HasUnevenRows="True" 
+                      HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                      IsVisible="{Binding IsBinInfoVisible}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Padding="0,1,0,1" BackgroundColor="LightGray">
+                                <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                      BackgroundColor="White">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label  Grid.Row="0" Grid.Column="0" Text="{Binding Caption}" Margin="10,3,0,3" FontSize="Large"       
+                                            HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                            HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+
+                                    <Label  Grid.Row="1" Grid.Column="0" Text="{Binding Description}" Margin="10,3,0,3"  FontSize="Medium"
+                                            HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                            HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+
+                                    <Label  Grid.Row="2" Grid.Column="0" Text="{Binding Detail}" Margin="10,3,0,3"  FontSize="Small"
+                                            HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                            HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+
+                                    <Label  Grid.Row="0" Grid.Column="1" Text="{Binding Value1}" Margin="0,3,10,3" FontSize="Large"       
+                                            HorizontalOptions="End" VerticalOptions="Center"
+                                            HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
+
+                                    <Label  Grid.Row="1" Grid.Column="1" Text="{Binding Value2}" Margin="0,3,10,3"  FontSize="Medium"
+                                            HorizontalOptions="End" VerticalOptions="Center"
+                                            HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
+
+                                    <Label  Grid.Row="2" Grid.Column="1" Text="{Binding Value3}" Margin="0,3,10,3"  FontSize="Small"
+                                            HorizontalOptions="End" VerticalOptions="Center"
+                                            HorizontalTextAlignment="end" VerticalTextAlignment="Center"/>
+                                </Grid>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
         </Grid>
     </ContentView.Content>
 </ContentView>

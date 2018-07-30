@@ -403,6 +403,15 @@ namespace WarehouseControlSystem.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Info.
+        /// </summary>
+        internal static string BinInfoPanelRackCard_BinInfo {
+            get {
+                return ResourceManager.GetString("BinInfoPanelRackCard_BinInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Commands.
         /// </summary>
         internal static string BinInfoPanelRackCard_Commands {

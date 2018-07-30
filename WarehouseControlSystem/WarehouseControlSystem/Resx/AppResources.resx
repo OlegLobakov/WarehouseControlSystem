@@ -1479,4 +1479,7 @@
   <data name="ZonesPlanViewModel_DeleteZone" xml:space="preserve">
     <value>Delete zone {0}?</value>
   </data>
+  <data name="BinInfoPanelRackCard_BinInfo" xml:space="preserve">
+    <value>Info</value>
+  </data>
 </root>

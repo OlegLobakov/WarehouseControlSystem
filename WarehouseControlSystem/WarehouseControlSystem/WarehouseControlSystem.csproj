@@ -49,7 +49,7 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Update="View\Content\BinInfoPanelRackCard.xaml.cs">
+    <Compile Update="View\Pages\Racks\Card\BinInfoPanelRackCard.xaml.cs">
       <DependentUpon>BinInfoPanelRackCard.xaml</DependentUpon>
     </Compile>
     <Compile Update="View\Content\EmptySpaceViewInRack.xaml.cs">

@@ -40,6 +40,7 @@ namespace WarehouseControlSystem.View.Pages.Racks.Card
             ScaleMode = false;
             Title = AppResources.RackCardPage_Title + " " + model.No;
             MessagingCenter.Subscribe<BinsViewModel>(this, "BinsIsLoaded", BinsIsLoaded);
+            MessagingCenter.Subscribe<BinViewModel>(this, "BinsViewModel.BinSelected", BinSelected);
         }
 
         protected override async void OnAppearing()
@@ -50,11 +51,14 @@ namespace WarehouseControlSystem.View.Pages.Racks.Card
             model.LoadingText = AppResources.RackCardPage_LoadingText;           
             await model.LoadBins();
             await model.LoadUDF();
+            await model.LoadBinValues();
         }
 
         protected override bool OnBackButtonPressed()
         {
-            model.CancelAsync();
+            MessagingCenter.Unsubscribe<BinsViewModel>(this, "BinsIsLoaded");
+            MessagingCenter.Unsubscribe<BinViewModel>(this, "BinsViewModel.BinSelected");
+            model.DisposeModel();
             base.OnBackButtonPressed();
             return false;
         }
@@ -70,6 +74,18 @@ namespace WarehouseControlSystem.View.Pages.Racks.Card
             model.State = ModelState.Normal;
             model.GetSearchText();
             rackview.Update(model);
+        }
+
+        private async void BinSelected(BinViewModel bvm)
+        {
+            if (!ScaleMode)
+            {
+                BinView bv = rackview.GetBinView(bvm);
+                if (bv is BinView)
+                {
+                    await rackscrollview.ScrollToAsync(bv, ScrollToPosition.Center, true);
+                }
+            }
         }
 
         public void BinInfopanelItemTap(BinContentShortViewModel bcsvm)

@@ -718,6 +718,23 @@ namespace WarehouseControlSystem.ViewModel
             await BinsViewModel.LoadUDF(ACD).ConfigureAwait(true);
         }
 
+
+        public async Task LoadBinValues()
+        {
+            try
+            {
+                await BinsViewModel.LoadBinValues(ACD).ConfigureAwait(true);
+            }
+            catch (OperationCanceledException e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.Message);
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.Message);
+            }
+        }
+
         public void GetSearchText()
         {
             if (!string.IsNullOrEmpty(Global.SearchRequest))
@@ -851,12 +868,6 @@ namespace WarehouseControlSystem.ViewModel
                     }
                 }
             }
-        }
-
-        public void CancelAsync()
-        {
-            BinsViewModel.CancelAsync();
-            ACD.CancelAll();
         }
 
         public override void DisposeModel()

@@ -67,7 +67,33 @@ namespace WarehouseControlSystem.Helpers.NAV
             try
             {
                 XElement soapbodynode = await Process(sp, false, cts).ConfigureAwait(false);
-                tcs.SetResult(StringToInt(soapbodynode.Value));
+                if (string.IsNullOrEmpty(soapbodynode.Value))
+                {
+                    tcs.SetResult(0);
+                }
+                else
+                {
+                    tcs.SetResult(StringToInt(soapbodynode.Value));
+                }
+            }
+            catch (Exception e)
+            {
+                tcs.SetException(e);
+            }
+        }
+        private static async Task GetStringFromNAV(TaskCompletionSource<string> tcs, SoapParams sp, CancellationTokenSource cts)
+        {
+            try
+            {
+                XElement soapbodynode = await Process(sp, false, cts).ConfigureAwait(false);
+                if (string.IsNullOrEmpty(soapbodynode.Value))
+                {
+                    tcs.SetResult("");
+                }
+                else
+                {
+                    tcs.SetResult(soapbodynode.Value);
+                }
             }
             catch (Exception e)
             {
@@ -1231,6 +1257,128 @@ namespace WarehouseControlSystem.Helpers.NAV
                     break;
             }
         }
+
+        public static Task<string> GetBinBottomLeftValue(string locationcode, string bincode, CancellationTokenSource cts)
+        {
+            var tcs = new TaskCompletionSource<string>();
+            if (IsConnectionFaild())
+            {
+                tcs.SetResult("");
+                return tcs.Task;
+            }
+
+            XNamespace myns = GetNameSpace();
+            string functionname = "GetBinBottomLeftValue";
+            XElement body =
+                new XElement(myns + functionname,
+                new XElement(myns + "locationCode", locationcode),
+                new XElement(myns + "binCode", bincode));
+            SoapParams sp = new SoapParams(functionname, body, myns);
+            Task.Run(() => GetStringFromNAV(tcs, sp, cts));
+            return tcs.Task;
+        }
+        public static Task<string> GetBinBottomRightValue(string locationcode, string bincode, CancellationTokenSource cts)
+        {
+            var tcs = new TaskCompletionSource<string>();
+            if (IsConnectionFaild())
+            {
+                tcs.SetResult("");
+                return tcs.Task;
+            }
+
+            XNamespace myns = GetNameSpace();
+            string functionname = "GetBinBottomRightValue";
+            XElement body =
+                new XElement(myns + functionname,
+                new XElement(myns + "locationCode", locationcode),
+                new XElement(myns + "binCode", bincode));
+            SoapParams sp = new SoapParams(functionname, body, myns);
+            Task.Run(() => GetStringFromNAV(tcs, sp, cts));
+            return tcs.Task;
+        }
+        public static Task<List<BinInfo>> GetBinInfo(string locationcode, string bincode, CancellationTokenSource cts)
+        {
+            var tcs = new TaskCompletionSource<List<BinInfo>>();
+
+            if (IsConnectionFaild())
+            {
+                tcs.SetResult(null);
+                return tcs.Task;
+            }
+
+            XNamespace myns = GetNameSpace();
+            string functionname = "GetBinInfo";
+            XElement body =
+                new XElement(myns + functionname,
+                    new XElement(myns + "locationCode", locationcode),
+                    new XElement(myns + "binCode", bincode),
+                    new XElement(myns + "responseDocument", ""));
+            SoapParams sp = new SoapParams(functionname, body, myns);
+            Task.Run(() => GetBinInfoNAV(tcs, sp, cts));
+            return tcs.Task;
+        }
+        private static async Task GetBinInfoNAV(TaskCompletionSource<List<BinInfo>> tcs, SoapParams sp, CancellationTokenSource cts)
+        {
+            try
+            {
+                XElement soapbodynode = await Process(sp, false, cts).ConfigureAwait(false);
+                string response = soapbodynode.Value;
+                XDocument document = GetDoc(response);
+                List<BinInfo> rv = new List<BinInfo>();
+                foreach (XElement currentnode in document.Root.Elements())
+                {
+                    BinInfo bi = GetBinInfoFromXML(currentnode);
+                    rv.Add(bi);
+                }
+                tcs.SetResult(rv);
+            }
+            catch (Exception e)
+            {
+                tcs.SetException(e);
+            }
+        }
+        private static BinInfo GetBinInfoFromXML(XElement currentnode)
+        {
+            BinInfo bi = new BinInfo();
+            foreach (XAttribute currentatribute in currentnode.Attributes())
+            {
+                switch (currentatribute.Name.LocalName)
+                {
+                    case "Caption":
+                        {
+                            bi.Caption = currentatribute.Value;
+                            break;
+                        }
+                    case "Description":
+                        {
+                            bi.Description = currentatribute.Value;
+                            break;
+                        }
+                    case "Detail":
+                        {
+                            bi.Detail = currentatribute.Value;
+                            break;
+                        }
+                    case "Value1":
+                        {
+                            bi.Value1 = currentatribute.Value;
+                            break;
+                        }
+                    case "Value2":
+                        {
+                            bi.Value2 = currentatribute.Value;
+                            break;
+                        }
+                    case "Value3":
+                        {
+                            bi.Value3 = currentatribute.Value;
+                            break;
+                        }
+                }
+            }
+            return bi;
+        }
+
         #endregion
         #region BinTemplate
         public static XElement[] SetBinTemplateParams(XNamespace myns, BinTemplate bintemplate)

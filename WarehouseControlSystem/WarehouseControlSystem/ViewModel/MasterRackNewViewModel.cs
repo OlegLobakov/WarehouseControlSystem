@@ -363,14 +363,10 @@ namespace WarehouseControlSystem.ViewModel
         }
 
 
-        public void CancelAsync()
-        {
-            ACD.CancelAll();
-            NewModel.CancelAsync(); 
-        }
 
         public override void DisposeModel()
         {
+            NewModel.DisposeModel();
             BinTemplates.Clear();
             base.DisposeModel();
         }

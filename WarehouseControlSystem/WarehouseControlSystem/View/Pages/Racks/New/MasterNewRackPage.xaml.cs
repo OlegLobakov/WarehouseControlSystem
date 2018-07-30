@@ -43,7 +43,7 @@ namespace WarehouseControlSystem.View.Pages.Racks.New
             MessagingCenter.Unsubscribe<MasterRackNewViewModel>(this, "BinTemplatesIsLoaded");
             MessagingCenter.Unsubscribe<MasterRackNewViewModel>(this, "UpdateRackView");
             MessagingCenter.Unsubscribe<BinsViewModel>(this, "Update");
-            model.CancelAsync();
+            model.DisposeModel();
             base.OnBackButtonPressed();
             return false;
         }

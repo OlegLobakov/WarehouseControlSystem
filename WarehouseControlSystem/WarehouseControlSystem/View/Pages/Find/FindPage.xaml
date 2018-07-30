@@ -39,7 +39,7 @@
                                 <ColumnDefinition Width="60"/>
                                 <ColumnDefinition Width="60"/>
                             </Grid.ColumnDefinitions>
-                            <Entry Grid.Column="0"  x:Name="entry" Completed="entry_Completed"></Entry>
+                            <Entry Grid.Column="0"  x:Name="entry" Completed="entry_Completed" FontSize="Large" TextColor="Black"></Entry>
                             <Button Grid.Column="1" Clicked="ButtonFindClick" BackgroundColor="{StaticResource PageHeaderBarBackgoundColor}">
                                 <Button.Image>
                                     <OnPlatform x:TypeArguments="FileImageSource">
@@ -72,11 +72,15 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0" Text="{Binding CurrentRequest}" Margin="20,10,10,10"/>
+                        <Label Grid.Column="0" Text="{Binding CurrentRequest}" Margin="20,10,10,10"
+                               TextColor="Black" FontSize="Large"/>
                         <Button Grid.Column="2" Text="{i18n:Translate FindPage_Reset}"
                                 Margin="20,10,20,10"
                                 BorderWidth="0" BorderRadius="0" 
-                                BackgroundColor="White" Clicked="Button_Clicked"/>
+                                TextColor="Black"
+                                FontSize="Large"
+                                BackgroundColor="White" 
+                                Clicked="Button_Clicked"/>
                     </Grid>
                 </Grid>
             </StackLayout>

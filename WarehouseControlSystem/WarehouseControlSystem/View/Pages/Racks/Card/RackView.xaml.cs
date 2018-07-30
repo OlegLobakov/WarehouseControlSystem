@@ -44,7 +44,6 @@ namespace WarehouseControlSystem.View.Pages.Racks.Card
 
             MessagingCenter.Subscribe<BinsViewModel>(this, "Update", Update);
             MessagingCenter.Subscribe<RackViewModel>(this, "Update", Update);
-
         }
 
         private void Update()
@@ -149,11 +148,39 @@ namespace WarehouseControlSystem.View.Pages.Racks.Card
                     BinViewModel finded = model.BinsViewModel.BinViewModels.Find(x => x.Level == i && x.Section == j);
                     if (finded is BinViewModel)
                     {
-                        BinView bev = new BinView(finded);
-                        grid.Children.Add(bev, finded.Section, finded.Section + finded.SectionSpan, finded.Level, finded.Level + finded.LevelSpan);
+                        try
+                        {
+                            BinView bev = new BinView(finded);
+                            grid.Children.Add(bev, finded.Section, finded.Section + finded.SectionSpan, finded.Level, finded.Level + finded.LevelSpan);
+                        }
+                        catch (Exception exp)
+                        {
+                            System.Diagnostics.Debug.WriteLine(exp.Message);
+                        }
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// For Autoscrolling
+        /// </summary>
+        /// <param name="bvm"></param>
+        /// <returns></returns>
+        public BinView GetBinView(BinViewModel bvm)
+        {
+            foreach (Xamarin.Forms.View view in grid.Children)
+            {
+                if (view is BinView)
+                {
+                    BinView binview = (BinView)view;
+                    if (binview.Model == bvm)
+                    {
+                        return binview;
+                    }
+                }
+            }
+            return null;
         }
 
         public void SetHeaderLabel(string text)

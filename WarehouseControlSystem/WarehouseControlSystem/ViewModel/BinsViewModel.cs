@@ -101,11 +101,13 @@ namespace WarehouseControlSystem.ViewModel
 
         public ICommand ContentViewCommand { protected set; get; }
         public ICommand FunctionsViewCommand { protected set; get; }
+        public ICommand BinInfoViewCommand { protected set; get; }
 
         public event Action<BinsViewModel> OnBinClick;
 
         public List<BinViewModel> BinViewModels { get; set; } = new List<BinViewModel>();
         public List<EmptySpaceViewModel> EmptySpacesViewModels { get; set; } = new List<EmptySpaceViewModel>();
+        public BinViewModel LastSelectedBinViewModel { get; set; }
 
         public ObservableCollection<BinContentGrouping> SelectedBinContent
         {
@@ -131,6 +133,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } ObservableCollection<UserDefinedFunctionViewModel> userdefinedfunctions;
+        public ObservableCollection<BinInfoViewModel> BinInfo { get; set; } = new ObservableCollection<BinInfoViewModel>();
 
         public RackViewModel LinkToRackViewModel { get; set; }
 
@@ -175,6 +178,9 @@ namespace WarehouseControlSystem.ViewModel
             }
         } bool bintypesisenabled;
 
+        /// <summary>
+        /// BinInfo panel
+        /// </summary>
         public bool IsUserDefinedCommandsVisible
         {
             get { return isuserdefinedcommandsvisible; }
@@ -199,6 +205,18 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } bool iscontentvisible;
+        public bool IsBinInfoVisible
+        {
+            get { return isbininfovisible; }
+            set
+            {
+                if (isbininfovisible != value)
+                {
+                    isbininfovisible = value;
+                    OnPropertyChanged(nameof(IsBinInfoVisible));
+                }
+            }
+        } bool isbininfovisible;
 
         public bool EditedBinCodeIsEnabled
         {
@@ -407,6 +425,7 @@ namespace WarehouseControlSystem.ViewModel
 
             ContentViewCommand = new Command(ShowContent);
             FunctionsViewCommand = new Command(ShowFunctions);
+            BinInfoViewCommand = new Command(ShowBinInfo);
 
             IsContentVisible = true;
             State = ModelState.Undefined;
@@ -678,15 +697,24 @@ namespace WarehouseControlSystem.ViewModel
         public void ShowContent()
         {
             IsUserDefinedCommandsVisible = false;
+            IsBinInfoVisible = false;
             IsContentVisible = true;
         }
 
         public void ShowFunctions()
         {
             IsContentVisible = false;
+            IsBinInfoVisible = false;
             IsUserDefinedCommandsVisible = true;
         }
 
+        public void ShowBinInfo()
+        {
+            IsContentVisible = false;
+            IsUserDefinedCommandsVisible = false;
+            IsBinInfoVisible = true;
+        }
+       
         public async Task CheckBins(AsyncCancelationDispatcher acd)
         {
             List<BinViewModel> list = BinViewModels.ToList();
@@ -762,7 +790,7 @@ namespace WarehouseControlSystem.ViewModel
                         {
                             BinViewModel bvm = new BinViewModel(Navigation, bin);
                             bvm.IsContent = !bin.Empty;
-                            bvm.Color = Color.FromHex("#e2dacf");
+                            bvm.Color = (Color)Application.Current.Resources["BinViewColor"];
                             bvm.OnTap += Bvm_OnTap;
 
                             ExistInSearch(bvm);
@@ -783,6 +811,51 @@ namespace WarehouseControlSystem.ViewModel
             {
                 System.Diagnostics.Debug.WriteLine(e.Message);
                 ErrorText = e.Message;
+            }
+        }
+
+        public async Task LoadBinValues(AsyncCancelationDispatcher acd)
+        {
+
+            foreach (BinViewModel bvm in BinViewModels)
+            {
+                try
+                {
+                    string value = await NAV.GetBinBottomRightValue(bvm.LocationCode, bvm.Code, acd.Default).ConfigureAwait(true);
+                    if (!IsDisposed)
+                    {
+                        bvm.BottomRightValue = value;
+                    }
+                }
+                catch (OperationCanceledException e)
+                {
+                    System.Diagnostics.Debug.WriteLine(e.Message);
+                    throw e;
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine(e.Message);
+                    throw e;
+                }
+
+                try
+                {
+                    string value = await NAV.GetBinBottomLeftValue(bvm.LocationCode, bvm.Code, acd.Default).ConfigureAwait(true);
+                    if (!IsDisposed)
+                    {
+                        bvm.BottomLeftValue = value;
+                    }
+                }
+                catch (OperationCanceledException e)
+                {
+                    System.Diagnostics.Debug.WriteLine(e.Message);
+                    throw e;
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine(e.Message);
+                    throw e;
+                }
             }
         }
 
@@ -921,36 +994,63 @@ namespace WarehouseControlSystem.ViewModel
         private async void Bvm_OnTap(BinViewModel bvm)
         {
             Select(bvm);
-            if (bvm.IsContent)
+
+            if (bvm.Selected)
             {
-                bvm.LoadAnimation = true;
-                try
+                if (bvm.IsContent)
                 {
-                    NAVFilter navfilter = new NAVFilter
+                    bvm.LoadAnimation = true;
+                    try
                     {
-                        LocationCodeFilter = LocationCode,
-                        ZoneCodeFilter = ZoneCode,
-                        BinCodeFilter = bvm.Code
-                    };
-                    List<BinContent> bincontent = await NAV.GetBinContentList(navfilter, ACD.Default).ConfigureAwait(true);
-                    FillBinContent(bvm, bincontent);
+                        NAVFilter navfilter = new NAVFilter
+                        {
+                            LocationCodeFilter = LocationCode,
+                            ZoneCodeFilter = ZoneCode,
+                            BinCodeFilter = bvm.Code
+                        };
+                        List<BinContent> bincontent = await NAV.GetBinContentList(navfilter, ACD.Default).ConfigureAwait(true);
+                        FillBinContent(bvm, bincontent);
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                    }
+                    bvm.LoadAnimation = false;
                 }
-                catch(Exception e)
-                {
-                    System.Diagnostics.Debug.WriteLine(e.Message);
-                }
-                bvm.LoadAnimation = false;
             }
             SetSelectedBinContent();
+
+            
             if (OnBinClick is Action<BinsViewModel>)
             {
                 OnBinClick(this);
+            }
+
+            if (bvm.Selected)
+            {
+                try
+                {
+                    List<BinInfo> bininfo = await NAV.GetBinInfo(bvm.LocationCode, bvm.Code, ACD.Default).ConfigureAwait(true);
+                    if (!IsDisposed)
+                    {
+                        FillBinInfo(bvm, bininfo);
+                    }
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine(e.Message);
+                }
             }
         }
 
         private void Select(BinViewModel bvm)
         {
             bvm.Selected = !bvm.Selected;
+
+            if (bvm.Selected)
+            {
+                MessagingCenter.Send(bvm, "BinsViewModel.BinSelected");
+            }
 
             BinViewModel selectedbvm = BinViewModels.Find(x => x.Selected == true);
             IsSelectedBins = selectedbvm is BinViewModel;
@@ -967,17 +1067,10 @@ namespace WarehouseControlSystem.ViewModel
             if (list is List<BinViewModel>)
             {
                 ObservableCollection<BinContentGrouping> nlist = new ObservableCollection<BinContentGrouping>();
-
                 foreach (BinViewModel bvm1 in list)
                 {
                     nlist.Add(new BinContentGrouping(bvm1.Code, bvm1.BinContent));
-
-                    //foreach (BinContentShortViewModel bcsvm in bvm1.BinContent)
-                    //{
-                    //    nlist.Add(bcsvm);
-                    //}
                 }
-                //nlist.ToList().Sort(new BinContentShortViewModelComparer());
                 SelectedBinContent = nlist;
                 EditedBinCodeIsEnabled = list.Count == 1;
             }
@@ -994,9 +1087,22 @@ namespace WarehouseControlSystem.ViewModel
                 bvm.BinContent.Clear();
                 foreach (BinContent bc in bincontent)
                 {
-                    BinContentShortViewModel bsvm = new BinContentShortViewModel(Navigation, bc);
-                    bvm.BinContent.Add(bsvm);
+                    BinContentShortViewModel bcsvm = new BinContentShortViewModel(Navigation,bc);
+                    bvm.BinContent.Add(bcsvm);
                 }
+
+            }
+        }
+        private void FillBinInfo(BinViewModel bvm, List<BinInfo> bininfo)
+        {
+            if ((!IsDisposed) && (bininfo.Count > 0))
+            {
+                ObservableCollection<BinInfoViewModel> nlist = new ObservableCollection<BinInfoViewModel>();
+                foreach (BinInfo bvm1 in bininfo)
+                {
+                    nlist.Add(new BinInfoViewModel(bvm1, Navigation));
+                }
+                BinInfo = nlist;
             }
         }
 

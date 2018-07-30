@@ -56,7 +56,7 @@ namespace WarehouseControlSystem.View.Pages.Racks.Edit
         {
             MessagingCenter.Unsubscribe<RackViewModel>(this, "ZonesIsLoaded");
             MessagingCenter.Unsubscribe<RackViewModel>(this, "LocationsIsLoaded");
-            model.CancelAsync();
+            model.DisposeModel();
             base.OnBackButtonPressed();
             return false;
         }

@@ -317,6 +317,34 @@ namespace WarehouseControlSystem.ViewModel
             }
         } bool excludefromsearch;
 
+        public string BottomRightValue
+        {
+            get { return bottomrightvalue; }
+            set
+            {
+                if (bottomrightvalue != value)
+                {
+                    bottomrightvalue = value;
+                    OnPropertyChanged("BottomRightValue");
+                }
+            }
+        }
+        string bottomrightvalue;
+
+        public string BottomLeftValue
+        {
+            get { return bottomleftvalue; }
+            set
+            {
+                if (bottomleftvalue != value)
+                {
+                    bottomleftvalue = value;
+                    OnPropertyChanged("BottomLeftValue");
+                }
+            }
+        }
+        string bottomleftvalue;
+
         public string Description
         {
             get { return description; }
@@ -478,7 +506,7 @@ namespace WarehouseControlSystem.ViewModel
         public ICommand TapCommand { protected set; get; }
 
         public ObservableCollection<BinContentShortViewModel> BinContent { get; set; } = new ObservableCollection<BinContentShortViewModel>();
-
+        
         public BinViewModel(INavigation navigation, Bin bin) : base(navigation)
         {
             Bin = bin;

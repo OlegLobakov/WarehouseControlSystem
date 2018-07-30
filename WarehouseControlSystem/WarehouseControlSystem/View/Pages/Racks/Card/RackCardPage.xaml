@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:rv="clr-namespace:WarehouseControlSystem.View.Pages.Racks.Card"
-             xmlns:vc="clr-namespace:WarehouseControlSystem.View.Content"
+             xmlns:vc="clr-namespace:WarehouseControlSystem.View.Pages.Racks.Card"
              x:Class="WarehouseControlSystem.View.Pages.Racks.Card.RackCardPage"
              xmlns:i18n="clr-namespace:WarehouseControlSystem;assembly=WarehouseControlSystem">
     <ContentPage.ToolbarItems>
@@ -95,7 +94,7 @@
                             <ScrollView Grid.Row="0" Margin="5" VerticalOptions="FillAndExpand"
                                 Orientation="Horizontal" BackgroundColor="White"
                                 x:Name="rackscrollview">
-                                <rv:RackView x:Name="rackview" VerticalOptions="FillAndExpand"/>
+                                <vc:RackView x:Name="rackview" VerticalOptions="FillAndExpand"/>
                             </ScrollView>
                         </Grid>
                         <StackLayout  Grid.Column="1" BackgroundColor="Gray" Padding="3,0,0,0">
