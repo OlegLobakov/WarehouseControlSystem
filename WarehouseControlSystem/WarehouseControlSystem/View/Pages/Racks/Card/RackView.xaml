@@ -4,7 +4,7 @@
              x:Class="WarehouseControlSystem.View.Pages.Racks.Card.RackView">
     <ContentView.Content>
         <StackLayout  Padding="2" BackgroundColor="DarkGray">
-            <Grid  x:Name="grid" BackgroundColor="White" Padding="3" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"></Grid>
+            <Grid  x:Name="grid" BackgroundColor="White" Padding="3" ColumnSpacing="3" RowSpacing="3" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"></Grid>
         </StackLayout>
     </ContentView.Content>
 </ContentView>

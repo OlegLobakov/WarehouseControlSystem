@@ -89,19 +89,21 @@
                             <ColumnDefinition Width="2*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0" Text="{Binding Comment}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
-                               HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10" TextColor="White"/>
+                        <Label Grid.Column="0" Text="{Binding Comment}" 
+                               HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                               HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
+                               Margin="10" TextColor="White"/>
+                        
                         <ScrollView Grid.Column="1"  
                                     Orientation="Horizontal" 
                                     HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                             
-                            <hs:HorizontalListView  ItemsSource="{Binding LinkPlanRackViewModels, Source={x:Reference Name=ThisPage}}"
-                                                    
+                            <hs:HorizontalListView  ItemsSource="{Binding LinkPlanRackViewModels, Source={x:Reference Name=ThisPage}}"                                                
                                                     SelectedItemChanged="RackList_SelectedItemChanged"
                                                     HorizontalOptions="CenterAndExpand" VerticalOptions="FillAndExpand" Padding="2">
                                 <hs:HorizontalListView.ItemTemplate>
                                     <DataTemplate>
-                                        <Label Text="{Binding No}" TextColor="Wheat" FontSize="Large" WidthRequest="100">
+                                        <Label Text="{Binding No}" TextColor="Wheat" FontSize="Large" Margin="10" WidthRequest="90">
                                             <Label.Triggers>
                                                 <DataTrigger Binding="{Binding IsSelected}" TargetType="Label" Value="true">
                                                     <Setter Property="FontAttributes" Value="Bold"/>
@@ -114,8 +116,11 @@
                                 
                             </hs:HorizontalListView>
                         </ScrollView>
-                        <Label Grid.Column="2" Text="{Binding SearchResult}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
-                               HorizontalTextAlignment="End" VerticalTextAlignment="Center" Margin="10" TextColor="White"/>
+                        <Label Grid.Column="2" 
+                               Text="{Binding SearchResult}" 
+                               HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                               HorizontalTextAlignment="End" VerticalTextAlignment="Center" 
+                               Margin="10" TextColor="White"/>
                     </Grid>
                     <Grid Grid.Row="1">
                         <Grid.ColumnDefinitions>

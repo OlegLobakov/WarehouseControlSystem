@@ -1024,6 +1024,7 @@ namespace WarehouseControlSystem.ViewModel
                             ZoneCodeFilter = ZoneCode,
                             BinCodeFilter = bvm.Code
                         };
+
                         List<BinContent> bincontent = await NAV.GetBinContentList(navfilter, ACD.Default).ConfigureAwait(true);
                         if ((NotDisposed) && (bincontent.Count > 0))
                         {
@@ -1037,6 +1038,7 @@ namespace WarehouseControlSystem.ViewModel
                     bvm.LoadAnimation = false;
                 }
             }
+
             SetSelectedBinContent();
 
 
@@ -1121,14 +1123,17 @@ namespace WarehouseControlSystem.ViewModel
                     {
                         if (!string.IsNullOrEmpty(bcsvm.ImageURL))
                         {
-                            try
+                            if (bcsvm.ImageSource is null)
                             {
-                                bcsvm.ImageSource = ImageSource.FromUri(new Uri(bcsvm.ImageURL));
-                                bcsvm.ImageIsVisible = true;
-                            }
-                            catch (Exception exp)
-                            {
-                                System.Diagnostics.Debug.WriteLine(exp.Message);
+                                try
+                                {
+                                    bcsvm.ImageSource = ImageSource.FromUri(new Uri(bcsvm.ImageURL));
+                                    bcsvm.ImageIsVisible = true;
+                                }
+                                catch (Exception exp)
+                                {
+                                    System.Diagnostics.Debug.WriteLine(exp.Message);
+                                }
                             }
                         }
                     }

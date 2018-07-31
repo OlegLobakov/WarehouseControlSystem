@@ -4,23 +4,20 @@
              x:Class="WarehouseControlSystem.View.Pages.Racks.Card.BinView"
              x:Name="ThisBinView">
   <ContentView.Content>
-        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" SizeChanged="StackLayout_SizeChanged">
+        <StackLayout HorizontalOptions="FillAndExpand" 
+                     VerticalOptions="FillAndExpand" 
+                     SizeChanged="StackLayout_SizeChanged" 
+                     Spacing="0">
             <StackLayout.GestureRecognizers>
                 <TapGestureRecognizer Command="{Binding TapCommand}"/>
             </StackLayout.GestureRecognizers>
-            
-            <!--<StackLayout.Triggers>
-                <DataTrigger Binding="{Binding IsSelected}" TargetType="StackLayout" Value="true">
-                    <Setter Property="Padding" Value="3"  />
-                    <Setter Property="BackgroundColor" Value="Red"  />
-                </DataTrigger>
-                <DataTrigger Binding="{Binding IsSelected}" TargetType="StackLayout" Value="false">
-                    <Setter Property="Padding" Value="0"  />
-                    <Setter Property="BackgroundColor" Value="Transparent" />
-                </DataTrigger>
-            </StackLayout.Triggers>-->
 
-            <Grid x:Name="grid" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="{Binding Color}" Opacity="1">
+            <Grid x:Name="grid" 
+                  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
+                  ColumnSpacing="0" RowSpacing="0"
+                  BackgroundColor="{Binding Color}" 
+                  Opacity="1">
+                
                 <Grid.Triggers>
                     <DataTrigger Binding="{Binding Blocked}" TargetType="Grid" Value="true">
                         <Setter Property="BackgroundColor" Value="#ff9a99"/>
@@ -47,7 +44,7 @@
 
                 <Label Grid.Row="0" x:Name="codelabel" Text="{Binding Code}" 
                        FontSize="{Binding Path=CodeFontSize, Source={x:Reference Name=ThisBinView}}" 
-                       HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
+                       HorizontalOptions="FillAndExpand" 
                        HorizontalTextAlignment="Center" VerticalTextAlignment="Start">
                     <Label.Triggers>
                         <DataTrigger Binding="{Binding IsSearchQuantityVisible}" TargetType="Label" Value="true">
@@ -59,49 +56,54 @@
                     </Label.Triggers>
                 </Label>
 
-                <ActivityIndicator Grid.Row="1" IsVisible="{Binding LoadAnimation}" IsRunning="{Binding LoadAnimation}" 
-                                   HeightRequest="30" WidthRequest="30" HorizontalOptions="Center" VerticalOptions="Center"/>
+                <ActivityIndicator Grid.Row="1" 
+                                   IsVisible="{Binding LoadAnimation}" 
+                                   IsRunning="{Binding LoadAnimation}" 
+                                   HeightRequest="30" WidthRequest="30" 
+                                   HorizontalOptions="Center" VerticalOptions="Center"/>
 
                 <Label Grid.Row="1" Text="{Binding SearchQuantity}" 
                        HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"
                        TextColor="White"
                        FontSize="{Binding Path=CodeFontSize, Source={x:Reference Name=ThisBinView}}"
-                       IsVisible="{Binding IsSearchQuantityVisible}"></Label>
+                       IsVisible="{Binding IsSearchQuantityVisible}">
+                </Label>
 
-                <Grid Grid.Row="2" ColumnSpacing="0" RowSpacing="0" IsVisible="{Binding IsContent}" HorizontalOptions="FillAndExpand">
+                <Grid Grid.Row="2" Padding="2"
+                      ColumnSpacing="0" RowSpacing="0" 
+                      IsVisible="{Binding IsContent}" 
+                      HorizontalOptions="FillAndExpand">
+                    
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
+                    
                     <Label Grid.Column="0"  
                            FontSize="{Binding Path=ValuesFontSize, Source={x:Reference Name=ThisBinView}}"
-                           Text="{Binding BottomRightValue}" 
-                           HorizontalOptions="FillAndExpand" VerticalOptions="End" 
-                           HorizontalTextAlignment="Center" VerticalTextAlignment="End"
+                           Text="{Binding BottomRightValue}"                 
+                           HorizontalTextAlignment="Center" 
+                           HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                            BackgroundColor="{StaticResource BinViewColorDark}">
                         <Label.Triggers>
                             <DataTrigger Binding="{Binding IsSelected}" TargetType="Label" Value="true">
                                 <Setter Property="TextColor" Value="White"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding IsSelected}" TargetType="Label" Value="true">
                                 <Setter Property="BackgroundColor" Value="DarkRed"/>
                             </DataTrigger>
                         </Label.Triggers>
                     </Label>
+                    
                     <Label Grid.Column="1" 
                            FontSize="{Binding Path=ValuesFontSize, Source={x:Reference Name=ThisBinView}}"
                            Text="{Binding BottomLeftValue}" 
-                           HorizontalOptions="FillAndExpand" VerticalOptions="End" 
-                           HorizontalTextAlignment="Center" VerticalTextAlignment="End"
+                           HorizontalTextAlignment="Center"
+                           HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                            BackgroundColor="{StaticResource BinViewColorDark2}">
                         <Label.Triggers>
                             <DataTrigger Binding="{Binding IsSelected}" TargetType="Label" Value="true">
                                 <Setter Property="TextColor" Value="White"/>
                                 <Setter Property="BackgroundColor" Value="DarkRed"/>
                             </DataTrigger>
-                            <!--<DataTrigger Binding="{Binding IsSelected}" TargetType="Label" Value="true">
-                                <Setter Property="BackgroundColor" Value="DarkRed"/>
-                            </DataTrigger>-->
                         </Label.Triggers>
                     </Label>
                 </Grid>
