@@ -25,9 +25,10 @@ namespace WarehouseControlSystem.View.Pages.Racks.Scheme
     public partial class RackSchemeView : SchemeBaseView
     {
         private List<Label> udslabels = new List<Label>();
-
+        private RackViewModel model;
         public RackSchemeView(RackViewModel rvm) : base(rvm)
         {
+            model = rvm;
             InitializeComponent();
 
             CreateSections();
@@ -211,7 +212,13 @@ namespace WarehouseControlSystem.View.Pages.Racks.Scheme
             RackViewModel model = (RackViewModel)Model;
             model.SchemeWidth = width;
             model.SchemeHeight = height;
-            model.SchemeFontSize = 12;
+
+            double fs = height / (model.Sections+1);
+            if (width > height)
+            {
+                fs = width / (model.Sections + 1);
+            }
+            model.SchemeFontSize = fs*0.6;
         }
 
     }
