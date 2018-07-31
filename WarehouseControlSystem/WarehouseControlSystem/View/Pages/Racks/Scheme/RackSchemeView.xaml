@@ -12,10 +12,10 @@
         </ContentView>-->
         <StackLayout Padding="1" Spacing="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
             <StackLayout.Triggers>
-                <DataTrigger Binding="{Binding Selected}" TargetType="StackLayout" Value="true">
+                <DataTrigger Binding="{Binding IsSelected}" TargetType="StackLayout" Value="true">
                     <Setter Property="BackgroundColor" Value="Red"/>
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Selected}" TargetType="StackLayout" Value="false">
+                <DataTrigger Binding="{Binding IsSelected}" TargetType="StackLayout" Value="false">
                     <Setter Property="BackgroundColor" Value="#3d567c"/>
                 </DataTrigger>
             </StackLayout.Triggers>
@@ -27,10 +27,10 @@
                     <TapGestureRecognizer Command="{Binding TapCommand}"/>
                 </Grid.GestureRecognizers>
                 <Grid.Triggers>
-                    <DataTrigger Binding="{Binding Selected}" TargetType="Grid" Value="true">
+                    <DataTrigger Binding="{Binding IsSelected}" TargetType="Grid" Value="true">
                         <Setter Property="IsVisible" Value="false"/>
                     </DataTrigger>
-                    <DataTrigger Binding="{Binding Selected}" TargetType="Grid" Value="false">
+                    <DataTrigger Binding="{Binding IsSelected}" TargetType="Grid" Value="false">
                         <Setter Property="IsVisible" Value="true"/>
                     </DataTrigger>
                 </Grid.Triggers>

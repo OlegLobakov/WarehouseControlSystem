@@ -44,7 +44,7 @@ namespace WarehouseControlSystem.ViewModel
             {
                 State = ModelState.Loading;
                 List<Zone> zones = await NAV.GetZoneList(Location.Code, "", false, 1, int.MaxValue, ACD.Default);
-                if (zones is List<Zone>)
+                if ((NotDisposed) && (zones is List<Zone>))
                 {
                     FillModel(zones);
                 }

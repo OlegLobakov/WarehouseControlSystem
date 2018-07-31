@@ -370,9 +370,12 @@ namespace WarehouseControlSystem.ViewModel
                 if (Code != "")
                 {
                     int exist = await NAV.GetLocationCount(Code, false, ACD.Default);
-                    if (exist > 0)
+                    if (NotDisposed)
                     {
-                        CodeWarningText = AppResources.LocationNewPage_CodeAlreadyExist;
+                        if (exist > 0)
+                        {
+                            CodeWarningText = AppResources.LocationNewPage_CodeAlreadyExist;
+                        }
                     }
                 }
             }
@@ -417,7 +420,10 @@ namespace WarehouseControlSystem.ViewModel
             try
             {
                 List<Zone> zones = await NAV.GetZoneList(Code, "", true, 1, int.MaxValue, ACD.Default).ConfigureAwait(true);
-                AddSubSchemeElements(zones);
+                if (NotDisposed)
+                {
+                    AddSubSchemeElements(zones);
+                }
             }
             catch (OperationCanceledException e)
             {
@@ -432,23 +438,20 @@ namespace WarehouseControlSystem.ViewModel
 
         private void AddSubSchemeElements(List<Zone> zones)
         {
-            if (NotDisposed)
+            SubSchemeElements.Clear();
+            foreach (Zone zone in zones)
             {
-                SubSchemeElements.Clear();
-                foreach (Zone zone in zones)
+                SubSchemeElement sse = new SubSchemeElement
                 {
-                    SubSchemeElement sse = new SubSchemeElement
-                    {
-                        Left = zone.Left,
-                        Top = zone.Top,
-                        Height = zone.Height,
-                        Width = zone.Width,
-                        HexColor = zone.HexColor
-                    };
-                    SubSchemeElements.Add(sse);
-                }
-                ZonesIsLoaded = SubSchemeElements.Count > 0;
+                    Left = zone.Left,
+                    Top = zone.Top,
+                    Height = zone.Height,
+                    Width = zone.Width,
+                    HexColor = zone.HexColor
+                };
+                SubSchemeElements.Add(sse);
             }
+            ZonesIsLoaded = SubSchemeElements.Count > 0;
         }
 
         public override void DisposeModel()

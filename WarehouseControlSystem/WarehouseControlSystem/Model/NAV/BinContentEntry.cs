@@ -38,5 +38,6 @@ namespace WarehouseControlSystem.Model.NAV
         public decimal NegAdjmtQty { get; set; }
         public decimal PutawayQty { get; set; }
         public decimal PosAdjmtQty { get; set; }
+        public string ImageURL { get; set; }
     }
 }

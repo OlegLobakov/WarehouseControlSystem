@@ -2734,6 +2734,15 @@ namespace WarehouseControlSystem.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show/Hide Images.
+        /// </summary>
+        internal static string RackCardPage_Toolbar_ImagesLock {
+            get {
+                return ResourceManager.GetString("RackCardPage_Toolbar_ImagesLock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Scale.
         /// </summary>
         internal static string RackCardPage_Toolbar_Scale {

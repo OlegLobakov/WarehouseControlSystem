@@ -23,6 +23,49 @@ namespace WarehouseControlSystem.ViewModel
     {
         BinContent BinContent;
 
+        public bool ImageIsVisible
+        {
+            get { return imageisvisible; }
+            set
+            {
+                if (imageisvisible != value)
+                {
+                    imageisvisible = value;
+                    OnPropertyChanged(nameof(ImageIsVisible));
+                }
+            }
+        }
+        bool imageisvisible;
+
+        public ImageSource ImageSource
+        {
+            get { return imagesource; }
+            set
+            {
+                if (imagesource != value)
+                {
+                    imagesource = value;
+                    OnPropertyChanged(nameof(ImageSource));
+                }
+            }
+        }
+        ImageSource imagesource;
+
+
+        public string ImageURL
+        {
+            get { return imageurl; }
+            set
+            {
+                if (imageurl != value)
+                {
+                    imageurl = value;
+                    OnPropertyChanged(nameof(ImageURL));
+                }
+            }
+        }
+        string imageurl;
+
         public BinContentShortViewModel(INavigation navigation, BinContent bc) : base(navigation)
         {
             BinContent = bc;
@@ -36,6 +79,7 @@ namespace WarehouseControlSystem.ViewModel
             Description = bc.Description;
             Quantity = bc.Quantity;
             QuantityBase = bc.QuantityBase;
+            ImageURL = bc.ImageURL;
         }
 
         public void SaveFields(BinContent bc)
@@ -44,6 +88,7 @@ namespace WarehouseControlSystem.ViewModel
             bc.Description = Description;
             bc.Quantity = Quantity;
             bc.QuantityBase = QuantityBase;
+            bc.ImageURL = ImageURL;
         }
     }
 }

@@ -10,11 +10,11 @@
             </StackLayout.GestureRecognizers>
             
             <!--<StackLayout.Triggers>
-                <DataTrigger Binding="{Binding Selected}" TargetType="StackLayout" Value="true">
+                <DataTrigger Binding="{Binding IsSelected}" TargetType="StackLayout" Value="true">
                     <Setter Property="Padding" Value="3"  />
                     <Setter Property="BackgroundColor" Value="Red"  />
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Selected}" TargetType="StackLayout" Value="false">
+                <DataTrigger Binding="{Binding IsSelected}" TargetType="StackLayout" Value="false">
                     <Setter Property="Padding" Value="0"  />
                     <Setter Property="BackgroundColor" Value="Transparent" />
                 </DataTrigger>
@@ -34,7 +34,7 @@
                     <DataTrigger Binding="{Binding IsContent}" TargetType="Grid" Value="false">
                         <Setter Property="Opacity" Value="0.5"/>
                     </DataTrigger>
-                    <DataTrigger Binding="{Binding Selected}" TargetType="Grid" Value="true">
+                    <DataTrigger Binding="{Binding IsSelected}" TargetType="Grid" Value="true">
                         <Setter Property="BackgroundColor" Value="DarkRed"/>
                     </DataTrigger>
                 </Grid.Triggers>
@@ -53,7 +53,7 @@
                         <DataTrigger Binding="{Binding IsSearchQuantityVisible}" TargetType="Label" Value="true">
                             <Setter Property="TextColor" Value="White"/>
                         </DataTrigger>
-                        <DataTrigger Binding="{Binding Selected}" TargetType="Label" Value="true">
+                        <DataTrigger Binding="{Binding IsSelected}" TargetType="Label" Value="true">
                             <Setter Property="TextColor" Value="White"/>
                         </DataTrigger>
                     </Label.Triggers>
@@ -80,10 +80,10 @@
                            HorizontalTextAlignment="Center" VerticalTextAlignment="End"
                            BackgroundColor="{StaticResource BinViewColorDark}">
                         <Label.Triggers>
-                            <DataTrigger Binding="{Binding Selected}" TargetType="Label" Value="true">
+                            <DataTrigger Binding="{Binding IsSelected}" TargetType="Label" Value="true">
                                 <Setter Property="TextColor" Value="White"/>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding Selected}" TargetType="Label" Value="true">
+                            <DataTrigger Binding="{Binding IsSelected}" TargetType="Label" Value="true">
                                 <Setter Property="BackgroundColor" Value="DarkRed"/>
                             </DataTrigger>
                         </Label.Triggers>
@@ -95,12 +95,13 @@
                            HorizontalTextAlignment="Center" VerticalTextAlignment="End"
                            BackgroundColor="{StaticResource BinViewColorDark2}">
                         <Label.Triggers>
-                            <DataTrigger Binding="{Binding Selected}" TargetType="Label" Value="true">
+                            <DataTrigger Binding="{Binding IsSelected}" TargetType="Label" Value="true">
                                 <Setter Property="TextColor" Value="White"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding Selected}" TargetType="Label" Value="true">
                                 <Setter Property="BackgroundColor" Value="DarkRed"/>
                             </DataTrigger>
+                            <!--<DataTrigger Binding="{Binding IsSelected}" TargetType="Label" Value="true">
+                                <Setter Property="BackgroundColor" Value="DarkRed"/>
+                            </DataTrigger>-->
                         </Label.Triggers>
                     </Label>
                 </Grid>

@@ -358,7 +358,7 @@ namespace WarehouseControlSystem.ViewModel
                     OnPropertyChanged(nameof(TemplateBinRanking));
                 }
             }
-        } int templatebinranking;  
+        } int templatebinranking;
         public decimal TemplateMaximumCubage
         {
             get { return templatemaximumcubage; }
@@ -410,7 +410,7 @@ namespace WarehouseControlSystem.ViewModel
                     OnPropertyChanged(nameof(TemplateWarehouseClassCode));
                 }
             }
-        } string templatewarehouseclasscode; 
+        } string templatewarehouseclasscode;
         public string TemplateSpecialEquipmentCode
         {
             get { return templatespecialequipmentcode; }
@@ -594,7 +594,7 @@ namespace WarehouseControlSystem.ViewModel
             string combinedrackno1 = "";
             string locationcode1 = "";
             int rackno1;
-            List<BinViewModel> selectedlist = BinViewModels.FindAll(x => x.Selected == true);
+            List<BinViewModel> selectedlist = BinViewModels.FindAll(x => x.IsSelected == true);
             if (selectedlist.Count > 1)
             {
                 DefineBordersOfCombine(selectedlist);
@@ -683,7 +683,7 @@ namespace WarehouseControlSystem.ViewModel
 
         public void DeleteBins()
         {
-            List<BinViewModel> selectedlist = BinViewModels.FindAll(x => x.Selected == true);
+            List<BinViewModel> selectedlist = BinViewModels.FindAll(x => x.IsSelected == true);
             foreach (BinViewModel bvm in selectedlist)
             {
                 DeleteBin(bvm);
@@ -709,7 +709,7 @@ namespace WarehouseControlSystem.ViewModel
                 EmptySpacesViewModels.Remove(esvm);
             }
             CreateBin(esvm.Level, esvm.Section, esvm.Depth);
-            
+
             MessagingCenter.Send(this, "Update");
         }
 
@@ -738,7 +738,7 @@ namespace WarehouseControlSystem.ViewModel
             IsUserDefinedCommandsVisible = false;
             IsBinInfoVisible = true;
         }
-       
+
         public async Task CheckBins(AsyncCancelationDispatcher acd)
         {
             List<BinViewModel> list = BinViewModels.ToList();
@@ -759,7 +759,7 @@ namespace WarehouseControlSystem.ViewModel
                     BinCodeFilter = bvm.Code
                 };
                 List<Bin> binsexist = await NAV.GetBinList(navfilter, acd.Default).ConfigureAwait(true);
-                if (binsexist.Count > 0)
+                if ((NotDisposed) && (binsexist.Count > 0))
                 {
                     bvm.IsExist = true;
 
@@ -952,10 +952,10 @@ namespace WarehouseControlSystem.ViewModel
         }
         public void UnSelect()
         {
-            List<BinViewModel> selectedlist = BinViewModels.FindAll(x => x.Selected == true);
+            List<BinViewModel> selectedlist = BinViewModels.FindAll(x => x.IsSelected == true);
             foreach (BinViewModel bvm in selectedlist)
             {
-                bvm.Selected = false;
+                bvm.IsSelected = false;
             }
             IsSelectedBins = false;
         }
@@ -1011,7 +1011,7 @@ namespace WarehouseControlSystem.ViewModel
         {
             Select(bvm);
 
-            if (bvm.Selected)
+            if (bvm.IsSelected)
             {
                 if (bvm.IsContent)
                 {
@@ -1025,7 +1025,10 @@ namespace WarehouseControlSystem.ViewModel
                             BinCodeFilter = bvm.Code
                         };
                         List<BinContent> bincontent = await NAV.GetBinContentList(navfilter, ACD.Default).ConfigureAwait(true);
-                        FillBinContent(bvm, bincontent);
+                        if ((NotDisposed) && (bincontent.Count > 0))
+                        {
+                            FillBinContent(bvm, bincontent);
+                        }
                     }
                     catch (Exception e)
                     {
@@ -1036,13 +1039,13 @@ namespace WarehouseControlSystem.ViewModel
             }
             SetSelectedBinContent();
 
-            
+
             if (OnBinClick is Action<BinsViewModel>)
             {
                 OnBinClick(this);
             }
 
-            if (bvm.Selected)
+            if (bvm.IsSelected)
             {
                 try
                 {
@@ -1061,15 +1064,15 @@ namespace WarehouseControlSystem.ViewModel
 
         private void Select(BinViewModel bvm)
         {
-            bvm.Selected = !bvm.Selected;
+            bvm.IsSelected = !bvm.IsSelected;
 
-            if (bvm.Selected)
+            if (bvm.IsSelected)
             {
                 LastSelectedBinCode = bvm.Code;
                 MessagingCenter.Send(bvm, "BinsViewModel.BinSelected");
             }
 
-            BinViewModel selectedbvm = BinViewModels.Find(x => x.Selected == true);
+            BinViewModel selectedbvm = BinViewModels.Find(x => x.IsSelected == true);
             IsSelectedBins = selectedbvm is BinViewModel;
 
             if (selectedbvm is BinViewModel)
@@ -1080,20 +1083,17 @@ namespace WarehouseControlSystem.ViewModel
 
         private void FillBinContent(BinViewModel bvm, List<BinContent> bincontent)
         {
-            if ((NotDisposed) && (bincontent.Count > 0))
+            bvm.BinContent.Clear();
+            foreach (BinContent bc in bincontent)
             {
-                bvm.BinContent.Clear();
-                foreach (BinContent bc in bincontent)
-                {
-                    BinContentShortViewModel bcsvm = new BinContentShortViewModel(Navigation, bc);
-                    bvm.BinContent.Add(bcsvm);
-                }
+                BinContentShortViewModel bcsvm = new BinContentShortViewModel(Navigation, bc);
+                bvm.BinContent.Add(bcsvm);
             }
         }
 
         private void SetSelectedBinContent()
         {
-            List<BinViewModel> list = BinViewModels.FindAll(x => x.Selected == true);
+            List<BinViewModel> list = BinViewModels.FindAll(x => x.IsSelected == true);
             if (list is List<BinViewModel>)
             {
                 ObservableCollection<BinContentGrouping> nlist = new ObservableCollection<BinContentGrouping>();
@@ -1103,6 +1103,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
                 SelectedBinContent = nlist;
                 EditedBinCodeIsEnabled = list.Count == 1;
+                LoadImages(false);
             }
             else
             {
@@ -1110,6 +1111,44 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
+        public void LoadImages(bool update)
+        {
+            foreach (BinContentGrouping bcg in SelectedBinContent)
+            {
+                foreach (BinContentShortViewModel bcsvm in bcg)
+                {
+                    if (Settings.ShowImages)
+                    {
+                        if (!string.IsNullOrEmpty(bcsvm.ImageURL))
+                        {
+                            try
+                            {
+                                bcsvm.ImageSource = ImageSource.FromUri(new Uri(bcsvm.ImageURL));
+                                bcsvm.ImageIsVisible = true;
+                            }
+                            catch (Exception exp)
+                            {
+                                System.Diagnostics.Debug.WriteLine(exp.Message);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        bcsvm.ImageSource = null;
+                        bcsvm.ImageIsVisible = false;
+                    }
+                }
+            }
+            if (update)
+            {
+                ObservableCollection<BinContentGrouping> nlist = new ObservableCollection<BinContentGrouping>();
+                foreach (BinContentGrouping bcg in SelectedBinContent)
+                {
+                    nlist.Add(bcg);
+                }
+                SelectedBinContent = nlist;
+            }
+        }
 
         private void FillBinInfo(BinViewModel bvm, List<BinInfo> bininfo)
         {
@@ -1122,6 +1161,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
                 BinInfo = nlist;
 
+                //LoadImages
                 foreach (BinInfoViewModel bivm in BinInfo)
                 {
                     if (!string.IsNullOrEmpty(bivm.ImageURL))
@@ -1142,7 +1182,7 @@ namespace WarehouseControlSystem.ViewModel
 
         private BinViewModel GetFirstSelected()
         {
-            return BinViewModels.Find(x => x.Selected == true);
+            return BinViewModels.Find(x => x.IsSelected == true);
         }
 
         private bool FillTemplateIsEnabled = false;
@@ -1169,7 +1209,7 @@ namespace WarehouseControlSystem.ViewModel
         {
             if (FillTemplateIsEnabled)
             {
-                List<BinViewModel> selectedlist = BinViewModels.FindAll(x => x.Selected == true);
+                List<BinViewModel> selectedlist = BinViewModels.FindAll(x => x.IsSelected == true);
                 foreach (BinViewModel bvm in selectedlist)
                 {
                     bvm.Code = TemplateCode;

@@ -4,6 +4,7 @@ using System.Windows.Input;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using WarehouseControlSystem.Model;
 
 namespace WarehouseControlSystem.Helpers.Containers.HorizontalListView
 {
@@ -175,16 +176,9 @@ namespace WarehouseControlSystem.Helpers.Containers.HorizontalListView
 
             if (SelectedItemChanged is EventHandler)
             {
-                SelectedItemChanged(this, EventArgs.Empty);
+                SelectedItemChanged(SelectedItem, EventArgs.Empty);
             }
         }
 
-    }
-
-    public interface ISelectable
-    {
-        bool IsSelected { get; set; }
-
-        ICommand SelectCommand { get; set; }
     }
 }

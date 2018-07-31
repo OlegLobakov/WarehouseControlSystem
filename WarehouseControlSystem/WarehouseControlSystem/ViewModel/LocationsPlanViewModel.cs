@@ -193,7 +193,7 @@ namespace WarehouseControlSystem.ViewModel
             {
                 UnSelectAllOthers(tappedlvm);
 
-                if (tappedlvm.Selected)
+                if (tappedlvm.IsSelected)
                 {
                     switch (tappedlvm.EditMode)
                     {
@@ -203,7 +203,7 @@ namespace WarehouseControlSystem.ViewModel
                             tappedlvm.EditMode = SchemeElementEditMode.Resize;
                             break;
                         case SchemeElementEditMode.Resize:
-                            tappedlvm.Selected = false;
+                            tappedlvm.IsSelected = false;
                             tappedlvm.EditMode = SchemeElementEditMode.None;
                             break;
                         default:
@@ -212,7 +212,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
                 else
                 {
-                    tappedlvm.Selected = true;
+                    tappedlvm.IsSelected = true;
                     tappedlvm.EditMode = SchemeElementEditMode.Move;
                 }
              }
@@ -240,7 +240,7 @@ namespace WarehouseControlSystem.ViewModel
             {
                 if (lvm != tappedlvm)
                 {
-                    lvm.Selected = false;
+                    lvm.IsSelected = false;
                     lvm.EditMode = SchemeElementEditMode.None;
                 }
             }
@@ -249,7 +249,7 @@ namespace WarehouseControlSystem.ViewModel
         {
             foreach (LocationViewModel lvm in LocationViewModels)
             {
-                lvm.Selected = false;
+                lvm.IsSelected = false;
             }
         }
 
@@ -330,7 +330,7 @@ namespace WarehouseControlSystem.ViewModel
                 return;
             }
 
-            List<LocationViewModel> list = LocationViewModels.ToList().FindAll(x => x.Selected == true);
+            List<LocationViewModel> list = LocationViewModels.ToList().FindAll(x => x.IsSelected == true);
             foreach (LocationViewModel lvm in list)
             {
                 try

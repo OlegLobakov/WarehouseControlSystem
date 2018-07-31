@@ -2,8 +2,10 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vc="clr-namespace:WarehouseControlSystem.View.Pages.Racks.Card"
+             xmlns:hs="clr-namespace:WarehouseControlSystem.Helpers.Containers.HorizontalListView"
              x:Class="WarehouseControlSystem.View.Pages.Racks.Card.RackCardPage"
-             xmlns:i18n="clr-namespace:WarehouseControlSystem;assembly=WarehouseControlSystem">
+             xmlns:i18n="clr-namespace:WarehouseControlSystem;assembly=WarehouseControlSystem"
+             x:Name="ThisPage">
     <ContentPage.ToolbarItems>
         <ToolbarItem  Order="Primary" Priority="500" Text="{i18n:Translate RackCardPage_Toolbar_Search}" Clicked="ToolbarItem_Search">
             <ToolbarItem.Icon>
@@ -41,6 +43,18 @@
                 </OnPlatform>
             </ToolbarItem.Icon>
         </ToolbarItem>
+        <ToolbarItem  Order="Secondary" Priority="500" Text="{i18n:Translate RackCardPage_Toolbar_ImagesLock}" Clicked="ToolbarItem_Clicked_ShowHideImages">
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="UWP,WinPhone">
+                        <FileImageSource File="Assets/Images/ic_action_wallpaper.png"/>
+                    </On>
+                    <On Platform="iOS,Android">
+                        <FileImageSource File="ic_action_wallpaper.png"/>
+                    </On>
+                </OnPlatform>
+            </ToolbarItem.Icon>
+        </ToolbarItem>
         <ToolbarItem  Order="Secondary" Priority="1000" Text="{i18n:Translate RackCardPage_Toolbar_Change}">
             <ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
@@ -53,6 +67,7 @@
                 </OnPlatform>
             </ToolbarItem.Icon>
         </ToolbarItem>
+
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" x:Name="mainsl" SizeChanged="StackLayout_SizeChanged">
@@ -70,14 +85,36 @@
                     </Grid.RowDefinitions>
                     <Grid Grid.Row="0" BackgroundColor="{StaticResource PageHeaderBarBackgoundColor}" >
                         <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="2*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Label Grid.Column="0" Text="{Binding Comment}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                                HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10" TextColor="White"/>
-                        <Label Grid.Column="3" Text="{Binding SearchResult}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                        <ScrollView Grid.Column="1"  
+                                    Orientation="Horizontal" 
+                                    HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                            
+                            <hs:HorizontalListView  ItemsSource="{Binding LinkPlanRackViewModels, Source={x:Reference Name=ThisPage}}"
+                                                    
+                                                    SelectedItemChanged="RackList_SelectedItemChanged"
+                                                    HorizontalOptions="CenterAndExpand" VerticalOptions="FillAndExpand" Padding="2">
+                                <hs:HorizontalListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Label Text="{Binding No}" TextColor="Wheat" FontSize="Large" WidthRequest="100">
+                                            <Label.Triggers>
+                                                <DataTrigger Binding="{Binding IsSelected}" TargetType="Label" Value="true">
+                                                    <Setter Property="FontAttributes" Value="Bold"/>
+                                                    <Setter Property="TextColor" Value="White"/>
+                                                </DataTrigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                    </DataTemplate>
+                                </hs:HorizontalListView.ItemTemplate>
+                                
+                            </hs:HorizontalListView>
+                        </ScrollView>
+                        <Label Grid.Column="2" Text="{Binding SearchResult}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                                HorizontalTextAlignment="End" VerticalTextAlignment="Center" Margin="10" TextColor="White"/>
                     </Grid>
                     <Grid Grid.Row="1">
@@ -107,7 +144,7 @@
                     </Grid>
                 </Grid>
             </StackLayout>
-            
+
             <StackLayout IsVisible="{Binding IsErrorState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                 <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                     <Grid.RowDefinitions>

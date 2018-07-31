@@ -90,8 +90,11 @@ namespace WarehouseControlSystem.ViewModel
                 LoadingText = AppResources.FindPage_Search;
                 Global.SearchRequest = request;
                 Global.SearchResponses = await NAV.Search(Global.SearchLocationCode, request, ACD.Default);
-                LoadAnimation = true;
-                await Navigation.PopAsync();
+                if (NotDisposed)
+                {
+                    LoadAnimation = true;
+                    await Navigation.PopAsync();
+                }
             }
             catch (Exception e)
             {

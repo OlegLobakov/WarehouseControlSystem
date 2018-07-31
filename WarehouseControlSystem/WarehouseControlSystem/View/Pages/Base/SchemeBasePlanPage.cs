@@ -75,7 +75,7 @@ namespace WarehouseControlSystem.View.Pages.Base
             {
                 case GestureStatus.Started:
                     {
-                        SelectedViews = Views.FindAll(x => x.Model.Selected == true);
+                        SelectedViews = Views.FindAll(x => x.Model.IsSelected == true);
                         InitMovement();
                         x += oldeTotalX;
                         y += oldeTotalY;

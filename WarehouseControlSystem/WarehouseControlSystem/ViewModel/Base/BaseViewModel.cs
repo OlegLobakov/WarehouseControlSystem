@@ -117,18 +117,18 @@ namespace WarehouseControlSystem.ViewModel.Base
         }
         bool isnodatastate;
 
-        public bool Selected
+        public bool IsSelected
         {
-            get { return selected; }
+            get { return isselected; }
             set
             {
-                if (selected != value)
+                if (isselected != value)
                 {
-                    selected = value;
-                    OnPropertyChanged(nameof(Selected));
+                    isselected = value;
+                    OnPropertyChanged(nameof(IsSelected));
                 }
             }
-        } bool selected;
+        } bool isselected;
 
         public string LoadingText
         {

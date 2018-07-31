@@ -134,6 +134,13 @@ namespace WarehouseControlSystem
 
             set => AppSettings.AddOrUpdateValue(nameof(CurrentConnection), value);
         }
+
+        public static bool ShowImages
+        {
+            get => AppSettings.GetValueOrDefault(nameof(ShowImages), true);
+
+            set => AppSettings.AddOrUpdateValue(nameof(ShowImages), value);
+        }
     }
 
 

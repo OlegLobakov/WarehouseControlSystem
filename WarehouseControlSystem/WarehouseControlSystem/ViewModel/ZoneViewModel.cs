@@ -333,9 +333,12 @@ namespace WarehouseControlSystem.ViewModel
                 if ((LocationCode != "") && (Code != ""))
                 {
                     int exist = await NAV.GetZoneCount(LocationCode, Code, false, ACD.Default).ConfigureAwait(true);
-                    if (exist > 0)
+                    if (NotDisposed)
                     {
-                        CodeWarningText = AppResources.NewZonePage_CodeAlreadyExist;
+                        if (exist > 0)
+                        {
+                            CodeWarningText = AppResources.NewZonePage_CodeAlreadyExist;
+                        }
                     }
                 }
             }

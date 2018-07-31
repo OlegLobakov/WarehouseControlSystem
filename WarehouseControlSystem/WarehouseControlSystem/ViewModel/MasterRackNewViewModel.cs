@@ -211,32 +211,41 @@ namespace WarehouseControlSystem.ViewModel
         private async Task LoadBinTypesList()
         {
             List<BinType> bintypes = await NAV.GetBinTypeList(1, int.MaxValue, ACD.Default).ConfigureAwait(true);
-            NewModel.BinsViewModel.BinTypes.Clear();
-            foreach (BinType bt in bintypes)
+            if (NotDisposed)
             {
-                NewModel.BinsViewModel.BinTypes.Add(bt.Code);
+                NewModel.BinsViewModel.BinTypes.Clear();
+                foreach (BinType bt in bintypes)
+                {
+                    NewModel.BinsViewModel.BinTypes.Add(bt.Code);
+                }
+                NewModel.BinsViewModel.BinTypesIsEnabled = bintypes.Count > 0;
             }
-            NewModel.BinsViewModel.BinTypesIsEnabled = bintypes.Count > 0;
         }
         private async Task LoadWarehouseClassesList()
         {
             List<WarehouseClass> warehouseclasses = await NAV.GetWarehouseClassList(1, int.MaxValue, ACD.Default).ConfigureAwait(true);
-            NewModel.BinsViewModel.WarehouseClasses.Clear();
-            foreach (WarehouseClass wc in warehouseclasses)
+            if (NotDisposed)
             {
-                NewModel.BinsViewModel.WarehouseClasses.Add(wc.Code);
+                NewModel.BinsViewModel.WarehouseClasses.Clear();
+                foreach (WarehouseClass wc in warehouseclasses)
+                {
+                    NewModel.BinsViewModel.WarehouseClasses.Add(wc.Code);
+                }
+                NewModel.BinsViewModel.WarehouseClassesIsEnabled = warehouseclasses.Count > 0;
             }
-            NewModel.BinsViewModel.WarehouseClassesIsEnabled = warehouseclasses.Count > 0;
         }
         private async Task LoadSpecialEquipmentsList()
         {
             List<SpecialEquipment> specialequipments = await NAV.GetSpecialEquipmentList(1, int.MaxValue, ACD.Default).ConfigureAwait(true);
-            NewModel.BinsViewModel.SpecialEquipments.Clear();
-            foreach (SpecialEquipment se in specialequipments)
+            if (NotDisposed)
             {
-                NewModel.BinsViewModel.SpecialEquipments.Add(se.Code);
+                NewModel.BinsViewModel.SpecialEquipments.Clear();
+                foreach (SpecialEquipment se in specialequipments)
+                {
+                    NewModel.BinsViewModel.SpecialEquipments.Add(se.Code);
+                }
+                NewModel.BinsViewModel.SpecialEquipmentsIsEnabled = specialequipments.Count > 0;
             }
-            NewModel.BinsViewModel.SpecialEquipmentsIsEnabled = specialequipments.Count > 0;
         }
 
         public void ChangeBinTemplate(BinTemplate bt)
@@ -299,9 +308,12 @@ namespace WarehouseControlSystem.ViewModel
                 (NewModel.No != ""))
             {
                 int exist = await NAV.GetRackCount(NewModel.LocationCode, NewModel.ZoneCode, NewModel.No, false, ACD.Default).ConfigureAwait(true);
-                if (exist > 0)
+                if (NotDisposed)
                 {
-                    InfoText = AppResources.RackNewPage_CodeAlreadyExist;
+                    if (exist > 0)
+                    {
+                        InfoText = AppResources.RackNewPage_CodeAlreadyExist;
+                    }
                 }
             }
         }

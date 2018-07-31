@@ -1793,6 +1793,9 @@ namespace WarehouseControlSystem.Helpers.NAV
                 case "UnitofMeasureCode":
                     bincontent.UnitofMeasureCode = currentatribute.Value;
                     break;
+                case "ImageURL":
+                    bincontent.ImageURL = currentatribute.Value;
+                    break;
             }
         }
         #endregion

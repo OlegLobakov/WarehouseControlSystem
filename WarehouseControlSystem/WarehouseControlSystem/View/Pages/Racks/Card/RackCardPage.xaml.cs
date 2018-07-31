@@ -23,20 +23,36 @@ using System.Threading;
 using WarehouseControlSystem.View.Pages.Find;
 using WarehouseControlSystem.ViewModel.Base;
 using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 
 namespace WarehouseControlSystem.View.Pages.Racks.Card
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class RackCardPage : ContentPage
     {
-        private readonly RackViewModel model;
+        public ObservableCollection<RackViewModel> LinkPlanRackViewModels
+        {
+            get { return linkplanrackviewmodels; }
+            set
+            {
+                if (linkplanrackviewmodels != value)
+                {
+                    linkplanrackviewmodels = value;
+                    OnPropertyChanged(nameof(LinkPlanRackViewModels));
+                }
+            }
+        }  ObservableCollection<RackViewModel> linkplanrackviewmodels;
+
+        private RackViewModel model;
         private bool ScaleMode { get; set; }
 
-        public RackCardPage(RackViewModel rvm)
+        public RackCardPage(RackViewModel rvm, ObservableCollection<RackViewModel> rsvm)
         {
             model = rvm;
+            model.IsSelected = true;
             BindingContext = model;
             InitializeComponent();
+            LinkPlanRackViewModels = rsvm;
             ScaleMode = false;
             Title = AppResources.RackCardPage_Title + " " + model.No;
             MessagingCenter.Subscribe<BinsViewModel>(this, "BinsIsLoaded", BinsIsLoaded);
@@ -137,6 +153,27 @@ namespace WarehouseControlSystem.View.Pages.Racks.Card
         private void ToolbarItem_UnSelect(object sender, EventArgs e)
         {
             model.BinsViewModel.UnSelect();
+        }
+
+        private void ToolbarItem_Clicked_ShowHideImages(object sender, EventArgs e)
+        {
+            Settings.ShowImages = !Settings.ShowImages;
+            model.BinsViewModel.LoadImages(true);
+        }
+
+        private async void RackList_SelectedItemChanged(object sender, EventArgs e)
+        {
+            model.IsSelected = false;
+            RackViewModel rvm = (RackViewModel)sender;
+            model = rvm;
+            BindingContext = model;
+            model.IsSelected = true;
+            model.State = ModelState.Loading;
+            model.LoadingText = AppResources.RackCardPage_LoadingText;
+            Title = AppResources.RackCardPage_Title + " " + model.No;
+            await model.LoadBins();
+            await model.LoadUDF();
+            await model.LoadBinValues();
         }
     }
 }

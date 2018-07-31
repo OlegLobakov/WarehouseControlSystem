@@ -9,7 +9,7 @@
             </StackLayout.GestureRecognizers>
             
             <StackLayout.Triggers>
-                <DataTrigger Binding="{Binding Selected}" TargetType="StackLayout" Value="true">
+                <DataTrigger Binding="{Binding IsSelected}" TargetType="StackLayout" Value="true">
                     <Setter Property="Padding" Value="3"  />
                     <Setter Property="BackgroundColor" Value="Red"  />
                 </DataTrigger>

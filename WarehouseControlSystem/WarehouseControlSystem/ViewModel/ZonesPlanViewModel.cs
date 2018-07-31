@@ -87,10 +87,13 @@ namespace WarehouseControlSystem.ViewModel
             {
                 State = ModelState.Loading;
                 List<Zone> zones = await NAV.GetZoneList(Location.Code, "", true, 1, int.MaxValue, ACD.Default).ConfigureAwait(true);
-                CheckPlanSizes();
-                if (zones is List<Zone>)
+                if (NotDisposed)
                 {
-                    FillModel(zones);
+                    CheckPlanSizes();
+                    if (zones is List<Zone>)
+                    {
+                        FillModel(zones);
+                    }
                 }
             }
             catch (OperationCanceledException e)
@@ -175,11 +178,11 @@ namespace WarehouseControlSystem.ViewModel
                 {
                     if (zv != zvm)
                     {
-                        zv.Selected = false;
+                        zv.IsSelected = false;
                         zv.EditMode = SchemeElementEditMode.None;
                     }
                 }
-                if (zvm.Selected)
+                if (zvm.IsSelected)
                 {
                     switch (zvm.EditMode)
                     {
@@ -189,7 +192,7 @@ namespace WarehouseControlSystem.ViewModel
                             zvm.EditMode = SchemeElementEditMode.Resize;
                             break;
                         case SchemeElementEditMode.Resize:
-                            zvm.Selected = false;
+                            zvm.IsSelected = false;
                             zvm.EditMode = SchemeElementEditMode.None;
                             break;
                         default:
@@ -198,7 +201,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
                 else
                 {
-                    zvm.Selected = true;
+                    zvm.IsSelected = true;
                     zvm.EditMode = SchemeElementEditMode.Move;
                 }
             }
@@ -235,7 +238,7 @@ namespace WarehouseControlSystem.ViewModel
         {
             foreach (ZoneViewModel zvm in ZoneViewModels)
             {
-                zvm.Selected = false;
+                zvm.IsSelected = false;
             }
         }
 
@@ -331,7 +334,7 @@ namespace WarehouseControlSystem.ViewModel
                 return;
             }
 
-            List<ZoneViewModel> list = ZoneViewModels.ToList().FindAll(x => x.Selected == true);
+            List<ZoneViewModel> list = ZoneViewModels.ToList().FindAll(x => x.IsSelected == true);
             foreach (ZoneViewModel zvm in list)
             {
                 try

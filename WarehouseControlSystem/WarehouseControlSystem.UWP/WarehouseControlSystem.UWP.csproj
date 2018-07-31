@@ -140,6 +140,7 @@
     <Content Include="Assets\Images\ic_action_view_agenda.png" />
     <Content Include="Assets\Images\ic_action_view_module.png" />
     <Content Include="Assets\Images\ic_action_view_module_light.png" />
+    <Content Include="Assets\Images\ic_action_wallpaper.png" />
     <Content Include="Assets\Images\ic_action_widgets.png" />
     <Content Include="Assets\Images\ic_action_zoom_out_map.png" />
     <Content Include="Assets\Images\LogoWhite.png" />

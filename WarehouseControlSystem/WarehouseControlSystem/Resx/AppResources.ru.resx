@@ -1481,4 +1481,7 @@
   <data name="BinInfoPanelRackCard_BinInfo" xml:space="preserve">
     <value>Инфо</value>
   </data>
+  <data name="RackCardPage_Toolbar_ImagesLock" xml:space="preserve">
+    <value>Показать/Скрыть Изображения</value>
+  </data>
 </root>

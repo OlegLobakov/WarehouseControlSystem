@@ -25,7 +25,7 @@ using System.Threading.Tasks;
 
 namespace WarehouseControlSystem.ViewModel
 {
-    public class RackViewModel : NAVBaseViewModel
+    public class RackViewModel : NAVBaseViewModel, ISelectable
     {
         public int ID
         {
@@ -484,6 +484,8 @@ namespace WarehouseControlSystem.ViewModel
         } string searchresult;
 
         public ICommand TapCommand { protected set; get; }
+        public ICommand SelectCommand { set; get; }
+
         public event Action<RackViewModel> OnTap;
 
         public BinsViewModel BinsViewModel
@@ -718,7 +720,6 @@ namespace WarehouseControlSystem.ViewModel
             await BinsViewModel.LoadUDF(ACD).ConfigureAwait(true);
         }
 
-
         public async Task LoadBinValues()
         {
             try
@@ -778,7 +779,7 @@ namespace WarehouseControlSystem.ViewModel
         {
             try
             {
-                List<BinViewModel> list = BinsViewModel.BinViewModels.FindAll(x => x.Selected == true);
+                List<BinViewModel> list = BinsViewModel.BinViewModels.FindAll(x => x.IsSelected == true);
                 if (list is List<BinViewModel>)
                 {
                     State = ModelState.Loading;

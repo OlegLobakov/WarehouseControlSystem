@@ -19,7 +19,7 @@
                     <TapGestureRecognizer Command="{Binding TapCommand}"/>
                 </StackLayout.GestureRecognizers>
                 <StackLayout.Triggers>
-                    <DataTrigger Binding="{Binding Selected}" TargetType="StackLayout" Value="true">
+                    <DataTrigger Binding="{Binding IsSelected}" TargetType="StackLayout" Value="true">
                         <Setter Property="BackgroundColor" Value="Red"/>
                     </DataTrigger>
                 </StackLayout.Triggers>
@@ -70,11 +70,11 @@
                     <StackLayout Grid.Row="3" Orientation="Horizontal">
                         <Label Text="{Binding EditModeText}" TextColor="White" 
                            HorizontalOptions="Start" VerticalOptions="Center"  
-                           IsVisible="{Binding Selected}" Margin="10,0,0,0"/>
+                           IsVisible="{Binding IsSelected}" Margin="10,0,0,0"/>
                         <Image  x:Name="iconelement" 
                             HorizontalOptions="EndAndExpand" VerticalOptions="End" 
                             Aspect="AspectFit" 
-                            IsVisible="{Binding Selected}" Margin="5">
+                            IsVisible="{Binding IsSelected}" Margin="5">
                             <Image.Source>
                                 <OnPlatform x:TypeArguments="FileImageSource">
                                     <On Platform="UWP,WinPhone">
