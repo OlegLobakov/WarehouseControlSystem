@@ -1,26 +1,29 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="WarehouseControlSystem.View.Content.StepIntegerValueView">
+             x:Class="WarehouseControlSystem.View.Content.StepIntegerValueView"
+             x:Name="ThisView">
   <ContentView.Content>
-        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="{Binding StepBackgroundColor}" Padding="2">
-            <Grid BackgroundColor="White">
+        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="{Binding StepBackgroundColor}">
+            <Grid BackgroundColor="White" ColumnSpacing="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Button Grid.Column="0" Text="-" FontSize="Large" TextColor="Black"
-                        Clicked="Button_Clicked_Minus"
-                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
                 
-                <Entry Grid.Column="1" Text="{Binding Value, Mode=TwoWay}"  FontSize="Large"
+                <Button Grid.Column="0" Text="-" FontSize="Medium" FontAttributes="Bold" TextColor="Black"
+                        Clicked="Button_Clicked_Minus"
+                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BorderWidth="0"/>
+
+                <Entry Grid.Column="1" Text="{Binding Value, Mode=TwoWay, Source={x:Reference Name=ThisView}}"
+                       Keyboard="Numeric" FontSize="Medium" TextColor="Black"
                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                        HorizontalTextAlignment="Center"/>
-                
-                <Button Grid.Column="2" Text="+" FontSize="Large" TextColor="Black"
+
+                <Button Grid.Column="2" Text="+" FontSize="Medium" FontAttributes="Bold" TextColor="Black"
                         Clicked="Button_Clicked_Plus"
-                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
+                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BorderWidth="0"/>
             </Grid>
         </StackLayout>
   </ContentView.Content>

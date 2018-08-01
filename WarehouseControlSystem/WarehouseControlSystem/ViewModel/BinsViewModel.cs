@@ -793,7 +793,11 @@ namespace WarehouseControlSystem.ViewModel
         }
         public async Task LoadBins(AsyncCancelationDispatcher acd)
         {
-            BinViewModelsDispose();
+            if (BinViewModels.Count > 0)
+            {
+                return;
+            }
+
             try
             {
                 LoadedBinsQuantity = 0;
@@ -816,15 +820,15 @@ namespace WarehouseControlSystem.ViewModel
                             bvm.IsContent = !bin.Empty;
                             bvm.Color = (Color)Application.Current.Resources["BinViewColor"];
                             bvm.OnTap += Bvm_OnTap;
-
                             ExistInSearch(bvm);
                             ExistInUDS(bvm);
-
                             BinViewModels.Add(bvm);
                         }
                     }
+                    
                     MessagingCenter.Send<BinsViewModel>(this, "BinsIsLoaded");
                 }
+
             }
             catch (OperationCanceledException e)
             {
@@ -840,35 +844,31 @@ namespace WarehouseControlSystem.ViewModel
 
         public async Task LoadBinValues(AsyncCancelationDispatcher acd)
         {
-
-            foreach (BinViewModel bvm in BinViewModels)
+            try
             {
-                try
+                List<BinValues> binvalues = await NAV.GetBinValuesByRackID(RackID, acd.Default).ConfigureAwait(true);
+                if (NotDisposed)
                 {
-                    string locationcode = bvm.LocationCode;
-                    string bincode = bvm.Code;
-                    string valueright = await NAV.GetBinBottomRightValue(locationcode, bincode, acd.Default).ConfigureAwait(true);
-                    string valueleft = await NAV.GetBinBottomLeftValue(locationcode, bincode, acd.Default).ConfigureAwait(true);
-                    if (NotDisposed)
+                    foreach (BinValues bv in binvalues)
                     {
-                        bvm.BottomRightValue = valueright;
-                        bvm.BottomLeftValue = valueleft;
-                    }
-                    else
-                    {
-                        break;
+                        BinViewModel bvm = BinViewModels.Find(x => x.Code == bv.Code);
+                        if (bvm is BinViewModel)
+                        {
+                            bvm.BottomRightValue = bv.RightValue;
+                            bvm.BottomLeftValue = bv.LeftValue;
+                        }
                     }
                 }
-                catch (OperationCanceledException e)
-                {
-                    System.Diagnostics.Debug.WriteLine(e.Message);
-                    throw e;
-                }
-                catch (Exception e)
-                {
-                    System.Diagnostics.Debug.WriteLine(e.Message);
-                    throw e;
-                }
+            }
+            catch (OperationCanceledException e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.Message);
+                throw e;
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.Message);
+                throw e;
             }
         }
 
@@ -1243,6 +1243,7 @@ namespace WarehouseControlSystem.ViewModel
             {
                 bvm.DisposeModel();
             }
+            BinViewModels.Clear();
         }
 
         public override void DisposeModel()

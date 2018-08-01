@@ -28,13 +28,13 @@ namespace WarehouseControlSystem.View.Content
 
         private static void Changed(BindableObject bindable, object oldValue, object newValue)
         {
-            var instance = bindable as InnerSubSchemeView;
-            instance?.Update();
+            var instance = bindable as StepIntegerValueView;
+            //instance?.Update();
         }
 
-        public StepIntegerValueView ()
+        public StepIntegerValueView()
 		{
-			InitializeComponent ();
+			InitializeComponent();
 		}
 
         private void Button_Clicked_Minus(object sender, EventArgs e)

@@ -1484,4 +1484,7 @@
   <data name="RackCardPage_Toolbar_ImagesLock" xml:space="preserve">
     <value>Показать/Скрыть Изображения</value>
   </data>
+  <data name="RackEditPage_Title" xml:space="preserve">
+    <value>Изменение стеллажа</value>
+  </data>
 </root>

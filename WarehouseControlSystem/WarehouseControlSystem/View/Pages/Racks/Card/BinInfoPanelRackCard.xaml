@@ -4,7 +4,7 @@
              x:Class="WarehouseControlSystem.View.Pages.Racks.Card.BinInfoPanelRackCard"
              xmlns:i18n="clr-namespace:WarehouseControlSystem;assembly=WarehouseControlSystem">
     <ContentView.Content>
-        <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Padding="5" WidthRequest="350">
+        <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Padding="5,0,5,5" WidthRequest="350" RowSpacing="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
@@ -17,7 +17,7 @@
                 </Grid.ColumnDefinitions>
                 <Button Grid.Column="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
                         Text="{i18n:Translate BinInfoPanelRackCard_Content}" BackgroundColor="Transparent"
-                        Command="{Binding ContentViewCommand}" TextColor="Black">
+                        Command="{Binding ContentViewCommand}" TextColor="Black" BorderWidth="0">
                     <Button.Triggers>
                         <DataTrigger Binding="{Binding IsContentVisible}" TargetType="Button" Value="true">
                             <Setter Property="BackgroundColor" Value="{StaticResource PageHeaderBarBackgoundColor}"/>
@@ -28,7 +28,7 @@
 
                 <Button Grid.Column="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
                         Text="{i18n:Translate BinInfoPanelRackCard_BinInfo}" BackgroundColor="Transparent"
-                        Command="{Binding BinInfoViewCommand}" TextColor="Black">
+                        Command="{Binding BinInfoViewCommand}" TextColor="Black" BorderWidth="0" >
                     <Button.Triggers>
                         <DataTrigger Binding="{Binding IsBinInfoVisible}" TargetType="Button" Value="true">
                             <Setter Property="BackgroundColor" Value="{StaticResource PageHeaderBarBackgoundColor}"/>
@@ -39,7 +39,7 @@
 
                 <Button Grid.Column="2" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
                         Text="{i18n:Translate BinInfoPanelRackCard_Functions}" BackgroundColor="Transparent"
-                        Command="{Binding FunctionsViewCommand}" TextColor="Black">
+                        Command="{Binding FunctionsViewCommand}" TextColor="Black" BorderWidth="0">
                     <Button.Triggers>
                         <DataTrigger Binding="{Binding IsUserDefinedCommandsVisible}" TargetType="Button" Value="true">
                             <Setter Property="BackgroundColor" Value="{StaticResource PageHeaderBarBackgoundColor}"/>

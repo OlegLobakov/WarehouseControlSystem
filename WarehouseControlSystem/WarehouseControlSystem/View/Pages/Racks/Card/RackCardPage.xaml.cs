@@ -24,6 +24,7 @@ using WarehouseControlSystem.View.Pages.Find;
 using WarehouseControlSystem.ViewModel.Base;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
+using WarehouseControlSystem.View.Pages.Racks.Edit;
 
 namespace WarehouseControlSystem.View.Pages.Racks.Card
 {
@@ -68,6 +69,7 @@ namespace WarehouseControlSystem.View.Pages.Racks.Card
             await model.LoadBins();
             await model.LoadUDF();
             await model.LoadBinValues();
+            model.State = ModelState.Normal;
         }
 
         protected override bool OnBackButtonPressed()
@@ -163,17 +165,27 @@ namespace WarehouseControlSystem.View.Pages.Racks.Card
 
         private async void RackList_SelectedItemChanged(object sender, EventArgs e)
         {
-            model.IsSelected = false;
             RackViewModel rvm = (RackViewModel)sender;
-            model = rvm;
-            BindingContext = model;
-            model.IsSelected = true;
-            model.State = ModelState.Loading;
-            model.LoadingText = AppResources.RackCardPage_LoadingText;
-            Title = AppResources.RackCardPage_Title + " " + model.No;
-            await model.LoadBins();
-            await model.LoadUDF();
-            await model.LoadBinValues();
+            if (rvm != model)
+            {
+                RackViewModel lastrvm = model;
+                model.IsSelected = false;
+                model = rvm;
+                BindingContext = model;
+                lastrvm.BinsViewModel.BinViewModelsDispose();
+                model.IsSelected = true;
+                model.State = ModelState.Loading;
+                model.LoadingText = AppResources.RackCardPage_LoadingText;
+                Title = AppResources.RackCardPage_Title + " " + model.No;
+                await model.LoadBins();
+                await model.LoadUDF();
+                await model.LoadBinValues();
+            }
+        }
+
+        private async void ToolbarItem_RackEdit(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new RackEditPage(model));
         }
     }
 }

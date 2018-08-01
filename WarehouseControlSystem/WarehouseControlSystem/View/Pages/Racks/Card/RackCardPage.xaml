@@ -55,7 +55,7 @@
                 </OnPlatform>
             </ToolbarItem.Icon>
         </ToolbarItem>
-        <ToolbarItem  Order="Secondary" Priority="1000" Text="{i18n:Translate RackCardPage_Toolbar_Change}">
+        <ToolbarItem  Order="Secondary" Priority="1000" Text="{i18n:Translate RackCardPage_Toolbar_Change}" Clicked="ToolbarItem_RackEdit">
             <ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
                     <On Platform="UWP,WinPhone">
@@ -77,8 +77,8 @@
                     <Label Text="{Binding LoadingText}" FontSize="Small"/>
                 </StackLayout>
             </Grid>
-            <StackLayout IsVisible="{Binding IsNormalState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-                <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" x:Name="maingrid">
+            <StackLayout IsVisible="{Binding IsNormalState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Spacing="0">
+                <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" x:Name="maingrid" Padding="0" RowSpacing="0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
@@ -139,7 +139,7 @@
                                 <vc:RackView x:Name="rackview" VerticalOptions="FillAndExpand"/>
                             </ScrollView>
                         </Grid>
-                        <StackLayout  Grid.Column="1" BackgroundColor="Gray" Padding="3,0,0,0">
+                        <StackLayout  Grid.Column="1" BackgroundColor="Gray" Padding="3,0,0,0" Spacing="0">
                             <vc:BinInfoPanelRackCard BackgroundColor="White"
                                BindingContext="{Binding BinsViewModel}"                  
                                IsVisible="{Binding IsSelectedBins}"

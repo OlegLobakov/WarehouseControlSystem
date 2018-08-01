@@ -64,11 +64,20 @@
     <Compile Update="View\Pages\Locations\LocationCardPage.xaml.cs">
       <DependentUpon>LocationCardPage.xaml</DependentUpon>
     </Compile>
+    <Compile Update="View\Pages\Racks\Edit\BinInfoPanelRackEdit.xaml.cs">
+      <DependentUpon>BinInfoPanelRackEdit.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="View\Pages\Racks\Edit\BinInEditRackView.xaml.cs">
+      <DependentUpon>BinInEditRackView.xaml</DependentUpon>
+    </Compile>
     <Compile Update="View\Pages\Racks\Edit\RackEditPage.xaml.cs">
       <DependentUpon>RackEditPage.xaml</DependentUpon>
     </Compile>
     <Compile Update="View\Pages\Racks\Card\RackCardPage.xaml.cs">
       <DependentUpon>RackCardPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="View\Pages\Racks\Edit\RackEditView.xaml.cs">
+      <DependentUpon>RackEditView.xaml</DependentUpon>
     </Compile>
     <Compile Update="View\Pages\Racks\New\BinInNewRackView.xaml.cs">
       <DependentUpon>BinInNewRackView.xaml</DependentUpon>

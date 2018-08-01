@@ -1258,44 +1258,69 @@ namespace WarehouseControlSystem.Helpers.NAV
             }
         }
 
-        public static Task<string> GetBinBottomLeftValue(string locationcode, string bincode, CancellationTokenSource cts)
+        public static Task<List<BinValues>> GetBinValuesByRackID(int rackid, CancellationTokenSource cts)
         {
-            var tcs = new TaskCompletionSource<string>();
+            var tcs = new TaskCompletionSource<List<BinValues>>();
+
             if (IsConnectionFaild())
             {
-                tcs.SetResult("");
+                tcs.SetResult(null);
                 return tcs.Task;
             }
 
             XNamespace myns = GetNameSpace();
-            string functionname = "GetBinBottomLeftValue";
+            string functionname = "GetBinValuesByRackID";
             XElement body =
                 new XElement(myns + functionname,
-                new XElement(myns + "locationCode", locationcode),
-                new XElement(myns + "binCode", bincode));
+                    new XElement(myns + "iD", rackid),
+                    new XElement(myns + "responseDocument", ""));
             SoapParams sp = new SoapParams(functionname, body, myns);
-            Task.Run(() => GetStringFromNAV(tcs, sp, cts));
+            Task.Run(() => GetBinValuesByRackIDNAV(tcs, sp, cts));
             return tcs.Task;
         }
-        public static Task<string> GetBinBottomRightValue(string locationcode, string bincode, CancellationTokenSource cts)
+        private static async Task GetBinValuesByRackIDNAV(TaskCompletionSource<List<BinValues>> tcs, SoapParams sp, CancellationTokenSource cts)
         {
-            var tcs = new TaskCompletionSource<string>();
-            if (IsConnectionFaild())
+            try
             {
-                tcs.SetResult("");
-                return tcs.Task;
+                XElement soapbodynode = await Process(sp, false, cts).ConfigureAwait(false);
+                string response = soapbodynode.Value;
+                XDocument document = GetDoc(response);
+                List<BinValues> rv = new List<BinValues>();
+                foreach (XElement currentnode in document.Root.Elements())
+                {
+                    BinValues bv = GetBinValuesFromXML(currentnode);
+                    bv.Code = currentnode.Value;
+                    rv.Add(bv);
+                }
+                tcs.SetResult(rv);
             }
-
-            XNamespace myns = GetNameSpace();
-            string functionname = "GetBinBottomRightValue";
-            XElement body =
-                new XElement(myns + functionname,
-                new XElement(myns + "locationCode", locationcode),
-                new XElement(myns + "binCode", bincode));
-            SoapParams sp = new SoapParams(functionname, body, myns);
-            Task.Run(() => GetStringFromNAV(tcs, sp, cts));
-            return tcs.Task;
+            catch (Exception e)
+            {
+                tcs.SetException(e);
+            }
         }
+        private static BinValues GetBinValuesFromXML(XElement currentnode)
+        {
+            BinValues bv = new BinValues();
+            foreach (XAttribute currentatribute in currentnode.Attributes())
+            {
+                switch (currentatribute.Name.LocalName)
+                {
+                    case "Right":
+                        {
+                            bv.RightValue = currentatribute.Value;
+                            break;
+                        }
+                    case "Left":
+                        {
+                            bv.LeftValue = currentatribute.Value;
+                            break;
+                        }
+                }
+            }
+            return bv;
+        }
+
         public static Task<List<BinInfo>> GetBinInfo(string locationcode, string bincode, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<List<BinInfo>>();

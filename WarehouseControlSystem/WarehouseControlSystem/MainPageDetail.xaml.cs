@@ -45,7 +45,7 @@ namespace WarehouseControlSystem
             if (Device.Idiom == TargetIdiom.Phone)
             {
                 IsDevicePhone = true;
-            }
+            } 
         }
 
         private async Task LocationsTaped()

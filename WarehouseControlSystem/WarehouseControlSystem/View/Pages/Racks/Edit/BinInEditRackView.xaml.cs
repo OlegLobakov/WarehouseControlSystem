@@ -21,13 +21,13 @@ using Xamarin.Forms.Xaml;
 using WarehouseControlSystem.Model;
 using WarehouseControlSystem.ViewModel;
 
-namespace WarehouseControlSystem.View.Pages.Racks.New
+namespace WarehouseControlSystem.View.Pages.Racks.Edit
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class BinInNewRackView : ContentView
+    public partial class BinInEditRackView : ContentView
     {
         public BinViewModel Model { get; set; }
-        public BinInNewRackView(BinViewModel bvm)
+        public BinInEditRackView(BinViewModel bvm)
         {
             Model = bvm;
             BindingContext = Model;

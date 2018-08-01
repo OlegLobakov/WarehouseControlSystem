@@ -31,32 +31,32 @@ namespace WarehouseControlSystem.View.Pages.Racks.Edit
             model = rvm;
             BindingContext = model;
             InitializeComponent();
-            
-            Title = AppResources.RackNewPage_Title;
+
+            Title = AppResources.RackEditPage_Title + " " + rvm.No;
 
             //infopanel.BindingContext = model.BinsViewModel;
             //locationpicker.ItemsSource = model.Locations;
             //zonepicker.ItemsSource = model.Zones;
-            //orientationpicker.ItemsSource = Global.OrientationList;
+            orientationpicker.ItemsSource = Global.OrientationList;
+            orientationpicker.SelectedItem = Global.OrientationList.Find(x => x.RackOrientation == rvm.RackOrientation);
             //bintemplatepicker.ItemsSource = model.BinTemplates;
 
             MessagingCenter.Subscribe<RackViewModel>(this, "ZonesIsLoaded", ZonesIsLoaded);
             MessagingCenter.Subscribe<RackViewModel>(this, "LocationsIsLoaded", LocationsIsLoaded);
         }
 
-        protected override async void OnAppearing()
+        protected override void OnAppearing()
         {
             base.OnAppearing();
-           /// rackview.Update(model);
             model.State = ViewModel.Base.ModelState.Normal;
-            //await model.Load();
+            //model.FillEmptyFields();
+            rackview.Update(model);
         }
       
         protected override bool OnBackButtonPressed()
         {
             MessagingCenter.Unsubscribe<RackViewModel>(this, "ZonesIsLoaded");
             MessagingCenter.Unsubscribe<RackViewModel>(this, "LocationsIsLoaded");
-            model.DisposeModel();
             base.OnBackButtonPressed();
             return false;
         }
@@ -97,59 +97,39 @@ namespace WarehouseControlSystem.View.Pages.Racks.Edit
             //}
         }
 
-        private async void CodeEntryChanged(object sender, TextChangedEventArgs e)
-        {
-            //Entry entry = (Entry)sender;
-            //if (entry.Text is string)
-            //{
-            //    entry.Text = entry.Text.ToUpper();
-            //}
-            //await model.CheckNo();
-        }
-
         private void ToolbarItem_Clicked(object sender, EventArgs e)
         {
 
         }
 
-        private void Picker_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            //var picker = (Picker)sender;
-            //int selectedIndex = picker.SelectedIndex;
-            //if (selectedIndex != -1)
-            //{
-            //    RackOrientationPick rop = (RackOrientationPick)picker.SelectedItem;
-            //    model.RackOrientation = rop.RackOrientation;
-            //}
-        }
-        
-
-        private async void PickerLocation(object sender, EventArgs e)
+        private void RackOrientationPickerChanged(object sender, EventArgs e)
         {
             var picker = (Picker)sender;
             int selectedIndex = picker.SelectedIndex;
-            //await model.SetLocation((Location)picker.SelectedItem);
+            if (selectedIndex != -1)
+            {
+                RackOrientationPick rop = (RackOrientationPick)picker.SelectedItem;
+                model.RackOrientation = rop.RackOrientation;
+            }
         }
 
-        private async void PickerZone(object sender, EventArgs e)
+        private void CommentChanged(object sender, TextChangedEventArgs e)
         {
-            var picker = (Picker)sender;
-            //await model.SetZone((Zone)picker.SelectedItem);
+
         }
 
-        private void Slider_SectionsValueChanged(object sender, ValueChangedEventArgs e)
-        {
-            sectionlabel.Text = AppResources.RackNewPage_Sections + " " +model.Sections.ToString();
-        }
 
-        private void Slider_LevelsValueChanged(object sender, ValueChangedEventArgs e)
-        {
-            levelslabel.Text = AppResources.RackNewPage_Levels + " " + model.Levels.ToString();
-        }
+        //private async void PickerLocation(object sender, EventArgs e)
+        //{
+        //    var picker = (Picker)sender;
+        //    int selectedIndex = picker.SelectedIndex;
+        //    //await model.SetLocation((Location)picker.SelectedItem);
+        //}
 
-        private void Slider_DepthValueChanged(object sender, ValueChangedEventArgs e)
-        {
-            depthlabel.Text = AppResources.RackNewPage_Depth + " " + model.Depth.ToString();
-        }
+        //private async void PickerZone(object sender, EventArgs e)
+        //{
+        //    var picker = (Picker)sender;
+        //    //await model.SetZone((Zone)picker.SelectedItem);
+        //}
     }
 }

@@ -29,20 +29,31 @@ namespace WarehouseControlSystem.View.Content
 
         public ICommand TapCommand { get; }
 
-        public static readonly BindableProperty ImageProperty = BindableProperty.Create("Image", typeof(FileImageSource), typeof(WellcomeBlock), null);
-
-        public FileImageSource Image
+        public static readonly BindableProperty FileImageSourceProperty = BindableProperty.Create(nameof(FileImageSource), typeof(FileImageSource), typeof(WellcomeBlock), null, BindingMode.Default, null, ImageChanged);
+        public FileImageSource FileImageSource
         {
-            get { return (FileImageSource)GetValue(ImageProperty); }
-            set { SetValue(ImageProperty, value); }
+            get { return (FileImageSource)GetValue(FileImageSourceProperty); }
+            set { SetValue(FileImageSourceProperty, value); }
         }
 
-        public static readonly BindableProperty NameProperty = BindableProperty.Create("Name", typeof(string), typeof(WellcomeBlock), null);
-
-        public string Name
+        private static void ImageChanged(BindableObject bindable, object oldValue, object newValue)
         {
-            get { return (string)GetValue(NameProperty); }
-            set { SetValue(NameProperty, value); }
+            //var instance = bindable as WellcomeBlock;
+            //instance?.Update();
+        }
+
+        public static readonly BindableProperty FileImagePathProperty = BindableProperty.Create("FileImagePath", typeof(string), typeof(WellcomeBlock), "");
+        public string FileImagePath
+        {
+            get { return (string)GetValue(FileImagePathProperty); }
+            set { SetValue(FileImagePathProperty, value); }
+        }
+
+        public static readonly BindableProperty LabelProperty = BindableProperty.Create("Label", typeof(string), typeof(WellcomeBlock), "");
+        public string Label
+        {
+            get { return (string)GetValue(LabelProperty); }
+            set { SetValue(LabelProperty, value); }
         }
 
         public WellcomeBlock()

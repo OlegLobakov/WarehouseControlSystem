@@ -589,6 +589,7 @@ namespace WarehouseControlSystem.ViewModel
 
         public override void DisposeModel()
         {
+            base.DisposeModel();
             if (OnTap is Action<BinViewModel>)
             {
                 Delegate[] clientList = OnTap.GetInvocationList();
@@ -597,8 +598,6 @@ namespace WarehouseControlSystem.ViewModel
                     OnTap -= (d as Action<BinViewModel>);
                 }
             }
-
-            base.DisposeModel();
         }
     }
 }

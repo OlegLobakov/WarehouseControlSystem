@@ -3,9 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WarehouseControlSystem.View.Content.WellcomeBlock">
     <ContentView.Content>
-        <Label Text="{Binding Name}" FontSize="Large" 
-            HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" 
-            HorizontalTextAlignment="Center" VerticalTextAlignment="Center" 
-            TextColor="White"/>
+        <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Orientation="Horizontal">
+            <Image Source="{Binding FileImagePath}" Margin="10" Aspect="AspectFit"></Image>
+            <Label Text="{Binding Label}" FontSize="Large" 
+                HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" 
+                HorizontalTextAlignment="Center" VerticalTextAlignment="Center" 
+                TextColor="White"/>
+        </StackLayout>
     </ContentView.Content>
 </ContentView>

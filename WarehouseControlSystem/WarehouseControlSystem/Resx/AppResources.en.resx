@@ -1488,4 +1488,7 @@
   <data name="RackCardPage_Toolbar_ImagesLock" xml:space="preserve">
     <value>Show/Hide Images</value>
   </data>
+  <data name="RackEditPage_Title" xml:space="preserve">
+    <value>Edit</value>
+  </data>
 </root>

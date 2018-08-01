@@ -20,19 +20,26 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <vc:WellcomeBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"  Grid.RowSpan="3" 
-                         Name="{i18n:Translate WellcomePage_Locations}" 
+                         Label="{i18n:Translate WellcomePage_Locations}" 
                          BackgroundColor="{StaticResource WellcodeButtonBackgoundColor}" 
-                         Taped="LocationsTaped"/>
+                         Taped="LocationsTaped">
+                    <vc:WellcomeBlock.FileImagePath>
+                        <OnPlatform x:TypeArguments="x:String">
+                            <On Platform="iOS,Android">ic_action_add_circle.png</On>
+                            <On Platform="UWP,Windows">Assets/Images/ic_action_add_circle.png</On>
+                        </OnPlatform>
+                    </vc:WellcomeBlock.FileImagePath>
+                </vc:WellcomeBlock>
                 <vc:WellcomeBlock Grid.Row="0" Grid.Column="2" 
-                         Name="{i18n:Translate WellcomePage_About}" 
+                         Label="{i18n:Translate WellcomePage_About}" 
                          BackgroundColor="{StaticResource WellcodeButtonBackgoundColor}"
                          Taped="AboutTaped"/>
                 <vc:WellcomeBlock Grid.Row="1" Grid.Column="2" 
-                         Name="{i18n:Translate WellcomePage_Connections}" 
+                         Label="{i18n:Translate WellcomePage_Connections}" 
                          BackgroundColor="{StaticResource WellcodeButtonBackgoundColor}"
                          Taped="ConnectionsTaped"/>
                 <vc:WellcomeBlock Grid.Row="2" Grid.Column="2" 
-                         Name="{i18n:Translate WellcomePage_Options}" 
+                         Label="{i18n:Translate WellcomePage_Options}" 
                          BackgroundColor="{StaticResource WellcodeButtonBackgoundColor}"
                          Taped="OptionsTaped"/>
             </Grid>
@@ -57,19 +64,26 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <vc:WellcomeBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"  Grid.RowSpan="3" 
-                         Name="{i18n:Translate WellcomePage_Locations}" 
+                         Label="{i18n:Translate WellcomePage_Locations}" 
                          BackgroundColor="{StaticResource WellcodeButtonBackgoundColor}" 
-                         Taped="LocationsTaped"/>
+                         Taped="LocationsTaped">
+                    <vc:WellcomeBlock.FileImagePath>
+                        <OnPlatform x:TypeArguments="x:String">
+                            <On Platform="iOS,Android">LogoWhite.png</On>
+                            <On Platform="UWP,Windows">Assets/Images/LogoWhite.png</On>
+                        </OnPlatform>
+                    </vc:WellcomeBlock.FileImagePath>
+                </vc:WellcomeBlock>
                 <vc:WellcomeBlock Grid.Row="1" Grid.Column="3" 
-                         Name="{i18n:Translate WellcomePage_About}" 
+                         Label="{i18n:Translate WellcomePage_About}" 
                          BackgroundColor="{StaticResource WellcodeButtonBackgoundColor}"
                          Taped="AboutTaped"/>
                 <vc:WellcomeBlock Grid.Row="2" Grid.Column="3" 
-                         Name="{i18n:Translate WellcomePage_Connections}" 
+                         Label="{i18n:Translate WellcomePage_Connections}" 
                          BackgroundColor="{StaticResource WellcodeButtonBackgoundColor}"
                          Taped="ConnectionsTaped"/>
                 <vc:WellcomeBlock Grid.Row="3" Grid.Column="3" 
-                         Name="{i18n:Translate WellcomePage_Options}" 
+                         Label="{i18n:Translate WellcomePage_Options}" 
                          BackgroundColor="{StaticResource WellcodeButtonBackgoundColor}"
                          Taped="OptionsTaped"/>
             </Grid>
