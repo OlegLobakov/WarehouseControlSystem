@@ -24,51 +24,96 @@ namespace WarehouseControlSystem
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MainPageDetail : ContentPage
     {
-        public bool IsDevicePhone
+        public int BlockSize
         {
-            get { return isdevicephone; }
+            get { return blocksize; }
             set
             {
-                if (isdevicephone != value)
+                if (blocksize != value)
                 {
-                    isdevicephone = value;
-                    OnPropertyChanged(nameof(IsDevicePhone));
+                    blocksize = value;
+                    OnPropertyChanged(nameof(BlockSize));
                 }
             }
         }
-        bool isdevicephone;
+        int blocksize;
+
+        public int HSCWidth
+        {
+            get { return hscwidth; }
+            set
+            {
+                if (hscwidth != value)
+                {
+                    hscwidth = value;
+                    OnPropertyChanged(nameof(HSCWidth));
+                }
+            }
+        }
+        int hscwidth;
+
+        public double LargeFontSize
+        {
+            get { return largefontsize; }
+            set
+            {
+                if (largefontsize != value)
+                {
+                    largefontsize = value;
+                    OnPropertyChanged(nameof(LargeFontSize));
+                }
+            }
+        }
+        double largefontsize;
+
+        public double SmallFontSize
+        {
+            get { return smallfontsize; }
+            set
+            {
+                if (smallfontsize != value)
+                {
+                    smallfontsize = value;
+                    OnPropertyChanged(nameof(SmallFontSize));
+                }
+            }
+        }
+        double smallfontsize;
+
+        ConnectionsViewModel model;
 
         public MainPageDetail()
         {
+            model = new ConnectionsViewModel(Navigation);
+            BindingContext = model;
             InitializeComponent();
-            BindingContext = this;
-            if (Device.Idiom == TargetIdiom.Phone)
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            hlv.SelectedItem = null;
+        }
+
+        private async void HorizontalListView_SelectedItemChanged(object sender, System.EventArgs e)
+        {
+            if (sender is ConnectionViewModel)
             {
-                IsDevicePhone = true;
-            } 
+                ConnectionViewModel selected = (ConnectionViewModel)sender;
+                model.Select(selected);
+                LocationsPlanViewModel lpvm = new LocationsPlanViewModel(Navigation);
+                LocationsSchemePage lsp = new LocationsSchemePage(lpvm);
+                await Navigation.PushAsync(lsp);
+            }
         }
 
-        private async Task LocationsTaped()
+        private void StackLayout_SizeChanged(object sender, System.EventArgs e)
         {
-            LocationsPlanViewModel lpvm = new LocationsPlanViewModel(Navigation);
-            LocationsSchemePage lsp = new LocationsSchemePage(lpvm);
-            await Navigation.PushAsync(lsp);
-        }
-
-        private async Task AboutTaped()
-        {
-            await Navigation.PushAsync(new AboutPage());
-        }
-
-        private async Task ConnectionsTaped()
-        {
-            ConnectionsPage cp = new ConnectionsPage();
-            await Navigation.PushAsync(cp);
-        }
-
-        private async Task OptionsTaped()
-        {
-            await Navigation.PushAsync(new ParametersPage());
+            StackLayout sl = (StackLayout)sender;
+            BlockSize = (int)sl.Height;
+            HSCWidth = model.ConnectionViewModels.Count * BlockSize;
+            LargeFontSize = sl.Width / 40;
+            SmallFontSize = sl.Width / 70;
         }
     }
 }

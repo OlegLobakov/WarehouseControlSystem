@@ -22,10 +22,11 @@ using WarehouseControlSystem.View.Pages.Connections;
 using WarehouseControlSystem.Resx;
 using WarehouseControlSystem.ViewModel.Base;
 using System.Windows.Input;
+using WarehouseControlSystem.Model;
 
 namespace WarehouseControlSystem.ViewModel
 {
-    public class ConnectionViewModel : BaseViewModel
+    public class ConnectionViewModel : BaseViewModel, ISelectable
     {
         public Connection Connection { get; set; }
 
@@ -215,6 +216,7 @@ namespace WarehouseControlSystem.ViewModel
         }  string codeunit;
 
         public ICommand TestConnectionCommand { protected set; get; }
+        public ICommand SelectCommand { set; get; }
 
         public ConnectionViewModel(INavigation navigation, Connection connection) : base(navigation)
         {
