@@ -56,8 +56,6 @@ namespace WarehouseControlSystem.View.Pages.Racks.Card
             LinkPlanRackViewModels = rsvm;
             ScaleMode = false;
             Title = AppResources.RackCardPage_Title + " " + model.No;
-            MessagingCenter.Subscribe<BinsViewModel>(this, "BinsIsLoaded", BinsIsLoaded);
-            MessagingCenter.Subscribe<BinViewModel>(this, "BinsViewModel.BinSelected", BinSelected);
         }
 
         protected override async void OnAppearing()
@@ -65,17 +63,25 @@ namespace WarehouseControlSystem.View.Pages.Racks.Card
             base.OnAppearing();
             
             model.State = ModelState.Loading;
-            model.LoadingText = AppResources.RackCardPage_LoadingText;           
+            model.LoadingText = AppResources.RackCardPage_LoadingText;
+            MessagingCenter.Subscribe<BinsViewModel>(this, "BinsIsLoaded", BinsIsLoaded);
+            MessagingCenter.Subscribe<BinViewModel>(this, "BinsViewModel.BinSelected", BinSelected);
+
             await model.LoadBins();
             await model.LoadUDF();
             await model.LoadBinValues();
             model.State = ModelState.Normal;
         }
 
-        protected override bool OnBackButtonPressed()
+        protected override void OnDisappearing()
         {
             MessagingCenter.Unsubscribe<BinsViewModel>(this, "BinsIsLoaded");
             MessagingCenter.Unsubscribe<BinViewModel>(this, "BinsViewModel.BinSelected");
+            base.OnDisappearing();
+        }
+
+        protected override bool OnBackButtonPressed()
+        {
             model.DisposeModel();
             base.OnBackButtonPressed();
             return false;
@@ -185,6 +191,8 @@ namespace WarehouseControlSystem.View.Pages.Racks.Card
 
         private async void ToolbarItem_RackEdit(object sender, EventArgs e)
         {
+            model.IsEditMode = true;
+            model.BinsViewModel.IsEditMode = true;
             await Navigation.PushAsync(new RackEditPage(model));
         }
     }

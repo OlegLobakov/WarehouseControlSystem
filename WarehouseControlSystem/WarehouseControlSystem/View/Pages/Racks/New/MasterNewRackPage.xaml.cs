@@ -25,9 +25,7 @@ namespace WarehouseControlSystem.View.Pages.Racks.New
             infopanel.BindingContext = model.NewModel.BinsViewModel;
             Title = AppResources.RackNewPage_Title;
             orientationpicker.ItemsSource = Global.OrientationList;
-            MessagingCenter.Subscribe<MasterRackNewViewModel>(this, "BinTemplatesIsLoaded", BinTemplatesIsLoaded);
-            MessagingCenter.Subscribe<MasterRackNewViewModel>(this, "UpdateRackView", UpdateRackView);
-            MessagingCenter.Subscribe<BinsViewModel>(this, "Update", UpdateBinsViewModel);
+
         }
 
         protected override async void OnAppearing()
@@ -35,14 +33,22 @@ namespace WarehouseControlSystem.View.Pages.Racks.New
             base.OnAppearing();
             model.State = ViewModel.Base.ModelState.Normal;
             model.MasterStep = 1;
+            MessagingCenter.Subscribe<MasterRackNewViewModel>(this, "BinTemplatesIsLoaded", BinTemplatesIsLoaded);
+            MessagingCenter.Subscribe<MasterRackNewViewModel>(this, "UpdateRackView", UpdateRackView);
+            MessagingCenter.Subscribe<BinsViewModel>(this, "Update", UpdateBinsViewModel);
             await model.Load();
         }
 
-        protected override bool OnBackButtonPressed()
+        protected override void OnDisappearing()
         {
             MessagingCenter.Unsubscribe<MasterRackNewViewModel>(this, "BinTemplatesIsLoaded");
             MessagingCenter.Unsubscribe<MasterRackNewViewModel>(this, "UpdateRackView");
             MessagingCenter.Unsubscribe<BinsViewModel>(this, "Update");
+            base.OnDisappearing();
+        }
+
+        protected override bool OnBackButtonPressed()
+        {
             model.DisposeModel();
             base.OnBackButtonPressed();
             return false;
@@ -65,7 +71,7 @@ namespace WarehouseControlSystem.View.Pages.Racks.New
 
         private void UpdateBinsViewModel(BinsViewModel bvm)
         {
-            model.NewModel.NumberingEmptyBins();
+            model.NewModel.NumberingUnNamedBins();
             rackview.Update(model.NewModel);
         }
 

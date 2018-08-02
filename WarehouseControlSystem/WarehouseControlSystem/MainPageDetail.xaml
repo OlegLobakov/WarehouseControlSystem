@@ -37,7 +37,7 @@
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
-                                    <Image Grid.Row="0" Margin="10" Aspect="AspectFit">
+                                    <Image Grid.Row="0" Margin="20" Aspect="AspectFit">
                                         <Image.Source>
                                             <OnPlatform x:TypeArguments="FileImageSource">
                                                 <On Platform="UWP,WinPhone">

@@ -27,11 +27,21 @@ namespace WarehouseControlSystem.View.Pages.Racks.Edit
     public partial class BinInEditRackView : ContentView
     {
         public BinViewModel Model { get; set; }
+        public int Section { get; set; }
+        public int Level { get; set; }
+        public bool Marked { get; set; }
+
         public BinInEditRackView(BinViewModel bvm)
         {
             Model = bvm;
             BindingContext = Model;
             InitializeComponent();
+        }
+
+        public void Update(BinViewModel bvm)
+        {
+            Model = bvm;
+            BindingContext = Model;
         }
     }
 }

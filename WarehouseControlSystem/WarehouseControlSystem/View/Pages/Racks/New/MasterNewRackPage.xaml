@@ -168,12 +168,12 @@
                             <ScrollView  Grid.Row="2" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Orientation="Horizontal" Margin="5">
                                 <Grid Padding="5" RowSpacing="0" ColumnSpacing="20">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="200"/>
-                                        <ColumnDefinition Width="200"/>
-                                        <ColumnDefinition Width="200"/>
-                                        <ColumnDefinition Width="200"/>
-                                        <ColumnDefinition Width="200"/>
-                                        <ColumnDefinition Width="200"/>
+                                        <ColumnDefinition Width="250"/>
+                                        <ColumnDefinition Width="250"/>
+                                        <ColumnDefinition Width="250"/>
+                                        <ColumnDefinition Width="250"/>
+                                        <ColumnDefinition Width="250"/>
+                                        <ColumnDefinition Width="250"/>
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="*"/>
@@ -192,7 +192,7 @@
                                                 Text="{i18n:Translate RackNewPage_ConflictBins}"/>
                                     <Switch Grid.Column="0" Grid.Row="3"
                                             HorizontalOptions="Start" VerticalOptions="Center" 
-                                            IsToggled="{Binding ConflictBinChange, Mode=TwoWay}"></Switch>
+                                            IsToggled="{Binding CreateNewBins, Mode=TwoWay}"></Switch>
 
 
                                     <Label Grid.Column="1" Grid.Row="0" Text="{i18n:Translate RackNewPage_Numeration}"/>
@@ -218,6 +218,7 @@
                                     <Label Grid.Column="2" Grid.Row="0" 
                                            HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
                                            Text="{i18n:Translate RackNewPage_PrefixNumbering}"/>
+                                    
                                     <Entry Grid.Column="2" Grid.Row="1" 
                                            Text="{Binding NumberingPrefix, Mode=TwoWay}" 
                                            BindingContext="{Binding NewModel}"
@@ -320,18 +321,19 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <Button Grid.Column="0" 
-                                HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
-                                Text="{i18n:Translate MasterNewRack_BackButton}"  
-                                TextColor="White" FontAttributes="Bold" FontSize="Medium"
-                                BackgroundColor="{StaticResource PageHeaderBarBackgoundColor}"
-                                Command="{Binding Step1Command}"></Button>
+                                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                        Text="{i18n:Translate MasterNewRack_BackButton}"  
+                                        TextColor="White" FontAttributes="Bold" FontSize="Medium"
+                                        BackgroundColor="{StaticResource PageHeaderBarBackgoundColor}"
+                                        Command="{Binding Step1Command}">
+                                </Button>
 
                                 <Button Grid.Column="6"  
-                                HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
-                                Text="{i18n:Translate MasterNewRack_CreateButton}"  
-                                TextColor="White" FontAttributes="Bold" FontSize="Medium"
-                                BackgroundColor="DarkRed"
-                                Command="{Binding Step3Command}">
+                                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                        Text="{i18n:Translate MasterNewRack_CreateButton}"  
+                                        TextColor="White" FontAttributes="Bold" FontSize="Medium"
+                                        BackgroundColor="DarkRed"
+                                        Command="{Binding Step3Command}">
                                 </Button>
                             </Grid>
                         </Grid>

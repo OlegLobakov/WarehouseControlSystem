@@ -12,6 +12,8 @@ namespace WarehouseControlSystem.View.Content
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class StepIntegerValueView : ContentView
 	{
+        public event Action ValueChanges;
+
         public static readonly BindableProperty StepBackgroundColorProperty = BindableProperty.Create(nameof(StepBackgroundColor), typeof(Color), typeof(StepIntegerValueView), Color.White, BindingMode.Default, null, Changed);
         public Color StepBackgroundColor
         {
@@ -29,7 +31,15 @@ namespace WarehouseControlSystem.View.Content
         private static void Changed(BindableObject bindable, object oldValue, object newValue)
         {
             var instance = bindable as StepIntegerValueView;
-            //instance?.Update();
+            instance?.RaiseEvents();
+        }
+
+        private void RaiseEvents()
+        {
+            if (ValueChanges is Action)
+            {
+                ValueChanges();
+            }
         }
 
         public StepIntegerValueView()

@@ -432,7 +432,9 @@ namespace WarehouseControlSystem.ViewModel
                             ZoneCodeFilter = rvm.ZoneCode,
                             RackIDFilter = rvm.ID.ToString()
                         };
+
                         List<Bin> binsinrack = await NAV.GetBinList(navfilter, ACD.Default).ConfigureAwait(true);
+
                         if (NotDisposed)
                         {
                             foreach (Bin bin in binsinrack)

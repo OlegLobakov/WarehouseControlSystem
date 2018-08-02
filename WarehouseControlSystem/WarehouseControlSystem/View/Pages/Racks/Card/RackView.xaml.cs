@@ -41,9 +41,6 @@ namespace WarehouseControlSystem.View.Pages.Racks.Card
         public RackView()
         {
             InitializeComponent();
-
-            MessagingCenter.Subscribe<BinsViewModel>(this, "Update", Update);
-            MessagingCenter.Subscribe<RackViewModel>(this, "Update", Update);
         }
 
         private void Update()

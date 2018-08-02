@@ -80,7 +80,7 @@
                                HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
                             <Entry Text="{Binding TemplateMaximumWeight, Mode=TwoWay}" Keyboard="Numeric" HorizontalOptions="FillAndExpand"/>
                         </StackLayout>
-                        <StackLayout Grid.Row="7" Orientation="Horizontal">
+                        <!--<StackLayout Grid.Row="7" Orientation="Horizontal">
                             <Label Text="{i18n:Translate BinEditView_FieldAdjustmentBin}" 
                                HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
                             <Switch IsToggled="{Binding TemplateAdjustmentBin, Mode=TwoWay}" HorizontalOptions="EndAndExpand" VerticalOptions="Center"></Switch>
@@ -94,7 +94,7 @@
                             <Label Text="{i18n:Translate BinEditView_FieldDefault}" 
                                HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="10,0,0,0"></Label>
                             <Switch IsToggled="{Binding TemplateDefault, Mode=TwoWay}" HorizontalOptions="EndAndExpand" VerticalOptions="Center"></Switch>
-                        </StackLayout>
+                        </StackLayout>-->
                     </Grid>
                 </ScrollView>
                 <Grid Grid.Row="2" Padding="3" VerticalOptions="FillAndExpand" RowSpacing="3">

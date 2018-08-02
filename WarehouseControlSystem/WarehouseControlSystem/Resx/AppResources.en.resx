@@ -1255,10 +1255,10 @@
     <value>Rack</value>
   </data>
   <data name="RackNewPage_Conflict" xml:space="preserve">
-    <value>Conflict Resolution</value>
+    <value>Terms</value>
   </data>
   <data name="RackNewPage_ConflictBins" xml:space="preserve">
-    <value>Modify Exist Bins and add to this Rack</value>
+    <value>Create New Bins</value>
   </data>
   <data name="RackNewPage_ConflictRack" xml:space="preserve">
     <value>Modify Exist Rack</value>
@@ -1490,5 +1490,17 @@
   </data>
   <data name="RackEditPage_Title" xml:space="preserve">
     <value>Edit</value>
+  </data>
+  <data name="RackEditPage_Levels" xml:space="preserve">
+    <value>Levels</value>
+  </data>
+  <data name="RackEditPage_Orientation" xml:space="preserve">
+    <value>Rack Orientation</value>
+  </data>
+  <data name="RackEditPage_SaveButton" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="RackEditPage_Sections" xml:space="preserve">
+    <value>Sections</value>
   </data>
 </root>

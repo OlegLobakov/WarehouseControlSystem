@@ -31,70 +31,38 @@ namespace WarehouseControlSystem.View.Pages.Racks.Edit
             model = rvm;
             BindingContext = model;
             InitializeComponent();
-
             Title = AppResources.RackEditPage_Title + " " + rvm.No;
-
-            //infopanel.BindingContext = model.BinsViewModel;
-            //locationpicker.ItemsSource = model.Locations;
-            //zonepicker.ItemsSource = model.Zones;
             orientationpicker.ItemsSource = Global.OrientationList;
             orientationpicker.SelectedItem = Global.OrientationList.Find(x => x.RackOrientation == rvm.RackOrientation);
-            //bintemplatepicker.ItemsSource = model.BinTemplates;
-
-            MessagingCenter.Subscribe<RackViewModel>(this, "ZonesIsLoaded", ZonesIsLoaded);
-            MessagingCenter.Subscribe<RackViewModel>(this, "LocationsIsLoaded", LocationsIsLoaded);
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
             model.State = ViewModel.Base.ModelState.Normal;
-            //model.FillEmptyFields();
+            model.FillEmptyPositions();
             rackview.Update(model);
+            MessagingCenter.Subscribe<BinsViewModel>(this, "Update", UpdateBinsViewModel);
         }
-      
+
+        protected override void OnDisappearing()
+        {
+            MessagingCenter.Unsubscribe<BinsViewModel>(this, "Update");
+            base.OnDisappearing();
+        }
+
         protected override bool OnBackButtonPressed()
         {
-            MessagingCenter.Unsubscribe<RackViewModel>(this, "ZonesIsLoaded");
-            MessagingCenter.Unsubscribe<RackViewModel>(this, "LocationsIsLoaded");
+            model.IsEditMode = false;
+            model.BinsViewModel.IsEditMode = false;
             base.OnBackButtonPressed();
             return false;
         }
 
-        private void ZonesIsLoaded(object obj)
+        private void UpdateBinsViewModel(BinsViewModel bvm)
         {
-            //if (!string.IsNullOrEmpty(model.ZoneCode))
-            //{
-            //    List<Zone> list = new List<Zone>(model.Zones);
-            //    Zone zone1 = list.Find(x => x.Code == model.ZoneCode);
-            //    if (zone1 is Zone)
-            //    {
-            //        zonepicker.SelectedItem = zone1;
-            //    }
-            //}
-        }
-
-        private void LocationsIsLoaded(object obj)
-        {
-            //if (!string.IsNullOrEmpty(model.LocationCode))
-            //{
-            //    List<Location> list = new List<Location>(model.Locations);
-            //    Location loc1 = list.Find(x => x.Code == model.LocationCode);
-            //    if (loc1 is Location)
-            //    {
-            //        locationpicker.SelectedItem = loc1;
-            //    }
-            //}
-
-            //if (!string.IsNullOrEmpty(model.ZoneCode))
-            //{
-            //    List<Zone> zoneslist = new List<Zone>(model.Zones);
-            //    Zone zone1 = zoneslist.Find(x => x.Code == model.ZoneCode);
-            //    if (zone1 is Zone)
-            //    {
-            //        zonepicker.SelectedItem = zone1;
-            //    }
-            //}
+            model.NumberingUnNamedBins();
+            rackview.Update(model);
         }
 
         private void ToolbarItem_Clicked(object sender, EventArgs e)
@@ -118,18 +86,19 @@ namespace WarehouseControlSystem.View.Pages.Racks.Edit
 
         }
 
+        private void Button_Clicked(object sender, EventArgs e)
+        {
 
-        //private async void PickerLocation(object sender, EventArgs e)
-        //{
-        //    var picker = (Picker)sender;
-        //    int selectedIndex = picker.SelectedIndex;
-        //    //await model.SetLocation((Location)picker.SelectedItem);
-        //}
+        }
 
-        //private async void PickerZone(object sender, EventArgs e)
-        //{
-        //    var picker = (Picker)sender;
-        //    //await model.SetZone((Zone)picker.SelectedItem);
-        //}
+        private void rackview_LevelSelected(int levelcoord)
+        {
+            model.SelectLevelBins(levelcoord);
+        }
+
+        private void rackview_SectionSelected(int sectioncoord)
+        {
+            model.SelectSectionBins(sectioncoord);
+        }
     }
 }

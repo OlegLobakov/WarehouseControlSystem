@@ -27,6 +27,12 @@ namespace WarehouseControlSystem.View.Content
     public partial class EmptySpaceViewInRack : ContentView
     {
         protected EmptySpaceViewModel model;
+
+        public int Section { get; set; }
+        public int Level { get; set; }
+        public bool Marked { get; set; }
+
+
         public double CodeFontSize
         {
             get { return codefontsize; }
@@ -52,6 +58,12 @@ namespace WarehouseControlSystem.View.Content
         {
             StackLayout sl = (StackLayout)sender;
             CodeFontSize = sl.Width / 5;
+        }
+
+        public void Update(EmptySpaceViewModel esvm)
+        {
+            model = esvm;
+            BindingContext = model;
         }
     }
 }

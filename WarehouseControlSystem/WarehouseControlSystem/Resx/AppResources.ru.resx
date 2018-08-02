@@ -1254,10 +1254,10 @@
     <value>Стеллаж</value>
   </data>
   <data name="RackNewPage_Conflict" xml:space="preserve">
-    <value>Разрешение конфликтов</value>
+    <value>Правила</value>
   </data>
   <data name="RackNewPage_ConflictBins" xml:space="preserve">
-    <value>Изменить сущ. ячейки и добавить в данный стеллаж</value>
+    <value>Создавать новые ячейки</value>
   </data>
   <data name="RackNewPage_ConflictRack" xml:space="preserve">
     <value>Изменить сущ. стеллаж</value>
@@ -1486,5 +1486,17 @@
   </data>
   <data name="RackEditPage_Title" xml:space="preserve">
     <value>Изменение стеллажа</value>
+  </data>
+  <data name="RackEditPage_Levels" xml:space="preserve">
+    <value>Уровни</value>
+  </data>
+  <data name="RackEditPage_Orientation" xml:space="preserve">
+    <value>Ориентация</value>
+  </data>
+  <data name="RackEditPage_SaveButton" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="RackEditPage_Sections" xml:space="preserve">
+    <value>Секции</value>
   </data>
 </root>

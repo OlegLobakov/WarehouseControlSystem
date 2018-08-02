@@ -637,7 +637,7 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
-        public async void NumberingEmptyBins()
+        public async void NumberingUnNamedBins()
         {
             List<BinViewModel> list = BinsViewModel.BinViewModels.FindAll(x => x.Code == "");
             if (list is List<BinViewModel>)
@@ -648,6 +648,51 @@ namespace WarehouseControlSystem.ViewModel
                     await BinsViewModel.CheckBin(bvm, ACD);
                 }
             }
+        }
+        public void FillEmptyPositions()
+        {
+            BinsViewModel.FillEmptyPositions(Sections, Levels);
+        }
+
+        public void SelectLevelBins(int i)
+        {
+            List<BinViewModel> list = BinsViewModel.BinViewModels.FindAll(x => x.Level == i && x.IsSelected == false);
+            if (list.Count > 0)
+            {
+                foreach (BinViewModel bvm in list)
+                {
+                    bvm.IsSelected = true;
+                }
+            }
+            else
+            {
+                list = BinsViewModel.BinViewModels.FindAll(x => x.Level == i && x.IsSelected == true);
+                foreach (BinViewModel bvm in list)
+                {
+                    bvm.IsSelected = false;
+                }
+            }
+            BinsViewModel.AfterSelect();
+        }
+        public void SelectSectionBins(int i)
+        {
+            List<BinViewModel> list = BinsViewModel.BinViewModels.FindAll(x => x.Section == i && x.IsSelected == false);
+            if (list.Count > 0)
+            {
+                foreach (BinViewModel bvm in list)
+                {
+                    bvm.IsSelected = true;
+                }
+            }
+            else
+            {
+                list = BinsViewModel.BinViewModels.FindAll(x => x.Section == i && x.IsSelected == true);
+                foreach (BinViewModel bvm in list)
+                {
+                    bvm.IsSelected = false;
+                }
+            }
+                BinsViewModel.AfterSelect();
         }
 
         private void SetNumber(BinViewModel bvm)

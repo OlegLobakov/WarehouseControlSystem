@@ -114,18 +114,19 @@ namespace WarehouseControlSystem.ViewModel
             }
         } BinTemplate selecteditem;
 
-        public bool ConflictBinChange
+        public bool CreateNewBins
         {
-            get { return conflictbinchange; }
+            get { return createnewbins; }
             set
             {
-                if (conflictbinchange != value)
+                if (createnewbins != value)
                 {
-                    conflictbinchange = value;
-                    OnPropertyChanged(nameof(ConflictBinChange));
+                    createnewbins = value;
+                    OnPropertyChanged(nameof(CreateNewBins));
                 }
             }
-        } bool conflictbinchange;
+        } bool createnewbins = true;
+
 
         public MasterRackNewViewModel(RackViewModel rvm) : base(rvm.Navigation)
         {
@@ -355,17 +356,17 @@ namespace WarehouseControlSystem.ViewModel
                 int binexist = await NAV.GetBinCount(NewModel.LocationCode, "", "", bmv.Bin.Code, ACD.Default).ConfigureAwait(true);
                 if (binexist > 0)
                 {
-                    if (ConflictBinChange)
-                    {
-                        LoadingText = AppResources.RackNewPage_LoadingProgressModifyBin + " " + bmv.Bin.Code;
-                        bmv.Bin.PrevCode = bmv.Bin.Code;
-                        await NAV.ModifyBin(bmv.Bin, ACD.Default).ConfigureAwait(true);
-                    }
+                    LoadingText = AppResources.RackNewPage_LoadingProgressModifyBin + " " + bmv.Bin.Code;
+                    bmv.Bin.PrevCode = bmv.Bin.Code;
+                    await NAV.ModifyBin(bmv.Bin, ACD.Default).ConfigureAwait(true);
                 }
                 else
                 {
-                    LoadingText = AppResources.RackNewPage_LoadingProgressBin + " " + bmv.Bin.Code;
-                    await NAV.CreateBin(NewModel.BinsViewModel.BinTemplate, bmv.Bin, ACD.Default).ConfigureAwait(true);
+                    if (CreateNewBins)
+                    {
+                        LoadingText = AppResources.RackNewPage_LoadingProgressBin + " " + bmv.Bin.Code;
+                        await NAV.CreateBin(NewModel.BinsViewModel.BinTemplate, bmv.Bin, ACD.Default).ConfigureAwait(true);
+                    }
                 }
             }
             catch (Exception e)

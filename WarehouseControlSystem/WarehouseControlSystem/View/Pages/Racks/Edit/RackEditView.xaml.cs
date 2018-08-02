@@ -15,12 +15,19 @@ using System.Collections.Generic;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using WarehouseControlSystem.ViewModel;
+using WarehouseControlSystem.View.Content;
 
 namespace WarehouseControlSystem.View.Pages.Racks.Edit
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class RackEditView : ContentView
     {
+        public event Action<int> LevelSelected;
+        public event Action<int> SectionSelected;
+
+        List<BinInEditRackView> BinInEditRackViews = new List<BinInEditRackView>();
+        List<EmptySpaceViewInRack> EmptySpaceViewInRacks = new List<EmptySpaceViewInRack>();
+
         Label HeaderLabel;
         public RackViewModel model;
 
@@ -37,12 +44,39 @@ namespace WarehouseControlSystem.View.Pages.Racks.Edit
             //instance?.Update();
         }
 
+        TapGestureRecognizer LevelTap;
+        TapGestureRecognizer SectionTap;
+
         public RackEditView()
         {
             InitializeComponent();
 
-            MessagingCenter.Subscribe<BinsViewModel>(this, "Update", Update);
-            MessagingCenter.Subscribe<RackViewModel>(this, "Update", Update);
+            LevelTap = new TapGestureRecognizer();
+            LevelTap.Tapped += (s, e) => {
+                if (LevelSelected is Action<int>)
+                {
+                    if (s is Label)
+                    {
+                        Label label1 = (Label)s;
+                        int t = int.Parse(label1.Text);
+                        int i = model.Levels - t + 1;
+                        LevelSelected(i);
+                    }
+                }
+            };
+
+            SectionTap = new TapGestureRecognizer();
+            SectionTap.Tapped += (s, e) => {
+                if (SectionSelected is Action<int>)
+                {
+                    if (s is Label)
+                    {
+                        Label label1 = (Label)s;
+                        int t = int.Parse(label1.Text);
+                        SectionSelected(t);
+                    }
+                }
+            };
         }
 
         private void Update()
@@ -54,12 +88,22 @@ namespace WarehouseControlSystem.View.Pages.Racks.Edit
         {
             Update(model);
         }
+
+        int oldSections;
+        int oldLevels;
         public void Update(RackViewModel rvm)
         {
             model = rvm;
-            BindingContext = model;
-            CreateGrid();
-            CreateLabels();
+
+            if ((oldSections != model.Sections) || (oldLevels != model.Levels))
+            {
+                CreateGrid();
+                CreateLabels();
+                oldSections = rvm.Sections;
+                oldLevels = rvm.Levels;
+                BinInEditRackViews.Clear();
+                EmptySpaceViewInRacks.Clear();
+            }
             FillBins();
         }
 
@@ -68,13 +112,13 @@ namespace WarehouseControlSystem.View.Pages.Racks.Edit
             grid.Children.Clear();
             grid.RowDefinitions.Clear();
             grid.ColumnDefinitions.Clear();
-            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(25, GridUnitType.Absolute) });
+            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(30, GridUnitType.Absolute) });
             for (int i = 1; i <= model.Levels; i++)
             {
                 grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
             }
 
-            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(40, GridUnitType.Absolute) });
+            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(50, GridUnitType.Absolute) });
             for (int i = 1; i <= model.Sections; i++)
             {
                 grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(BinWidth, GridUnitType.Absolute) });
@@ -98,7 +142,6 @@ namespace WarehouseControlSystem.View.Pages.Racks.Edit
             CreateLevelsLabels();
             CreateSectionLabels();
         }
-
         private void CreateLevelsLabels()
         {
             for (int i = 1; i <= model.Levels; i++)
@@ -114,10 +157,11 @@ namespace WarehouseControlSystem.View.Pages.Racks.Edit
                     TextColor = Color.White,
                     FontAttributes = FontAttributes.Bold
                 };
+              
+                lb.GestureRecognizers.Add(LevelTap);
                 grid.Children.Add(lb, 0, i);
             }
         }
-
         private void CreateSectionLabels()
         {
             for (int j = 1; j <= model.Sections; j++)
@@ -132,6 +176,7 @@ namespace WarehouseControlSystem.View.Pages.Racks.Edit
                     TextColor = Color.White,
                     FontAttributes = FontAttributes.Bold
                 };
+                lb.GestureRecognizers.Add(SectionTap);
                 lb.Text = j.ToString();
                 grid.Children.Add(lb, j, 0);
             }
@@ -143,14 +188,54 @@ namespace WarehouseControlSystem.View.Pages.Racks.Edit
             {
                 for (int j = 1; j <= model.Sections; j++)
                 {
-
                     BinViewModel finded = model.BinsViewModel.BinViewModels.Find(x => x.Level == i && x.Section == j);
                     if (finded is BinViewModel)
                     {
                         try
                         {
-                            BinInEditRackView bev = new BinInEditRackView(finded);
-                            grid.Children.Add(bev, finded.Section, finded.Section + finded.SectionSpan, finded.Level, finded.Level + finded.LevelSpan);
+                            BinInEditRackView exist = BinInEditRackViews.Find(x => x.Section == j && x.Level == i);
+                            if (exist is BinInEditRackView)
+                            {
+                                exist.Update(finded);
+                                exist.Marked = true;
+                            }
+                            else
+                            {
+                                BinInEditRackView bierv = new BinInEditRackView(finded);
+                                bierv.Section = j;
+                                bierv.Level = i;
+                                bierv.Marked = true;
+                                grid.Children.Add(bierv, finded.Section, finded.Section + finded.SectionSpan, finded.Level, finded.Level + finded.LevelSpan);
+                                BinInEditRackViews.Add(bierv);
+                            }
+                        }
+                        catch (Exception exp)
+                        {
+                            System.Diagnostics.Debug.WriteLine(exp.Message);
+                        }
+                    }
+                    else
+                    {
+                        try
+                        {
+                            EmptySpaceViewModel esvm = model.BinsViewModel.EmptySpacesViewModels.Find(x => x.Level == i && x.Section == j);
+                            if (esvm is EmptySpaceViewModel)
+                            {
+                                EmptySpaceViewInRack exist = EmptySpaceViewInRacks.Find(x => x.Section == j && x.Level == i);
+                                if (exist is EmptySpaceViewInRack)
+                                {
+                                    exist.Marked = true;
+                                }
+                                else
+                                {
+                                    EmptySpaceViewInRack esvir = new EmptySpaceViewInRack(esvm);
+                                    esvir.Section = j;
+                                    esvir.Level = i;
+                                    esvir.Marked = true;
+                                    grid.Children.Add(esvir, esvm.Section, esvm.Level);
+                                    EmptySpaceViewInRacks.Add(esvir);
+                                }
+                            }
                         }
                         catch (Exception exp)
                         {
@@ -158,6 +243,17 @@ namespace WarehouseControlSystem.View.Pages.Racks.Edit
                         }
                     }
                 }
+            }
+            BinInEditRackViews.RemoveAll(x => x.Marked == false);
+            foreach (BinInEditRackView bierv in BinInEditRackViews)
+            {
+                bierv.Marked = false;
+            }
+
+            EmptySpaceViewInRacks.RemoveAll(x => x.Marked == false);
+            foreach (EmptySpaceViewInRack esvmir in EmptySpaceViewInRacks)
+            {
+                esvmir.Marked = false;
             }
         }
 

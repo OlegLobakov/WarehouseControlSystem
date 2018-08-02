@@ -2770,6 +2770,42 @@ namespace WarehouseControlSystem.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Levels.
+        /// </summary>
+        internal static string RackEditPage_Levels {
+            get {
+                return ResourceManager.GetString("RackEditPage_Levels", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rack Orientation.
+        /// </summary>
+        internal static string RackEditPage_Orientation {
+            get {
+                return ResourceManager.GetString("RackEditPage_Orientation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        internal static string RackEditPage_SaveButton {
+            get {
+                return ResourceManager.GetString("RackEditPage_SaveButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sections.
+        /// </summary>
+        internal static string RackEditPage_Sections {
+            get {
+                return ResourceManager.GetString("RackEditPage_Sections", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit.
         /// </summary>
         internal static string RackEditPage_Title {
@@ -2923,7 +2959,7 @@ namespace WarehouseControlSystem.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Conflict Resolution.
+        ///   Looks up a localized string similar to Terms.
         /// </summary>
         internal static string RackNewPage_Conflict {
             get {
@@ -2932,7 +2968,7 @@ namespace WarehouseControlSystem.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Modify Exist Bins and add to this Rack.
+        ///   Looks up a localized string similar to Create New Bins.
         /// </summary>
         internal static string RackNewPage_ConflictBins {
             get {
