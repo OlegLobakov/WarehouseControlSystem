@@ -50,9 +50,9 @@
                                         </Image.Source>
                                     </Image>
                                     <Label Grid.Row="1" Text="{Binding Name}" FontSize="{Binding LargeFontSize, Source={x:Reference Name=ThisPage}}" 
-                                           HorizontalOptions="CenterAndExpand" TextColor="White" Margin="10"/>
+                                           HorizontalOptions="CenterAndExpand" TextColor="White" Margin="15"/>
                                     <Label Grid.Row="2" Text="{Binding Comment}" FontSize="{Binding SmallFontSize, Source={x:Reference Name=ThisPage}}" 
-                                           HorizontalOptions="CenterAndExpand" TextColor="White" Margin="10"/>
+                                           HorizontalOptions="CenterAndExpand" TextColor="White" Margin="10,10,10,25"/>
                                 </Grid>
                             </StackLayout>
                         </DataTemplate>

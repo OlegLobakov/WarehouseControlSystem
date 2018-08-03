@@ -213,13 +213,12 @@ namespace WarehouseControlSystem.View.Pages.Racks.Scheme
             model.SchemeWidth = width;
             model.SchemeHeight = height;
 
-            double fs = height / (model.Sections+1);
+            double fs = width;
             if (width > height)
             {
                 fs = width / (model.Sections + 1);
             }
-            model.SchemeFontSize = fs*0.6;
+            model.SchemeFontSize = fs * 0.6;
         }
-
     }
 }

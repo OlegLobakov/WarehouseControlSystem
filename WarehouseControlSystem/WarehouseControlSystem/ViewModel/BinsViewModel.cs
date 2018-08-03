@@ -813,11 +813,7 @@ namespace WarehouseControlSystem.ViewModel
         }
         public async Task LoadBins(AsyncCancelationDispatcher acd)
         {
-            if (BinViewModels.Count > 0)
-            {
-                return;
-            }
-
+            BinViewModelsDispose();
             try
             {
                 LoadedBinsQuantity = 0;

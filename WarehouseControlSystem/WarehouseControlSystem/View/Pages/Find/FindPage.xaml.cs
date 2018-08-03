@@ -37,6 +37,7 @@ namespace WarehouseControlSystem.View.Pages.Find
         {
             base.OnAppearing();
             model.State = ViewModel.Base.ModelState.Normal;
+            entry.Unfocus();
             if (!string.IsNullOrEmpty(Global.SearchRequest))
             {
                 entry.Text = Global.SearchRequest;
