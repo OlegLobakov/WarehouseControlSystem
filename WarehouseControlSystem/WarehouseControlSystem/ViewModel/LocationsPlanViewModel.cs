@@ -31,7 +31,19 @@ namespace WarehouseControlSystem.ViewModel
 {
     public class LocationsPlanViewModel : PlanBaseViewModel
     {
-        public LocationViewModel SelectedLocationViewModel { get; set; }
+        public LocationViewModel SelectedLocationViewModel
+        {
+            get { return selectedlvm; }
+            set
+            {
+                if (selectedlvm != value)
+                {
+                    selectedlvm = value;
+                    OnPropertyChanged(nameof(SelectedLocationViewModel));
+                }
+            }
+        } LocationViewModel selectedlvm;
+
         public ObservableCollection<LocationViewModel> LocationViewModels { get; set; } = new ObservableCollection<LocationViewModel>();
 
         public ICommand ListLocationsCommand { protected set; get; }
@@ -43,8 +55,20 @@ namespace WarehouseControlSystem.ViewModel
         {
             ListLocationsCommand = new Command(async () => await ListLocations().ConfigureAwait(false));
             NewLocationCommand = new Command(async () => await NewLocation().ConfigureAwait(false));
-            EditLocationCommand = new Command(async (x) => await EditLocation(x).ConfigureAwait(false));
-            DeleteLocationCommand = new Command(async (x) => await DeleteLocation(x).ConfigureAwait(false));
+            EditLocationCommand = new Command(async (x) =>
+            {
+                if (x != null)
+                {
+                    await EditLocation(x).ConfigureAwait(false);
+                }
+            });
+            DeleteLocationCommand = new Command(async (x) =>
+            {
+                if (x != null)
+                {
+                    await DeleteLocation(x).ConfigureAwait(false);
+                }
+            });
 
             IsEditMode = true;
             Title = AppResources.LocationsSchemePage_Title;
@@ -192,7 +216,7 @@ namespace WarehouseControlSystem.ViewModel
             else
             {
                 UnSelectAllOthers(tappedlvm);
-
+                
                 if (tappedlvm.IsSelected)
                 {
                     switch (tappedlvm.EditMode)
@@ -204,6 +228,7 @@ namespace WarehouseControlSystem.ViewModel
                             break;
                         case SchemeElementEditMode.Resize:
                             tappedlvm.IsSelected = false;
+                            SelectedLocationViewModel = null;
                             tappedlvm.EditMode = SchemeElementEditMode.None;
                             break;
                         default:
@@ -213,6 +238,7 @@ namespace WarehouseControlSystem.ViewModel
                 else
                 {
                     tappedlvm.IsSelected = true;
+                    SelectedLocationViewModel = tappedlvm;
                     tappedlvm.EditMode = SchemeElementEditMode.Move;
                 }
              }
@@ -236,6 +262,7 @@ namespace WarehouseControlSystem.ViewModel
         }
         private void UnSelectAllOthers(LocationViewModel tappedlvm)
         {
+            SelectedLocationViewModel = null;
             foreach (LocationViewModel lvm in LocationViewModels)
             {
                 if (lvm != tappedlvm)
@@ -291,34 +318,44 @@ namespace WarehouseControlSystem.ViewModel
 
             LocationViewModel lvm = (LocationViewModel)obj;
 
-            string request = String.Format(AppResources.LocationsPlanViewModel_DeleteLocation, lvm.Name);
+            string variant1 = String.Format(AppResources.LocationsPlanViewModel_DeleteLocation, lvm.Code);
+            string variant2 = String.Format(AppResources.LocationsPlanViewModel_DeleteLocation2, lvm.Code);
 
-            var action = await App.Current.MainPage.DisplayAlert(
+            var action = await App.Current.MainPage.DisplayActionSheet(
                 AppResources.LocationsPlanViewModel_DeleteQuestion,
-                request,
-                "OK",
-                AppResources.LocationsPlanViewModel_DeleteCancel);
+                AppResources.LocationsPlanViewModel_DeleteCancel,
+                null,
+                variant1,
+                variant2);
 
-            if (action)
+            if ((action != null) && (action != AppResources.LocationsPlanViewModel_DeleteCancel))
             {
-                try
+                if (action == variant1)
                 {
-                    LoadAnimation = true;
-                    State = ModelState.Loading;
-                    await NAV.DeleteLocation(lvm.Code, ACD.Default).ConfigureAwait(true);
-                    LocationViewModels.Remove(lvm);
-                    State = ModelState.Normal;
+                    await lvm.SaveToLocationSchemeVisible(false);
                 }
-                catch (Exception e)
+                if (action == variant2)
                 {
-                    System.Diagnostics.Debug.WriteLine(e.Message);
-                    ErrorText = e.Message;
-                    State = ModelState.Error;
+                    try
+                    {
+                        LoadAnimation = true;
+                        State = ModelState.Loading;
+                        await NAV.DeleteLocation(lvm.Code, ACD.Default).ConfigureAwait(true);
+                        LocationViewModels.Remove(lvm);
+                        State = ModelState.Normal;
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                        ErrorText = e.Message;
+                        State = ModelState.Error;
+                    }
+                    finally
+                    {
+                        LoadAnimation = false;
+                    }
                 }
-                finally
-                {
-                    LoadAnimation = false;
-                }
+                await Load();
             }
         }
 

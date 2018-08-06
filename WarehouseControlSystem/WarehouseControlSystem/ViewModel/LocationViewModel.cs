@@ -66,7 +66,7 @@ namespace WarehouseControlSystem.ViewModel
                 {
                     schemevisible = value;
                     Changed = true;
-                    SaveToLocationSchemeVisible();
+                    SaveToLocationSchemeVisible(value);
                     OnPropertyChanged(nameof(SchemeVisible));
                 }
             }
@@ -334,7 +334,7 @@ namespace WarehouseControlSystem.ViewModel
             FillFields(Location);
         }
 
-        public async void SaveToLocationSchemeVisible()
+        public async Task SaveToLocationSchemeVisible(bool value)
         {
             if (IsSaveToNAVEnabled)
             {
@@ -347,6 +347,7 @@ namespace WarehouseControlSystem.ViewModel
                     IsBeenSavingToNAV = true;
                     Location location = new Location();
                     SaveFields(location);
+                    location.SchemeVisible = value;
                     await NAV.SetLocationVisible(location, ACD.Default);
                 }
                 catch (Exception e)

@@ -1348,11 +1348,20 @@ namespace WarehouseControlSystem.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delete Location {0}?.
+        ///   Looks up a localized string similar to Delete Location {0} from scheme?.
         /// </summary>
         internal static string LocationsPlanViewModel_DeleteLocation {
             get {
                 return ResourceManager.GetString("LocationsPlanViewModel_DeleteLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete Location {0} from Microsoft Dynamics NAV?.
+        /// </summary>
+        internal static string LocationsPlanViewModel_DeleteLocation2 {
+            get {
+                return ResourceManager.GetString("LocationsPlanViewModel_DeleteLocation2", resourceCulture);
             }
         }
         
@@ -1483,7 +1492,7 @@ namespace WarehouseControlSystem.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit Scheme.
+        ///   Looks up a localized string similar to Setup.
         /// </summary>
         internal static string LocationsSchemePage_Toolbar_Scheme {
             get {
@@ -1758,6 +1767,15 @@ namespace WarehouseControlSystem.Resx {
         internal static string MainMenuReserv9 {
             get {
                 return ResourceManager.GetString("MainMenuReserv9", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connections to Microsoft Dynamics NAV are not configured!.
+        /// </summary>
+        internal static string MainPage_ConnectionsMessage {
+            get {
+                return ResourceManager.GetString("MainPage_ConnectionsMessage", resourceCulture);
             }
         }
         
@@ -3391,7 +3409,7 @@ namespace WarehouseControlSystem.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit Scheme.
+        ///   Looks up a localized string similar to Setup.
         /// </summary>
         internal static string RackSchemePage_Toolbar_Scheme {
             get {
@@ -3463,7 +3481,16 @@ namespace WarehouseControlSystem.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delete rack {0} and bins?.
+        ///   Looks up a localized string similar to Delete rack {0} from NAV?.
+        /// </summary>
+        internal static string RacksPlanViewModel_DeleteRack2 {
+            get {
+                return ResourceManager.GetString("RacksPlanViewModel_DeleteRack2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete rack {0} and bins from NAV?.
         /// </summary>
         internal static string RacksPlanViewModel_DeleteRackAndBins {
             get {
@@ -4048,11 +4075,20 @@ namespace WarehouseControlSystem.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delete zone {0}?.
+        ///   Looks up a localized string similar to Delete zone {0} from scheme?.
         /// </summary>
         internal static string ZonesPlanViewModel_DeleteZone {
             get {
                 return ResourceManager.GetString("ZonesPlanViewModel_DeleteZone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete Zone {0} from NAV?.
+        /// </summary>
+        internal static string ZonesPlanViewModel_DeleteZone2 {
+            get {
+                return ResourceManager.GetString("ZonesPlanViewModel_DeleteZone2", resourceCulture);
             }
         }
         
@@ -4156,7 +4192,7 @@ namespace WarehouseControlSystem.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit Scheme.
+        ///   Looks up a localized string similar to Setup.
         /// </summary>
         internal static string ZonesSchemePage_Toolbar_Scheme {
             get {

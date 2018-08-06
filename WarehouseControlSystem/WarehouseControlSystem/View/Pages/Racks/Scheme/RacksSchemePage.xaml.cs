@@ -38,13 +38,9 @@ namespace WarehouseControlSystem.View.Pages.Racks.Scheme
 
             Title = AppResources.ZoneSchemePage_Title +" "+ Global.CurrentLocationName+" | " + AppResources.RackSchemePage_Title + " - " + Model.Zone.Description;
 
-            MessagingCenter.Subscribe<RacksPlanViewModel>(this, "Rebuild", Rebuild);
-            MessagingCenter.Subscribe<RacksPlanViewModel>(this, "Reshape", Reshape);
-            MessagingCenter.Subscribe<RacksPlanViewModel>(this, "UDSRunIsDone", UDSRunIsDone);
-            MessagingCenter.Subscribe<RacksPlanViewModel>(this, "UDSListIsLoaded", UDSListIsLoaded);
-
             Model.IsEditMode = false;
             Model.SetEditModeForItems(Model.IsEditMode);
+            Menu();
         }
 
         protected override async void OnAppearing()
@@ -52,12 +48,21 @@ namespace WarehouseControlSystem.View.Pages.Racks.Scheme
             base.OnAppearing();
             PanGesture.PanUpdated += OnPaned;
             TapGesture.Tapped += GridTapped;
+            MessagingCenter.Subscribe<RacksPlanViewModel>(this, "Rebuild", Rebuild);
+            MessagingCenter.Subscribe<RacksPlanViewModel>(this, "Reshape", Reshape);
+            MessagingCenter.Subscribe<RacksPlanViewModel>(this, "UDSRunIsDone", UDSRunIsDone);
+            MessagingCenter.Subscribe<RacksPlanViewModel>(this, "UDSListIsLoaded", UDSListIsLoaded);
+
             await Model.Load();
             await Model.LoadUDS();
         }
 
         protected override void OnDisappearing()
         {
+            MessagingCenter.Unsubscribe<RacksPlanViewModel>(this, "Rebuild");
+            MessagingCenter.Unsubscribe<RacksPlanViewModel>(this, "Reshape");
+            MessagingCenter.Unsubscribe<RacksPlanViewModel>(this, "UDSRunIsDone");
+            MessagingCenter.Unsubscribe<RacksPlanViewModel>(this, "UDSListIsLoaded");
             Model.State = ViewModel.Base.ModelState.Undefined;
             PanGesture.PanUpdated -= OnPaned;
             TapGesture.Tapped -= GridTapped;
@@ -70,10 +75,6 @@ namespace WarehouseControlSystem.View.Pages.Racks.Scheme
         protected override bool OnBackButtonPressed()
         {
             Model.DisposeModel();
-            MessagingCenter.Unsubscribe<RacksPlanViewModel>(this, "Rebuild");
-            MessagingCenter.Unsubscribe<RacksPlanViewModel>(this, "Reshape");
-            MessagingCenter.Unsubscribe<RacksPlanViewModel>(this, "UDSRunIsDone");
-            MessagingCenter.Unsubscribe<RacksPlanViewModel>(this, "UDSListIsLoaded");
             base.OnBackButtonPressed();
             return false;
         }
@@ -157,6 +158,7 @@ namespace WarehouseControlSystem.View.Pages.Racks.Scheme
                 Model.SetEditModeForItems(Model.IsEditMode);
                 Model.Rebuild(false);
             }
+            Menu();
         }
 
         private void ToolbarItem_UDS(object sender, EventArgs e)
@@ -170,5 +172,136 @@ namespace WarehouseControlSystem.View.Pages.Racks.Scheme
             FindPage fp = new FindPage(svm);
             await Navigation.PushAsync(fp);
         }
-   }
+
+        ToolbarItem listbutton;
+        ToolbarItem addbutton;
+        ToolbarItem removebutton;
+        ToolbarItem editbutton;
+        ToolbarItem searchbutton;
+        ToolbarItem udcsbutton;
+        private void Menu()
+        {
+            if (Model.IsEditMode)
+            {
+                if (searchbutton is ToolbarItem)
+                {
+                    ToolbarItems.Remove(searchbutton);
+                }
+
+                if (udcsbutton is ToolbarItem)
+                {
+                    ToolbarItems.Remove(udcsbutton);
+                }
+
+                if (addbutton is null)
+                {
+                    addbutton = new ToolbarItem()
+                    {
+                        Order = ToolbarItemOrder.Primary,
+                        Priority = 10,
+                        Text = AppResources.RackSchemePage_Toolbar_New,
+                        Icon = new FileImageSource()
+                    };
+                    addbutton.Icon.File = Global.GetPlatformPath("ic_action_add_circle.png");
+                    addbutton.SetBinding(MenuItem.CommandProperty, new Binding("NewRackCommand"));
+                }
+                ToolbarItems.Add(addbutton);
+
+                if (removebutton is null)
+                {
+                    removebutton = new ToolbarItem()
+                    {
+                        Order = ToolbarItemOrder.Primary,
+                        Priority = 20,
+                        Text = AppResources.LocationsSchemePage_Toolbar_Delete,
+                        Icon = new FileImageSource()
+                    };
+                    removebutton.Icon.File = Global.GetPlatformPath("ic_action_remove_circle.png");
+                    removebutton.SetBinding(MenuItem.CommandProperty, new Binding("DeleteRackCommand"));
+                    removebutton.SetBinding(MenuItem.CommandParameterProperty, new Binding("SelectedRackViewModel"));
+                }
+                ToolbarItems.Add(removebutton);
+
+
+                if (editbutton is null)
+                {
+                    editbutton = new ToolbarItem()
+                    {
+                        Order = ToolbarItemOrder.Primary,
+                        Priority = 20,
+                        Text = AppResources.LocationsSchemePage_Toolbar_Edit,
+                        Icon = new FileImageSource()
+                    };
+                    editbutton.Icon.File = Global.GetPlatformPath("ic_action_create.png");
+                    editbutton.SetBinding(MenuItem.CommandProperty, new Binding("EditRackCommand"));
+                    editbutton.SetBinding(MenuItem.CommandParameterProperty, new Binding("SelectedRackViewModel"));
+                }
+                ToolbarItems.Add(editbutton);
+
+                if (listbutton is null)
+                {
+                    listbutton = new ToolbarItem()
+                    {
+                        Order = ToolbarItemOrder.Primary,
+                        Priority = 30,
+                        Text = AppResources.RackSchemePage_Toolbar_List,
+                        Icon = new FileImageSource()
+                    };
+                    listbutton.Icon.File = Global.GetPlatformPath("ic_action_dehaze.png");
+                    listbutton.SetBinding(MenuItem.CommandProperty, new Binding("RackListCommand"));
+                }
+                ToolbarItems.Add(listbutton);
+            }
+            else
+            {
+                if (addbutton is ToolbarItem)
+                {
+                    ToolbarItems.Remove(addbutton);
+                }
+
+                if (removebutton is ToolbarItem)
+                {
+                    ToolbarItems.Remove(removebutton);
+                }
+
+                if (editbutton is ToolbarItem)
+                {
+                    ToolbarItems.Remove(editbutton);
+                }
+
+                if (listbutton is ToolbarItem)
+                {
+                    ToolbarItems.Remove(listbutton);
+                }
+
+                if (searchbutton is null)
+                {
+                    searchbutton = new ToolbarItem()
+                    {
+                        Order = ToolbarItemOrder.Primary,
+                        Priority = 30,
+                        Text = AppResources.RackSchemePage_Toolbar_Search,
+                        Icon = new FileImageSource()
+                    };
+                    searchbutton.Icon.File = Global.GetPlatformPath("ic_action_search.png");
+                    searchbutton.Clicked += ToolbarItem_Search;
+                }
+                ToolbarItems.Add(searchbutton);
+
+                if (udcsbutton is null)
+                {
+                    udcsbutton = new ToolbarItem()
+                    {
+                        Order = ToolbarItemOrder.Primary,
+                        Priority = 40,
+                        Text = AppResources.RackSchemePage_Toolbar_UDSF,
+                        Icon = new FileImageSource()
+                    };
+                    udcsbutton.Icon.File = Global.GetPlatformPath("ic_action_widgets.png");
+                    udcsbutton.Clicked += ToolbarItem_UDS;
+                }
+                ToolbarItems.Add(udcsbutton);
+            }
+        }
+    }
 }

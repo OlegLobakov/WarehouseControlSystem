@@ -18,6 +18,7 @@ using WarehouseControlSystem.Model;
 using WarehouseControlSystem.ViewModel;
 using System.Threading.Tasks;
 using WarehouseControlSystem.View.Pages.Base;
+using WarehouseControlSystem.Resx;
 
 namespace WarehouseControlSystem.View.Pages.Locations
 {
@@ -33,9 +34,7 @@ namespace WarehouseControlSystem.View.Pages.Locations
 
             abslayout.GestureRecognizers.Add(TapGesture);
             abslayout.GestureRecognizers.Add(PanGesture);
-
-            MessagingCenter.Subscribe<LocationsPlanViewModel>(this, "Rebuild", Rebuild);
-            MessagingCenter.Subscribe<LocationsPlanViewModel>(this, "Reshape", Reshape);
+            Menu();
         }
 
         protected override async void OnAppearing()
@@ -43,11 +42,15 @@ namespace WarehouseControlSystem.View.Pages.Locations
             base.OnAppearing();
             PanGesture.PanUpdated += OnPaned;
             TapGesture.Tapped += GridTapped;
+            MessagingCenter.Subscribe<LocationsPlanViewModel>(this, "Rebuild", Rebuild);
+            MessagingCenter.Subscribe<LocationsPlanViewModel>(this, "Reshape", Reshape);
             await Model.Load();
         }
 
         protected override void OnDisappearing()
         {
+            MessagingCenter.Unsubscribe<LocationsPlanViewModel>(this, "Rebuild");
+            MessagingCenter.Unsubscribe<LocationsPlanViewModel>(this, "Reshape");
             PanGesture.PanUpdated -= OnPaned;
             TapGesture.Tapped -= GridTapped;
             base.OnDisappearing();
@@ -56,8 +59,6 @@ namespace WarehouseControlSystem.View.Pages.Locations
         protected override bool OnBackButtonPressed()
         {
             Model.DisposeModel();
-            MessagingCenter.Unsubscribe<LocationsPlanViewModel>(this, "Rebuild");
-            MessagingCenter.Unsubscribe<LocationsPlanViewModel>(this, "Reshape");
             base.OnBackButtonPressed();
             return false;
         }
@@ -105,6 +106,98 @@ namespace WarehouseControlSystem.View.Pages.Locations
             {
                 abslayout.BackgroundColor = Color.LightGray;
                 Model.IsEditMode = true;
+            }
+            Menu();
+        }
+
+        ToolbarItem listbutton;
+        ToolbarItem addbutton;
+        ToolbarItem removebutton;
+        ToolbarItem editbutton;
+        private void Menu()
+        {
+            if (Model.IsEditMode)
+            {
+                if (listbutton is null)
+                {
+                    listbutton = new ToolbarItem()
+                    {
+                        Order = ToolbarItemOrder.Primary,
+                        Priority = 30,
+                        Text = AppResources.LocationsSchemePage_Toolbar_List,
+                        Icon = new FileImageSource()
+                    };
+                    listbutton.Icon.File = Global.GetPlatformPath("ic_action_dehaze.png");
+                    listbutton.SetBinding(MenuItem.CommandProperty, new Binding("ListLocationsCommand"));
+                }
+                ToolbarItems.Add(listbutton);
+
+                if (addbutton is null)
+                {
+                    addbutton = new ToolbarItem()
+                    {
+                        Order = ToolbarItemOrder.Primary,
+                        Priority = 10,
+                        Text = AppResources.LocationsSchemePage_Toolbar_New,
+                        Icon = new FileImageSource()
+                    };
+                    addbutton.Icon.File = Global.GetPlatformPath("ic_action_add_circle.png");
+                    addbutton.SetBinding(MenuItem.CommandProperty, new Binding("NewLocationCommand"));
+                }
+                ToolbarItems.Add(addbutton);
+
+                if (removebutton is null)
+                {
+                    removebutton = new ToolbarItem()
+                    {
+                        Order = ToolbarItemOrder.Primary,
+                        Priority = 20,
+                        Text = AppResources.LocationsSchemePage_Toolbar_Delete,
+                        Icon = new FileImageSource()
+                    };
+                    removebutton.Icon.File = Global.GetPlatformPath("ic_action_remove_circle.png");
+                    removebutton.SetBinding(MenuItem.CommandProperty, new Binding("DeleteLocationCommand"));
+                    removebutton.SetBinding(MenuItem.CommandParameterProperty, new Binding("SelectedLocationViewModel"));
+                }
+                ToolbarItems.Add(removebutton);
+
+
+                if (editbutton is null)
+                {
+                    editbutton = new ToolbarItem()
+                    {
+                        Order = ToolbarItemOrder.Primary,
+                        Priority = 20,
+                        Text = AppResources.LocationsSchemePage_Toolbar_Edit,
+                        Icon = new FileImageSource()
+                    };
+                    editbutton.Icon.File = Global.GetPlatformPath("ic_action_create.png");
+                    editbutton.SetBinding(MenuItem.CommandProperty, new Binding("EditLocationCommand"));
+                    editbutton.SetBinding(MenuItem.CommandParameterProperty, new Binding("SelectedLocationViewModel"));
+                }
+                ToolbarItems.Add(editbutton);
+            }
+            else
+            {
+                if (listbutton is ToolbarItem)
+                {
+                    ToolbarItems.Remove(listbutton);
+                }
+
+                if (addbutton is ToolbarItem)
+                {
+                    ToolbarItems.Remove(addbutton);
+                }
+
+                if (removebutton is ToolbarItem)
+                {
+                    ToolbarItems.Remove(removebutton);
+                }
+
+                if (editbutton is ToolbarItem)
+                {
+                    ToolbarItems.Remove(editbutton);
+                }
             }
         }
     }

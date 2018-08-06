@@ -13,7 +13,12 @@
                 <RowDefinition Height="1.5*" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <StackLayout Grid.Row="1"  Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" SizeChanged="StackLayout_SizeChanged">
+            <StackLayout Grid.Row="1"  IsVisible="{Binding IsNotConnectionsExist}">
+                <Label Text="{i18n:Translate MainPage_ConnectionsMessage}" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="Large"/>
+            </StackLayout>
+            <StackLayout Grid.Row="1"  IsVisible="{Binding IsConnectionsExist}"
+                         Orientation="Vertical" HorizontalOptions="FillAndExpand" 
+                         VerticalOptions="FillAndExpand" SizeChanged="StackLayout_SizeChanged">
 
                 <hs:HorizontalListView  ItemsSource="{Binding ConnectionViewModels}"                                                
                                         SelectedItemChanged="HorizontalListView_SelectedItemChanged"
@@ -33,11 +38,14 @@
                                         </DataTrigger>
                                     </Grid.Triggers>
                                     <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="*"/>
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
-                                    <Image Grid.Row="0" Margin="20" Aspect="AspectFit" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                                    <Label Grid.Row="0" Text="   " FontSize="{Binding LargeFontSize, Source={x:Reference Name=ThisPage}}" 
+                                           HorizontalOptions="CenterAndExpand" TextColor="White"/>
+                                    <Image Grid.Row="1" Margin="20" Aspect="AspectFit" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
                                         <Image.Source>
                                             <OnPlatform x:TypeArguments="FileImageSource">
                                                 <On Platform="UWP,WinPhone">
@@ -49,9 +57,9 @@
                                             </OnPlatform>
                                         </Image.Source>
                                     </Image>
-                                    <Label Grid.Row="1" Text="{Binding Name}" FontSize="{Binding LargeFontSize, Source={x:Reference Name=ThisPage}}" 
+                                    <Label Grid.Row="2" Text="{Binding Name}" FontSize="{Binding LargeFontSize, Source={x:Reference Name=ThisPage}}" 
                                            HorizontalOptions="CenterAndExpand" TextColor="White" Margin="15"/>
-                                    <Label Grid.Row="2" Text="{Binding Comment}" FontSize="{Binding SmallFontSize, Source={x:Reference Name=ThisPage}}" 
+                                    <Label Grid.Row="3" Text="{Binding Comment}" FontSize="{Binding SmallFontSize, Source={x:Reference Name=ThisPage}}" 
                                            HorizontalOptions="CenterAndExpand" TextColor="White" Margin="10,10,10,25"/>
                                 </Grid>
                             </StackLayout>

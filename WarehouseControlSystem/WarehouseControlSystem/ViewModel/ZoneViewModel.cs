@@ -85,7 +85,7 @@ namespace WarehouseControlSystem.ViewModel
                 {
                     schemevisible = value;
                     Changed = true;
-                    SaveToZoneSchemeVisible();
+                    SaveToZoneSchemeVisible(value);
                     OnPropertyChanged(nameof(SchemeVisible));
                 }
             }
@@ -479,7 +479,7 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
-        private async Task SaveToZoneSchemeVisible()
+        public async Task SaveToZoneSchemeVisible(bool value)
         {
             if (IsSaveToNAVEnabled)
             {
@@ -493,6 +493,7 @@ namespace WarehouseControlSystem.ViewModel
                     IsBeenSavingToNAV = true;
                     Zone zone = new Zone();
                     SaveFields(zone);
+                    zone.SchemeVisible = value;
                     await NAV.SetZoneVisible(zone, ACD.Default).ConfigureAwait(true);
                 }
                 catch (Exception e)

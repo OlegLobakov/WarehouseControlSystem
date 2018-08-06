@@ -36,18 +36,17 @@ namespace WarehouseControlSystem.View.Pages.Racks.Edit
             orientationpicker.SelectedItem = Global.OrientationList.Find(x => x.RackOrientation == rvm.RackOrientation);
         }
 
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
             base.OnAppearing();
             model.State = ViewModel.Base.ModelState.Normal;
-            model.FillEmptyPositions();
-            rackview.Update(model);
-            MessagingCenter.Subscribe<BinsViewModel>(this, "Update", UpdateBinsViewModel);
+            MessagingCenter.Subscribe<BinsViewModel>(this, "BinsIsLoaded", BinsIsLoaded);
+            await model.LoadBins();
         }
 
         protected override void OnDisappearing()
         {
-            MessagingCenter.Unsubscribe<BinsViewModel>(this, "Update");
+            MessagingCenter.Unsubscribe<BinsViewModel>(this, "BinsIsLoaded");
             base.OnDisappearing();
         }
 
@@ -59,8 +58,9 @@ namespace WarehouseControlSystem.View.Pages.Racks.Edit
             return false;
         }
 
-        private void UpdateBinsViewModel(BinsViewModel bvm)
+        private void BinsIsLoaded(BinsViewModel bvm)
         {
+            model.FillEmptyPositions();
             model.NumberingUnNamedBins();
             rackview.Update(model);
         }

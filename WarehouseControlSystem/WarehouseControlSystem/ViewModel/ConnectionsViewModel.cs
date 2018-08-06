@@ -36,6 +36,33 @@ namespace WarehouseControlSystem.ViewModel
         public ICommand EditConnectionCommand { protected set; get; }
         public ICommand CopyConnectionCommand { protected set; get; }
 
+        public bool IsConnectionsExist
+        {
+            get { return isconnectionsexist; }
+            set
+            {
+                if (isconnectionsexist != value)
+                {
+                    isconnectionsexist = value;
+                    OnPropertyChanged(nameof(IsConnectionsExist));
+                }
+            }
+        }
+        bool isconnectionsexist;
+
+        public bool IsNotConnectionsExist
+        {
+            get { return isnotconnectionsexist; }
+            set
+            {
+                if (isnotconnectionsexist != value)
+                {
+                    isnotconnectionsexist = value;
+                    OnPropertyChanged(nameof(IsNotConnectionsExist));
+                }
+            }
+        }
+        bool isnotconnectionsexist;
 
         public ConnectionsViewModel(INavigation navigation) : base(navigation)
         {
@@ -53,7 +80,7 @@ namespace WarehouseControlSystem.ViewModel
                     ConnectionViewModels.Add(cvm);
                 }
             }
-
+            Update();
             NewConnectionCommand = new Command(Create);
             DeleteConnectionCommand = new Command<object>(Delete);
             EditConnectionCommand = new Command<object>(Edit);
@@ -75,6 +102,7 @@ namespace WarehouseControlSystem.ViewModel
             Global.Parameters.Connections.Add(connection);
             ConnectionViewModel cvm = new ConnectionViewModel(Navigation, connection);
             ConnectionViewModels.Add(cvm);
+            Update();
             NewConnectionPage nc = new NewConnectionPage(cvm, true);
             await Navigation.PushAsync(nc);
         }
@@ -90,12 +118,14 @@ namespace WarehouseControlSystem.ViewModel
             ConnectionViewModel cvm = new ConnectionViewModel(Navigation, connection);
             ConnectionViewModels.Add(cvm);
             SelectedConnection = cvm;
+            Update();
         }
 
         public async void Edit(object sender)
         {
             ConnectionViewModel source = (ConnectionViewModel)sender;
             NewConnectionPage nc = new NewConnectionPage(source, false);
+            Update();
             await Navigation.PushAsync(nc);
         }
 
@@ -104,6 +134,7 @@ namespace WarehouseControlSystem.ViewModel
             ConnectionViewModel source = (ConnectionViewModel)sender;
             Global.Parameters.Connections.Remove(source.Connection);
             ConnectionViewModels.Remove(source);
+            Update();
         }
 
         public void Select(ConnectionViewModel selected)
@@ -119,6 +150,12 @@ namespace WarehouseControlSystem.ViewModel
                     cvm.Connection.Connected = false;
                 }
             }
+        }
+
+        public void Update()
+        {
+            IsConnectionsExist = ConnectionViewModels.Count > 0;
+            IsNotConnectionsExist = ConnectionViewModels.Count == 0;
         }
 
         public override void DisposeModel()

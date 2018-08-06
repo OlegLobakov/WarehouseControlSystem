@@ -179,7 +179,7 @@ namespace WarehouseControlSystem.ViewModel
                 {
                     schemevisible = value;
                     Changed = true;
-                    SaveToRackSchemeVisible();
+                    SaveToRackSchemeVisible(value);
                     OnPropertyChanged(nameof(SchemeVisible));
                 }
             }
@@ -731,7 +731,7 @@ namespace WarehouseControlSystem.ViewModel
             await BinsViewModel.LoadBins(ACD).ConfigureAwait(true);
         }
 
-        public async Task SaveToRackSchemeVisible()
+        public async Task SaveToRackSchemeVisible(bool value)
         {
             if (IsSaveToNAVEnabled)
             {
@@ -744,6 +744,7 @@ namespace WarehouseControlSystem.ViewModel
                     IsBeenSavingToNAV = true;                    
                     Rack rack = new Rack();
                     SaveFields(rack);
+                    rack.SchemeVisible = value;
                     await NAV.SetRackVisible(rack, ACD.Default).ConfigureAwait(true);
                 }
                 catch (Exception e)

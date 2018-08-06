@@ -55,7 +55,7 @@
                 </OnPlatform>
             </ToolbarItem.Icon>
         </ToolbarItem>
-        <ToolbarItem  Order="Secondary" Priority="1000" Text="{i18n:Translate RackCardPage_Toolbar_Change}" Clicked="ToolbarItem_RackEdit">
+        <!--<ToolbarItem  Order="Secondary" Priority="1000" Text="{i18n:Translate RackCardPage_Toolbar_Change}" Clicked="ToolbarItem_RackEdit">
             <ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
                     <On Platform="UWP,WinPhone">
@@ -66,8 +66,7 @@
                     </On>
                 </OnPlatform>
             </ToolbarItem.Icon>
-        </ToolbarItem>
-
+        </ToolbarItem>-->
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" x:Name="mainsl" SizeChanged="StackLayout_SizeChanged">

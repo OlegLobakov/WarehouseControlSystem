@@ -7,30 +7,6 @@
              x:Class="WarehouseControlSystem.View.Pages.Racks.Scheme.RacksSchemePage"
              xmlns:i18n="clr-namespace:WarehouseControlSystem;assembly=WarehouseControlSystem">
     <ContentPage.ToolbarItems>
-        <ToolbarItem  Order="Secondary"  Priority="20" Text="{i18n:Translate RackSchemePage_Toolbar_New}" Command="{Binding NewRackCommand}" >
-            <ToolbarItem.Icon>
-                <OnPlatform x:TypeArguments="FileImageSource">
-                    <On Platform="UWP,WinPhone">
-                        <FileImageSource File="Assets/Images/ic_action_add_circle.png"/>
-                    </On>
-                    <On Platform="iOS,Android">
-                        <FileImageSource File="ic_action_add_circle.png"/>
-                    </On>
-                </OnPlatform>
-            </ToolbarItem.Icon>
-        </ToolbarItem>
-        <ToolbarItem  Order="Secondary" Priority="40" Text="{i18n:Translate RackSchemePage_Toolbar_List}" Command="{Binding RackListCommand}" >
-            <ToolbarItem.Icon>
-                <OnPlatform x:TypeArguments="FileImageSource">
-                    <On Platform="UWP,WinPhone">
-                        <FileImageSource File="Assets/Images/ic_action_dehaze.png"/>
-                    </On>
-                    <On Platform="iOS,Android">
-                        <FileImageSource File="ic_action_dehaze.png"/>
-                    </On>
-                </OnPlatform>
-            </ToolbarItem.Icon>
-        </ToolbarItem>
         <ToolbarItem  Order="Secondary" Priority="1000" Text="{i18n:Translate RackSchemePage_Toolbar_Scheme}"  Clicked="ToolbarItem_Clicked">
             <ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
@@ -39,30 +15,6 @@
                     </On>
                     <On Platform="iOS,Android">
                         <FileImageSource File="ic_action_settings.png"/>
-                    </On>
-                </OnPlatform>
-            </ToolbarItem.Icon>
-        </ToolbarItem>
-        <ToolbarItem  Order="Primary" Priority="2000" Text="{i18n:Translate RackSchemePage_Toolbar_Search}" Clicked="ToolbarItem_Search">
-            <ToolbarItem.Icon>
-                <OnPlatform x:TypeArguments="FileImageSource">
-                    <On Platform="UWP,WinPhone">
-                        <FileImageSource File="Assets/Images/ic_action_search.png"/>
-                    </On>
-                    <On Platform="iOS,Android">
-                        <FileImageSource File="ic_action_search.png"/>
-                    </On>
-                </OnPlatform>
-            </ToolbarItem.Icon>
-        </ToolbarItem>
-        <ToolbarItem  Order="Primary" Priority="3000" Text="{i18n:Translate RackSchemePage_Toolbar_UDSF}" Clicked="ToolbarItem_UDS">
-            <ToolbarItem.Icon>
-                <OnPlatform x:TypeArguments="FileImageSource">
-                    <On Platform="UWP,WinPhone">
-                        <FileImageSource File="Assets/Images/ic_action_widgets.png"/>
-                    </On>
-                    <On Platform="iOS,Android">
-                        <FileImageSource File="ic_action_widgets.png"/>
                     </On>
                 </OnPlatform>
             </ToolbarItem.Icon>

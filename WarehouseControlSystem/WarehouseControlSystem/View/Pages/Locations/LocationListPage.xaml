@@ -4,21 +4,6 @@
              x:Class="WarehouseControlSystem.View.Pages.Locations.LocationListPage"
              xmlns:i18n="clr-namespace:WarehouseControlSystem;assembly=WarehouseControlSystem"
              x:Name="ThisPage">
-    <ContentPage.ToolbarItems>
-        <ToolbarItem  Order="Primary" Priority="20" Text="{i18n:Translate LocationsSchemePage_Toolbar_New}" Command="{Binding NewLocationCommand}">
-            <ToolbarItem.Icon>
-                <OnPlatform x:TypeArguments="FileImageSource">
-                    <On Platform="UWP,WinPhone">
-                        <FileImageSource File="Assets/Images/ic_action_add_circle.png"/>
-                    </On>
-                    <On Platform="iOS,Android">
-                        <FileImageSource File="ic_action_add_circle.png"/>
-                    </On>
-                </OnPlatform>
-            </ToolbarItem.Icon>
-        </ToolbarItem>
-    </ContentPage.ToolbarItems>
-
     <ContentPage.Content>
         <StackLayout>
             <Grid IsVisible="{Binding IsLoadingState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
@@ -71,14 +56,14 @@
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ViewCell>
-                                    <ViewCell.ContextActions>
+                                    <!--<ViewCell.ContextActions>
                                         <MenuItem Text="Edit"
                                                           Command="{Binding Path=BindingContext.EditLocationCommand, Source={x:Reference Name=ThisPage}}" 
                                                           CommandParameter="{Binding .}"  />
                                         <MenuItem Text="Delete" IsDestructive="True"
                                                           Command="{Binding Path=BindingContext.DeleteLocationCommand, Source={x:Reference Name=ThisPage}}" 
                                                           CommandParameter="{Binding .}"  />
-                                    </ViewCell.ContextActions>
+                                    </ViewCell.ContextActions>-->
                                     <StackLayout Padding="0,1,0,1" BackgroundColor="LightGray" HeightRequest="70">
                                         <Grid BackgroundColor="White" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" x:Name="grid">
                                             <Grid.ColumnDefinitions>

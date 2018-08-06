@@ -542,7 +542,7 @@
     <value>New Location</value>
   </data>
   <data name="LocationsSchemePage_Toolbar_Scheme" xml:space="preserve">
-    <value>Edit Scheme</value>
+    <value>Setup</value>
   </data>
   <data name="LocationsSchemePage_Toolbar_Search" xml:space="preserve">
     <value>Search</value>
@@ -1399,7 +1399,7 @@
     <value>New Rack</value>
   </data>
   <data name="RackSchemePage_Toolbar_Scheme" xml:space="preserve">
-    <value>Edit Scheme</value>
+    <value>Setup</value>
   </data>
   <data name="RackSchemePage_Toolbar_Search" xml:space="preserve">
     <value>Search</value>
@@ -1414,7 +1414,7 @@
     <value>New Zone</value>
   </data>
   <data name="ZonesSchemePage_Toolbar_Scheme" xml:space="preserve">
-    <value>Edit Scheme</value>
+    <value>Setup</value>
   </data>
   <data name="ZonesSchemePage_Toolbar_Search" xml:space="preserve">
     <value>Search</value>
@@ -1456,10 +1456,10 @@
     <value>Delete</value>
   </data>
   <data name="RacksPlanViewModel_DeleteRack" xml:space="preserve">
-    <value>Delete rack {0}?</value>
+    <value>Delete rack {0} from scheme?</value>
   </data>
   <data name="RacksPlanViewModel_DeleteRackAndBins" xml:space="preserve">
-    <value>Delete rack {0} and bins?</value>
+    <value>Delete rack {0} and bins from NAV?</value>
   </data>
   <data name="RacksPlanViewModel_DeleteBinErrors" xml:space="preserve">
     <value>Delete bins errors!</value>
@@ -1468,7 +1468,7 @@
     <value>Cancel</value>
   </data>
   <data name="LocationsPlanViewModel_DeleteLocation" xml:space="preserve">
-    <value>Delete Location {0}?</value>
+    <value>Delete Location {0} from scheme?</value>
   </data>
   <data name="LocationsPlanViewModel_DeleteQuestion" xml:space="preserve">
     <value>Delete</value>
@@ -1480,7 +1480,7 @@
     <value>Delete</value>
   </data>
   <data name="ZonesPlanViewModel_DeleteZone" xml:space="preserve">
-    <value>Delete zone {0}?</value>
+    <value>Delete zone {0} from scheme?</value>
   </data>
   <data name="BinInfoPanelRackCard_BinInfo" xml:space="preserve">
     <value>Info</value>
@@ -1502,5 +1502,17 @@
   </data>
   <data name="RackEditPage_Sections" xml:space="preserve">
     <value>Sections</value>
+  </data>
+  <data name="MainPage_ConnectionsMessage" xml:space="preserve">
+    <value>Connections to Microsoft Dynamics NAV are not configured!</value>
+  </data>
+  <data name="LocationsPlanViewModel_DeleteLocation2" xml:space="preserve">
+    <value>Delete Location {0} from Microsoft Dynamics NAV?</value>
+  </data>
+  <data name="ZonesPlanViewModel_DeleteZone2" xml:space="preserve">
+    <value>Delete Zone {0} from NAV?</value>
+  </data>
+  <data name="RacksPlanViewModel_DeleteRack2" xml:space="preserve">
+    <value>Delete rack {0} from NAV?</value>
   </data>
 </root>

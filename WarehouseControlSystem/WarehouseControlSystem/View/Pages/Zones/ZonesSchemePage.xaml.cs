@@ -39,16 +39,17 @@ namespace WarehouseControlSystem.View.Pages.Zones
             Title = AppResources.ZoneSchemePage_Title + " - " + Model.Location.Name;
             Global.CurrentLocationName = Model.Location.Name;
 
-            MessagingCenter.Subscribe<ZonesPlanViewModel>(this, "Rebuild", Rebuild);
-            MessagingCenter.Subscribe<ZonesPlanViewModel>(this, "Reshape", Reshape);
-
             Model.IsEditMode = false;
             Model.SetEditModeForItems(Model.IsEditMode);
+            Menu();
         }
 
         protected override async void OnAppearing()
         {
             base.OnAppearing();
+            MessagingCenter.Subscribe<ZonesPlanViewModel>(this, "Rebuild", Rebuild);
+            MessagingCenter.Subscribe<ZonesPlanViewModel>(this, "Reshape", Reshape);
+
             PanGesture.PanUpdated += OnPaned;
             TapGesture.Tapped += GridTapped;
             await Model.Load();
@@ -56,6 +57,8 @@ namespace WarehouseControlSystem.View.Pages.Zones
 
         protected override void OnDisappearing()
         {
+            MessagingCenter.Unsubscribe<ZonesPlanViewModel>(this, "Rebuild");
+            MessagingCenter.Unsubscribe<ZonesPlanViewModel>(this, "Reshape");
             Model.State = ViewModel.Base.ModelState.Undefined;
             PanGesture.PanUpdated -= OnPaned;
             TapGesture.Tapped -= GridTapped;
@@ -68,8 +71,6 @@ namespace WarehouseControlSystem.View.Pages.Zones
         protected override bool OnBackButtonPressed()
         {
             Model.DisposeModel();
-            MessagingCenter.Unsubscribe<ZonesPlanViewModel>(this, "Rebuild");
-            MessagingCenter.Unsubscribe<ZonesPlanViewModel>(this, "Reshape");
             base.OnBackButtonPressed();
             return false;
         }
@@ -126,6 +127,118 @@ namespace WarehouseControlSystem.View.Pages.Zones
                 abslayout.BackgroundColor = Color.LightGray;
                 Model.IsEditMode = true;
                 Model.SetEditModeForItems(Model.IsEditMode);
+            }
+            Menu();
+        }
+
+        ToolbarItem listbutton;
+        ToolbarItem addbutton;
+        ToolbarItem removebutton;
+        ToolbarItem editbutton;
+        ToolbarItem searchbutton;
+        private void Menu()
+        {
+            if (Model.IsEditMode)
+            {
+                if (searchbutton is ToolbarItem)
+                {
+                    ToolbarItems.Remove(searchbutton);
+                }
+
+                if (addbutton is null)
+                {
+                    addbutton = new ToolbarItem()
+                    {
+                        Order = ToolbarItemOrder.Primary,
+                        Priority = 10,
+                        Text = AppResources.ZonesSchemePage_Toolbar_New,
+                        Icon = new FileImageSource()
+                    };
+                    addbutton.Icon.File = Global.GetPlatformPath("ic_action_add_circle.png");
+                    addbutton.SetBinding(MenuItem.CommandProperty, new Binding("NewZoneCommand"));
+                }
+                ToolbarItems.Add(addbutton);
+
+                if (removebutton is null)
+                {
+                    removebutton = new ToolbarItem()
+                    {
+                        Order = ToolbarItemOrder.Primary,
+                        Priority = 20,
+                        Text = AppResources.LocationsSchemePage_Toolbar_Delete,
+                        Icon = new FileImageSource()
+                    };
+                    removebutton.Icon.File = Global.GetPlatformPath("ic_action_remove_circle.png");
+                    removebutton.SetBinding(MenuItem.CommandProperty, new Binding("DeleteZoneCommand"));
+                    removebutton.SetBinding(MenuItem.CommandParameterProperty, new Binding("SelectedZoneViewModel"));
+                }
+                ToolbarItems.Add(removebutton);
+
+
+                if (editbutton is null)
+                {
+                    editbutton = new ToolbarItem()
+                    {
+                        Order = ToolbarItemOrder.Primary,
+                        Priority = 20,
+                        Text = AppResources.LocationsSchemePage_Toolbar_Edit,
+                        Icon = new FileImageSource()
+                    };
+                    editbutton.Icon.File = Global.GetPlatformPath("ic_action_create.png");
+                    editbutton.SetBinding(MenuItem.CommandProperty, new Binding("EditZoneCommand"));
+                    editbutton.SetBinding(MenuItem.CommandParameterProperty, new Binding("SelectedZoneViewModel"));
+                }
+                ToolbarItems.Add(editbutton);
+
+                if (listbutton is null)
+                {
+                    listbutton = new ToolbarItem()
+                    {
+                        Order = ToolbarItemOrder.Primary,
+                        Priority = 30,
+                        Text = AppResources.ZonesSchemePage_Toolbar_List,
+                        Icon = new FileImageSource()
+                    };
+                    listbutton.Icon.File = Global.GetPlatformPath("ic_action_dehaze.png");
+                    listbutton.SetBinding(MenuItem.CommandProperty, new Binding("ListZonesCommand"));
+                }
+                ToolbarItems.Add(listbutton);
+            }
+            else
+            {
+                if (listbutton is ToolbarItem)
+                {
+                    ToolbarItems.Remove(listbutton);
+                }
+
+                if (addbutton is ToolbarItem)
+                {
+                    ToolbarItems.Remove(addbutton);
+                }
+
+                if (removebutton is ToolbarItem)
+                {
+                    ToolbarItems.Remove(removebutton);
+                }
+
+                if (editbutton is ToolbarItem)
+                {
+                    ToolbarItems.Remove(editbutton);
+                }
+
+                if (searchbutton is null)
+                {
+                    searchbutton = new ToolbarItem()
+                    {
+                        Order = ToolbarItemOrder.Primary,
+                        Priority = 30,
+                        Text = AppResources.ZonesSchemePage_Toolbar_Search,
+                        Icon = new FileImageSource()
+                    };
+                    searchbutton.Icon.File = Global.GetPlatformPath("ic_action_search.png");
+                    searchbutton.Clicked += ToolbarItem_Search;
+                }
+                ToolbarItems.Add(searchbutton);
             }
         }
     }

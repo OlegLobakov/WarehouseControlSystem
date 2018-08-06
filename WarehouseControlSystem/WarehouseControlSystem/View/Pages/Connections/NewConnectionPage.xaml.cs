@@ -30,7 +30,8 @@ namespace WarehouseControlSystem.View.Pages.Connections
             model = cvm;
             BindingContext = model;
             InitializeComponent();
-            model.CreateMode = createmode;                   
+            model.CreateMode = createmode;
+            creditialspicker.SelectedItem = cvm.CreditialList.Find(x => x == cvm.ClientCredentialType);
             Title = AppResources.NewConnectionPage_Title;
         }
 

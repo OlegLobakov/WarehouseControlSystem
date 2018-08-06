@@ -1182,7 +1182,7 @@
     <value>Создать склад</value>
   </data>
   <data name="LocationsSchemePage_Toolbar_Scheme" xml:space="preserve">
-    <value>Изменить схему</value>
+    <value>Настройка</value>
   </data>
   <data name="LocationsSchemePage_Toolbar_Search" xml:space="preserve">
     <value>Поиск</value>
@@ -1395,7 +1395,7 @@
     <value>Создать стеллаж</value>
   </data>
   <data name="RackSchemePage_Toolbar_Scheme" xml:space="preserve">
-    <value>Изменить схему</value>
+    <value>Настройка</value>
   </data>
   <data name="RackSchemePage_Toolbar_Search" xml:space="preserve">
     <value>Поиск</value>
@@ -1410,7 +1410,7 @@
     <value>Создать зону</value>
   </data>
   <data name="ZonesSchemePage_Toolbar_Scheme" xml:space="preserve">
-    <value>Изменить схему</value>
+    <value>Настройка</value>
   </data>
   <data name="ZonesSchemePage_Toolbar_Search" xml:space="preserve">
     <value>Поиск</value>
@@ -1452,10 +1452,10 @@
     <value>Удалить</value>
   </data>
   <data name="RacksPlanViewModel_DeleteRack" xml:space="preserve">
-    <value>Удалить стеллаж {0}?</value>
+    <value>Удалить стеллаж {0} со схемы?</value>
   </data>
   <data name="RacksPlanViewModel_DeleteRackAndBins" xml:space="preserve">
-    <value>Удалить стеллаж {0} и ячейки?</value>
+    <value>Удалить стеллаж {0} и ячейки из NAV?</value>
   </data>
   <data name="RacksPlanViewModel_DeleteBinErrors" xml:space="preserve">
     <value>Ошибки удаления учеек!</value>
@@ -1464,7 +1464,7 @@
     <value>Отмена</value>
   </data>
   <data name="LocationsPlanViewModel_DeleteLocation" xml:space="preserve">
-    <value>Удалить склад {0}?</value>
+    <value>Удалить склад {0} со схемы?</value>
   </data>
   <data name="LocationsPlanViewModel_DeleteQuestion" xml:space="preserve">
     <value>Удалить</value>
@@ -1476,7 +1476,7 @@
     <value>Удалить</value>
   </data>
   <data name="ZonesPlanViewModel_DeleteZone" xml:space="preserve">
-    <value>Удалить зону {0}?</value>
+    <value>Удалить зону {0} со схемы?</value>
   </data>
   <data name="BinInfoPanelRackCard_BinInfo" xml:space="preserve">
     <value>Инфо</value>
@@ -1498,5 +1498,17 @@
   </data>
   <data name="RackEditPage_Sections" xml:space="preserve">
     <value>Секции</value>
+  </data>
+  <data name="MainPage_ConnectionsMessage" xml:space="preserve">
+    <value>Подключения к Microsoft Dynamics NAV не настроены!</value>
+  </data>
+  <data name="LocationsPlanViewModel_DeleteLocation2" xml:space="preserve">
+    <value>Удалить склад  {0} из Microsoft Dynamics NAV?</value>
+  </data>
+  <data name="ZonesPlanViewModel_DeleteZone2" xml:space="preserve">
+    <value>Удалить зону {0}  из NAV?</value>
+  </data>
+  <data name="RacksPlanViewModel_DeleteRack2" xml:space="preserve">
+    <value>Удалить сделлаж {0} из NAV?</value>
   </data>
 </root>

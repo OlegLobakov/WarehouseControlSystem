@@ -31,7 +31,19 @@ namespace WarehouseControlSystem.ViewModel
     {
         public Location Location { get; set; }
 
-        public ZoneViewModel SelectedZoneViewModel { get; set; }
+        public ZoneViewModel SelectedZoneViewModel
+        {
+            get { return selectedzvm; }
+            set
+            {
+                if (selectedzvm != value)
+                {
+                    selectedzvm = value;
+                    OnPropertyChanged(nameof(SelectedZoneViewModel));
+                }
+            }
+        } ZoneViewModel selectedzvm;
+
         public ObservableCollection<ZoneViewModel> ZoneViewModels { get; set; }
      
         public ICommand ListZonesCommand { protected set; get; }
@@ -48,8 +60,21 @@ namespace WarehouseControlSystem.ViewModel
       
             ListZonesCommand = new Command(async () => await ListZones().ConfigureAwait(false));
             NewZoneCommand = new Command(async () => await NewZone().ConfigureAwait(false));
-            EditZoneCommand = new Command(async (x) => await EditZone(x).ConfigureAwait(false));
-            DeleteZoneCommand = new Command(async (x) => await DeleteZone(x).ConfigureAwait(false));
+            EditZoneCommand = new Command(async (x) =>
+            {
+                if (x != null)
+                {
+                    await EditZone(x).ConfigureAwait(false);
+                }
+            });
+
+            DeleteZoneCommand = new Command(async (x) =>
+            {
+                if (x != null)
+                {
+                    await DeleteZone(x).ConfigureAwait(false);
+                }
+            });
 
             IsEditMode = true;
             Title = AppResources.ZoneListPage_Title + " - " + location.Code;
@@ -193,6 +218,7 @@ namespace WarehouseControlSystem.ViewModel
                             break;
                         case SchemeElementEditMode.Resize:
                             zvm.IsSelected = false;
+                            SelectedZoneViewModel = null;
                             zvm.EditMode = SchemeElementEditMode.None;
                             break;
                         default:
@@ -202,6 +228,7 @@ namespace WarehouseControlSystem.ViewModel
                 else
                 {
                     zvm.IsSelected = true;
+                    SelectedZoneViewModel = zvm;
                     zvm.EditMode = SchemeElementEditMode.Move;
                 }
             }
@@ -265,13 +292,10 @@ namespace WarehouseControlSystem.ViewModel
 
         public async Task EditZone(object obj)
         {
-            if (obj is ZoneViewModel)
-            {
-                ZoneViewModel zvm = (ZoneViewModel)obj;
-                zvm.CreateMode = false;
-                ZoneCardPage nzp = new ZoneCardPage(zvm);
-                await Navigation.PushAsync(nzp);
-            }
+            ZoneViewModel zvm = (ZoneViewModel)obj;
+            zvm.CreateMode = false;
+            ZoneCardPage nzp = new ZoneCardPage(zvm);
+            await Navigation.PushAsync(nzp);
         }
 
         public async Task DeleteZone(object obj)
@@ -283,35 +307,46 @@ namespace WarehouseControlSystem.ViewModel
 
             ZoneViewModel zvm = (ZoneViewModel)obj;
 
-            string request = String.Format(AppResources.ZonesPlanViewModel_DeleteZone, zvm.Name);
+            //string request = String.Format(AppResources.ZonesPlanViewModel_DeleteZone, zvm.Name);
 
-            var action = await App.Current.MainPage.DisplayAlert(
+            string variant1 = String.Format(AppResources.ZonesPlanViewModel_DeleteZone, zvm.Code);
+            string variant2 = String.Format(AppResources.ZonesPlanViewModel_DeleteZone2, zvm.Code);
+            var action = await App.Current.MainPage.DisplayActionSheet(
                 AppResources.ZonesPlanViewModel_DeleteQuestion,
-                request,
-                "OK",
-                AppResources.ZonesPlanViewModel_DeleteCancel);
+                AppResources.ZonesPlanViewModel_DeleteCancel,
+                null,
+                variant1,
+                variant2);
 
-            if (action)
+            if ((action != null) && (action != AppResources.ZonesPlanViewModel_DeleteCancel))
             {
-                try
+                if (action == variant1)
                 {
-                    State = ModelState.Loading;
-                    Zone zone = new Zone();
-                    zvm.SaveFields(zone);
-                    await NAV.DeleteZone(zone, ACD.Default).ConfigureAwait(true);
-                    ZoneViewModels.Remove(zvm);
-                    State = ModelState.Normal;
+                    await zvm.SaveToZoneSchemeVisible(false);
                 }
-                catch (Exception e)
+                if (action == variant2)
                 {
-                    System.Diagnostics.Debug.WriteLine(e.Message);
-                    ErrorText = e.Message;
-                    State = ModelState.Error;
+                    try
+                    {
+                        State = ModelState.Loading;
+                        Zone zone = new Zone();
+                        zvm.SaveFields(zone);
+                        await NAV.DeleteZone(zone, ACD.Default).ConfigureAwait(true);
+                        ZoneViewModels.Remove(zvm);
+                        State = ModelState.Normal;
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                        ErrorText = e.Message;
+                        State = ModelState.Error;
+                    }
+                    finally
+                    {
+                        LoadAnimation = false;
+                    }
                 }
-                finally
-                {
-                    LoadAnimation = false;
-                }
+                await Load();
             }
         }
 
