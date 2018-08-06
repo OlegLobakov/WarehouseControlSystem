@@ -103,6 +103,9 @@
                                     </Grid>
                                     <Image Grid.Row="2" IsVisible="{Binding ImageIsVisible}" 
                                                Aspect="Fill" Source="{Binding ImageSource}" HeightRequest="300"/>
+                                    <Label Grid.Row="2" IsVisible="{Binding ImageIsError}" Margin="20"
+                                           Text="Image Error"
+                                           HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
                                 </Grid>
                             </StackLayout>
                         </ViewCell>

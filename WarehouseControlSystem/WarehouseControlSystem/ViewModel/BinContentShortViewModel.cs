@@ -37,6 +37,20 @@ namespace WarehouseControlSystem.ViewModel
         }
         bool imageisvisible;
 
+        public bool ImageIsError
+        {
+            get { return imageiserror; }
+            set
+            {
+                if (imageiserror != value)
+                {
+                    imageiserror = value;
+                    OnPropertyChanged(nameof(ImageIsError));
+                }
+            }
+        }
+        bool imageiserror;
+
         public ImageSource ImageSource
         {
             get { return imagesource; }

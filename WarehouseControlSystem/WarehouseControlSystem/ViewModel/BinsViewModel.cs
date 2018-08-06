@@ -1135,11 +1135,15 @@ namespace WarehouseControlSystem.ViewModel
                             {
                                 try
                                 {
+
+                                    bcsvm.ImageIsError = false;
+                                    bcsvm.ImageIsVisible = false;
                                     bcsvm.ImageSource = ImageSource.FromUri(new Uri(bcsvm.ImageURL));
                                     bcsvm.ImageIsVisible = true;
                                 }
                                 catch (Exception exp)
                                 {
+                                    bcsvm.ImageIsError = true;
                                     System.Diagnostics.Debug.WriteLine(exp.Message);
                                 }
                             }
