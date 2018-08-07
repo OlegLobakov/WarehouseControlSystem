@@ -49,6 +49,9 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
+    <Compile Update="View\Content\IndicatorView.xaml.cs">
+      <DependentUpon>IndicatorView.xaml</DependentUpon>
+    </Compile>
     <Compile Update="View\Pages\Racks\Card\BinInfoPanelRackCard.xaml.cs">
       <DependentUpon>BinInfoPanelRackCard.xaml</DependentUpon>
     </Compile>
@@ -109,6 +112,9 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="View\Content\UserDefinedSelectionView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="View\Content\IndicatorView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="View\Pages\Racks\New\MasterNewRackPage.xaml">

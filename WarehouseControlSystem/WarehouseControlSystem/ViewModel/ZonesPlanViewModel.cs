@@ -50,8 +50,26 @@ namespace WarehouseControlSystem.ViewModel
         public ICommand NewZoneCommand { protected set; get; }
         public ICommand EditZoneCommand { protected set; get; }
         public ICommand DeleteZoneCommand { protected set; get; }
+        public ICommand IndicatorsViewCommand { protected set; get; }
 
-     
+        public bool IsIndicatorsVisible
+        {
+            get { return isindicatorsvisible; }
+            set
+            {
+                if (isindicatorsvisible != value)
+                {
+                    isindicatorsvisible = value;
+                    foreach (ZoneViewModel zvm in ZoneViewModels)
+                    {
+                        zvm.IsIndicatorsVisible = value;
+                    }
+                    OnPropertyChanged(nameof(IsIndicatorsVisible));
+                }
+            }
+        }
+        bool isindicatorsvisible;
+
         public ZonesPlanViewModel(INavigation navigation, Location location) : base(navigation)
         {
             Location = location;
@@ -75,7 +93,7 @@ namespace WarehouseControlSystem.ViewModel
                     await DeleteZone(x).ConfigureAwait(false);
                 }
             });
-
+            IndicatorsViewCommand = new Command(ChangeIndicatorsView);
             IsEditMode = true;
             Title = AppResources.ZoneListPage_Title + " - " + location.Code;
 
@@ -90,6 +108,7 @@ namespace WarehouseControlSystem.ViewModel
                 PlanHeight = 60;
             }
             State = ModelState.Undefined;
+            IsIndicatorsVisible = true;
         }
 
         public void ClearAll()
@@ -348,6 +367,11 @@ namespace WarehouseControlSystem.ViewModel
                 }
                 await Load();
             }
+        }
+
+        public void ChangeIndicatorsView()
+        {
+            IsIndicatorsVisible = !IsIndicatorsVisible;
         }
 
         public async Task SaveLocationParams()

@@ -1515,4 +1515,7 @@
   <data name="RacksPlanViewModel_DeleteRack2" xml:space="preserve">
     <value>Delete rack {0} from NAV?</value>
   </data>
+  <data name="LocationsSchemePage_Toolbar_Indicators" xml:space="preserve">
+    <value>Show/Hide Indicators</value>
+  </data>
 </root>

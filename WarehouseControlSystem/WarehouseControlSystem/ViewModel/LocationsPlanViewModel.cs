@@ -50,6 +50,25 @@ namespace WarehouseControlSystem.ViewModel
         public ICommand NewLocationCommand { protected set; get; }
         public ICommand EditLocationCommand { protected set; get; }
         public ICommand DeleteLocationCommand { protected set; get; }
+        public ICommand IndicatorsViewCommand { protected set; get; }
+
+        public bool IsIndicatorsVisible
+        {
+            get { return isindicatorsvisible; }
+            set
+            {
+                if (isindicatorsvisible != value)
+                {
+                    isindicatorsvisible = value;
+                    foreach (LocationViewModel lvm in LocationViewModels)
+                    {
+                        lvm.IsIndicatorsVisible = value;
+                    }
+                    OnPropertyChanged(nameof(IsIndicatorsVisible));
+                }
+            }
+        }
+        bool isindicatorsvisible;
 
         public LocationsPlanViewModel(INavigation navigation) : base(navigation)
         {
@@ -69,6 +88,7 @@ namespace WarehouseControlSystem.ViewModel
                     await DeleteLocation(x).ConfigureAwait(false);
                 }
             });
+            IndicatorsViewCommand = new Command(ChangeIndicatorsView);
 
             IsEditMode = true;
             Title = AppResources.LocationsSchemePage_Title;
@@ -78,6 +98,7 @@ namespace WarehouseControlSystem.ViewModel
             }
             State = ModelState.Undefined;
             IsEditMode = false;
+            IsIndicatorsVisible = true;
         }
 
         public void ClearAll()
@@ -359,6 +380,10 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
+        public void ChangeIndicatorsView()
+        {
+            IsIndicatorsVisible = !IsIndicatorsVisible;
+        }
 
         public override async void SaveChangesAsync()
         {
@@ -428,6 +453,10 @@ namespace WarehouseControlSystem.ViewModel
         public override void DisposeModel()
         {
             base.DisposeModel();
+            foreach (LocationViewModel lvm in LocationViewModels)
+            {
+                lvm.DisposeModel();
+            }
         }
     }
 }

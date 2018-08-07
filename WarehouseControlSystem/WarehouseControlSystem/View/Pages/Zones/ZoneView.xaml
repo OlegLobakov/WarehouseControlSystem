@@ -2,8 +2,10 @@
 <d:SchemeBaseView  xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WarehouseControlSystem.View.Pages.Zones.ZoneView"
-              xmlns:d="clr-namespace:WarehouseControlSystem.View.Pages.Base"
-   xmlns:vc="clr-namespace:WarehouseControlSystem.View.Content">
+             xmlns:hs="clr-namespace:WarehouseControlSystem.Helpers.Containers.HorizontalListView"
+             xmlns:d="clr-namespace:WarehouseControlSystem.View.Pages.Base"
+                   
+   xmlns:components="clr-namespace:WarehouseControlSystem.View.Content">
     <ContentView.Content>
         <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Padding="0" BackgroundColor="DarkGray">
             <StackLayout.Triggers>
@@ -52,16 +54,29 @@
                         </Label.Triggers>
                     </Label>
 
-                    <vc:InnerSubSchemeView                         
-                        Grid.Row="2" Margin="10,5,10,5"
-                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"  
-                        PlanWidth="{Binding PlanWidth}"
-                        PlanHeight="{Binding PlanHeight}"
-                        SubSchemeElements="{Binding SubSchemeElements}"  
-                        IsVisible="{Binding RacksIsLoaded}"
-                        SubSchemeBackgroundColor="{Binding Color}"
-                        UpdateScheme="{Binding RacksIsLoaded}"/>
+                    <hs:HorizontalListView  
+                        Grid.Row="2"  HorizontalOptions="FillAndExpand" 
+                        ItemsSource="{Binding Indicators}"
+                        Margin="10">
+                        <hs:HorizontalListView.ItemTemplate>
+                            <DataTemplate>
+                                <components:IndicatorView WidthHeight="150" VerticalOptions="Start"/>
+                            </DataTemplate>
+                        </hs:HorizontalListView.ItemTemplate>
+                    </hs:HorizontalListView>
+                    <StackLayout Grid.Row="2"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"  
+                                 IsVisible="{Binding IsNotIndicatorsVisible}">
 
+                        <components:InnerSubSchemeView                         
+                            Margin="10,5,10,5"
+                            HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"  
+                            PlanWidth="{Binding PlanWidth}"
+                            PlanHeight="{Binding PlanHeight}"
+                            SubSchemeElements="{Binding SubSchemeElements}"  
+                            IsVisible="{Binding RacksIsLoaded}"
+                            SubSchemeBackgroundColor="{Binding Color}"
+                            UpdateScheme="{Binding RacksIsLoaded}"/>
+                    </StackLayout>
                     <StackLayout Grid.Row="3" Orientation="Horizontal">
                         <Label Text="{Binding EditModeText}" TextColor="White" 
                            HorizontalOptions="Start" VerticalOptions="Center"  

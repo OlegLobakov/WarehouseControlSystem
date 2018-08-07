@@ -62,7 +62,6 @@ namespace WarehouseControlSystem.ViewModel.Base
                 }
             }
         } bool isloadingstate;
-
         public bool IsNormalState
         {
             get { return isnormalstate; }
@@ -75,7 +74,6 @@ namespace WarehouseControlSystem.ViewModel.Base
                 }
             }
         } bool isnormalstate;
-
         public bool IsErrorState
         {
             get { return iserrorstate; }
@@ -88,7 +86,6 @@ namespace WarehouseControlSystem.ViewModel.Base
                 }
             }
         }  bool iserrorstate;
-
         public bool IsRequestState
         {
             get { return isrequeststate; }
@@ -100,9 +97,7 @@ namespace WarehouseControlSystem.ViewModel.Base
                     OnPropertyChanged(nameof(IsRequestState));
                 }
             }
-        }
-        bool isrequeststate;
-
+        } bool isrequeststate;
         public bool IsNoDataState
         {
             get { return isnodatastate; }
@@ -114,8 +109,7 @@ namespace WarehouseControlSystem.ViewModel.Base
                     OnPropertyChanged(nameof(IsNoDataState));
                 }
             }
-        }
-        bool isnodatastate;
+        } bool isnodatastate;
 
         public bool IsSelected
         {
@@ -142,7 +136,6 @@ namespace WarehouseControlSystem.ViewModel.Base
                 }
             }
         } string loadingtext;
-
         public bool LoadAnimation
         {
             get { return loadanimation; }
@@ -168,7 +161,6 @@ namespace WarehouseControlSystem.ViewModel.Base
                 }
             }
         } string infotext;
-
         public string ErrorText
         {
             get { return errortext; }
@@ -181,7 +173,6 @@ namespace WarehouseControlSystem.ViewModel.Base
                 }
             }
         } string errortext;
-
         public string RequestLabelText
         {
             get { return requestlabeltext; }
@@ -219,8 +210,7 @@ namespace WarehouseControlSystem.ViewModel.Base
                     OnPropertyChanged("IsEditMode");
                 }
             }
-        }
-        bool iseditmode;
+        } bool iseditmode;
 
         public ICommand ErrorOKCommand { protected set; get; }
 

@@ -44,9 +44,7 @@ namespace WarehouseControlSystem.ViewModel
                     OnPropertyChanged(nameof(LocationCode));
                 }
             }
-        }
-        string locationcode;
-        
+        } string locationcode;      
         public string Description
         {
             get { return description; }
@@ -60,7 +58,6 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } string description;
-
         public string BinTypeCode
         {
             get { return bintypecode; }
@@ -73,9 +70,7 @@ namespace WarehouseControlSystem.ViewModel
                     OnPropertyChanged(nameof(BinTypeCode));
                 }
             }
-        }
-        string bintypecode;
-
+        } string bintypecode;
         public bool SchemeVisible
         {
             get { return schemevisible; }
@@ -158,7 +153,6 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } bool bintypesisloaded;
-
         public bool BinTypesIsBeingLoaded
         {
             get { return bintypesisbeingloaded; }
@@ -186,6 +180,45 @@ namespace WarehouseControlSystem.ViewModel
         } bool canchangelocationCode;
 
         public List<SubSchemeElement> SubSchemeElements { get; set; } = new List<SubSchemeElement>();
+
+        public ObservableCollection<IndicatorViewModel> Indicators
+        {
+            get { return indicators; }
+            set
+            {
+                if (indicators != value)
+                {
+                    indicators = value;
+                    OnPropertyChanged(nameof(Indicators));
+                }
+            }
+        } ObservableCollection<IndicatorViewModel> indicators;
+        public bool IsIndicatorsVisible
+        {
+            get { return isindicatorsvisible; }
+            set
+            {
+                if (isindicatorsvisible != value)
+                {
+                    isindicatorsvisible = value;
+                    IsNotIndicatorsVisible = !value;
+                    OnPropertyChanged(nameof(IsIndicatorsVisible));
+                }
+            }
+        } bool isindicatorsvisible;
+        public bool IsNotIndicatorsVisible
+        {
+            get { return isnotindicatorsvisible; }
+            set
+            {
+                if (isnotindicatorsvisible != value)
+                {
+                    isnotindicatorsvisible = value;
+                    OnPropertyChanged(nameof(IsNotIndicatorsVisible));
+                }
+            }
+        } bool isnotindicatorsvisible;
+
         public bool RacksIsLoaded
         {
             get { return racksisloaded; }
@@ -226,6 +259,7 @@ namespace WarehouseControlSystem.ViewModel
             State = ModelState.Undefined;
             Changed = false;
             IsSaveToNAVEnabled = true;
+            IsIndicatorsVisible = true;
         }
 
         public void FillFields(Zone zone)
@@ -442,6 +476,34 @@ namespace WarehouseControlSystem.ViewModel
                 SubSchemeElements.Add(sse);
             }
             RacksIsLoaded = SubSchemeElements.Count > 0;
+        }
+
+        public async Task LoadIndicators()
+        {
+            if (IsEditMode)
+            {
+                return;
+            }
+
+            try
+            {
+                List<Indicator> list = await NAV.GetIndicatorsByZone(LocationCode, Code, ACD.Default).ConfigureAwait(true);
+                if (NotDisposed)
+                {
+                    ObservableCollection<IndicatorViewModel> nlist = new ObservableCollection<IndicatorViewModel>();
+                    foreach (Indicator indicator in list)
+                    {
+                        IndicatorViewModel ivm = new IndicatorViewModel(Navigation, indicator);
+                        nlist.Add(ivm);
+                    }
+                    Indicators = nlist;
+                }
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.Message);
+                ErrorText = e.Message;
+            }
         }
 
         private SubSchemeElement CreateSSE(Rack rack)

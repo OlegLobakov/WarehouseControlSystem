@@ -75,6 +75,7 @@ namespace WarehouseControlSystem.View.Pages.Locations
                 abslayout.Children.Add(lv);
                 Views.Add(lv);
                 lvm1.LoadZones();
+                lvm1.LoadIndicators();
             }
         }
 
@@ -114,10 +115,16 @@ namespace WarehouseControlSystem.View.Pages.Locations
         ToolbarItem addbutton;
         ToolbarItem removebutton;
         ToolbarItem editbutton;
+        ToolbarItem indicatorsbutton;
         private void Menu()
         {
             if (Model.IsEditMode)
             {
+                if (indicatorsbutton is ToolbarItem)
+                {
+                    ToolbarItems.Remove(indicatorsbutton);
+                }
+
                 if (listbutton is null)
                 {
                     listbutton = new ToolbarItem()
@@ -198,6 +205,21 @@ namespace WarehouseControlSystem.View.Pages.Locations
                 {
                     ToolbarItems.Remove(editbutton);
                 }
+
+
+                if (indicatorsbutton is null)
+                {
+                    indicatorsbutton = new ToolbarItem()
+                    {
+                        Order = ToolbarItemOrder.Primary,
+                        Priority = 20,
+                        Text = AppResources.LocationsSchemePage_Toolbar_Indicators,
+                        Icon = new FileImageSource()
+                    };
+                    indicatorsbutton.Icon.File = Global.GetPlatformPath("ic_action_dashboard.png");
+                    indicatorsbutton.SetBinding(MenuItem.CommandProperty, new Binding("IndicatorsViewCommand"));
+                }
+                ToolbarItems.Add(indicatorsbutton);
             }
         }
     }

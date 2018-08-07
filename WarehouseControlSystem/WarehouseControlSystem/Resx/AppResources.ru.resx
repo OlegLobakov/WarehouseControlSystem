@@ -1511,4 +1511,7 @@
   <data name="RacksPlanViewModel_DeleteRack2" xml:space="preserve">
     <value>Удалить сделлаж {0} из NAV?</value>
   </data>
+  <data name="LocationsSchemePage_Toolbar_Indicators" xml:space="preserve">
+    <value>Показать/Скрыть индикаторы</value>
+  </data>
 </root>

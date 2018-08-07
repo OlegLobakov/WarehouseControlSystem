@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WarehouseControlSystem.View.Content.IndicatorView"
+             x:Name="ThisIndView">
+  <ContentView.Content>
+        <Grid WidthRequest="{Binding WidthHeight, Source={x:Reference Name=ThisIndView}}" 
+              HeightRequest="{Binding WidthHeight, Source={x:Reference Name=ThisIndView}}"
+              ColumnSpacing="0"
+              RowSpacing="0"
+              BackgroundColor="{Binding ValueColor}">
+            
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Label Grid.Row="0" 
+                   Text="{Binding Header}" 
+                   TextColor="White" 
+                   FontSize="Medium"
+                   Margin="5"/>
+
+            <Label Grid.Row="1" 
+                   Text="{Binding Description}" 
+                   TextColor="White" 
+                   FontSize="Small"
+                   HorizontalOptions="StartAndExpand"
+                   VerticalOptions="StartAndExpand"
+                   Margin="5,0,5,0"/>
+
+            <Label Grid.Row="2" 
+                   Text="{Binding Value}" 
+                   TextColor="White" 
+                   FontSize="Medium"
+                   HorizontalOptions="EndAndExpand"
+                   Margin="0,0,5,5"/>
+        </Grid>
+  </ContentView.Content>
+</ContentView>

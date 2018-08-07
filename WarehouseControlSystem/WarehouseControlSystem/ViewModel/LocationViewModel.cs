@@ -188,6 +188,45 @@ namespace WarehouseControlSystem.ViewModel
             }
         } bool zonesisloaded;
 
+        public ObservableCollection<IndicatorViewModel> Indicators
+        {
+            get { return indicators; }
+            set
+            {
+                if (indicators != value)
+                {
+                    indicators = value;
+                    OnPropertyChanged(nameof(Indicators));
+                }
+            }
+        } ObservableCollection<IndicatorViewModel> indicators;
+        public bool IsIndicatorsVisible
+        {
+            get { return isindicatorsvisible; }
+            set
+            {
+                if (isindicatorsvisible != value)
+                {
+                    isindicatorsvisible = value;
+                    IsNotIndicatorsVisible = !value;
+                    OnPropertyChanged(nameof(IsIndicatorsVisible));
+                }
+            }
+        } bool isindicatorsvisible;
+        public bool IsNotIndicatorsVisible
+        {
+            get { return isnotindicatorsvisible; }
+            set
+            {
+                if (isnotindicatorsvisible != value)
+                {
+                    isnotindicatorsvisible = value;
+                    OnPropertyChanged(nameof(IsNotIndicatorsVisible));
+                }
+            }
+        } bool isnotindicatorsvisible;
+
+
         public bool ZonesIsBeingLoaded
         {
             get { return zonesisbeingloaded; }
@@ -201,6 +240,7 @@ namespace WarehouseControlSystem.ViewModel
             }
         } bool zonesisbeingloaded;
 
+        
         public LocationViewModel(INavigation navigation, Location location) : base(navigation)
         {
             State = ModelState.Undefined;
@@ -217,6 +257,7 @@ namespace WarehouseControlSystem.ViewModel
 
             Changed = false;
             IsSaveToNAVEnabled = true;
+            IsIndicatorsVisible = true;
         }
 
         public void FillFields(Location location)
@@ -453,6 +494,34 @@ namespace WarehouseControlSystem.ViewModel
                 SubSchemeElements.Add(sse);
             }
             ZonesIsLoaded = SubSchemeElements.Count > 0;
+        }
+
+        public async Task LoadIndicators()
+        {
+            if (IsEditMode)
+            {
+                return;
+            }
+
+            try
+            {
+                List<Indicator> list = await NAV.GetIndicatorsByLocation(Code, ACD.Default).ConfigureAwait(true);
+                if (NotDisposed)
+                {
+                    ObservableCollection<IndicatorViewModel> nlist = new ObservableCollection<IndicatorViewModel>();
+                    foreach (Indicator indicator in list)
+                    {
+                        IndicatorViewModel ivm = new IndicatorViewModel(Navigation, indicator);
+                        nlist.Add(ivm);
+                    }
+                    Indicators = nlist;
+                }
+            }
+            catch (OperationCanceledException e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.Message);
+                ErrorText = e.Message;
+            }
         }
 
         public override void DisposeModel()

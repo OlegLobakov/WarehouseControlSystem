@@ -1465,6 +1465,15 @@ namespace WarehouseControlSystem.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show/Hide Indicators.
+        /// </summary>
+        internal static string LocationsSchemePage_Toolbar_Indicators {
+            get {
+                return ResourceManager.GetString("LocationsSchemePage_Toolbar_Indicators", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Locations.
         /// </summary>
         internal static string LocationsSchemePage_Toolbar_List {

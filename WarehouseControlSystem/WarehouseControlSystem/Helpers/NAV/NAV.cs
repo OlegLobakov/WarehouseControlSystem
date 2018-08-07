@@ -458,10 +458,88 @@ namespace WarehouseControlSystem.Helpers.NAV
                     break;
             }
         }
-            #endregion
 
-            #region Zone
-            public static XElement[] SetZoneParams(XNamespace myns, Zone zone)
+        public static Task<List<Indicator>> GetIndicatorsByLocation(string locationcode, CancellationTokenSource cts)
+        {
+            var tcs = new TaskCompletionSource<List<Indicator>>();
+
+            if (IsConnectionFaild())
+            {
+                tcs.SetResult(null);
+                return tcs.Task;
+            }
+
+            XNamespace myns = GetNameSpace();
+            string functionname = "GetIndicatorsByLocation";
+            XElement body =
+                new XElement(myns + functionname,
+                    new XElement(myns + "locationCode", locationcode),
+                    new XElement(myns + "responseDocument", ""));
+            SoapParams sp = new SoapParams(functionname, body, myns);
+            Task.Run(() => GetIndicatorsByLocationNAV(tcs, sp, cts));
+            return tcs.Task;
+        }
+        private static async Task GetIndicatorsByLocationNAV(TaskCompletionSource<List<Indicator>> tcs, SoapParams sp, CancellationTokenSource cts)
+        {
+            try
+            {
+                XElement soapbodynode = await Process(sp, false, cts).ConfigureAwait(false);
+                string response = soapbodynode.Value;
+                XDocument document = GetDoc(response);
+                List<Indicator> rv = new List<Indicator>();
+                foreach (XElement currentnode in document.Root.Elements())
+                {
+                    Indicator bi = GetIndicatorsByLocationFromXML(currentnode);
+                    rv.Add(bi);
+                }
+                tcs.SetResult(rv);
+            }
+            catch (Exception e)
+            {
+                tcs.SetException(e);
+            }
+        }
+        private static Indicator GetIndicatorsByLocationFromXML(XElement currentnode)
+        {
+            Indicator ind = new Indicator();
+            foreach (XAttribute currentatribute in currentnode.Attributes())
+            {
+                switch (currentatribute.Name.LocalName)
+                {
+                    case "Header":
+                        {
+                            ind.Header = currentatribute.Value;
+                            break;
+                        }
+                    case "Description":
+                        {
+                            ind.Description = currentatribute.Value;
+                            break;
+                        }
+                    case "Value":
+                        {
+                            ind.Value = currentatribute.Value;
+                            break;
+                        }
+                    case "Color":
+                        {
+                            ind.ValueColor = currentatribute.Value;
+                            break;
+                        }
+                    case "Position":
+                        {
+                            ind.Position = StringToInt(currentatribute.Value);
+                            break;
+                        }
+                }
+            }
+            return ind;
+        }
+
+        #endregion
+
+        #region Zone
+        public static XElement[] SetZoneParams(XNamespace myns, Zone zone)
         {
             return new XElement[]
             {
@@ -703,6 +781,84 @@ namespace WarehouseControlSystem.Helpers.NAV
                     zone.SchemeVisible = StringToBool(currentatribute.Value);
                     break;
             }
+        }
+
+        public static Task<List<Indicator>> GetIndicatorsByZone(string locationcode, string zonecode, CancellationTokenSource cts)
+        {
+            var tcs = new TaskCompletionSource<List<Indicator>>();
+
+            if (IsConnectionFaild())
+            {
+                tcs.SetResult(null);
+                return tcs.Task;
+            }
+
+            XNamespace myns = GetNameSpace();
+            string functionname = "GetIndicatorsByZone";
+            XElement body =
+                new XElement(myns + functionname,
+                    new XElement(myns + "locationCode", locationcode),
+                    new XElement(myns + "zoneCode", zonecode),
+                    new XElement(myns + "responseDocument", ""));
+            SoapParams sp = new SoapParams(functionname, body, myns);
+            Task.Run(() => GetIndicatorsByZoneNAV(tcs, sp, cts));
+            return tcs.Task;
+        }
+        private static async Task GetIndicatorsByZoneNAV(TaskCompletionSource<List<Indicator>> tcs, SoapParams sp, CancellationTokenSource cts)
+        {
+            try
+            {
+                XElement soapbodynode = await Process(sp, false, cts).ConfigureAwait(false);
+                string response = soapbodynode.Value;
+                XDocument document = GetDoc(response);
+                List<Indicator> rv = new List<Indicator>();
+                foreach (XElement currentnode in document.Root.Elements())
+                {
+                    Indicator bi = GetIndicatorsByZoneFromXML(currentnode);
+                    rv.Add(bi);
+                }
+                tcs.SetResult(rv);
+            }
+            catch (Exception e)
+            {
+                tcs.SetException(e);
+            }
+        }
+        private static Indicator GetIndicatorsByZoneFromXML(XElement currentnode)
+        {
+            Indicator ind = new Indicator();
+            foreach (XAttribute currentatribute in currentnode.Attributes())
+            {
+                switch (currentatribute.Name.LocalName)
+                {
+                    case "Header":
+                        {
+                            ind.Header = currentatribute.Value;
+                            break;
+                        }
+                    case "Description":
+                        {
+                            ind.Description = currentatribute.Value;
+                            break;
+                        }
+                    case "Value":
+                        {
+                            ind.Value = currentatribute.Value;
+                            break;
+                        }
+                    case "Color":
+                        {
+                            ind.ValueColor = currentatribute.Value;
+                            break;
+                        }
+                    case "Position":
+                        {
+                            ind.Position = StringToInt(currentatribute.Value);
+                            break;
+                        }
+                }
+            }
+            return ind;
         }
         #endregion
 

@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>   
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="WarehouseControlSystem.View.Content.EmptySpaceViewInRack"
-             x:Name="ThisBinView">
+             x:Class="WarehouseControlSystem.View.Content.EmptySpaceViewInRack">
   <ContentView.Content>
         <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="DarkGray" SizeChanged="StackLayout_SizeChanged">
             <StackLayout.GestureRecognizers>

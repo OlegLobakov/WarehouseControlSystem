@@ -87,6 +87,7 @@ namespace WarehouseControlSystem.View.Pages.Zones
                 abslayout.Children.Add(zv);
                 Views.Add(zv);
                 zvm.LoadRacks();
+                zvm.LoadIndicators();
             }
         }
 
@@ -136,6 +137,7 @@ namespace WarehouseControlSystem.View.Pages.Zones
         ToolbarItem removebutton;
         ToolbarItem editbutton;
         ToolbarItem searchbutton;
+        ToolbarItem indicatorsbutton;
         private void Menu()
         {
             if (Model.IsEditMode)
@@ -143,6 +145,11 @@ namespace WarehouseControlSystem.View.Pages.Zones
                 if (searchbutton is ToolbarItem)
                 {
                     ToolbarItems.Remove(searchbutton);
+                }
+
+                if (indicatorsbutton is ToolbarItem)
+                {
+                    ToolbarItems.Remove(indicatorsbutton);
                 }
 
                 if (addbutton is null)
@@ -239,6 +246,20 @@ namespace WarehouseControlSystem.View.Pages.Zones
                     searchbutton.Clicked += ToolbarItem_Search;
                 }
                 ToolbarItems.Add(searchbutton);
+
+                if (indicatorsbutton is null)
+                {
+                    indicatorsbutton = new ToolbarItem()
+                    {
+                        Order = ToolbarItemOrder.Primary,
+                        Priority = 40,
+                        Text = AppResources.LocationsSchemePage_Toolbar_Indicators,
+                        Icon = new FileImageSource()
+                    };
+                    indicatorsbutton.Icon.File = Global.GetPlatformPath("ic_action_dashboard.png");
+                    indicatorsbutton.SetBinding(MenuItem.CommandProperty, new Binding("IndicatorsViewCommand"));
+                }
+                ToolbarItems.Add(indicatorsbutton);
             }
         }
     }

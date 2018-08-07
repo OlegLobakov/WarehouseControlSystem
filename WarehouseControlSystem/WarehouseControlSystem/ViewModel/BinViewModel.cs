@@ -80,7 +80,6 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } int section;
-
         public int Level
         {
             get { return level; }
@@ -93,7 +92,6 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } int level;
-
         public int Depth
         {
             get { return depth; }
@@ -119,7 +117,6 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } int sectionspan;
-
         public int LevelSpan
         {
             get { return levelspan; }
@@ -132,7 +129,6 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } int levelspan;
-
         public int DepthSpan
         {
             get { return depthspan; }

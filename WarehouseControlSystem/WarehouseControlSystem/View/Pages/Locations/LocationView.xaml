@@ -2,9 +2,10 @@
 <d:SchemeBaseView 
     xmlns="http://xamarin.com/schemas/2014/forms" 
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:hs="clr-namespace:WarehouseControlSystem.Helpers.Containers.HorizontalListView"
     x:Class="WarehouseControlSystem.View.Pages.Locations.LocationView"
     xmlns:d="clr-namespace:WarehouseControlSystem.View.Pages.Base"
-    xmlns:vc="clr-namespace:WarehouseControlSystem.View.Content">
+    xmlns:components="clr-namespace:WarehouseControlSystem.View.Content">
     
     <ContentView.Content>
         <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Padding="0" BackgroundColor="DarkGray">
@@ -55,9 +56,21 @@
                             </DataTrigger>
                         </Label.Triggers>
                     </Label>
+
+                    <hs:HorizontalListView  
+                        Grid.Row="2"  HorizontalOptions="FillAndExpand" 
+                        ItemsSource="{Binding Indicators}"
+                        Margin="10">
+                        <hs:HorizontalListView.ItemTemplate>
+                            <DataTemplate>
+                                <components:IndicatorView WidthHeight="150" VerticalOptions="Start"/>
+                            </DataTemplate>
+                        </hs:HorizontalListView.ItemTemplate>
+                    </hs:HorizontalListView>
                     
-                    <vc:InnerSubSchemeView                         
-                        Grid.Row="2"
+                    <StackLayout Grid.Row="2"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"  
+                                 IsVisible="{Binding IsNotIndicatorsVisible}">
+                        <components:InnerSubSchemeView                                     
                         HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"  
                         PlanWidth="{Binding PlanWidth}"
                         PlanHeight="{Binding PlanHeight}"
@@ -65,6 +78,7 @@
                         IsVisible="{Binding ZonesIsLoaded}"
                         SubSchemeBackgroundColor="{Binding Color}"
                         UpdateScheme="{Binding ZonesIsLoaded}"/>
+                    </StackLayout>
 
 
                     <StackLayout Grid.Row="3" Orientation="Horizontal">
