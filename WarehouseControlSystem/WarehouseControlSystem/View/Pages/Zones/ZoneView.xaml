@@ -54,7 +54,7 @@
                         </Label.Triggers>
                     </Label>
 
-                    <hs:HorizontalListView  
+                    <hs:HorizontalListView  IsVisible="{Binding IsIndicatorsVisible}"
                         Grid.Row="2"  HorizontalOptions="FillAndExpand" 
                         ItemsSource="{Binding Indicators}"
                         Margin="10">
@@ -64,6 +64,7 @@
                             </DataTemplate>
                         </hs:HorizontalListView.ItemTemplate>
                     </hs:HorizontalListView>
+                    
                     <StackLayout Grid.Row="2"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"  
                                  IsVisible="{Binding IsNotIndicatorsVisible}">
 

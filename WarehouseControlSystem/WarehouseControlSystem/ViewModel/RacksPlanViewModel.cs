@@ -419,10 +419,16 @@ namespace WarehouseControlSystem.ViewModel
 
         public async Task EditRack(object obj)
         {
-            RackViewModel zvm = (RackViewModel)obj;
-            zvm.IsEditMode = true;
-            zvm.BinsViewModel.IsEditMode = true;
-            await Navigation.PushAsync(new RackEditPage(zvm));
+            RackViewModel rvm = (RackViewModel)obj;
+
+            Rack rack = new Rack();
+            rvm.SaveFields(rack);
+
+            RackViewModel editrvm = new RackViewModel(Navigation, rack);
+            editrvm.IsEditMode = true;
+            editrvm.BinsViewModel.IsEditMode = true;
+
+            await Navigation.PushAsync(new RackEditPage(editrvm));
         }
 
         public async Task DeleteRack(object obj)

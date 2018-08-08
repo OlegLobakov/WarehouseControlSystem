@@ -14,7 +14,7 @@
                 
                 <Button Grid.Column="0" Text="-" FontSize="Medium" FontAttributes="Bold" TextColor="Black"
                         Clicked="Button_Clicked_Minus"
-                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BorderWidth="0"/>
+                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BorderWidth="0" BackgroundColor="AntiqueWhite"/>
 
                 <Entry Grid.Column="1" Text="{Binding Value, Mode=TwoWay, Source={x:Reference Name=ThisView}}"
                        Keyboard="Numeric" FontSize="Medium" TextColor="Black"
@@ -23,7 +23,7 @@
 
                 <Button Grid.Column="2" Text="+" FontSize="Medium" FontAttributes="Bold" TextColor="Black"
                         Clicked="Button_Clicked_Plus"
-                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BorderWidth="0"/>
+                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BorderWidth="0" BackgroundColor="AntiqueWhite"/>
             </Grid>
         </StackLayout>
   </ContentView.Content>

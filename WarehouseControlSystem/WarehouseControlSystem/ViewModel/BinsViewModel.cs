@@ -768,6 +768,15 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
+        public async Task CheckSelectedBins(AsyncCancelationDispatcher acd)
+        {
+            List<BinViewModel> list = BinViewModels.FindAll(x => x.IsSelected == true);
+            foreach (BinViewModel bvm in list)
+            {
+                await CheckBin(bvm, acd).ConfigureAwait(true);
+            }
+        }
+
         public async Task CheckBin(BinViewModel bvm, AsyncCancelationDispatcher acd)
         {
             try
@@ -1067,6 +1076,13 @@ namespace WarehouseControlSystem.ViewModel
                 SetSelectedBinContent();
             }
 
+            EditedBinCodeIsEnabled = false;
+            List<BinViewModel> list = BinViewModels.FindAll(x => x.IsSelected == true);
+            if (list is List<BinViewModel>)
+            {
+                EditedBinCodeIsEnabled = list.Count == 1;
+            }
+
             if (OnBinClick is Action<BinsViewModel>)
             {
                 OnBinClick(this);
@@ -1112,12 +1128,7 @@ namespace WarehouseControlSystem.ViewModel
                     nlist.Add(new BinContentGrouping(bvm1.Code, bvm1.BinContent));
                 }
                 SelectedBinContent = nlist;
-                EditedBinCodeIsEnabled = list.Count == 1;
                 LoadImages(false);
-            }
-            else
-            {
-                EditedBinCodeIsEnabled = false;
             }
         }
 
@@ -1242,9 +1253,10 @@ namespace WarehouseControlSystem.ViewModel
                     bvm.SpecialEquipmentCode = TemplateSpecialEquipmentCode;
                     bvm.Default = TemplateDefault;
                 }
+
                 if (codefieldchanged)
                 {
-                    await CheckBins(ACD).ConfigureAwait(true);
+                    await CheckSelectedBins(ACD).ConfigureAwait(true);
                 }
             }
         }

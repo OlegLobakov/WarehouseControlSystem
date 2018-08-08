@@ -4,38 +4,45 @@
              x:Class="WarehouseControlSystem.View.Content.IndicatorView"
              x:Name="ThisIndView">
   <ContentView.Content>
-        <Grid WidthRequest="{Binding WidthHeight, Source={x:Reference Name=ThisIndView}}" 
-              HeightRequest="{Binding WidthHeight, Source={x:Reference Name=ThisIndView}}"
+        <StackLayout
+            WidthRequest="{Binding WidthHeight, Source={x:Reference Name=ThisIndView}}" 
+            HeightRequest="{Binding WidthHeight, Source={x:Reference Name=ThisIndView}}"
+            Padding="10">
+            <Grid 
+              HorizontalOptions="FillAndExpand"
+              VerticalOptions="FillAndExpand"
               ColumnSpacing="0"
               RowSpacing="0"
               BackgroundColor="{Binding ValueColor}">
-            
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
 
-            <Label Grid.Row="0" 
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="0" 
                    Text="{Binding Header}" 
                    TextColor="White" 
                    FontSize="Medium"
-                   Margin="5"/>
+                   Margin="10,5,0,0"/>
 
-            <Label Grid.Row="1" 
+                <Label Grid.Row="1" 
                    Text="{Binding Description}" 
                    TextColor="White" 
                    FontSize="Small"
                    HorizontalOptions="StartAndExpand"
                    VerticalOptions="StartAndExpand"
-                   Margin="5,0,5,0"/>
+                   Margin="10,5,0,0"/>
 
-            <Label Grid.Row="2" 
+                <Label Grid.Row="2" 
                    Text="{Binding Value}" 
                    TextColor="White" 
                    FontSize="Medium"
                    HorizontalOptions="EndAndExpand"
-                   Margin="0,0,5,5"/>
-        </Grid>
+                   Margin="0,0,10,8"/>
+            </Grid>
+        </StackLayout>
+
   </ContentView.Content>
 </ContentView>

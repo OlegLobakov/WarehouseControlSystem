@@ -365,7 +365,7 @@ namespace WarehouseControlSystem.ViewModel
                     if (CreateNewBins)
                     {
                         LoadingText = AppResources.RackNewPage_LoadingProgressBin + " " + bmv.Bin.Code;
-                        await NAV.CreateBin(NewModel.BinsViewModel.BinTemplate, bmv.Bin, ACD.Default).ConfigureAwait(true);
+                        await NAV.CreateBin(NewModel.BinsViewModel.BinTemplate.Code, bmv.Bin, ACD.Default).ConfigureAwait(true);
                     }
                 }
             }

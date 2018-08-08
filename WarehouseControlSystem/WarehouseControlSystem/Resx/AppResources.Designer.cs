@@ -2824,6 +2824,24 @@ namespace WarehouseControlSystem.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Modifing the rack {0} bin {1} ( {2} ).
+        /// </summary>
+        internal static string RackEditPage_SaveProcessBinText {
+            get {
+                return ResourceManager.GetString("RackEditPage_SaveProcessBinText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Modifing the rack.
+        /// </summary>
+        internal static string RackEditPage_SaveProcessText {
+            get {
+                return ResourceManager.GetString("RackEditPage_SaveProcessText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sections.
         /// </summary>
         internal static string RackEditPage_Sections {

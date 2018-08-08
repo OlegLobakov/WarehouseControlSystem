@@ -568,7 +568,6 @@ namespace WarehouseControlSystem.ViewModel
 
             IsNumberingEnabled = savevalue;
         }
-
         public void SaveFields(Rack rack)
         {
             rack.ID = ID;
@@ -615,7 +614,6 @@ namespace WarehouseControlSystem.ViewModel
         {
             BinsViewModel.CreateBins(Depth, Levels, Sections);
         }
-
         public void RecreateBins(int prevdepth, int newdepth, int prevlevels, int newlevels, int prevsections, int newsections)
         {
             if (IsCreateBinsEnabled)
@@ -636,7 +634,27 @@ namespace WarehouseControlSystem.ViewModel
                 await BinsViewModel.CheckBins(ACD).ConfigureAwait(true);
             }
         }
+        private void SetNumber(BinViewModel bvm)
+        {
+            System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("en-us");
 
+            int sectionname = NumberingSectionBegin + (bvm.Section - 1) * StepNumberingSection;
+            if (ReversSectionNumbering)
+            {
+                sectionname = NumberingSectionBegin + (Sections - bvm.Section) * StepNumberingSection; ;
+            }
+
+            int levelname = NumberingLevelBegin + (Levels - bvm.Level) * StepNumberingLevel;
+            if (ReversLevelNumbering)
+            {
+                levelname = NumberingLevelBegin + (bvm.Level - 1) * StepNumberingLevel; ;
+            }
+
+            string sectionlabel = sectionname.ToString("D" + NumberingSectionDigitsQuantity.ToString(), ci);
+            string lavellabel = levelname.ToString("D" + NumberingLevelDigitsQuantity.ToString(), ci);
+
+            bvm.Code = NumberingPrefix + racksectionseparator + sectionlabel + sectionlevelseparator + lavellabel;
+        }
         public async void NumberingUnNamedBins()
         {
             List<BinViewModel> list = BinsViewModel.BinViewModels.FindAll(x => x.Code == "");
@@ -695,26 +713,92 @@ namespace WarehouseControlSystem.ViewModel
                 BinsViewModel.AfterSelect();
         }
 
-        private void SetNumber(BinViewModel bvm)
+        public void EditSection(int newvalue, int oldvalue)
         {
-            System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("en-us");
-
-            int sectionname = NumberingSectionBegin + (bvm.Section - 1) * StepNumberingSection;
-            if (ReversSectionNumbering)
+            if (newvalue < oldvalue)
             {
-                sectionname = NumberingSectionBegin + (Sections - bvm.Section) * StepNumberingSection; ;
+                BinsViewModel.BinViewModels.RemoveAll(x => x.Section > newvalue);
             }
-
-            int levelname = NumberingLevelBegin + (Levels - bvm.Level) * StepNumberingLevel;
-            if (ReversLevelNumbering)
+        }
+        public void EditLevels(int newvalue, int oldvalue)
+        {
+            if (newvalue == oldvalue)
             {
-                levelname = NumberingLevelBegin + (bvm.Level - 1) * StepNumberingLevel; ;
             }
+            else
+            {
+                if (newvalue > oldvalue)
+                {
+                    foreach (BinViewModel bvm in BinsViewModel.BinViewModels)
+                    {
+                        bvm.Level = bvm.Level + 1;
+                    }
+                }
+                else
+                {
+                    foreach (BinViewModel bvm in BinsViewModel.BinViewModels)
+                    {
+                        bvm.Level = bvm.Level - 1;
+                    }
+                    BinsViewModel.BinViewModels.RemoveAll(x => x.Level <= 0);
+                }
+            }
+        }
 
-            string sectionlabel = sectionname.ToString("D" + NumberingSectionDigitsQuantity.ToString(), ci);
-            string lavellabel = levelname.ToString("D" + NumberingLevelDigitsQuantity.ToString(), ci);
+        public async Task SaveChanges()
+        {
+            State = ModelState.Loading;
+            LoadAnimation = true;
+            Rack modifiedrack = new Rack();
+            SaveFields(modifiedrack);
+            try
+            {
+                LoadingText = AppResources.RackEditPage_SaveProcessText + " " + modifiedrack.No;
+                int rackid = await NAV.ModifyRack(modifiedrack, ACD.Default).ConfigureAwait(true);
+                int result = await NAV.DeleteBinsFromRack(modifiedrack, ACD.Default).ConfigureAwait(true);
+                int index = 0;
+                int count = BinsViewModel.BinViewModels.Count;
+                foreach (BinViewModel bvm in BinsViewModel.BinViewModels)
+                {
+                    index++;
+                    await SaveBinChanges(bvm, index, count).ConfigureAwait(true);
+                }
+                LoadAnimation = false;
+                State = ModelState.Normal;
+                await Navigation.PopAsync();
+            }
+            catch (Exception e)
+            {
+                LoadAnimation = false;
+                State = ModelState.Error;
+                ErrorText = e.Message;
+            }
+        }
 
-            bvm.Code = NumberingPrefix + racksectionseparator + sectionlabel + sectionlevelseparator + lavellabel;
+        private async Task SaveBinChanges(BinViewModel bmv, int index, int count)
+        {
+            try
+            {
+                string text1 = String.Format(AppResources.RackEditPage_SaveProcessBinText, No, index, count);
+                LoadingText = text1;
+
+                bmv.SaveFields();
+                
+                int binexist = await NAV.GetBinCount(LocationCode, "", "", bmv.Bin.Code, ACD.Default).ConfigureAwait(true);
+                if (binexist > 0)
+                {
+                    bmv.Bin.PrevCode = bmv.Bin.Code;
+                    await NAV.ModifyBin(bmv.Bin, ACD.Default).ConfigureAwait(true);
+                }
+                else
+                {
+                    await NAV.CreateBin(BinTemplateCode, bmv.Bin, ACD.Default).ConfigureAwait(true);
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
 
         public void Tap(object sender)
@@ -724,13 +808,13 @@ namespace WarehouseControlSystem.ViewModel
                 OnTap(this);
             }
         }
-
+        
+        #region Loading
         public async Task LoadBins()
         {
             BinsViewModel.LinkToRackViewModel = this;
             await BinsViewModel.LoadBins(ACD).ConfigureAwait(true);
         }
-
         public async Task SaveToRackSchemeVisible(bool value)
         {
             if (IsSaveToNAVEnabled)
@@ -759,13 +843,11 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         }
-
         public async Task LoadUDF()
         {
             BinsViewModel.LinkToRackViewModel = this;
             await BinsViewModel.LoadUDF(ACD).ConfigureAwait(true);
         }
-
         public async Task LoadBinValues()
         {
             try
@@ -781,19 +863,7 @@ namespace WarehouseControlSystem.ViewModel
                 System.Diagnostics.Debug.WriteLine(e.Message);
             }
         }
-
-        public void GetSearchText()
-        {
-            if (!string.IsNullOrEmpty(Global.SearchRequest))
-            {
-                SearchResult = Global.SearchRequest + " | " + AppResources.RackCardPage_Search_Finded + " "
-                   + AppResources.RackCardPage_Search_Bins + ": " + BinsViewModel.SearchBinsQuantity.ToString();
-            }
-            else
-            {
-                SearchResult = "";
-            }
-        }
+        #endregion
 
         #region User Defined Functions
         UserDefinedFunctionViewModel udfvmselected;
@@ -885,6 +955,18 @@ namespace WarehouseControlSystem.ViewModel
                         SubSchemeSelects.Add(sss);
                     }
                 }
+            }
+        }
+        public void GetSearchText()
+        {
+            if (!string.IsNullOrEmpty(Global.SearchRequest))
+            {
+                SearchResult = Global.SearchRequest + " | " + AppResources.RackCardPage_Search_Finded + " "
+                   + AppResources.RackCardPage_Search_Bins + ": " + BinsViewModel.SearchBinsQuantity.ToString();
+            }
+            else
+            {
+                SearchResult = "";
             }
         }
 

@@ -13,12 +13,12 @@
     </ContentPage.Resources>
     <ContentPage.Content>
         <StackLayout>
-            <StackLayout IsVisible="{Binding IsLoadingState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <Grid IsVisible="{Binding IsLoadingState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                 <StackLayout VerticalOptions="Center" HorizontalOptions="Center" Orientation="Vertical">
                     <ActivityIndicator IsRunning="{Binding LoadAnimation}" HeightRequest="50" WidthRequest="50"/>
                     <Label Text="{Binding LoadingText}" FontSize="Small"/>
                 </StackLayout>
-            </StackLayout>
+            </Grid>
             <StackLayout IsVisible="{Binding IsNormalState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                 <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" x:Name="maingrid">
                     <Grid.ColumnDefinitions>
@@ -39,7 +39,7 @@
                             </Grid.ColumnDefinitions>
                             <Entry Grid.Column="0" Text="{Binding Comment, Mode=TwoWay}" Keyboard="Text" 
                                BackgroundColor="White"
-                               TextChanged="CommentChanged" Margin="10,5,5,5"/>
+                               Margin="10,5,5,5"/>
                         </Grid>
 
                         <ScrollView Grid.Row="1"  
@@ -75,13 +75,15 @@
                                                  ItemDisplayBinding="{Binding Name}" 
                                                  SelectedIndexChanged="RackOrientationPickerChanged"></Picker>
                                         </StackLayout>
+                                        
                                         <StackLayout  Grid.Column="0" Grid.Row="1" Orientation="Vertical" >
                                             <Label Text="{i18n:Translate RackEditPage_Sections}"  HorizontalOptions="Start" Margin="10,0,0,0"></Label>
-                                            <vc:StepIntegerValueView Value="{Binding Sections, Mode=TwoWay}"></vc:StepIntegerValueView>
+                                            <vc:StepIntegerValueView Value="{Binding Sections, Mode=TwoWay}" ValueChanges="StepIntegerValueView_SectionsChanges"></vc:StepIntegerValueView>
                                         </StackLayout>
+                                        
                                         <StackLayout  Grid.Column="0" Grid.Row="2" Orientation="Vertical" >
                                             <Label Text="{i18n:Translate RackEditPage_Levels}"  HorizontalOptions="Start"  Margin="10,0,0,0"/>
-                                            <vc:StepIntegerValueView Value="{Binding Levels, Mode=TwoWay}"></vc:StepIntegerValueView>
+                                            <vc:StepIntegerValueView Value="{Binding Levels, Mode=TwoWay}" ValueChanges="StepIntegerValueView_LevelsChanges"></vc:StepIntegerValueView>
                                         </StackLayout>
                                     </Grid>
                                 </ScrollView>
@@ -94,8 +96,7 @@
                                         HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                                         Text="{i18n:Translate RackEditPage_SaveButton}"  
                                         TextColor="White" FontAttributes="Bold" FontSize="Medium"
-                                        BackgroundColor="DarkRed"
-                                        Clicked="Button_Clicked">
+                                        BackgroundColor="DarkRed" Clicked="Button_ClickedSaveChanges">
                                     </Button>
                                 </Grid>
                             </Grid>

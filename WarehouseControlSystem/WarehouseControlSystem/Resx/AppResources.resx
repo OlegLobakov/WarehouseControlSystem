@@ -1515,4 +1515,10 @@
   <data name="LocationsSchemePage_Toolbar_Indicators" xml:space="preserve">
     <value>Show/Hide Indicators</value>
   </data>
+  <data name="RackEditPage_SaveProcessBinText" xml:space="preserve">
+    <value>Modifing the rack {0} bin {1} ( {2} )</value>
+  </data>
+  <data name="RackEditPage_SaveProcessText" xml:space="preserve">
+    <value>Modifing the rack</value>
+  </data>
 </root>

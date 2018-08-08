@@ -281,6 +281,7 @@ namespace WarehouseControlSystem.ViewModel
                 System.Diagnostics.Debug.WriteLine(e.Message);
             }
         }
+
         private void UnSelectAllOthers(LocationViewModel tappedlvm)
         {
             SelectedLocationViewModel = null;
@@ -293,6 +294,7 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         }
+
         public void UnSelectAll()
         {
             foreach (LocationViewModel lvm in LocationViewModels)

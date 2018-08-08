@@ -41,12 +41,14 @@ namespace WarehouseControlSystem.View.Pages.Racks.Edit
             base.OnAppearing();
             model.State = ViewModel.Base.ModelState.Normal;
             MessagingCenter.Subscribe<BinsViewModel>(this, "BinsIsLoaded", BinsIsLoaded);
+            MessagingCenter.Subscribe<BinsViewModel>(this, "Update", UpdateBinsViewModel);
             await model.LoadBins();
         }
 
         protected override void OnDisappearing()
         {
             MessagingCenter.Unsubscribe<BinsViewModel>(this, "BinsIsLoaded");
+            MessagingCenter.Unsubscribe<BinsViewModel>(this, "Update");
             base.OnDisappearing();
         }
 
@@ -58,16 +60,18 @@ namespace WarehouseControlSystem.View.Pages.Racks.Edit
             return false;
         }
 
+        private void UpdateBinsViewModel(BinsViewModel bvm)
+        {
+            model.NumberingUnNamedBins();
+            model.Changed = true;
+            rackview.Update(model);
+        }
+
         private void BinsIsLoaded(BinsViewModel bvm)
         {
             model.FillEmptyPositions();
             model.NumberingUnNamedBins();
             rackview.Update(model);
-        }
-
-        private void ToolbarItem_Clicked(object sender, EventArgs e)
-        {
-
         }
 
         private void RackOrientationPickerChanged(object sender, EventArgs e)
@@ -81,24 +85,41 @@ namespace WarehouseControlSystem.View.Pages.Racks.Edit
             }
         }
 
-        private void CommentChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-        private void Button_Clicked(object sender, EventArgs e)
-        {
-
-        }
-
+        /// <summary>
+        /// Selec all bins in level
+        /// </summary>
+        /// <param name="levelcoord"></param>
         private void rackview_LevelSelected(int levelcoord)
         {
             model.SelectLevelBins(levelcoord);
         }
 
+        /// <summary>
+        /// Select all bins in 1 section
+        /// </summary>
+        /// <param name="sectioncoord"></param>
         private void rackview_SectionSelected(int sectioncoord)
         {
             model.SelectSectionBins(sectioncoord);
+        }
+
+        private void StepIntegerValueView_SectionsChanges(int newvalue, int oldvalue)
+        {
+            model.EditSection(newvalue, oldvalue);
+            model.FillEmptyPositions();
+            rackview.Update(model);
+        }
+
+        private void StepIntegerValueView_LevelsChanges(int newvalue, int oldvalue)
+        {
+            model.EditLevels(newvalue, oldvalue);
+            model.FillEmptyPositions();
+            rackview.Update(model);
+        }
+
+        private async void Button_ClickedSaveChanges(object sender, EventArgs e)
+        {
+            await model.SaveChanges();
         }
     }
 }

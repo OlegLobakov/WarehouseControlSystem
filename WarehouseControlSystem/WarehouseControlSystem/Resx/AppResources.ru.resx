@@ -1514,4 +1514,10 @@
   <data name="LocationsSchemePage_Toolbar_Indicators" xml:space="preserve">
     <value>Показать/Скрыть индикаторы</value>
   </data>
+  <data name="RackEditPage_SaveProcessBinText" xml:space="preserve">
+    <value>Изменение стеллажа {0} ячейка {1} из {2}</value>
+  </data>
+  <data name="RackEditPage_SaveProcessText" xml:space="preserve">
+    <value>Изменение стеллажа</value>
+  </data>
 </root>

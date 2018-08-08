@@ -955,6 +955,24 @@ namespace WarehouseControlSystem.Helpers.NAV
             Task.Run(() => GetIntFromNAV(tcs, sp, cts));
             return tcs.Task;
         }
+        public static Task<int> DeleteBinsFromRack(Rack rack, CancellationTokenSource cts)
+        {
+            var tcs = new TaskCompletionSource<int>();
+            if (IsConnectionFaild())
+            {
+                tcs.SetResult(0);
+                return tcs.Task;
+            }
+
+            XNamespace myns = GetNameSpace();
+            string functionname = "DeleteBinsFromRack";
+            XElement body =
+                new XElement(myns + functionname,
+                new XElement(myns + "iD", rack.ID));
+            SoapParams sp = new SoapParams(functionname, body, myns);
+            Task.Run(() => GetIntFromNAV(tcs, sp, cts));
+            return tcs.Task;
+        }
         public static Task<int> SetRackVisible(Rack rack, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<int>();
@@ -1180,7 +1198,7 @@ namespace WarehouseControlSystem.Helpers.NAV
         #endregion
 
         #region Bin
-        public static Task<int> CreateBin(BinTemplate bintemplate, Bin bin, CancellationTokenSource cts)
+        public static Task<int> CreateBin(string bintemplatecode, Bin bin, CancellationTokenSource cts)
         {
             var tcs = new TaskCompletionSource<int>();
             if (IsConnectionFaild())
@@ -1193,7 +1211,7 @@ namespace WarehouseControlSystem.Helpers.NAV
             string functionname = "CreateBin";
             XElement body =
                 new XElement(myns + functionname,
-                new XElement(myns + "binTemplateCode", bintemplate.Code),
+                new XElement(myns + "binTemplateCode", bintemplatecode),
                 new XElement(myns + "binCode", bin.Code),
                 new XElement(myns + "rackID", bin.RackID),
                 new XElement(myns + "section", bin.Section),
