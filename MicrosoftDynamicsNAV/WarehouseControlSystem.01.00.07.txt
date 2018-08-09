@@ -5,7 +5,7 @@ OBJECT Table 14 Location
     Date=03/17/18;
     Time=[ 5:20:28 PM];
     Modified=Yes;
-    Version List=NAVW110.0.00.17501,WCS.01.00.05;
+    Version List=NAVW110.0.00.17501,WCS.01.00.07;
   }
   PROPERTIES
   {
@@ -707,7 +707,7 @@ OBJECT Table 5769 Warehouse Setup
     Date=03/17/18;
     Time=[ 5:18:58 PM];
     Modified=Yes;
-    Version List=NAVW18.00,WCS.01.00.05;
+    Version List=NAVW18.00,WCS.01.00.07;
   }
   PROPERTIES
   {
@@ -824,7 +824,7 @@ OBJECT Table 7300 Zone
     Date=03/17/18;
     Time=[ 5:21:16 PM];
     Modified=Yes;
-    Version List=NAVW18.00,WCS.01.00.05;
+    Version List=NAVW18.00,WCS.01.00.07;
   }
   PROPERTIES
   {
@@ -872,8 +872,8 @@ OBJECT Table 7300 Zone
                                                    Description=Warehouse Control System;
                                                    Editable=No }
     { 52015;  ;Rack Quantity       ;Integer       ;FieldClass=FlowField;
-                                                   CalcFormula=Count(Rack WHERE (Location Code=FIELD(Location Code),
-                                                                                 Zone Code=FIELD(Code)));
+                                                   CalcFormula=Count("WCS Rack" WHERE (Location Code=FIELD(Location Code),
+                                                                                       Zone Code=FIELD(Code)));
                                                    Description=Warehouse Control System;
                                                    Editable=No }
   }
@@ -901,7 +901,7 @@ OBJECT Table 7354 Bin
     Date=07/27/18;
     Time=12:36:42 PM;
     Modified=Yes;
-    Version List=NAVW110.0.00.16996,WCS.01.00.05;
+    Version List=NAVW110.0.00.16996,WCS.01.00.07;
   }
   PROPERTIES
   {
@@ -1442,14 +1442,14 @@ OBJECT Table 7354 Bin
   }
 }
 
-OBJECT Table 51200 Rack
+OBJECT Table 51200 WCS Rack
 {
   OBJECT-PROPERTIES
   {
-    Date=07/27/18;
-    Time=12:39:00 PM;
+    Date=08/03/18;
+    Time=[ 1:19:53 PM];
     Modified=Yes;
-    Version List=WCS.01.00.05;
+    Version List=WCS.01.00.07;
   }
   PROPERTIES
   {
@@ -1461,6 +1461,27 @@ OBJECT Table 51200 Rack
     OnModify=BEGIN
                "Modify UserID" := USERID;
                "Modify DateTime" := CURRENTDATETIME;
+             END;
+
+    OnDelete=VAR
+               Bin1@1101981001 : Record 7354;
+               Bin2@1101981000 : Record 7354;
+             BEGIN
+               Bin1.RESET;
+               Bin1.SETRANGE("Rack ID",ID);
+               IF Bin1.FINDSET THEN
+                 REPEAT
+                   IF Bin2.GET(Bin1."Location Code",Bin1.Code) THEN BEGIN
+                     Bin2."Rack ID" := 0;
+                     Bin2.Section := 0;
+                     Bin2."Section Span" := 0;
+                     Bin2.Level := 0;
+                     Bin2."Level Span" := 0;
+                     Bin2.Depth := 0;
+                     Bin2."Depth Span" := 0;
+                     Bin2.MODIFY(FALSE);
+                   END;
+                 UNTIL Bin1.NEXT = 0;
              END;
 
   }
@@ -1483,12 +1504,29 @@ OBJECT Table 51200 Rack
     { 15  ;   ;Modify DateTime     ;DateTime       }
     { 16  ;   ;Modify UserID       ;Code50         }
     { 17  ;   ;ID                  ;Integer        }
-    { 18  ;   ;Comment             ;Text250        }
+    { 18  ;   ;Comment             ;Text250       ;CaptionML=RUS=Comment }
+    { 19  ;   ;Rack Section Separator;Text5        }
+    { 20  ;   ;Section Level Separator;Text5       }
+    { 21  ;   ;Level Depth Separator;Text5         }
+    { 22  ;   ;Revers Section Numbering;Boolean    }
+    { 23  ;   ;Revers Level Numbering;Boolean      }
+    { 24  ;   ;Revers Depth Numbering;Boolean      }
+    { 25  ;   ;Numbering Section Begin;Integer     }
+    { 26  ;   ;Numbering Level Begin;Integer       }
+    { 27  ;   ;Numbering Depth Begin;Integer       }
+    { 28  ;   ;Numbering Section Digits Qty.;Integer }
+    { 29  ;   ;Numbering Level Digits Qty.;Integer }
+    { 30  ;   ;Numbering Depth Digits Qty.;Integer }
+    { 31  ;   ;Step Numbering Section;Integer      }
+    { 32  ;   ;Step Numbering Level;Integer        }
+    { 33  ;   ;Step Numbering Depth;Integer        }
+    { 34  ;   ;Numbering Prefix    ;Text10         }
+    { 35  ;   ;Bin Template Code   ;Code20         }
   }
   KEYS
   {
     {    ;ID                                       }
-    {    ;Location Code,Zone Code,No              ;Clustered=Yes }
+    {    ;Location Code,Zone Code,No,ID           ;Clustered=Yes }
   }
   FIELDGROUPS
   {
@@ -1505,10 +1543,10 @@ OBJECT Codeunit 50076 WarehouseControlSystem
 {
   OBJECT-PROPERTIES
   {
-    Date=07/27/18;
-    Time=12:45:39 PM;
+    Date=08/09/18;
+    Time=[ 2:11:23 PM];
     Modified=Yes;
-    Version List=WCS.01.00.05;
+    Version List=WCS.01.00.07;
   }
   PROPERTIES
   {
@@ -1548,6 +1586,21 @@ OBJECT Codeunit 50076 WarehouseControlSystem
       UDSRootNode@1101981012 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
       UDSCurrentNode@1101981011 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
       UDSResponseDocument@1101981010 : Text;
+      "----- BinInfo -------"@1101981024 : Integer;
+      BinInfoResponse@1101981028 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlDocument";
+      BinInfoRootNode@1101981027 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      BinInfoCurrentNode@1101981026 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      BinInfoResponseDocument@1101981025 : Text;
+      "----- Zone indicator -------"@1101981033 : Integer;
+      ZoneIndicatorResponse@1101981032 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlDocument";
+      ZoneIndicatorRootNode@1101981031 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      ZoneIndicatorCurrentNode@1101981030 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      ZoneIndicatorResponseDocument@1101981029 : Text;
+      "----- Location indicator -------"@1101981038 : Integer;
+      LocationIndicatorResponse@1101981037 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlDocument";
+      LocationIndicatorRootNode@1101981036 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      LocationIndicatorCurrentNode@1101981035 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      LocationIndicatorResponseDocument@1101981034 : Text;
 
     PROCEDURE APIVersion@1101981009() : Integer;
     BEGIN
@@ -1576,7 +1629,9 @@ OBJECT Codeunit 50076 WarehouseControlSystem
       putawayquantity@1101981012 : Integer;
       movementquantity@1101981013 : Integer;
     BEGIN
+      //Кнопки на схеме стеллажей
       //Example
+      //
       Bin.RESET;
       Bin.SETCURRENTKEY("Location Code","Zone Code",Code);
       Bin.SETRANGE("Location Code",LocationCode);
@@ -1633,6 +1688,7 @@ OBJECT Codeunit 50076 WarehouseControlSystem
       WhseInternalPickLine@1101981010 : Record 7334;
       InternalMovementLine@1101981011 : Record 7347;
     BEGIN
+      //Обработка нажатия кнопки на схеме стеллажей
       CLEAR(UDSResponse);
       UDSResponse := UDSResponse.XmlDocument;
       UDSResponse.LoadXml('<UDS/>');
@@ -1754,6 +1810,7 @@ OBJECT Codeunit 50076 WarehouseControlSystem
 
     LOCAL PROCEDURE UserDefinedFunctionList@1101981043(LocationCode@1101981001 : Code[20];ZoneCode@1101981000 : Code[20];RackID@1101981002 : Integer);
     BEGIN
+      //Функции в стеллаже
       AddFunction(1,'Block','selected bins','Заблокировать ячейки?');
       AddFunction(2,'Unlock','selected bins','Разблокировать ячейки?');
       AddFunction(3,'Create ','internal pick','Создать внутренний подбор?');
@@ -1791,6 +1848,122 @@ OBJECT Codeunit 50076 WarehouseControlSystem
            END;
       END;
       EXIT('Function '+FORMAT(functionindex)+' is executed');
+    END;
+
+    LOCAL PROCEDURE "---- BinValues ---------"@1101981010();
+    BEGIN
+    END;
+
+    LOCAL PROCEDURE BinInfo@1101981039(VAR Bin@1101981000 : Record 7354);
+    VAR
+      WarehouseActivityLine@1101981002 : Record 5767;
+      WarehouseActivityHeader@1101981003 : Record 5766;
+      Description1@1101981004 : Text;
+      WarehouseEntry@1101981005 : Record 7312;
+      i@1101981006 : Integer;
+      Item@1101981007 : Record 27;
+      ItemDescription@1101981008 : Text;
+    BEGIN
+      //Вывод любой дополнительной информации по ячейке (документы, ссылки на картинки и т.д.)
+      //Example AddInfoBlock(Caption,Description,Detail, Value1,Value2,Value3)
+
+      //Ссылки на картинки
+      AddInfoBlock(
+        'Picture',
+        '',
+        '',
+        '7',
+        '',
+        '',
+        'https://www.google.ru/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png');
+
+      //Entries
+      i:=0;
+      WarehouseEntry.RESET;
+      WarehouseEntry.SETCURRENTKEY("Location Code","Bin Code","Entry Type","Registering Date");
+      WarehouseEntry.SETRANGE("Location Code",Bin."Location Code");
+      WarehouseEntry.SETRANGE("Bin Code",Bin.Code);
+      IF WarehouseEntry.FINDSET THEN
+        REPEAT
+          ItemDescription := '';
+          IF Item.GET(WarehouseEntry."Item No.") THEN
+            ItemDescription := Item.Description;
+          AddInfoBlock(
+            FORMAT(WarehouseEntry."Registering Date"),
+            FORMAT(WarehouseEntry."Entry Type")+' document '+FORMAT(WarehouseEntry."Source No."),
+            ItemDescription,
+            FORMAT(WarehouseEntry."Qty. (Base)"),
+            '',
+            '',
+            '');
+          i+=1;
+        UNTIL (WarehouseEntry.NEXT = 0) OR (i=5);
+
+      //Document Info
+      WarehouseActivityLine.RESET;
+      WarehouseActivityLine.SETRANGE("Location Code",Bin."Location Code");
+      WarehouseActivityLine.SETRANGE("Zone Code",Bin."Zone Code");
+      WarehouseActivityLine.SETRANGE("Bin Code",Bin.Code);
+      IF WarehouseActivityLine.FINDSET THEN
+        REPEAT
+          IF WarehouseActivityHeader.GET(WarehouseActivityLine."Activity Type",WarehouseActivityLine."No.") THEN BEGIN
+            AddInfoBlock(
+              FORMAT(WarehouseActivityHeader.Type),
+              '',
+              WarehouseActivityHeader."No.",
+              '',
+              '',
+              FORMAT(WarehouseActivityHeader."Assignment Date"),
+              '');
+          END;
+        UNTIL WarehouseActivityLine.NEXT = 0;
+    END;
+
+    LOCAL PROCEDURE BinBottomLeftValue@1101981011(VAR Bin@1101981000 : Record 7354) : Text;
+    VAR
+      BinContent@1101981002 : Record 7302;
+      Counter@1101981003 : Integer;
+    BEGIN
+      EXIT('0');
+    END;
+
+    LOCAL PROCEDURE BinBottomRightValue@1101981024(VAR Bin@1101981000 : Record 7354) : Text;
+    BEGIN
+      EXIT('1');
+    END;
+
+    LOCAL PROCEDURE "----- indicators -------"@1101981049();
+    BEGIN
+    END;
+
+    LOCAL PROCEDURE LocationIndicator@1101981051(VAR Location@1101981000 : Record 14);
+    BEGIN
+      IF Location.Code = 'WHITE' THEN BEGIN
+        AddLocationIndicator('Receipt','Quantity','23','#336699',0);
+        AddLocationIndicator('Shipments','Quantity','23','#336699',0);
+        AddLocationIndicator('Pick','Quantity','2000','#8b0000',0);
+      END;
+    END;
+
+    LOCAL PROCEDURE ZoneIndicator@1101981053(VAR Zone@1101981000 : Record 7300);
+    BEGIN
+      IF (Zone."Location Code" = 'WHITE')AND(Zone.Code = 'RECEIVE') THEN BEGIN
+        AddZoneIndicator('Doc.','Quantity','100','#727272',0);
+      END;
+      IF (Zone."Location Code" = 'WHITE')AND(Zone.Code = 'SHIP') THEN BEGIN
+        AddZoneIndicator('Doc.','Quantity','2000','#8b0000',0);
+      END;
+    END;
+
+    LOCAL PROCEDURE "---- System -----------"@1101981040();
+    BEGIN
+      //====================================================================================
+      //   Warehouse Control System Functions
+      //====================================================================================
+      //
+      //      Do not Change!!!!
+      //
+      //
     END;
 
     LOCAL PROCEDURE "----Parameters------"@1101981025();
@@ -1991,6 +2164,31 @@ OBJECT Codeunit 50076 WarehouseControlSystem
       ResponseDocument := Response.OuterXml;
     END;
 
+    PROCEDURE GetIndicatorsByLocation@1101981031(LocationCode@1101981000 : Text;VAR ResponseDocument@1101981001 : Text);
+    VAR
+      Location@1101981002 : Record 14;
+    BEGIN
+      IF Location.GET(LocationCode) THEN BEGIN
+        CLEAR(LocationIndicatorResponse);
+        LocationIndicatorResponse := LocationIndicatorResponse.XmlDocument;
+        LocationIndicatorResponse.LoadXml('<Indicators/>');
+        LocationIndicatorRootNode := LocationIndicatorResponse.DocumentElement;
+        LocationIndicator(Location);
+        ResponseDocument := LocationIndicatorResponse.OuterXml;
+      END;
+    END;
+
+    LOCAL PROCEDURE AddLocationIndicator@1101981048(Header@1101981000 : Text;Description@1101981001 : Text;Value@1101981002 : Text;Color@1101981003 : Text;Position@1101981004 : Integer);
+    BEGIN
+      IF XMLAddElement(LocationIndicatorRootNode,'Indicator','','',LocationIndicatorCurrentNode) > 0 THEN
+        ERROR(Text000);
+      XMLAddAttribute(LocationIndicatorCurrentNode,'Header',Header);
+      XMLAddAttribute(LocationIndicatorCurrentNode,'Description',Description);
+      XMLAddAttribute(LocationIndicatorCurrentNode,'Value',Value);
+      XMLAddAttribute(LocationIndicatorCurrentNode,'Color',Color);
+      XMLAddAttribute(LocationIndicatorCurrentNode,'Position',FORMAT(Position));
+    END;
+
     LOCAL PROCEDURE "---- Zone -------"@1101981100();
     BEGIN
     END;
@@ -2143,6 +2341,32 @@ OBJECT Codeunit 50076 WarehouseControlSystem
           Position+=1;
         UNTIL Zone.NEXT = 0;
       ResponseDocument := Response.OuterXml;
+    END;
+
+    PROCEDURE GetIndicatorsByZone@1101981030(LocationCode@1101981003 : Text;ZoneCode@1101981000 : Text;VAR ResponseDocument@1101981001 : Text);
+    VAR
+      Zone@1101981002 : Record 7300;
+    BEGIN
+      IF Zone.GET(LocationCode,ZoneCode) THEN BEGIN
+        CLEAR(ZoneIndicatorResponse);
+        CLEAR(ZoneIndicatorRootNode);
+        ZoneIndicatorResponse := ZoneIndicatorResponse.XmlDocument;
+        ZoneIndicatorResponse.LoadXml('<Indicators/>');
+        ZoneIndicatorRootNode := ZoneIndicatorResponse.DocumentElement;
+        ZoneIndicator(Zone);
+        ResponseDocument := ZoneIndicatorResponse.OuterXml;
+      END;
+    END;
+
+    LOCAL PROCEDURE AddZoneIndicator@1101981038(Header@1101981003 : Text;Description@1101981002 : Text;Value@1101981001 : Text;Color@1101981000 : Text;Position@1101981004 : Integer);
+    BEGIN
+      IF XMLAddElement(ZoneIndicatorRootNode,'Indicator','','',ZoneIndicatorCurrentNode) > 0 THEN
+        ERROR(Text000);
+      XMLAddAttribute(ZoneIndicatorCurrentNode,'Header',Header);
+      XMLAddAttribute(ZoneIndicatorCurrentNode,'Description',Description);
+      XMLAddAttribute(ZoneIndicatorCurrentNode,'Value',Value);
+      XMLAddAttribute(ZoneIndicatorCurrentNode,'Color',Color);
+      XMLAddAttribute(ZoneIndicatorCurrentNode,'Position',FORMAT(Position));
     END;
 
     LOCAL PROCEDURE "------ Bins --------"@1101981111();
@@ -2375,11 +2599,69 @@ OBJECT Codeunit 50076 WarehouseControlSystem
       ResponseDocument := Response.OuterXml;
     END;
 
+    PROCEDURE GetBinInfo@1101981035(LocationCode@1101981001 : Code[20];BinCode@1101981000 : Code[20];VAR ResponseDocument@1101981003 : Text);
+    VAR
+      Response@1101981009 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlDocument";
+      RootNode@1101981008 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      ListNode@1101981007 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      BinNode@1101981006 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      Bin@1101981005 : Record 7354;
+      Position@1101981004 : Integer;
+      Counter@1101981002 : Integer;
+    BEGIN
+      IF Bin.GET(LocationCode,BinCode) THEN BEGIN
+        CLEAR(BinInfoResponse);
+        BinInfoResponse := BinInfoResponse.XmlDocument;
+        BinInfoResponse.LoadXml('<BinInfo/>');
+        BinInfoRootNode := BinInfoResponse.DocumentElement;
+        BinInfo(Bin);
+        ResponseDocument := BinInfoResponse.OuterXml;
+      END;
+    END;
+
+    LOCAL PROCEDURE AddInfoBlock@1101981044(Caption@1101981000 : Text;Description@1101981001 : Text;Detail@1101981002 : Text;Value1@1101981003 : Text;Value2@1101981004 : Text;Value3@1101981005 : Text;ImageUrl@1101981006 : Text);
+    BEGIN
+      IF XMLAddElement(BinInfoRootNode,'Block','','',BinInfoCurrentNode) > 0 THEN
+                        ERROR(Text000);
+      XMLAddAttribute(BinInfoCurrentNode,'Caption',Caption);
+      XMLAddAttribute(BinInfoCurrentNode,'Description',Description);
+      XMLAddAttribute(BinInfoCurrentNode,'Detail',Detail);
+      XMLAddAttribute(BinInfoCurrentNode,'Value1',Value1);
+      XMLAddAttribute(BinInfoCurrentNode,'Value2',Value2);
+      XMLAddAttribute(BinInfoCurrentNode,'Value3',Value3);
+      XMLAddAttribute(BinInfoCurrentNode,'ImageURL',ImageUrl);
+    END;
+
+    PROCEDURE GetBinValuesByRackID@1101981037(ID@1101981002 : Integer;VAR ResponseDocument@1101981000 : Text);
+    VAR
+      Response@1101981008 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlDocument";
+      RootNode@1101981007 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      ListNode@1101981006 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      BinNode@1101981005 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNode";
+      Bin@1101981004 : Record 7354;
+      Position@1101981003 : Integer;
+      Counter@1101981001 : Integer;
+    BEGIN
+      Response := Response.XmlDocument;
+      Response.LoadXml('<BinValues/>');
+      RootNode := Response.DocumentElement;
+      Bin.RESET;
+      Bin.SETRANGE("Rack ID",ID);
+      IF Bin.FINDSET THEN
+        REPEAT
+          IF XMLAddElement(RootNode,'BIN',Bin.Code,'',BinNode) > 0 THEN
+            ERROR(Text000);
+          XMLAddAttribute(BinNode,'Right',BinBottomRightValue(Bin));
+          XMLAddAttribute(BinNode,'Left',BinBottomLeftValue(Bin));
+        UNTIL Bin.NEXT = 0;
+      ResponseDocument := Response.OuterXml;
+    END;
+
     LOCAL PROCEDURE "---- Rack ------"@1101981121();
     BEGIN
     END;
 
-    PROCEDURE CreateRack@1101981004(LocationCode@1101981000 : Code[10];ZoneCode@1101981001 : Code[10];No@1101981002 : Code[10];Sections@1101981003 : Integer;Levels@1101981004 : Integer;Depth@1101981005 : Integer;Left@1101981006 : Integer;Top@1101981007 : Integer;Width@1101981008 : Integer;Height@1101981009 : Integer;RackOrientation@1101981010 : Integer;SchemeVisible@1101981012 : Boolean;Comment@1101981014 : Text) : Integer;
+    PROCEDURE CreateRack@1101981004(LocationCode@1101981000 : Code[10];ZoneCode@1101981001 : Code[10];No@1101981002 : Code[10];Sections@1101981003 : Integer;Levels@1101981004 : Integer;Depth@1101981005 : Integer;Left@1101981006 : Integer;Top@1101981007 : Integer;Width@1101981008 : Integer;Height@1101981009 : Integer;RackOrientation@1101981010 : Integer;SchemeVisible@1101981012 : Boolean;Comment@1101981014 : Text;NumberingPrefix@1101981015 : Text[10];RackSectionSeparator@1101981016 : Text[5];SectionLevelSeparator@1101981017 : Text[5];LevelDepthSeparator@1101981018 : Text[5];ReversSectionNumbering@1101981019 : Boolean;ReversLevelNumbering@1101981020 : Boolean;ReversDepthNumbering@1101981021 : Boolean;NumberingSectionBegin@1101981022 : Integer;NumberingLevelBegin@1101981023 : Integer;NumberingDepthBegin@1101981024 : Integer;NumberingSectionDigitsQty@1101981025 : Integer;NumberingLevelDigitsQty@1101981026 : Integer;NumberingDepthDigitsQty@1101981027 : Integer;StepNumberingSection@1101981028 : Integer;StepNumberingLevel@1101981029 : Integer;StepNumberingDepth@1101981030 : Integer;BinTemplateCode@1101981031 : Code[20]) : Integer;
     VAR
       Rack@1101981011 : Record 51200;
       ID@1101981013 : Integer;
@@ -2405,11 +2687,28 @@ OBJECT Codeunit 50076 WarehouseControlSystem
       Rack."Rack Orientation" := RackOrientation;
       Rack."Scheme Visible" := SchemeVisible;
       Rack.Comment := Comment;
+      Rack."Numbering Prefix" := NumberingPrefix;
+      Rack."Rack Section Separator" := RackSectionSeparator;
+      Rack."Section Level Separator" := SectionLevelSeparator;
+      Rack."Level Depth Separator" := LevelDepthSeparator;
+      Rack."Revers Section Numbering" := ReversSectionNumbering;
+      Rack."Revers Level Numbering" := ReversLevelNumbering;
+      Rack."Revers Depth Numbering" := ReversDepthNumbering;
+      Rack."Numbering Section Begin" := NumberingSectionBegin;
+      Rack."Numbering Level Begin" := NumberingLevelBegin;
+      Rack."Numbering Depth Begin" := NumberingDepthBegin;
+      Rack."Numbering Section Digits Qty." := NumberingSectionDigitsQty;
+      Rack."Numbering Level Digits Qty." := NumberingLevelDigitsQty;
+      Rack."Numbering Depth Digits Qty." := NumberingDepthDigitsQty;
+      Rack."Step Numbering Section" := StepNumberingSection;
+      Rack."Step Numbering Level" := StepNumberingLevel;
+      Rack."Step Numbering Depth" := StepNumberingDepth;
+      Rack."Bin Template Code" := BinTemplateCode;
       Rack.MODIFY(TRUE);
       EXIT(ID);
     END;
 
-    PROCEDURE ModifyRack@1101981123(ID@1101981014 : Integer;No@1101981012 : Code[10];Sections@1101981007 : Integer;Levels@1101981006 : Integer;Depth@1101981005 : Integer;Left@1101981004 : Integer;Top@1101981003 : Integer;Width@1101981002 : Integer;Height@1101981001 : Integer;RackOrientation@1101981000 : Integer;SchemeVisible@1101981013 : Boolean;Comment@1101981008 : Text);
+    PROCEDURE ModifyRack@1101981123(ID@1101981014 : Integer;No@1101981012 : Code[10];Sections@1101981007 : Integer;Levels@1101981006 : Integer;Depth@1101981005 : Integer;Left@1101981004 : Integer;Top@1101981003 : Integer;Width@1101981002 : Integer;Height@1101981001 : Integer;RackOrientation@1101981000 : Integer;SchemeVisible@1101981013 : Boolean;Comment@1101981008 : Text;NumberingPrefix@1101981028 : Text[10];RackSectionSeparator@1101981027 : Text[5];SectionLevelSeparator@1101981026 : Text[5];LevelDepthSeparator@1101981025 : Text[5];ReversSectionNumbering@1101981024 : Boolean;ReversLevelNumbering@1101981023 : Boolean;ReversDepthNumbering@1101981022 : Boolean;NumberingSectionBegin@1101981021 : Integer;NumberingLevelBegin@1101981020 : Integer;NumberingDepthBegin@1101981019 : Integer;NumberingSectionDigitsQty@1101981018 : Integer;NumberingLevelDigitsQty@1101981017 : Integer;NumberingDepthDigitsQty@1101981016 : Integer;StepNumberingSection@1101981015 : Integer;StepNumberingLevel@1101981010 : Integer;StepNumberingDepth@1101981009 : Integer;BinTemplateCode@1101981029 : Code[20]);
     VAR
       Rack@1101981011 : Record 51200;
     BEGIN
@@ -2425,6 +2724,23 @@ OBJECT Codeunit 50076 WarehouseControlSystem
       Rack."Rack Orientation" := RackOrientation;
       Rack."Scheme Visible" := SchemeVisible;
       Rack.Comment := Comment;
+      Rack."Numbering Prefix" := NumberingPrefix;
+      Rack."Rack Section Separator" := RackSectionSeparator;
+      Rack."Section Level Separator" := SectionLevelSeparator;
+      Rack."Level Depth Separator" := LevelDepthSeparator;
+      Rack."Revers Section Numbering" := ReversSectionNumbering;
+      Rack."Revers Level Numbering" := ReversLevelNumbering;
+      Rack."Revers Depth Numbering" := ReversDepthNumbering;
+      Rack."Numbering Section Begin" := NumberingSectionBegin;
+      Rack."Numbering Level Begin" := NumberingLevelBegin;
+      Rack."Numbering Depth Begin" := NumberingDepthBegin;
+      Rack."Numbering Section Digits Qty." := NumberingSectionDigitsQty;
+      Rack."Numbering Level Digits Qty." := NumberingLevelDigitsQty;
+      Rack."Numbering Depth Digits Qty." := NumberingDepthDigitsQty;
+      Rack."Step Numbering Section" := StepNumberingSection;
+      Rack."Step Numbering Level" := StepNumberingLevel;
+      Rack."Step Numbering Depth" := StepNumberingDepth;
+      Rack."Bin Template Code" := BinTemplateCode;
       Rack.MODIFY(TRUE);
     END;
 
@@ -2434,6 +2750,19 @@ OBJECT Codeunit 50076 WarehouseControlSystem
     BEGIN
       IF Rack.GET(ID) THEN
         Rack.DELETE(TRUE);
+    END;
+
+    PROCEDURE DeleteBinsFromRack@1101981054(ID@1101981000 : Integer);
+    VAR
+      Bin@1101981001 : Record 7354;
+    BEGIN
+      Bin.RESET;
+      Bin.SETRANGE("Rack ID",ID);
+      IF Bin.FINDSET THEN
+        REPEAT
+          Bin."Rack ID" := 0;
+          Bin.MODIFY(FALSE);
+        UNTIL Bin.NEXT = 0;
     END;
 
     PROCEDURE SetRackVisible@1101981017(ID@1101981000 : Integer;Visible@1101981004 : Boolean);
@@ -2501,8 +2830,24 @@ OBJECT Codeunit 50076 WarehouseControlSystem
               XMLAddAttribute(RackNode,'Top',FORMAT(Rack.Top));
               XMLAddAttribute(RackNode,'SchemeVisible',Bool2Txt(Rack."Scheme Visible"));
               XMLAddAttribute(RackNode,'RackOrientation',FORMAT(Rack."Rack Orientation"));
-              IF Rack.Comment<>'' THEN
-                XMLAddAttribute(RackNode,'Comment',FORMAT(Rack.Comment));
+              XMLAddAttribute(RackNode,'Comment',Rack.Comment);
+              XMLAddAttribute(RackNode,'NumberingPrefix',Rack."Numbering Prefix");
+              XMLAddAttribute(RackNode,'RackSectionSeparator',Rack."Rack Section Separator");
+              XMLAddAttribute(RackNode,'SectionLevelSeparator',Rack."Section Level Separator");
+              XMLAddAttribute(RackNode,'LevelDepthSeparator',Rack."Level Depth Separator");
+              XMLAddAttribute(RackNode,'ReversSectionNumbering',FORMAT(Rack."Revers Section Numbering"));
+              XMLAddAttribute(RackNode,'ReversLevelNumbering',FORMAT(Rack."Revers Level Numbering"));
+              XMLAddAttribute(RackNode,'ReversDepthNumbering',FORMAT(Rack."Revers Depth Numbering"));
+              XMLAddAttribute(RackNode,'NumberingSectionBegin',FORMAT(Rack."Numbering Section Begin"));
+              XMLAddAttribute(RackNode,'NumberingLevelBegin',FORMAT(Rack."Numbering Level Begin"));
+              XMLAddAttribute(RackNode,'NumberingDepthBegin',FORMAT(Rack."Numbering Depth Begin"));
+              XMLAddAttribute(RackNode,'NumberingSectionDigitsQty',FORMAT(Rack."Numbering Section Digits Qty."));
+              XMLAddAttribute(RackNode,'NumberingLevelDigitsQty',FORMAT(Rack."Numbering Level Digits Qty."));
+              XMLAddAttribute(RackNode,'NumberingDepthDigitsQty',FORMAT(Rack."Numbering Depth Digits Qty."));
+              XMLAddAttribute(RackNode,'StepNumberingSection',FORMAT(Rack."Step Numbering Section"));
+              XMLAddAttribute(RackNode,'StepNumberingLevel',FORMAT(Rack."Step Numbering Level"));
+              XMLAddAttribute(RackNode,'StepNumberingDepth',FORMAT(Rack."Step Numbering Depth"));
+              XMLAddAttribute(RackNode,'BinTemplateCode',Rack."Bin Template Code");
               Counter+=1;
             END ELSE
               BREAK;
@@ -2746,6 +3091,7 @@ OBJECT Codeunit 50076 WarehouseControlSystem
               XMLAddAttribute(BinContentNode,'Quantity',FORMAT(BinContent.Quantity));
               XMLAddAttribute(BinContentNode,'QuantityBase',FORMAT(BinContent."Quantity (Base)"));
               XMLAddAttribute(BinContentNode,'UnitofMeasureCode',BinContent."Unit of Measure Code");
+              XMLAddAttribute(BinContentNode,'ImageURL','http://res.cloudinary.com/lmru/image/upload/LMcode/'+Item."No."+'.jpg');
               Counter+=1;
             END ELSE
               BREAK;
@@ -3366,6 +3712,78 @@ OBJECT Codeunit 50076 WarehouseControlSystem
     END;
 
     EVENT UDSResponse@1101981013::NodeChanged@99(sender@1101981001 : Variant;e@1101981000 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNodeChangedEventArgs");
+    BEGIN
+    END;
+
+    EVENT BinInfoResponse@1101981028::NodeInserting@94(sender@1101981001 : Variant;e@1101981000 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNodeChangedEventArgs");
+    BEGIN
+    END;
+
+    EVENT BinInfoResponse@1101981028::NodeInserted@95(sender@1101981001 : Variant;e@1101981000 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNodeChangedEventArgs");
+    BEGIN
+    END;
+
+    EVENT BinInfoResponse@1101981028::NodeRemoving@96(sender@1101981001 : Variant;e@1101981000 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNodeChangedEventArgs");
+    BEGIN
+    END;
+
+    EVENT BinInfoResponse@1101981028::NodeRemoved@97(sender@1101981001 : Variant;e@1101981000 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNodeChangedEventArgs");
+    BEGIN
+    END;
+
+    EVENT BinInfoResponse@1101981028::NodeChanging@98(sender@1101981001 : Variant;e@1101981000 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNodeChangedEventArgs");
+    BEGIN
+    END;
+
+    EVENT BinInfoResponse@1101981028::NodeChanged@99(sender@1101981001 : Variant;e@1101981000 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNodeChangedEventArgs");
+    BEGIN
+    END;
+
+    EVENT ZoneIndicatorResponse@1101981032::NodeInserting@94(sender@1101981001 : Variant;e@1101981000 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNodeChangedEventArgs");
+    BEGIN
+    END;
+
+    EVENT ZoneIndicatorResponse@1101981032::NodeInserted@95(sender@1101981001 : Variant;e@1101981000 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNodeChangedEventArgs");
+    BEGIN
+    END;
+
+    EVENT ZoneIndicatorResponse@1101981032::NodeRemoving@96(sender@1101981001 : Variant;e@1101981000 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNodeChangedEventArgs");
+    BEGIN
+    END;
+
+    EVENT ZoneIndicatorResponse@1101981032::NodeRemoved@97(sender@1101981001 : Variant;e@1101981000 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNodeChangedEventArgs");
+    BEGIN
+    END;
+
+    EVENT ZoneIndicatorResponse@1101981032::NodeChanging@98(sender@1101981001 : Variant;e@1101981000 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNodeChangedEventArgs");
+    BEGIN
+    END;
+
+    EVENT ZoneIndicatorResponse@1101981032::NodeChanged@99(sender@1101981001 : Variant;e@1101981000 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNodeChangedEventArgs");
+    BEGIN
+    END;
+
+    EVENT LocationIndicatorResponse@1101981037::NodeInserting@94(sender@1101981001 : Variant;e@1101981000 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNodeChangedEventArgs");
+    BEGIN
+    END;
+
+    EVENT LocationIndicatorResponse@1101981037::NodeInserted@95(sender@1101981001 : Variant;e@1101981000 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNodeChangedEventArgs");
+    BEGIN
+    END;
+
+    EVENT LocationIndicatorResponse@1101981037::NodeRemoving@96(sender@1101981001 : Variant;e@1101981000 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNodeChangedEventArgs");
+    BEGIN
+    END;
+
+    EVENT LocationIndicatorResponse@1101981037::NodeRemoved@97(sender@1101981001 : Variant;e@1101981000 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNodeChangedEventArgs");
+    BEGIN
+    END;
+
+    EVENT LocationIndicatorResponse@1101981037::NodeChanging@98(sender@1101981001 : Variant;e@1101981000 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNodeChangedEventArgs");
+    BEGIN
+    END;
+
+    EVENT LocationIndicatorResponse@1101981037::NodeChanged@99(sender@1101981001 : Variant;e@1101981000 : DotNet "'System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'.System.Xml.XmlNodeChangedEventArgs");
     BEGIN
     END;
 
