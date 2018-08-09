@@ -23,19 +23,13 @@ namespace WarehouseControlSystem.View.Pages.Racks.New
     public partial class RackSimpleView : ContentView
     {
         Label HeaderLabel;
-        public RackViewModel model;
+        private RackViewModel model;
 
-        public static readonly BindableProperty BinWidthProperty = BindableProperty.Create(nameof(BinWidth), typeof(int), typeof(RackSimpleView), 120, BindingMode.Default, null, Changed);
+        public static readonly BindableProperty BinWidthProperty = BindableProperty.Create(nameof(BinWidth), typeof(int), typeof(RackSimpleView), 120, BindingMode.Default, null, null);
         public int BinWidth
         {
             get { return (int)GetValue(BinWidthProperty); }
             set { SetValue(BinWidthProperty, value); }
-        }
-
-        private static void Changed(BindableObject bindable, object oldValue, object newValue)
-        {
-            //var instance = bindable as RackView;
-            //instance?.Update();
         }
 
         public RackSimpleView()
@@ -56,10 +50,6 @@ namespace WarehouseControlSystem.View.Pages.Racks.New
                 FillBins();
                 grid.IsVisible = true;
             }
-        }
-
-        private void UpdateRackViewModel(RackViewModel rvm)
-        {
         }
 
         public void NoUpdate(string newvalue)

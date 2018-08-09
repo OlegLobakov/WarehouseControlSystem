@@ -28,43 +28,9 @@ namespace WarehouseControlSystem.View.Pages.Racks.New
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class BinInfoPanel : ContentView
     {
-
         public BinInfoPanel()
         {
             InitializeComponent();
-        }
-
-        private void BinTypeSelector(object sender, EventArgs e)
-        {
-            var picker = (Picker)sender;
-            int selectedIndex = picker.SelectedIndex;
-            if (selectedIndex >= 0)
-            {
-                //BinType selected = (BinType)picker.SelectedItem;
-                //BinType = selected.Code;
-            }
-        }
-
-        private void WarehouseClassSelector(object sender, EventArgs e)
-        {
-            var picker = (Picker)sender;
-            int selectedIndex = picker.SelectedIndex;
-            if (selectedIndex >= 0)
-            {
-                WarehouseClass selected = (WarehouseClass)picker.SelectedItem;
-                //WarehouseClassCode = selected.Code;
-            }
-        }
-
-        private void SpecialEquipmentSelector(object sender, EventArgs e)
-        {
-            var picker = (Picker)sender;
-            int selectedIndex = picker.SelectedIndex;
-            if (selectedIndex >= 0)
-            {
-                SpecialEquipment selected = (SpecialEquipment)picker.SelectedItem;
-                //SpecialEquipmentCode = selected.Code;
-            }
         }
     }
 }

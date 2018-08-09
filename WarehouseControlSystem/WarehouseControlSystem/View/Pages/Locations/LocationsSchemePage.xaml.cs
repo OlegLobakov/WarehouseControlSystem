@@ -206,7 +206,6 @@ namespace WarehouseControlSystem.View.Pages.Locations
                     ToolbarItems.Remove(editbutton);
                 }
 
-
                 if (indicatorsbutton is null)
                 {
                     indicatorsbutton = new ToolbarItem()
