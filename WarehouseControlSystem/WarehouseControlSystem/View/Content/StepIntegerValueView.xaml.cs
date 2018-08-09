@@ -14,7 +14,7 @@ namespace WarehouseControlSystem.View.Content
 	{
         public event Action<int,int> ValueChanges;
 
-        public static readonly BindableProperty StepBackgroundColorProperty = BindableProperty.Create(nameof(StepBackgroundColor), typeof(Color), typeof(StepIntegerValueView), Color.White, BindingMode.Default, null, Changed);
+        public static readonly BindableProperty StepBackgroundColorProperty = BindableProperty.Create(nameof(StepBackgroundColor), typeof(Color), typeof(StepIntegerValueView), Color.White, BindingMode.Default, null, null);
         public Color StepBackgroundColor
         {
             get { return (Color)GetValue(StepBackgroundColorProperty); }
@@ -26,12 +26,6 @@ namespace WarehouseControlSystem.View.Content
         {
             get { return (int)GetValue(ValueProperty); }
             set { SetValue(ValueProperty, value); }
-        }
-
-        private static void Changed(BindableObject bindable, object oldValue, object newValue)
-        {
-            var instance = bindable as StepIntegerValueView;
-            //instance?.RaiseEvents();
         }
 
         private static void ValueChanged(BindableObject bindable, object oldValue, object newValue)
