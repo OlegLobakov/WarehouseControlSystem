@@ -116,6 +116,7 @@ namespace WarehouseControlSystem.View.Pages.Locations
         ToolbarItem removebutton;
         ToolbarItem editbutton;
         ToolbarItem indicatorsbutton;
+
         private void Menu()
         {
             if (Model.IsEditMode)

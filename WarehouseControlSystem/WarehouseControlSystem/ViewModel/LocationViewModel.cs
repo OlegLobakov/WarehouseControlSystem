@@ -257,7 +257,7 @@ namespace WarehouseControlSystem.ViewModel
 
             Changed = false;
             IsSaveToNAVEnabled = true;
-            IsIndicatorsVisible = true;
+            IsIndicatorsVisible = Settings.ShowIndicators;
         }
 
         public void FillFields(Location location)

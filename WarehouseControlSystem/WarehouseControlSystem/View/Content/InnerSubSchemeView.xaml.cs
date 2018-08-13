@@ -135,7 +135,7 @@ namespace WarehouseControlSystem.View.Content
             Color color1 = Color.FromHex(element.HexColor);
             if (color1 == (Color)Application.Current.Resources["SchemeBlockWhiteColor"])
             {
-                color1 = (Color)Application.Current.Resources["SchemeBlockWhiteColorDark"];
+                color1 = Color.Black;
             }
 
             int left = Math.Max(0, Math.Min(PlanWidth, element.Left));
@@ -146,7 +146,6 @@ namespace WarehouseControlSystem.View.Content
             maingrid.Children.Add(
                 new BoxView()
                 {
-                    Opacity = 0.7,
                     BackgroundColor = color1
                 }, left, right, top, bottom);
         }

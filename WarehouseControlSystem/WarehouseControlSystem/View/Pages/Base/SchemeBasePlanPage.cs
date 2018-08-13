@@ -87,8 +87,6 @@ namespace WarehouseControlSystem.View.Pages.Base
                         double dy = y + e.TotalY;
                         oldeTotalX = e.TotalX;
                         oldeTotalY = e.TotalY;
-                        dx = CorrectionDX(dx);
-                        dy = CorrectionDY(dy);
                         await Move(dx, dy);
                         break;
                     }
@@ -135,6 +133,7 @@ namespace WarehouseControlSystem.View.Pages.Base
         {
             double dxrv = dx;
 
+
             if (dx + leftborder < 0)
             {
                 dxrv = -leftborder;
@@ -144,6 +143,7 @@ namespace WarehouseControlSystem.View.Pages.Base
             {
                 dxrv = BaseModel.ScreenWidth - rightborder;
             }
+
 
             return dxrv;
         }
@@ -164,6 +164,41 @@ namespace WarehouseControlSystem.View.Pages.Base
 
             return dyrv;
         }
+        private double MoveCorrectionDX(double lvX, double lvwidth, double dx)
+        {
+            double dxrv = dx;
+
+
+            if (dx + lvwidth < 0)
+            {
+                dxrv = -lvwidth+40;
+            }
+
+            if (dx + lvwidth + lvX > BaseModel.ScreenWidth)
+            {
+                dxrv = BaseModel.ScreenWidth - lvwidth - lvX;
+            }
+
+
+            return dxrv;
+        }
+
+        private double MoveCorrectionDY(double lvY, double lbheight, double dy)
+        {
+            double dyrv = dy;
+
+            if (dy + lbheight < 0)
+            {
+                dyrv = -lbheight + 40;
+            }
+
+            if (dy + bottomborder + lvY > (BaseModel.ScreenHeight))
+            {
+                dyrv = BaseModel.ScreenHeight - lbheight - lvY;
+            }
+
+            return dyrv;
+        }
 
         private async Task Move(double dx, double dy)
         {
@@ -171,10 +206,14 @@ namespace WarehouseControlSystem.View.Pages.Base
             {
                 if (lv.Model.EditMode == SchemeElementEditMode.Move)
                 {
+                    dx = CorrectionDX(dx);
+                    dy = CorrectionDY(dy);
                     await lv.TranslateTo(dx, dy, 250, easing1);
                 }
                 if (lv.Model.EditMode == SchemeElementEditMode.Resize)
                 {
+                    dx = MoveCorrectionDX(lv.X,lv.Model.PrevViewWidth, dx);
+                    dy = MoveCorrectionDY(lv.Y,lv.Model.PrevViewHeight, dy);
                     AbsoluteLayout.SetLayoutBounds(lv, new Rectangle(lv.X, lv.Y, lv.Model.PrevViewWidth + dx, lv.Model.PrevViewHeight + dy));
                 }
             }

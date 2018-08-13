@@ -141,6 +141,20 @@ namespace WarehouseControlSystem
 
             set => AppSettings.AddOrUpdateValue(nameof(ShowImages), value);
         }
+
+        public static bool ShowIndicators
+        {
+            get => AppSettings.GetValueOrDefault(nameof(ShowIndicators), true);
+
+            set => AppSettings.AddOrUpdateValue(nameof(ShowIndicators), value);
+        }
+
+        public static bool MultiSelectBins
+        {
+            get => AppSettings.GetValueOrDefault(nameof(MultiSelectBins), false);
+
+            set => AppSettings.AddOrUpdateValue(nameof(MultiSelectBins), value);
+        }
     }
 
 

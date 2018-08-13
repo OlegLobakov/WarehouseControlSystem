@@ -2761,11 +2761,47 @@ namespace WarehouseControlSystem.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hide Images.
+        /// </summary>
+        internal static string RackCardPage_Toolbar_HideImages {
+            get {
+                return ResourceManager.GetString("RackCardPage_Toolbar_HideImages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Show/Hide Images.
         /// </summary>
         internal static string RackCardPage_Toolbar_ImagesLock {
             get {
                 return ResourceManager.GetString("RackCardPage_Toolbar_ImagesLock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Multi Select Bins.
+        /// </summary>
+        internal static string RackCardPage_Toolbar_MultiSelect {
+            get {
+                return ResourceManager.GetString("RackCardPage_Toolbar_MultiSelect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Off Multi Select Bins.
+        /// </summary>
+        internal static string RackCardPage_Toolbar_OffMultiSelectBins {
+            get {
+                return ResourceManager.GetString("RackCardPage_Toolbar_OffMultiSelectBins", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to On Multi Select Bins.
+        /// </summary>
+        internal static string RackCardPage_Toolbar_OnMultiSelectBins {
+            get {
+                return ResourceManager.GetString("RackCardPage_Toolbar_OnMultiSelectBins", resourceCulture);
             }
         }
         
@@ -2784,6 +2820,15 @@ namespace WarehouseControlSystem.Resx {
         internal static string RackCardPage_Toolbar_Search {
             get {
                 return ResourceManager.GetString("RackCardPage_Toolbar_Search", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show Images.
+        /// </summary>
+        internal static string RackCardPage_Toolbar_ShowImages {
+            get {
+                return ResourceManager.GetString("RackCardPage_Toolbar_ShowImages", resourceCulture);
             }
         }
         

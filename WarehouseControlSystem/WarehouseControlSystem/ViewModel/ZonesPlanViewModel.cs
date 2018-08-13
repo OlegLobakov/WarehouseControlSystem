@@ -108,7 +108,7 @@ namespace WarehouseControlSystem.ViewModel
                 PlanHeight = 60;
             }
             State = ModelState.Undefined;
-            IsIndicatorsVisible = true;
+            IsIndicatorsVisible = Settings.ShowIndicators;
         }
 
         public void ClearAll()
@@ -167,6 +167,7 @@ namespace WarehouseControlSystem.ViewModel
                 State = ModelState.Normal;
                 UpdateMinSizes();
                 Rebuild(true);
+                IsIndicatorsVisible = Settings.ShowIndicators;
             }
             else
             {
@@ -371,7 +372,8 @@ namespace WarehouseControlSystem.ViewModel
 
         public void ChangeIndicatorsView()
         {
-            IsIndicatorsVisible = !IsIndicatorsVisible;
+            Settings.ShowIndicators = !Settings.ShowIndicators;
+            IsIndicatorsVisible = Settings.ShowIndicators;
         }
 
         public async Task SaveLocationParams()

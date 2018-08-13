@@ -229,17 +229,21 @@ namespace WarehouseControlSystem
                     IFile file = await folder.GetFileAsync(parametersfilename);
                     if (file is IFile)
                     {
-                        XmlSerializer x = new XmlSerializer(typeof(Parameters));
-                        using (System.IO.Stream stream = await file.OpenAsync(FileAccess.ReadAndWrite))
+                        try
                         {
-                            try
+                            XmlSerializer x = new XmlSerializer(typeof(Parameters));
+                            using (System.IO.Stream stream = await file.OpenAsync(FileAccess.ReadAndWrite))
                             {
                                 Parameters = (Parameters)x.Deserialize(stream);
                             }
-                            catch (Exception e)
-                            {
-                                System.Diagnostics.Debug.WriteLine(e.Message);
-                            }
+                        }
+                        catch (System.NotSupportedException e)
+                        {
+                            System.Diagnostics.Debug.WriteLine(e.Message);
+                        }
+                        catch (Exception e)
+                        {
+                            System.Diagnostics.Debug.WriteLine(e.Message);
                         }
                     }
                 }

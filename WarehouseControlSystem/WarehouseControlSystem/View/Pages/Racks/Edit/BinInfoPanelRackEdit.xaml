@@ -51,7 +51,6 @@
                                 ItemsSource="{Binding WarehouseClasses}"
                                 IsEnabled="{Binding WarehouseClassesIsEnabled}"
                                 SelectedItem="{Binding TemplateWarehouseClassCode}">
-
                             </Picker>
                         </StackLayout>
                         <StackLayout Grid.Row="3" Orientation="Vertical">

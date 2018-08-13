@@ -1524,4 +1524,19 @@
   <data name="RackEditPage_SaveProcessText" xml:space="preserve">
     <value>Modifing the rack</value>
   </data>
+  <data name="RackCardPage_Toolbar_MultiSelect" xml:space="preserve">
+    <value>Multi Select Bins</value>
+  </data>
+  <data name="RackCardPage_Toolbar_HideImages" xml:space="preserve">
+    <value>Hide Images</value>
+  </data>
+  <data name="RackCardPage_Toolbar_OffMultiSelectBins" xml:space="preserve">
+    <value>Off Multi Select Bins</value>
+  </data>
+  <data name="RackCardPage_Toolbar_OnMultiSelectBins" xml:space="preserve">
+    <value>On Multi Select Bins</value>
+  </data>
+  <data name="RackCardPage_Toolbar_ShowImages" xml:space="preserve">
+    <value>Show Images</value>
+  </data>
 </root>

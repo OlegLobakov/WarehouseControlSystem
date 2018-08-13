@@ -259,7 +259,7 @@ namespace WarehouseControlSystem.ViewModel
             State = ModelState.Undefined;
             Changed = false;
             IsSaveToNAVEnabled = true;
-            IsIndicatorsVisible = true;
+            IsIndicatorsVisible = Settings.ShowIndicators;
         }
 
         public void FillFields(Zone zone)
@@ -514,7 +514,7 @@ namespace WarehouseControlSystem.ViewModel
                 Top = rack.Top,
                 Height = rack.Height,
                 Width = rack.Width,
-                HexColor = ColorToHex(Color.Gray),
+                HexColor = ColorToHex((Color)Application.Current.Resources["PageHeaderBarBackgoundColor"]),
                 RackOrientation = rack.RackOrientation
             };
         }

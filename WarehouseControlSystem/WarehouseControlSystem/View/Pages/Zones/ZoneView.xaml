@@ -54,16 +54,28 @@
                         </Label.Triggers>
                     </Label>
 
-                    <hs:HorizontalListView  IsVisible="{Binding IsIndicatorsVisible}"
+                    <ScrollView Grid.Row="2"  Orientation="Vertical"  IsVisible="{Binding IsIndicatorsVisible}">
+                        <hs:HorizontalFlowListView 
+                         HorizontalOptions="FillAndExpand" VerticalOptions="Start"
+                        ItemsSource="{Binding Indicators}" Padding="0">
+                            <hs:HorizontalFlowListView.ItemTemplate>
+                                <DataTemplate>
+                                    <components:IndicatorView WidthRequest="150" HeightRequest="150" WidthHeight="150" VerticalOptions="Start"/>
+                                </DataTemplate>
+                            </hs:HorizontalFlowListView.ItemTemplate>
+                        </hs:HorizontalFlowListView>
+                    </ScrollView>
+                    
+                    <!--<hs:HorizontalListView  IsVisible="{Binding IsIndicatorsVisible}"
                         Grid.Row="2"  HorizontalOptions="FillAndExpand" 
                         ItemsSource="{Binding Indicators}"
                         Margin="10">
                         <hs:HorizontalListView.ItemTemplate>
                             <DataTemplate>
-                                <components:IndicatorView WidthHeight="150" VerticalOptions="Start"/>
+                                <components:IndicatorView WidthRequest="150" VerticalOptions="Start"/>
                             </DataTemplate>
                         </hs:HorizontalListView.ItemTemplate>
-                    </hs:HorizontalListView>
+                    </hs:HorizontalListView>-->
                     
                     <StackLayout Grid.Row="2"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"  
                                  IsVisible="{Binding IsNotIndicatorsVisible}">
@@ -75,9 +87,10 @@
                             PlanHeight="{Binding PlanHeight}"
                             SubSchemeElements="{Binding SubSchemeElements}"  
                             IsVisible="{Binding RacksIsLoaded}"
-                            SubSchemeBackgroundColor="{Binding Color}"
+                            SubSchemeBackgroundColor="White"
                             UpdateScheme="{Binding RacksIsLoaded}"/>
                     </StackLayout>
+                    
                     <StackLayout Grid.Row="3" Orientation="Horizontal">
                         <Label Text="{Binding EditModeText}" TextColor="White" 
                            HorizontalOptions="Start" VerticalOptions="Center"  

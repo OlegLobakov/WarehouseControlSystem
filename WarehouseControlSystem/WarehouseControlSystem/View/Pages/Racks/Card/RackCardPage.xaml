@@ -43,7 +43,7 @@
                 </OnPlatform>
             </ToolbarItem.Icon>
         </ToolbarItem>
-        <ToolbarItem  Order="Secondary" Priority="500" Text="{i18n:Translate RackCardPage_Toolbar_ImagesLock}" Clicked="ToolbarItem_Clicked_ShowHideImages">
+        <ToolbarItem  Order="Secondary" Priority="500" x:Name="ShowHideImagesToolbar" Text="{i18n:Translate RackCardPage_Toolbar_ImagesLock}" Clicked="ToolbarItem_Clicked_ShowHideImages">
             <ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
                     <On Platform="UWP,WinPhone">
@@ -55,18 +55,18 @@
                 </OnPlatform>
             </ToolbarItem.Icon>
         </ToolbarItem>
-        <!--<ToolbarItem  Order="Secondary" Priority="1000" Text="{i18n:Translate RackCardPage_Toolbar_Change}" Clicked="ToolbarItem_RackEdit">
+        <ToolbarItem  Order="Secondary" Priority="600" x:Name="OnOffMultiSelectBins" Text="{i18n:Translate RackCardPage_Toolbar_MultiSelect}" Clicked="ToolbarItem_OnOffMultiSelect">
             <ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
                     <On Platform="UWP,WinPhone">
-                        <FileImageSource File="Assets/Images/ic_action_settings.png"/>
+                        <FileImageSource File="Assets/Images/ic_action_view_module.png"/>
                     </On>
                     <On Platform="iOS,Android">
-                        <FileImageSource File="ic_action_settings.png"/>
+                        <FileImageSource File="ic_action_view_module.png"/>
                     </On>
                 </OnPlatform>
             </ToolbarItem.Icon>
-        </ToolbarItem>-->
+        </ToolbarItem>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" x:Name="mainsl" SizeChanged="StackLayout_SizeChanged">

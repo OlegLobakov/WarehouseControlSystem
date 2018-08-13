@@ -98,7 +98,7 @@ namespace WarehouseControlSystem.ViewModel
             }
             State = ModelState.Undefined;
             IsEditMode = false;
-            IsIndicatorsVisible = true;
+            IsIndicatorsVisible = Settings.ShowIndicators;
         }
 
         public void ClearAll()
@@ -163,6 +163,7 @@ namespace WarehouseControlSystem.ViewModel
                 State = ModelState.Normal;
                 UpdateMinSizes();
                 Rebuild(true);
+                IsIndicatorsVisible = Settings.ShowIndicators;
             }
             else
             {
@@ -384,7 +385,8 @@ namespace WarehouseControlSystem.ViewModel
 
         public void ChangeIndicatorsView()
         {
-            IsIndicatorsVisible = !IsIndicatorsVisible;
+            Settings.ShowIndicators = !Settings.ShowIndicators;
+            IsIndicatorsVisible = Settings.ShowIndicators;
         }
 
         public override async void SaveChangesAsync()

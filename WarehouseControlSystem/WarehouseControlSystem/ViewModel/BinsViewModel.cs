@@ -241,6 +241,19 @@ namespace WarehouseControlSystem.ViewModel
             }
         } bool isbininfovisible;
 
+        public bool MultiSelectBins
+        {
+            get { return multiselectbins; }
+            set
+            {
+                if (multiselectbins != value)
+                {
+                    multiselectbins = value;
+                    OnPropertyChanged(nameof(MultiSelectBins));
+                }
+            }
+        } bool multiselectbins;
+
         public bool EditedBinCodeIsEnabled
         {
             get { return editedbincodeisenabled; }
@@ -452,6 +465,7 @@ namespace WarehouseControlSystem.ViewModel
 
             IsContentVisible = true;
             State = ModelState.Undefined;
+            MultiSelectBins = true;
         }
 
         public void RecreateBins(int prevdepth, int newdepth, int prevlevels, int newlevels, int prevsections, int newsections)
@@ -1091,6 +1105,17 @@ namespace WarehouseControlSystem.ViewModel
 
         private void Select(BinViewModel bvm)
         {
+            if (!MultiSelectBins)
+            {
+                List<BinViewModel> list = BinViewModels.FindAll(x => x.IsSelected == true);
+                foreach (BinViewModel bvm1 in list)
+                {
+                    if (bvm1 != bvm)
+                    {
+                        bvm1.IsSelected = false;
+                    }
+                }
+            }
             bvm.IsSelected = !bvm.IsSelected;
             AfterSelect();
         }

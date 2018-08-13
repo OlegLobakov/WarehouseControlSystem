@@ -6,7 +6,7 @@
         <ResourceDictionary>
             <Color x:Key="PageHeaderBarBackgoundColor">#336699</Color>
             <Color x:Key="WellcodeButtonBackgoundColor">#6d6d6d</Color>
-            <Color x:Key="SchemeBlockWhiteColor">#e5e5e5</Color>
+            <Color x:Key="SchemeBlockWhiteColor">White</Color>
             <Color x:Key="SchemeBlockWhiteColorDark">#b7b7b7</Color>
             <Color x:Key="BinViewColor">#e2dacf</Color>
             <Color x:Key="BinViewColorDark">#cbc4ba</Color>

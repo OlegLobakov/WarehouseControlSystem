@@ -56,6 +56,7 @@ namespace WarehouseControlSystem.View.Pages.Racks.Card
             LinkPlanRackViewModels = rsvm;
             ScaleMode = false;
             Title = AppResources.RackCardPage_Title + " " + model.No;
+            UpdateToolbarLabels();
         }
 
         protected override async void OnAppearing()
@@ -95,6 +96,7 @@ namespace WarehouseControlSystem.View.Pages.Racks.Card
 
         public void BinsIsLoaded(BinsViewModel bvm)
         {
+            bvm.MultiSelectBins = Settings.MultiSelectBins;
             model.State = ModelState.Normal;
             model.GetSearchText();
             rackview.Update(model);
@@ -167,6 +169,7 @@ namespace WarehouseControlSystem.View.Pages.Racks.Card
         {
             Settings.ShowImages = !Settings.ShowImages;
             model.BinsViewModel.LoadImages(true);
+            UpdateToolbarLabels();
         }
 
         private async void RackList_SelectedItemChanged(object sender, EventArgs e)
@@ -194,6 +197,35 @@ namespace WarehouseControlSystem.View.Pages.Racks.Card
             model.IsEditMode = true;
             model.BinsViewModel.IsEditMode = true;
             await Navigation.PushAsync(new RackEditPage(model));
+        }
+
+        private void ToolbarItem_OnOffMultiSelect(object sender, EventArgs e)
+        {
+            Settings.MultiSelectBins = !Settings.MultiSelectBins;
+            model.BinsViewModel.MultiSelectBins = Settings.MultiSelectBins;
+            UpdateToolbarLabels();
+        }
+
+        private void UpdateToolbarLabels()
+        {
+            if (Settings.ShowImages)
+            {
+                ShowHideImagesToolbar.Text = AppResources.RackCardPage_Toolbar_HideImages;
+            }
+            else
+            {
+                ShowHideImagesToolbar.Text = AppResources.RackCardPage_Toolbar_ShowImages;
+            }
+
+            if (Settings.MultiSelectBins)
+            {
+                OnOffMultiSelectBins.Text = AppResources.RackCardPage_Toolbar_OffMultiSelectBins;
+            }
+            else
+            {
+                OnOffMultiSelectBins.Text = AppResources.RackCardPage_Toolbar_OnMultiSelectBins;
+            }
+
         }
     }
 }

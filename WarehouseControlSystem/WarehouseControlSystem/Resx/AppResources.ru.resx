@@ -1520,4 +1520,19 @@
   <data name="RackEditPage_SaveProcessText" xml:space="preserve">
     <value>Изменение стеллажа</value>
   </data>
+  <data name="RackCardPage_Toolbar_MultiSelect" xml:space="preserve">
+    <value>Мульти выбор ячеек</value>
+  </data>
+  <data name="RackCardPage_Toolbar_HideImages" xml:space="preserve">
+    <value>Скрыть изображения</value>
+  </data>
+  <data name="RackCardPage_Toolbar_OffMultiSelectBins" xml:space="preserve">
+    <value>Откл. мульти выбор ячеек</value>
+  </data>
+  <data name="RackCardPage_Toolbar_OnMultiSelectBins" xml:space="preserve">
+    <value>Вкл. мульти выбор ячеек</value>
+  </data>
+  <data name="RackCardPage_Toolbar_ShowImages" xml:space="preserve">
+    <value>Показать изображения</value>
+  </data>
 </root>

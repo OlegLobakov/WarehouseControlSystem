@@ -6,7 +6,7 @@
     x:Class="WarehouseControlSystem.View.Pages.Locations.LocationView"
     xmlns:d="clr-namespace:WarehouseControlSystem.View.Pages.Base"
     xmlns:components="clr-namespace:WarehouseControlSystem.View.Content">
-    
+
     <ContentView.Content>
         <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Padding="0" BackgroundColor="DarkGray">
             <StackLayout.Triggers>
@@ -14,7 +14,7 @@
                     <Setter Property="Padding" Value="1"/>
                 </DataTrigger>
             </StackLayout.Triggers>
-            
+
             <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="{Binding Color}">
                 <StackLayout.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding TapCommand}"/>
@@ -35,16 +35,16 @@
 
                     <Label Grid.Row="0" x:Name="namelabel"    Text="{Binding Name}"     
                         FontSize="Medium" FontAttributes="Bold" 
-                       HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
-                       HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
-                       TextColor="White" Margin="10">
+                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
+                        HorizontalTextAlignment="Start" VerticalTextAlignment="Center" 
+                        TextColor="White" Margin="10">
                         <Label.Triggers>
                             <DataTrigger Binding="{Binding Color}" TargetType="Label" Value="{StaticResource SchemeBlockWhiteColor}">
                                 <Setter Property="TextColor" Value="Black"/>
                             </DataTrigger>
                         </Label.Triggers>
                     </Label>
-                    
+
                     <Label Grid.Row="1" Text="{Binding Address}"    
                        FontSize="Default"       
                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
@@ -57,17 +57,18 @@
                         </Label.Triggers>
                     </Label>
 
-                    <hs:HorizontalListView  IsVisible="{Binding IsIndicatorsVisible}"
-                        Grid.Row="2"  HorizontalOptions="FillAndExpand" 
-                        ItemsSource="{Binding Indicators}"
-                        Margin="10">
-                        <hs:HorizontalListView.ItemTemplate>
-                            <DataTemplate>
-                                <components:IndicatorView WidthHeight="150" VerticalOptions="Start"/>
-                            </DataTemplate>
-                        </hs:HorizontalListView.ItemTemplate>
-                    </hs:HorizontalListView>
-                    
+                    <ScrollView Grid.Row="2"  Orientation="Vertical"  IsVisible="{Binding IsIndicatorsVisible}">
+                        <hs:HorizontalFlowListView 
+                         HorizontalOptions="FillAndExpand" VerticalOptions="Start"
+                        ItemsSource="{Binding Indicators}" Padding="0">
+                            <hs:HorizontalFlowListView.ItemTemplate>
+                                <DataTemplate>
+                                    <components:IndicatorView WidthRequest="150" HeightRequest="150" WidthHeight="150" VerticalOptions="Start"/>
+                                </DataTemplate>
+                            </hs:HorizontalFlowListView.ItemTemplate>
+                        </hs:HorizontalFlowListView>
+                    </ScrollView>
+
                     <StackLayout Grid.Row="2"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"  
                                  IsVisible="{Binding IsNotIndicatorsVisible}">
                         <components:InnerSubSchemeView                                     
