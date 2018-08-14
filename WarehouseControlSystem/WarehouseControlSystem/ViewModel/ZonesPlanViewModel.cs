@@ -57,18 +57,14 @@ namespace WarehouseControlSystem.ViewModel
             get { return isindicatorsvisible; }
             set
             {
-                if (isindicatorsvisible != value)
+                isindicatorsvisible = value;
+                foreach (ZoneViewModel zvm in ZoneViewModels)
                 {
-                    isindicatorsvisible = value;
-                    foreach (ZoneViewModel zvm in ZoneViewModels)
-                    {
-                        zvm.IsIndicatorsVisible = value;
-                    }
-                    OnPropertyChanged(nameof(IsIndicatorsVisible));
+                    zvm.IsIndicatorsVisible = value;
                 }
+                OnPropertyChanged(nameof(IsIndicatorsVisible));
             }
-        }
-        bool isindicatorsvisible;
+        } bool isindicatorsvisible;
 
         public ZonesPlanViewModel(INavigation navigation, Location location) : base(navigation)
         {

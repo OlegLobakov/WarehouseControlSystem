@@ -19,6 +19,7 @@ namespace WarehouseControlSystem.Model
 {
     public class SubSchemeElement
     {
+        public string Text { get; set; }
         public int Left { get; set; }
         public int Top { get; set; }
         public int Height { get; set; }

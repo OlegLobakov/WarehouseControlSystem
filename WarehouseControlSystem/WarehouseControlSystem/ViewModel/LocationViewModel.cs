@@ -205,12 +205,9 @@ namespace WarehouseControlSystem.ViewModel
             get { return isindicatorsvisible; }
             set
             {
-                if (isindicatorsvisible != value)
-                {
-                    isindicatorsvisible = value;
-                    IsNotIndicatorsVisible = !value;
-                    OnPropertyChanged(nameof(IsIndicatorsVisible));
-                }
+                isindicatorsvisible = value;
+                IsNotIndicatorsVisible = !value;
+                OnPropertyChanged(nameof(IsIndicatorsVisible));
             }
         } bool isindicatorsvisible;
         public bool IsNotIndicatorsVisible
@@ -485,6 +482,7 @@ namespace WarehouseControlSystem.ViewModel
             {
                 SubSchemeElement sse = new SubSchemeElement
                 {
+                    Text = zone.Description,
                     Left = zone.Left,
                     Top = zone.Top,
                     Height = zone.Height,

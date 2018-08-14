@@ -57,18 +57,14 @@ namespace WarehouseControlSystem.ViewModel
             get { return isindicatorsvisible; }
             set
             {
-                if (isindicatorsvisible != value)
+                isindicatorsvisible = value;
+                foreach (LocationViewModel lvm in LocationViewModels)
                 {
-                    isindicatorsvisible = value;
-                    foreach (LocationViewModel lvm in LocationViewModels)
-                    {
-                        lvm.IsIndicatorsVisible = value;
-                    }
-                    OnPropertyChanged(nameof(IsIndicatorsVisible));
+                    lvm.IsIndicatorsVisible = value;
                 }
+                OnPropertyChanged(nameof(IsIndicatorsVisible));
             }
-        }
-        bool isindicatorsvisible;
+        } bool isindicatorsvisible;
 
         public LocationsPlanViewModel(INavigation navigation) : base(navigation)
         {

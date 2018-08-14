@@ -27,6 +27,13 @@ namespace WarehouseControlSystem.View.Content
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class InnerSubSchemeView : ContentView
     {
+        public static readonly BindableProperty SchemeTypeProperty = BindableProperty.Create(nameof(SchemeType), typeof(int), typeof(InnerSubSchemeView), 0, BindingMode.Default, null, Changed);
+        public int SchemeType
+        {
+            get { return (int)GetValue(SchemeTypeProperty); }
+            set { SetValue(SchemeTypeProperty, value); }
+        }
+
         public static readonly BindableProperty PlanHeightProperty = BindableProperty.Create(nameof(PlanHeight), typeof(int), typeof(InnerSubSchemeView), 0, BindingMode.Default, null, Changed);
         public int PlanHeight
         {
@@ -135,7 +142,7 @@ namespace WarehouseControlSystem.View.Content
             Color color1 = Color.FromHex(element.HexColor);
             if (color1 == (Color)Application.Current.Resources["SchemeBlockWhiteColor"])
             {
-                color1 = Color.Black;
+                color1 = Color.WhiteSmoke;
             }
 
             int left = Math.Max(0, Math.Min(PlanWidth, element.Left));
@@ -143,11 +150,28 @@ namespace WarehouseControlSystem.View.Content
             int top = Math.Max(0, Math.Min(PlanHeight, element.Top));
             int bottom = Math.Min(PlanHeight, element.Top + element.Height);
 
-            maingrid.Children.Add(
-                new BoxView()
-                {
-                    BackgroundColor = color1
-                }, left, right, top, bottom);
+            if (SchemeType == 0)
+            {
+                maingrid.Children.Add(
+                    new BoxView()
+                    { 
+                        Opacity = 0.5,
+                        BackgroundColor = color1
+                    }, left, right, top, bottom);
+            }
+            else
+            {
+                maingrid.Children.Add(
+                    new Label()
+                    {
+                        FontSize = Device.GetNamedSize(NamedSize.Small,typeof(Label)),
+                        Text = element.Text,
+                        Opacity = 0.5,
+                        HorizontalTextAlignment = TextAlignment.Center,
+                        VerticalTextAlignment = TextAlignment.Center,
+                        BackgroundColor = color1
+                    }, left, right, top, bottom);
+            }
         }
 
         private void ShowSelection(SubSchemeElement element)

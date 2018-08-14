@@ -78,7 +78,7 @@
                         SubSchemeElements="{Binding SubSchemeElements}" 
                         IsVisible="{Binding ZonesIsLoaded}"
                         SubSchemeBackgroundColor="{Binding Color}"
-                        UpdateScheme="{Binding ZonesIsLoaded}"/>
+                        UpdateScheme="{Binding ZonesIsLoaded}" SchemeType="1"/>
                     </StackLayout>
 
 
