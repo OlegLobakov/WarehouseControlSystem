@@ -4,6 +4,7 @@ using System.Text;
 using WarehouseControlSystem.ViewModel.Base;
 using Xamarin.Forms;
 using WarehouseControlSystem.Model.NAV;
+using System.Windows.Input;
 
 namespace WarehouseControlSystem.ViewModel
 {
@@ -69,10 +70,38 @@ namespace WarehouseControlSystem.ViewModel
                 }
             }
         } int position;
+        public bool IsURLExist
+        {
+            get { return isurlexist; }
+            set
+            {
+                if (isurlexist != value)
+                {
+                    isurlexist = value;
+                    OnPropertyChanged(nameof(IsURLExist));
+                }
+            }
+        } bool isurlexist;
+        public string URL
+        {
+            get { return url; }
+            set
+            {
+                if (url != value)
+                {
+                    url = value;
+                    OnPropertyChanged(nameof(URL));
+                }
+            }
+        } string url;
+
+        public ICommand TapCommand { protected set; get; }
+        public event Action<IndicatorViewModel> OnTap;
 
         public IndicatorViewModel(INavigation navigation, Indicator indicator) : base(navigation)
         {
             FillFields(indicator);
+            TapCommand = new Command<object>(Tap);
         }
 
         public void FillFields(Indicator indicator)
@@ -81,6 +110,29 @@ namespace WarehouseControlSystem.ViewModel
             Description = indicator.Description;
             Value = indicator.Value;
             ValueColor = Color.FromHex(indicator.ValueColor);
+            URL = indicator.URL;
+            IsURLExist = !string.IsNullOrEmpty(indicator.URL);
+        }
+
+        public void Tap(object sender)
+        {
+            if (!string.IsNullOrEmpty(URL))
+            {
+                try
+                {
+                    Uri uri = new Uri(URL);
+                    Device.OpenUri(uri);
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine(ex.Message);
+                }
+
+                if (OnTap is Action<LocationViewModel>)
+                {
+                    OnTap(this);
+                }
+            }
         }
     }
 }

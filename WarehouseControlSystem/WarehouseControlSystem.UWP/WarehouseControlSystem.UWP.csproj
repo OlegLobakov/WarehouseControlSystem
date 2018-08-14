@@ -133,6 +133,7 @@
     <Content Include="Assets\Images\ic_action_fullscreen.png" />
     <Content Include="Assets\Images\ic_action_grid_on.png" />
     <Content Include="Assets\Images\ic_action_image_aspect_ratio.png" />
+    <Content Include="Assets\Images\ic_action_insert_link.png" />
     <Content Include="Assets\Images\ic_action_red_report_problem.png" />
     <Content Include="Assets\Images\ic_action_refresh.png" />
     <Content Include="Assets\Images\ic_action_remove_circle.png" />

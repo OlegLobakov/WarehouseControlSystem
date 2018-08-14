@@ -531,6 +531,11 @@ namespace WarehouseControlSystem.Helpers.NAV
                             ind.Position = StringToInt(currentatribute.Value);
                             break;
                         }
+                    case "URL":
+                        {
+                            ind.URL = currentatribute.Value;
+                            break;
+                        }
                 }
             }
             return ind;
@@ -854,6 +859,11 @@ namespace WarehouseControlSystem.Helpers.NAV
                     case "Position":
                         {
                             ind.Position = StringToInt(currentatribute.Value);
+                            break;
+                        }
+                    case "URL":
+                        {
+                            ind.URL = currentatribute.Value;
                             break;
                         }
                 }

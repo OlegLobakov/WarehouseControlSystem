@@ -11,5 +11,6 @@ namespace WarehouseControlSystem.Model.NAV
         public string Value { get; set; } = "";
         public string ValueColor { get; set; } = "";
         public int Position { get; set; }
+        public string URL { get; set; } = "";
     }
 }

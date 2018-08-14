@@ -194,7 +194,9 @@ namespace WarehouseControlSystem.View.Content
                             }
                         case RackOrientationEnum.HorizontalRight:
                             {
-                                selectLeft = element.Left + element.Width - sss.Section;
+                                //selectLeft = element.Left + element.Width - sss.Section;
+                                //selectTop = element.Top + sss.Depth - 1;
+                                selectLeft = element.Left + sss.Section;
                                 selectTop = element.Top + sss.Depth - 1;
                                 break;
                             }
@@ -206,8 +208,10 @@ namespace WarehouseControlSystem.View.Content
                             }
                         case RackOrientationEnum.VerticalUp:
                             {
+                                //selectLeft = element.Left + sss.Depth - 1;
+                                //selectTop = element.Top + sss.Section - 1;
                                 selectLeft = element.Left + sss.Depth - 1;
-                                selectTop = element.Top + sss.Section - 1;
+                                selectTop = element.Top + element.Height - sss.Section;
                                 break;
                             }
                         default:

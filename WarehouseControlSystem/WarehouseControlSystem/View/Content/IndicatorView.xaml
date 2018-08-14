@@ -8,7 +8,10 @@
               WidthRequest="{Binding WidthHeight, Source={x:Reference Name=ThisIndView}}" 
               HeightRequest="{Binding WidthHeight, Source={x:Reference Name=ThisIndView}}"
               Padding="2">
-        <Grid 
+            <StackLayout.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding TapCommand}"/>
+            </StackLayout.GestureRecognizers>
+         <Grid 
               HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
               ColumnSpacing="0"
               RowSpacing="0"
@@ -40,7 +43,23 @@
                    FontSize="Medium"
                    HorizontalOptions="EndAndExpand"
                    Margin="0,0,10,8"/>
-        </Grid>
+
+                <Image Grid.Row="2"  x:Name="iconelement" 
+                            HorizontalOptions="Start" VerticalOptions="End" 
+                            Aspect="AspectFit" 
+                            IsVisible="{Binding IsURLExist}" Margin="3,0,0,0">
+                    <Image.Source>
+                        <OnPlatform x:TypeArguments="FileImageSource">
+                            <On Platform="UWP,WinPhone">
+                                <FileImageSource File="Assets/Images/ic_action_insert_link.png"/>
+                            </On>
+                            <On Platform="iOS,Android">
+                                <FileImageSource File="ic_action_insert_link.png.png"/>
+                            </On>
+                        </OnPlatform>
+                    </Image.Source>
+                </Image>
+            </Grid>
         </StackLayout>
     </ContentView.Content>
 </ContentView>

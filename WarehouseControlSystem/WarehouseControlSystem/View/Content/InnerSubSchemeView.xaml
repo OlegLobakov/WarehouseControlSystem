@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WarehouseControlSystem.View.Content.InnerSubSchemeView">
     <ContentView.Content>
-        <StackLayout Padding="1" BackgroundColor="DarkGray">
+        <StackLayout Padding="0,1,0,0" BackgroundColor="LightGray">
             <Grid x:Name="maingrid" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" ColumnSpacing="0" RowSpacing="0">
             </Grid>
         </StackLayout>
