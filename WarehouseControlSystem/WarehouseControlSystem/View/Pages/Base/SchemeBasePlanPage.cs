@@ -164,7 +164,7 @@ namespace WarehouseControlSystem.View.Pages.Base
 
             return dyrv;
         }
-        private double MoveCorrectionDX(double lvX, double lvwidth, double dx)
+        private double ResizeCorrectionDX(double lvX, double lvwidth, double dx)
         {
             double dxrv = dx;
 
@@ -183,7 +183,7 @@ namespace WarehouseControlSystem.View.Pages.Base
             return dxrv;
         }
 
-        private double MoveCorrectionDY(double lvY, double lbheight, double dy)
+        private double ResizeCorrectionDY(double lvY, double lbheight, double dy)
         {
             double dyrv = dy;
 
@@ -192,7 +192,7 @@ namespace WarehouseControlSystem.View.Pages.Base
                 dyrv = -lbheight + 40;
             }
 
-            if (dy + bottomborder + lvY > (BaseModel.ScreenHeight))
+            if (dy + lbheight + lvY > (BaseModel.ScreenHeight))
             {
                 dyrv = BaseModel.ScreenHeight - lbheight - lvY;
             }
@@ -212,8 +212,8 @@ namespace WarehouseControlSystem.View.Pages.Base
                 }
                 if (lv.Model.EditMode == SchemeElementEditMode.Resize)
                 {
-                    dx = MoveCorrectionDX(lv.X,lv.Model.PrevViewWidth, dx);
-                    dy = MoveCorrectionDY(lv.Y,lv.Model.PrevViewHeight, dy);
+                    dx = ResizeCorrectionDX(lv.X,lv.Model.PrevViewWidth, dx);
+                    dy = ResizeCorrectionDY(lv.Y,lv.Model.PrevViewHeight, dy);
                     AbsoluteLayout.SetLayoutBounds(lv, new Rectangle(lv.X, lv.Y, lv.Model.PrevViewWidth + dx, lv.Model.PrevViewHeight + dy));
                 }
             }

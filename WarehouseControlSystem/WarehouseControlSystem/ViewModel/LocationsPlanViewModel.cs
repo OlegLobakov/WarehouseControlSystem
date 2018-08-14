@@ -262,6 +262,7 @@ namespace WarehouseControlSystem.ViewModel
                     tappedlvm.IsSelected = true;
                     SelectedLocationViewModel = tappedlvm;
                     tappedlvm.EditMode = SchemeElementEditMode.Move;
+                    MessagingCenter.Send(this, "BringToFront");
                 }
              }
         }

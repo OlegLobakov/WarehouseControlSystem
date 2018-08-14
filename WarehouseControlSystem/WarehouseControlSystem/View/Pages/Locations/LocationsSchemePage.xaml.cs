@@ -44,6 +44,7 @@ namespace WarehouseControlSystem.View.Pages.Locations
             TapGesture.Tapped += GridTapped;
             MessagingCenter.Subscribe<LocationsPlanViewModel>(this, "Rebuild", Rebuild);
             MessagingCenter.Subscribe<LocationsPlanViewModel>(this, "Reshape", Reshape);
+            MessagingCenter.Subscribe<LocationsPlanViewModel>(this, "BringToFront", BringToFront);
             await Model.Load();
         }
 
@@ -51,6 +52,7 @@ namespace WarehouseControlSystem.View.Pages.Locations
         {
             MessagingCenter.Unsubscribe<LocationsPlanViewModel>(this, "Rebuild");
             MessagingCenter.Unsubscribe<LocationsPlanViewModel>(this, "Reshape");
+            MessagingCenter.Unsubscribe<LocationsPlanViewModel>(this, "BringToFront");
             PanGesture.PanUpdated -= OnPaned;
             TapGesture.Tapped -= GridTapped;
             base.OnDisappearing();
@@ -82,6 +84,17 @@ namespace WarehouseControlSystem.View.Pages.Locations
         private void Reshape(LocationsPlanViewModel lmv)
         {
             Reshape();
+        }
+
+        public void BringToFront(LocationsPlanViewModel obj)
+        {
+            foreach (SchemeBaseView lv in Views)
+            {
+                if (lv.Model.IsSelected)
+                {
+                    abslayout.RaiseChild(lv);
+                }
+            }
         }
 
         private void GridTapped(object sender, EventArgs e)

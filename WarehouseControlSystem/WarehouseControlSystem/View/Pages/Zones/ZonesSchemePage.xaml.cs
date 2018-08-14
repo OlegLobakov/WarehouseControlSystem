@@ -49,7 +49,7 @@ namespace WarehouseControlSystem.View.Pages.Zones
             base.OnAppearing();
             MessagingCenter.Subscribe<ZonesPlanViewModel>(this, "Rebuild", Rebuild);
             MessagingCenter.Subscribe<ZonesPlanViewModel>(this, "Reshape", Reshape);
-
+            MessagingCenter.Subscribe<ZonesPlanViewModel>(this, "BringToFront", BringToFront);
             PanGesture.PanUpdated += OnPaned;
             TapGesture.Tapped += GridTapped;
             await Model.Load();
@@ -59,6 +59,7 @@ namespace WarehouseControlSystem.View.Pages.Zones
         {
             MessagingCenter.Unsubscribe<ZonesPlanViewModel>(this, "Rebuild");
             MessagingCenter.Unsubscribe<ZonesPlanViewModel>(this, "Reshape");
+            MessagingCenter.Unsubscribe<ZonesPlanViewModel>(this, "BringToFront");
             Model.State = ViewModel.Base.ModelState.Undefined;
             PanGesture.PanUpdated -= OnPaned;
             TapGesture.Tapped -= GridTapped;
@@ -94,6 +95,17 @@ namespace WarehouseControlSystem.View.Pages.Zones
         private void Reshape(ZonesPlanViewModel rsmv)
         {
             Reshape();
+        }
+
+        public void BringToFront(ZonesPlanViewModel obj)
+        {
+            foreach (SchemeBaseView lv in Views)
+            {
+                if (lv.Model.IsSelected)
+                {
+                    abslayout.RaiseChild(lv);
+                }
+            }
         }
 
         private void GridTapped(object sender, EventArgs e)

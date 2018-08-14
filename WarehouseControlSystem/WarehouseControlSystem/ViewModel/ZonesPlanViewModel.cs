@@ -250,6 +250,7 @@ namespace WarehouseControlSystem.ViewModel
                     zvm.IsSelected = true;
                     SelectedZoneViewModel = zvm;
                     zvm.EditMode = SchemeElementEditMode.Move;
+                    MessagingCenter.Send(this, "BringToFront");
                 }
             }
         }
