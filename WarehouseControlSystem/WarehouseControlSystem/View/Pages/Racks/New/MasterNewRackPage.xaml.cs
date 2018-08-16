@@ -102,6 +102,28 @@ namespace WarehouseControlSystem.View.Pages.Racks.New
             await model.CheckNo();
         }
 
+        private void ToolbarItem_UnSelect(object sender, EventArgs e)
+        {
+            model.NewModel.BinsViewModel.UnSelect();
+        }
+
+        /// <summary>
+        /// Selec all bins in level
+        /// </summary>
+        /// <param name="levelcoord"></param>
+        private void rackview_LevelSelected(int levelcoord)
+        {
+            model.NewModel.SelectLevelBins(levelcoord);
+        }
+
+        /// <summary>
+        /// Select all bins in 1 section
+        /// </summary>
+        /// <param name="sectioncoord"></param>
+        private void rackview_SectionSelected(int sectioncoord)
+        {
+            model.NewModel.SelectSectionBins(sectioncoord);
+        }
 
     }
 }

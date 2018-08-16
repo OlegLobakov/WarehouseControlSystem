@@ -191,7 +191,7 @@
                                                 HorizontalOptions="End" />
                                         </Grid>
                                         <Image Grid.Row="3" IsVisible="{Binding ImageIsVisible}" 
-                                               Aspect="AspectFill" Source="{Binding ImageSource}" HeightRequest="200"/>
+                                               Aspect="AspectFit" Source="{Binding ImageSource}" HeightRequest="200"/>
                                     </Grid>
                                 </StackLayout>
                             </ViewCell>

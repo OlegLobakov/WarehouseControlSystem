@@ -218,8 +218,7 @@ namespace WarehouseControlSystem.ViewModel
                     OnPropertyChanged("SearchQuantity");
                 }
             }
-        }
-        int searchquantity;
+        } int searchquantity;
 
         public bool IsSearchQuantityVisible
         {
@@ -232,9 +231,7 @@ namespace WarehouseControlSystem.ViewModel
                     OnPropertyChanged("IsSearchQuantityVisible");
                 }
             }
-        }
-        bool issearchquantityvisible;
-
+        } bool issearchquantityvisible;
 
         public int BlockMovement
         {

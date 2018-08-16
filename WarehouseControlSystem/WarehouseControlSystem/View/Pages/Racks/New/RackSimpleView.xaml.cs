@@ -22,6 +22,9 @@ namespace WarehouseControlSystem.View.Pages.Racks.New
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class RackSimpleView : ContentView
     {
+        public event Action<int> LevelSelected;
+        public event Action<int> SectionSelected;
+
         Label HeaderLabel;
         private RackViewModel model;
 
@@ -32,9 +35,39 @@ namespace WarehouseControlSystem.View.Pages.Racks.New
             set { SetValue(BinWidthProperty, value); }
         }
 
+        TapGestureRecognizer LevelTap;
+        TapGestureRecognizer SectionTap;
+
         public RackSimpleView()
         {
             InitializeComponent();
+
+            LevelTap = new TapGestureRecognizer();
+            LevelTap.Tapped += (s, e) => {
+                if (LevelSelected is Action<int>)
+                {
+                    if (s is Label)
+                    {
+                        Label label1 = (Label)s;
+                        int t = int.Parse(label1.Text);
+                        int i = model.Levels - t + 1;
+                        LevelSelected(i);
+                    }
+                }
+            };
+
+            SectionTap = new TapGestureRecognizer();
+            SectionTap.Tapped += (s, e) => {
+                if (SectionSelected is Action<int>)
+                {
+                    if (s is Label)
+                    {
+                        Label label1 = (Label)s;
+                        int t = int.Parse(label1.Text);
+                        SectionSelected(t);
+                    }
+                }
+            };
         }
 
         public void Update(RackViewModel rvm)
@@ -112,6 +145,7 @@ namespace WarehouseControlSystem.View.Pages.Racks.New
                     TextColor = Color.White,
                     FontAttributes = FontAttributes.Bold
                 };
+                lb.GestureRecognizers.Add(LevelTap);
                 grid.Children.Add(lb, 0, i);
             }
         }
@@ -130,6 +164,7 @@ namespace WarehouseControlSystem.View.Pages.Racks.New
                     TextColor = Color.White,
                     FontAttributes = FontAttributes.Bold
                 };
+                lb.GestureRecognizers.Add(SectionTap);
                 lb.Text = j.ToString();
                 grid.Children.Add(lb, j, 0);
             }

@@ -699,12 +699,19 @@ namespace WarehouseControlSystem.ViewModel
             foreach (BinViewModel bvm in selectedlist)
             {
                 DeleteBin(bvm);
-                EmptySpaceViewModel esvm = new EmptySpaceViewModel(Navigation);
-                esvm.Section = bvm.Section;
-                esvm.Level = bvm.Level;
-                esvm.Depth = bvm.Depth;
-                esvm.OnTap += Esvm_OnTap;
-                EmptySpacesViewModels.Add(esvm);
+
+                for(int i=1;i<=bvm.SectionSpan;i++)
+                {
+                    for (int j = 1; j <= bvm.LevelSpan; j++)
+                    {
+                        EmptySpaceViewModel esvm = new EmptySpaceViewModel(Navigation);
+                        esvm.Section = bvm.Section + i - 1;
+                        esvm.Level = bvm.Level + j - 1;
+                        esvm.Depth = bvm.Depth;
+                        esvm.OnTap += Esvm_OnTap;
+                        EmptySpacesViewModels.Add(esvm);
+                    }
+                }
             }
             MessagingCenter.Send(this, "Update");
         }

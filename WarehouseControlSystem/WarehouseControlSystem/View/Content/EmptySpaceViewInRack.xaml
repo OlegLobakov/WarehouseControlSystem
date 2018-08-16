@@ -1,24 +1,26 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>   
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WarehouseControlSystem.View.Content.EmptySpaceViewInRack">
-  <ContentView.Content>
-        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="DarkGray" SizeChanged="StackLayout_SizeChanged">
-            <StackLayout.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding TapCommand}"/>
-            </StackLayout.GestureRecognizers>
-            <Image Grid.Row="0" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Aspect="AspectFit" Margin="5">
-                <Image.Source>
-                    <OnPlatform x:TypeArguments="FileImageSource">
-                        <On Platform="UWP">
-                            <FileImageSource File="Assets/Images/ic_action_add_circle.png"/>
-                        </On>
-                        <On Platform="iOS,Android">
-                            <FileImageSource File="ic_action_add_circle.png"/>
-                        </On>
-                    </OnPlatform>
-                </Image.Source>
-            </Image>
+    <ContentView.Content>
+        <StackLayout Padding="1" BackgroundColor="LightGray">
+            <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="DarkGray" SizeChanged="StackLayout_SizeChanged">
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding TapCommand}"/>
+                </StackLayout.GestureRecognizers>
+                <Image Grid.Row="0" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Aspect="AspectFit" Margin="5">
+                    <Image.Source>
+                        <OnPlatform x:TypeArguments="FileImageSource">
+                            <On Platform="UWP">
+                                <FileImageSource File="Assets/Images/ic_action_add_circle.png"/>
+                            </On>
+                            <On Platform="iOS,Android">
+                                <FileImageSource File="ic_action_add_circle.png"/>
+                            </On>
+                        </OnPlatform>
+                    </Image.Source>
+                </Image>
+            </StackLayout>
         </StackLayout>
-  </ContentView.Content>
+    </ContentView.Content>
 </ContentView>

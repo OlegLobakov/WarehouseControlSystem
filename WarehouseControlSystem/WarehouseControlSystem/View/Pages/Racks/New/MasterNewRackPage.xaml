@@ -10,6 +10,20 @@
             <convertors:RackOrientationConverter x:Key="orientationConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem  Order="Primary" Priority="700" Text="{i18n:Translate RackCardPage_Toolbar_UnSelect}" Clicked="ToolbarItem_UnSelect">
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="UWP,WinPhone">
+                        <FileImageSource File="Assets/Images/ic_action_image_aspect_ratio.png"/>
+                    </On>
+                    <On Platform="iOS,Android">
+                        <FileImageSource File="ic_action_image_aspect_ratio.png"/>
+                    </On>
+                </OnPlatform>
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout x:Name="mainsl">
             <Grid IsVisible="{Binding IsLoadingState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
@@ -162,7 +176,7 @@
                             <ScrollView Grid.Row="1" Padding="5" BackgroundColor="White"
                                         HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"  
                                         Orientation="Horizontal" x:Name="rackviewpanel">
-                                <rv:RackSimpleView x:Name="rackview"></rv:RackSimpleView>
+                                <rv:RackSimpleView x:Name="rackview" LevelSelected="rackview_LevelSelected" SectionSelected="rackview_SectionSelected"></rv:RackSimpleView>
                             </ScrollView>
                             <Grid Grid.Row="2" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                                 <Grid.ColumnDefinitions>
