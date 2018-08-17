@@ -24,6 +24,7 @@ using System.Collections.ObjectModel;
 using System.Threading;
 using WarehouseControlSystem.Model;
 using WarehouseControlSystem.Helpers.Comparer;
+using FFImageLoading;
 
 namespace WarehouseControlSystem.ViewModel
 {
@@ -916,6 +917,59 @@ namespace WarehouseControlSystem.ViewModel
                 throw e;
             }
         }
+        public async Task LoadBinImages(AsyncCancelationDispatcher acd)
+        {
+            try
+            {
+                List<BinImage> binimages = await NAV.GetBinImagesByRackID(RackID, acd.Default).ConfigureAwait(true);
+                if (NotDisposed)
+                {
+                    foreach (BinImage bi in binimages)
+                    {
+                        if (!acd.Default.IsCancellationRequested)
+                        {
+                            BinViewModel bvm = BinViewModels.Find(x => x.Code == bi.BinCode);
+                            if (bvm is BinViewModel)
+                            {
+                                try
+                                {
+                                    System.IO.Stream output = await ImageService.Instance.LoadUrl(bi.ImageURL)
+                                        .LoadingPlaceholder("icon.png")
+                                        .DownSample(100,100)
+                                        .AsJPGStreamAsync();
+
+                                    if (NotDisposed)
+                                    {
+                                        if (bvm.NotDisposed)
+                                        {
+                                            bvm.ImageSource = ImageSource.FromStream(() => output);
+                                            bvm.ImageSourceLoaded = true;
+                                        }
+                                    }
+                                    else
+                                        break;
+                                }
+                                catch (Exception e)
+                                {
+                                    System.Diagnostics.Debug.WriteLine("WCS:LI ["+ bi.BinCode+"] "+ e.Message);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (OperationCanceledException e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.Message);
+                throw e;
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.Message);
+                throw e;
+            }
+        }
+
 
         private void ExistInSearch(BinViewModel bvm)
         {

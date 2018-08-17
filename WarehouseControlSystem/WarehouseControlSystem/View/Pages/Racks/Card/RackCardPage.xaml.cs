@@ -100,6 +100,7 @@ namespace WarehouseControlSystem.View.Pages.Racks.Card
             model.State = ModelState.Normal;
             model.GetSearchText();
             rackview.Update(model);
+            model.LoadBinImages();
         }
 
         private async void BinSelected(BinViewModel bvm)

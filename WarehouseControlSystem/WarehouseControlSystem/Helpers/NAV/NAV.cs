@@ -1593,6 +1593,63 @@ namespace WarehouseControlSystem.Helpers.NAV
             return bi;
         }
 
+        public static Task<List<BinImage>> GetBinImagesByRackID(int rackid, CancellationTokenSource cts)
+        {
+            var tcs = new TaskCompletionSource<List<BinImage>>();
+
+            if (IsConnectionFaild())
+            {
+                tcs.SetResult(null);
+                return tcs.Task;
+            }
+
+            XNamespace myns = GetNameSpace();
+            string functionname = "GetBinImagesByRackID";
+            XElement body =
+                new XElement(myns + functionname,
+                    new XElement(myns + "iD", rackid),
+                    new XElement(myns + "responseDocument", ""));
+            SoapParams sp = new SoapParams(functionname, body, myns);
+            Task.Run(() => GetBinImagesByRackIDNAV(tcs, sp, cts));
+            return tcs.Task;
+        }
+        private static async Task GetBinImagesByRackIDNAV(TaskCompletionSource<List<BinImage>> tcs, SoapParams sp, CancellationTokenSource cts)
+        {
+            try
+            {
+                XElement soapbodynode = await Process(sp, false, cts).ConfigureAwait(false);
+                string response = soapbodynode.Value;
+                XDocument document = GetDoc(response);
+                List<BinImage> rv = new List<BinImage>();
+                foreach (XElement currentnode in document.Root.Elements())
+                {
+                    BinImage bi = GetBinImageFromXML(currentnode);
+                    bi.BinCode = currentnode.Value;
+                    rv.Add(bi);
+                }
+                tcs.SetResult(rv);
+            }
+            catch (Exception e)
+            {
+                tcs.SetException(e);
+            }
+        }
+        private static BinImage GetBinImageFromXML(XElement currentnode)
+        {
+            BinImage bv = new BinImage();
+            foreach (XAttribute currentatribute in currentnode.Attributes())
+            {
+                switch (currentatribute.Name.LocalName)
+                {
+                    case "Image":
+                        {
+                            bv.ImageURL = currentatribute.Value;
+                            break;
+                        }
+                }
+            }
+            return bv;
+        }
         #endregion
         #region BinTemplate
         public static XElement[] SetBinTemplateParams(XNamespace myns, BinTemplate bintemplate)

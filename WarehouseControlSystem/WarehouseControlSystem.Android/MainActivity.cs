@@ -19,6 +19,7 @@ using Android.Views;
 using Android.Widget;
 using Android.OS;
 using WarehouseControlSystem;
+using FFImageLoading.Forms.Platform;
 
 namespace WarehouseControlSystem.Droid
 {
@@ -30,6 +31,17 @@ namespace WarehouseControlSystem.Droid
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
             base.OnCreate(bundle);
+
+            CachedImageRenderer.Init(true);
+            //var config = new FFImageLoading.Config.Configuration()
+            //{
+            //    VerboseLogging = false,
+            //    VerbosePerformanceLogging = false,
+            //    VerboseMemoryCacheLogging = false,
+            //    VerboseLoadingCancelledLogging = false,
+            //    Logger = new CustomLogger(),
+            //};
+            //ImageService.Instance.Initialize(config);
             global::Xamarin.Forms.Forms.Init(this, bundle);
             LoadApplication(new App());
         }

@@ -13,6 +13,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel;
@@ -26,6 +27,8 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using FFImageLoading.Forms;
+using FFImageLoading.Forms.Platform;
 
 namespace WarehouseControl.UWP
 {
@@ -72,7 +75,24 @@ namespace WarehouseControl.UWP
 
                 rootFrame.NavigationFailed += OnNavigationFailed;
 
-                Xamarin.Forms.Forms.Init(e);
+
+                FFImageLoading.Forms.Platform.CachedImageRenderer.Init();
+                //var config = new FFImageLoading.Config.Configuration()
+                //{
+                //    VerboseLogging = false,
+                //    VerbosePerformanceLogging = false,
+                //    VerboseMemoryCacheLogging = false,
+                //    VerboseLoadingCancelledLogging = false,
+                //};
+                //FFImageLoading.ImageService.Instance.Initialize(config);
+                var assembliesToInclude = new List<Assembly>()
+                {
+                    typeof(CachedImage).GetTypeInfo().Assembly,
+                    typeof(CachedImageRenderer).GetTypeInfo().Assembly
+                };
+                Xamarin.Forms.Forms.Init(e, assembliesToInclude);
+
+                //Xamarin.Forms.Forms.Init(e);
 
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {

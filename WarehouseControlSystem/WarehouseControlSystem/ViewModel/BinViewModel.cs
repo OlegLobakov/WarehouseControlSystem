@@ -321,8 +321,7 @@ namespace WarehouseControlSystem.ViewModel
                     OnPropertyChanged("BottomRightValue");
                 }
             }
-        }
-        string bottomrightvalue;
+        } string bottomrightvalue;
 
         public string BottomLeftValue
         {
@@ -335,9 +334,36 @@ namespace WarehouseControlSystem.ViewModel
                     OnPropertyChanged("BottomLeftValue");
                 }
             }
-        }
-        string bottomleftvalue;
+        } string bottomleftvalue;
 
+        public ImageSource ImageSource
+        {
+            get { return imagesource; }
+            set
+            {
+                if (imagesource != value)
+                {
+                    imagesource = value;
+                    OnPropertyChanged(nameof(ImageSource));
+                }
+            }
+        } ImageSource imagesource;
+        public bool ImageSourceLoaded
+        {
+            get
+            {
+                return imagesourceloaded;
+            }
+            set
+            {
+                if (imagesourceloaded != value)
+                {
+                    imagesourceloaded = value;
+                    OnPropertyChanged(nameof(ImageSourceLoaded));
+                }
+            }
+        }
+        bool imagesourceloaded;
         public string Description
         {
             get { return description; }

@@ -62,8 +62,7 @@ namespace WarehouseControlSystem.ViewModel
                     OnPropertyChanged(nameof(ImageSource));
                 }
             }
-        }
-        ImageSource imagesource;
+        } ImageSource imagesource;
 
 
         public string ImageURL

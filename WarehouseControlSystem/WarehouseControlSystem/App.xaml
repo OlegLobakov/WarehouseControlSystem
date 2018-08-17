@@ -8,9 +8,9 @@
             <Color x:Key="WellcodeButtonBackgoundColor">#6d6d6d</Color>
             <Color x:Key="SchemeBlockWhiteColor">White</Color>
             <Color x:Key="SchemeBlockWhiteColorDark">#b7b7b7</Color>
-            <Color x:Key="BinViewColor">#e2dacf</Color>
-            <Color x:Key="BinViewColorDark">#cbc4ba</Color>
-            <Color x:Key="BinViewColorDark2">#b4aea5</Color>
+            <Color x:Key="BinViewColor">White</Color>
+            <Color x:Key="BinViewColorDark">#e5e5e5</Color>
+            <Color x:Key="BinViewColorDark2">#cecece</Color>
         </ResourceDictionary>
 	</Application.Resources>
 </Application>

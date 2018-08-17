@@ -863,6 +863,22 @@ namespace WarehouseControlSystem.ViewModel
                 System.Diagnostics.Debug.WriteLine(e.Message);
             }
         }
+
+        public async Task LoadBinImages()
+        {
+            try
+            {
+                await BinsViewModel.LoadBinImages(ACD).ConfigureAwait(true);
+            }
+            catch (OperationCanceledException e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.Message);
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.Message);
+            }
+        }
         #endregion
 
         #region User Defined Functions

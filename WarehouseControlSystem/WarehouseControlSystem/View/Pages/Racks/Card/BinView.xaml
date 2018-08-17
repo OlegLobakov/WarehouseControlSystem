@@ -2,12 +2,15 @@
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WarehouseControlSystem.View.Pages.Racks.Card.BinView"
+             xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              x:Name="ThisBinView">
   <ContentView.Content>
         <StackLayout HorizontalOptions="FillAndExpand" 
                      VerticalOptions="FillAndExpand" 
                      SizeChanged="StackLayout_SizeChanged" 
-                     Spacing="0">
+                     Spacing="0"
+                     Padding="1"
+                     BackgroundColor="{StaticResource BinViewColorDark}">
             <StackLayout.GestureRecognizers>
                 <TapGestureRecognizer Command="{Binding TapCommand}"/>
             </StackLayout.GestureRecognizers>
@@ -56,7 +59,9 @@
                     </Label.Triggers>
                 </Label>
 
-                <ActivityIndicator Grid.Row="1" 
+           
+
+               <ActivityIndicator Grid.Row="1" 
                                    IsVisible="{Binding LoadAnimation}" 
                                    IsRunning="{Binding LoadAnimation}" 
                                    HeightRequest="30" WidthRequest="30" 
@@ -68,6 +73,17 @@
                        FontSize="{Binding Path=CodeFontSize, Source={x:Reference Name=ThisBinView}}"
                        IsVisible="{Binding IsSearchQuantityVisible}">
                 </Label>
+
+                <Image Grid.Row="1" 
+                       HorizontalOptions="FillAndExpand" 
+                       VerticalOptions="FillAndExpand" 
+                       Source="{Binding ImageSource}">
+                    <Image.Triggers>
+                        <DataTrigger Binding="{Binding IsSearchQuantityVisible}" TargetType="Image" Value="false">
+                            <Setter Property="IsVisible" Value="true"/>
+                        </DataTrigger>
+                    </Image.Triggers>
+                </Image>
 
                 <Grid Grid.Row="2" Padding="2"
                       ColumnSpacing="0" RowSpacing="0" 
