@@ -65,7 +65,7 @@ namespace WarehouseControlSystem.View.Pages.Racks.Card
         private void StackLayout_SizeChanged(object sender, EventArgs e)
         {
             StackLayout sl = (StackLayout)sender;
-            CodeFontSize = sl.Width / 5;
+            CodeFontSize = sl.Width / 6;
             ValuesFontSize = sl.Width / 9;
         }
     }

@@ -25,7 +25,7 @@ using System.Threading;
 using WarehouseControlSystem.Model;
 using WarehouseControlSystem.Helpers.Comparer;
 using FFImageLoading;
-
+using FFImageLoading.Transformations;
 namespace WarehouseControlSystem.ViewModel
 {
     public class BinsViewModel : BaseViewModel
@@ -970,6 +970,14 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
 
+        public void HideImages()
+        {
+            foreach (BinViewModel bvm in BinViewModels)
+            {
+                bvm.ImageSource = null;
+                bvm.ImageSourceLoaded = true;
+            }
+        }
 
         private void ExistInSearch(BinViewModel bvm)
         {
@@ -1214,11 +1222,11 @@ namespace WarehouseControlSystem.ViewModel
                     nlist.Add(new BinContentGrouping(bvm1.Code, bvm1.BinContent));
                 }
                 SelectedBinContent = nlist;
-                LoadImages(false);
+                LoadContentImages(false);
             }
         }
 
-        public void LoadImages(bool update)
+        public void LoadContentImages(bool update)
         {
             foreach (BinContentGrouping bcg in SelectedBinContent)
             {

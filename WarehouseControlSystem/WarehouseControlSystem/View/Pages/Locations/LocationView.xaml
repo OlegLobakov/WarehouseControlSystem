@@ -17,7 +17,7 @@
 
             <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="{Binding Color}">
                 <StackLayout.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding TapCommand}"/>
+                    <TapGestureRecognizer  Command="{Binding TapCommand}"/>
                 </StackLayout.GestureRecognizers>
                 <StackLayout.Triggers>
                     <DataTrigger Binding="{Binding IsSelected}" TargetType="StackLayout" Value="true">

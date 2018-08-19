@@ -22,7 +22,8 @@
 
                 <hs:HorizontalListView  ItemsSource="{Binding ConnectionViewModels}"                                                
                                         SelectedItemChanged="HorizontalListView_SelectedItemChanged"
-                                        HorizontalOptions="CenterAndExpand" WidthRequest="{Binding HSCWidth, Source={x:Reference Name=ThisPage}}"
+                                        HorizontalOptions="CenterAndExpand" 
+                                        WidthRequest="{Binding HSCWidth, Source={x:Reference Name=ThisPage}}"
                                         x:Name="hlv">
                     <hs:HorizontalListView.ItemTemplate>
                         <DataTemplate>

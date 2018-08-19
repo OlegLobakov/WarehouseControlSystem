@@ -48,7 +48,7 @@
                 <Label Grid.Row="0" x:Name="codelabel" Text="{Binding Code}" 
                        FontSize="{Binding Path=CodeFontSize, Source={x:Reference Name=ThisBinView}}" 
                        HorizontalOptions="FillAndExpand" 
-                       HorizontalTextAlignment="Center" VerticalTextAlignment="Start">
+                       HorizontalTextAlignment="Start" VerticalTextAlignment="Start" Margin="5,0,0,0">
                     <Label.Triggers>
                         <DataTrigger Binding="{Binding IsSearchQuantityVisible}" TargetType="Label" Value="true">
                             <Setter Property="TextColor" Value="White"/>
@@ -76,7 +76,7 @@
 
                 <Image Grid.Row="1" 
                        HorizontalOptions="FillAndExpand" 
-                       VerticalOptions="FillAndExpand" 
+                       VerticalOptions="FillAndExpand"
                        Source="{Binding ImageSource}">
                     <Image.Triggers>
                         <DataTrigger Binding="{Binding IsSearchQuantityVisible}" TargetType="Image" Value="false">

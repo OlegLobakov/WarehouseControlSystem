@@ -868,7 +868,14 @@ namespace WarehouseControlSystem.ViewModel
         {
             try
             {
-                await BinsViewModel.LoadBinImages(ACD).ConfigureAwait(true);
+                if (Settings.ShowImages)
+                {
+                    await BinsViewModel.LoadBinImages(ACD).ConfigureAwait(true);
+                }
+                else
+                {
+                    BinsViewModel.HideImages();
+                }
             }
             catch (OperationCanceledException e)
             {

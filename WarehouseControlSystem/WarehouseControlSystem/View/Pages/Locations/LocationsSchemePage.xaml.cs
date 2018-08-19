@@ -25,6 +25,7 @@ namespace WarehouseControlSystem.View.Pages.Locations
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class LocationsSchemePage : SchemeBasePlanPage
     {
+        private bool Faded = false;
         private readonly LocationsPlanViewModel Model;
 
         public LocationsSchemePage(LocationsPlanViewModel model) :base(model)

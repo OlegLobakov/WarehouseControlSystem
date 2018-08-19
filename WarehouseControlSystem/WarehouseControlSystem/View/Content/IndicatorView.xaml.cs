@@ -36,5 +36,11 @@ namespace WarehouseControlSystem.View.Content
         {
             InitializeComponent();
         }
-	}
+
+        private async void TapGestureRecognizer_Tapped(object sender, EventArgs e)
+        {
+            await this.FadeTo(0.7, 500, Easing.SinInOut);
+            await this.FadeTo(1, 500, Easing.SinInOut);
+        }
+    }
 }

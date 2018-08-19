@@ -9,8 +9,8 @@
             <Color x:Key="SchemeBlockWhiteColor">White</Color>
             <Color x:Key="SchemeBlockWhiteColorDark">#b7b7b7</Color>
             <Color x:Key="BinViewColor">White</Color>
-            <Color x:Key="BinViewColorDark">#e5e5e5</Color>
-            <Color x:Key="BinViewColorDark2">#cecece</Color>
+            <Color x:Key="BinViewColorDark">#f2f2f2</Color>
+            <Color x:Key="BinViewColorDark2">#eaeaea</Color>
         </ResourceDictionary>
 	</Application.Resources>
 </Application>

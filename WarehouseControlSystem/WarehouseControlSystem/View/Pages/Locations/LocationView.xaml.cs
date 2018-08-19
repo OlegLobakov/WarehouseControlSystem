@@ -14,6 +14,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using WarehouseControlSystem.ViewModel;
 using WarehouseControlSystem.View.Pages.Base;
+using System.Threading.Tasks;
 
 namespace WarehouseControlSystem.View.Pages.Locations
 {

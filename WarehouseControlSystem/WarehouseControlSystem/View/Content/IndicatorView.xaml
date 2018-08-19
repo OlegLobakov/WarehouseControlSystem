@@ -9,7 +9,7 @@
               HeightRequest="{Binding WidthHeight, Source={x:Reference Name=ThisIndView}}"
               Padding="2">
             <StackLayout.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding TapCommand}"/>
+                <TapGestureRecognizer Command="{Binding TapCommand}" Tapped="TapGestureRecognizer_Tapped"/>
             </StackLayout.GestureRecognizers>
          <Grid 
               HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"

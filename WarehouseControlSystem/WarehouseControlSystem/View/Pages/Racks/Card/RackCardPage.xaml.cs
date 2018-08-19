@@ -91,7 +91,7 @@ namespace WarehouseControlSystem.View.Pages.Racks.Card
         private void StackLayout_SizeChanged(object sender, EventArgs e)
         {
             StackLayout sl = (StackLayout)sender;
-            rackview.BinWidth = (int)sl.Width / 8;
+            rackview.BinWidth = (int)sl.Width / 10;
         }
 
         public void BinsIsLoaded(BinsViewModel bvm)
@@ -147,7 +147,7 @@ namespace WarehouseControlSystem.View.Pages.Racks.Card
             if (ScaleMode)
             {
                 rackscrollview.VerticalOptions = LayoutOptions.FillAndExpand;
-                rackview.BinWidth = (int)mainsl.Width / 8;
+                rackview.BinWidth = (int)mainsl.Width / 10;
                 rackview.Update(model);
                 ScaleMode = false;
             }
@@ -169,8 +169,9 @@ namespace WarehouseControlSystem.View.Pages.Racks.Card
         private void ToolbarItem_Clicked_ShowHideImages(object sender, EventArgs e)
         {
             Settings.ShowImages = !Settings.ShowImages;
-            model.BinsViewModel.LoadImages(true);
+            model.BinsViewModel.LoadContentImages(true);
             UpdateToolbarLabels();
+            model.LoadBinImages();
         }
 
         private async void RackList_SelectedItemChanged(object sender, EventArgs e)
@@ -190,6 +191,7 @@ namespace WarehouseControlSystem.View.Pages.Racks.Card
                 await model.LoadBins();
                 await model.LoadUDF();
                 await model.LoadBinValues();
+                await model.LoadBinImages();
             }
         }
 
