@@ -22,6 +22,7 @@ using WarehouseControlSystem.ViewModel.Base;
 using Xamarin.Forms;
 using WarehouseControlSystem.Model;
 using System.Threading.Tasks;
+using Plugin.Media;
 
 namespace WarehouseControlSystem.ViewModel
 {
@@ -901,9 +902,110 @@ namespace WarehouseControlSystem.ViewModel
             }
             else
             {
-                await RunUDF().ConfigureAwait(true);
+                //system function
+                if (udfvm.ID >= 1000000)
+                {
+                    switch (udfvm.ID)
+                    {
+                        case 1000000:
+                            {
+                                await CrossMedia.Current.Initialize();
+
+                                if (!CrossMedia.Current.IsCameraAvailable || !CrossMedia.Current.IsTakePhotoSupported)
+                                {
+                                    //Add code
+                                    return;
+                                }
+
+                                var file = await CrossMedia.Current.TakePhotoAsync(new Plugin.Media.Abstractions.StoreCameraMediaOptions
+                                {
+                                    SaveToAlbum = true,
+                                    Name = "1.jpg"
+                                });
+
+                                if (file == null)
+                                    return;
+
+                               
+                                //image.Source = ImageSource.FromStream(() =>
+                                //{
+                                //    var stream = file.GetStream();
+                                //    return stream;
+                                //});
+
+                                break;
+                            }
+                        case 1000001:
+                            {
+                                await CrossMedia.Current.Initialize();
+
+                                if (!CrossMedia.Current.IsCameraAvailable || !CrossMedia.Current.IsTakePhotoSupported)
+                                {
+                                    //Add code
+                                    return;
+                                }
+
+                                var file = await CrossMedia.Current.TakeVideoAsync(new Plugin.Media.Abstractions.StoreVideoOptions
+                                {
+                                    SaveToAlbum = true,
+                                    Name = "video.jpg"
+                                });
+
+                                if (file == null)
+                                    return;
+
+
+                                //image.Source = ImageSource.FromStream(() =>
+                                //{
+                                //    var stream = file.GetStream();
+                                //    return stream;
+                                //});
+
+                                break;
+                            }
+                        case 1000002:
+                            {
+                                await CrossMedia.Current.Initialize();
+
+                                if (!CrossMedia.Current.IsCameraAvailable || !CrossMedia.Current.IsTakePhotoSupported)
+                                {
+                                    //Add code
+                                    return;
+                                }
+
+                                var file = await CrossMedia.Current.PickPhotoAsync();
+
+                                if (file == null)
+                                    return;
+
+                                break;
+                            }
+                        case 1000003:
+                            {
+                                await CrossMedia.Current.Initialize();
+
+                                if (!CrossMedia.Current.IsCameraAvailable || !CrossMedia.Current.IsTakePhotoSupported)
+                                {
+                                    //Add code
+                                    return;
+                                }
+
+                                var file = await CrossMedia.Current.PickVideoAsync();
+
+                                if (file == null)
+                                    return;
+
+                                break;
+                            }
+                    }
+                }
+                else
+                {
+                    await RunUDF().ConfigureAwait(true);
+                }
             }
         }
+
         public async Task RunUserDefineFunctionOK()
         {
             await RunUDF().ConfigureAwait(true);
@@ -955,6 +1057,36 @@ namespace WarehouseControlSystem.ViewModel
             }
         }
         #endregion
+
+        public async Task RunBinContentTap(BinContentShortViewModel bcsvm)
+        {
+            try
+            {
+                State = ModelState.Loading;
+                LoadAnimation = true;
+                NAVFilter navfilter = new NAVFilter
+                {
+                    LocationCodeFilter = LocationCode,
+                    ZoneCodeFilter = ZoneCode,
+                    RackIDFilter = ID.ToString(),
+                    BinCodeFilter = bcsvm.BinCode,
+                    ItemNoFilter = bcsvm.ItemNo,
+                    DescriptionFilter = bcsvm.Description             
+                };
+                string response = await NAV.RunBCTap(navfilter, ACD.Default).ConfigureAwait(true);
+                State = ModelState.Normal;
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.Message);
+                State = ModelState.Error;
+                ErrorText = e.Message;
+            }
+            finally
+            {
+                LoadAnimation = false;
+            }
+        }
 
         public void GetSearchSelection()
         {

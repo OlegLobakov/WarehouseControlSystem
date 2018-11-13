@@ -4,10 +4,10 @@
              x:Class="WarehouseControlSystem.View.Content.IndicatorView"
              x:Name="ThisIndView">
   <ContentView.Content>
-        <StackLayout
-              WidthRequest="{Binding WidthHeight, Source={x:Reference Name=ThisIndView}}" 
-              HeightRequest="{Binding WidthHeight, Source={x:Reference Name=ThisIndView}}"
+        <StackLayout             
               Padding="2">
+            <!--WidthRequest="{Binding WidthHeight, Source={x:Reference Name=ThisIndView}}" 
+              HeightRequest="{Binding WidthHeight, Source={x:Reference Name=ThisIndView}}"-->
             <StackLayout.GestureRecognizers>
                 <TapGestureRecognizer Command="{Binding TapCommand}" Tapped="TapGestureRecognizer_Tapped"/>
             </StackLayout.GestureRecognizers>
@@ -19,7 +19,7 @@
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 

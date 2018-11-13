@@ -27,6 +27,7 @@ namespace WarehouseControlSystem.Helpers.NAV
         public string BinCodeFilter { get; set; } = "";
         public string ItemNoFilter { get; set; } = "";
         public string VariantCodeFilter { get; set; } = "";
+        public string DescriptionFilter { get; set; } = "";
         public int ItemsPosition { get; set; } = 1;
         public int ItemsCount { get; set; } = int.MaxValue;
     }

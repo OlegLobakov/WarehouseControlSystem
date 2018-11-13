@@ -25,6 +25,7 @@ namespace WarehouseControlSystem.View.Content
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class IndicatorView : ContentView
 	{
+
         public static readonly BindableProperty WidthHeightProperty = BindableProperty.Create("WidthHeight", typeof(decimal), typeof(IndicatorView), (decimal)200);
         public decimal WidthHeight
         {
@@ -37,10 +38,17 @@ namespace WarehouseControlSystem.View.Content
             InitializeComponent();
         }
 
+        bool tapkey = true;
+
         private async void TapGestureRecognizer_Tapped(object sender, EventArgs e)
         {
-            await this.FadeTo(0.7, 500, Easing.SinInOut);
-            await this.FadeTo(1, 500, Easing.SinInOut);
+            if (tapkey)
+            {
+                tapkey = false;
+                await this.FadeTo(0.7, 500, Easing.SinInOut);
+                await this.FadeTo(1, 500, Easing.SinInOut);
+                tapkey = true;
+            }
         }
     }
 }

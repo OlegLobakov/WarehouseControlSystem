@@ -20,6 +20,7 @@ using Android.Widget;
 using Android.OS;
 using WarehouseControlSystem;
 using FFImageLoading.Forms.Platform;
+using Plugin.CurrentActivity;
 
 namespace WarehouseControlSystem.Droid
 {
@@ -42,8 +43,15 @@ namespace WarehouseControlSystem.Droid
             //    Logger = new CustomLogger(),
             //};
             //ImageService.Instance.Initialize(config);
+            CrossCurrentActivity.Current.Init(this, bundle);
+
             global::Xamarin.Forms.Forms.Init(this, bundle);
             LoadApplication(new App());
+        }
+
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Android.Content.PM.Permission[] grantResults)
+        {
+            Plugin.Permissions.PermissionsImplementation.Current.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 }

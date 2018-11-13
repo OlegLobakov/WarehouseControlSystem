@@ -2686,6 +2686,32 @@ namespace WarehouseControlSystem.Helpers.NAV
             Task.Run(() => RunFunctionNAV(tcs, sp, cts));
             return tcs.Task;
         }
+
+        public static Task<string> RunBCTap(NAVFilter Filter, CancellationTokenSource cts)
+        {
+            var tcs = new TaskCompletionSource<string>();
+            if (IsConnectionFaild())
+            {
+                tcs.SetResult(null);
+                return tcs.Task;
+            }
+
+            XNamespace myns = GetNameSpace();
+            string functionname = "RunBinContentTap";
+            XElement body =
+                new XElement(myns + functionname,
+                    new XElement(myns + "locationCode", Filter.LocationCodeFilter),
+                    new XElement(myns + "zoneCode", Filter.ZoneCodeFilter),
+                    new XElement(myns + "rackID", Filter.RackIDFilter),
+                    new XElement(myns + "binCode", Filter.BinCodeFilter),
+                    new XElement(myns + "itemNo", Filter.ItemNoFilter),
+                    new XElement(myns + "description", Filter.DescriptionFilter));
+            SoapParams sp = new SoapParams(functionname, body, myns);
+            Task.Run(() => RunFunctionNAV(tcs, sp, cts));
+            return tcs.Task;
+        }
+
+
         private static async Task RunFunctionNAV(TaskCompletionSource<string> tcs, SoapParams sp, CancellationTokenSource cts)
         {
             try

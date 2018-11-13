@@ -23,17 +23,19 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <Label Grid.Row="0" Text="{Binding Name}"
+                    
+                    <Label Grid.Row="0" Text="{Binding Value}" 
                         HorizontalTextAlignment="Start"
-                        FontSize="Medium" TextColor="White" Margin="10,5,5,5"/>
-                    <Label Grid.Row="1" Text="{Binding Detail}" 
+                        FontSize="Large" TextColor="White" Margin="10,3,5,2"/>
+        
+                    <Label Grid.Row="1" Text="{Binding Name}"
                         HorizontalTextAlignment="Start"
                         FontSize="Micro" TextColor="White" Margin="10,0,5,0"/>
-                    <Label Grid.Row="3" Text="{Binding Value}" 
-                        HorizontalTextAlignment="End"
-                        FontSize="Small" TextColor="White" Margin="0,0,10,5"/>
+                    
+                    <Label Grid.Row="2" Text="{Binding Detail}" 
+                        HorizontalTextAlignment="Start"
+                        FontSize="Micro" TextColor="White" Margin="10,0,5,0"/>
                 </Grid>
             </StackLayout>
             <StackLayout IsVisible="{Binding IsErrorState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">

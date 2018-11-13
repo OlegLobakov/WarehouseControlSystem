@@ -65,6 +65,7 @@ namespace WarehouseControlSystem.ViewModel
         } ImageSource imagesource;
 
 
+
         public string ImageURL
         {
             get { return imageurl; }
@@ -88,6 +89,9 @@ namespace WarehouseControlSystem.ViewModel
 
         public void FillFields(BinContent bc)
         {
+            LocationCode = bc.LocationCode;
+            ZoneCode = bc.ZoneCode;
+
             ItemNo = bc.ItemNo;
             Description = bc.Description;
             Quantity = bc.Quantity;

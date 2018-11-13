@@ -115,12 +115,12 @@ namespace WarehouseControlSystem.View.Pages.Racks.Card
             }
         }
 
-        public void BinInfopanelItemTap(BinContentShortViewModel bcsvm)
+        public async void BinInfopanelItemTap(BinContentShortViewModel bcsvm)
         {
-            Global.CompliantPlug = bcsvm.ToString();
+            await model.RunBinContentTap(bcsvm);
         }
 
-        public async Task UserDefinedFunctionTap(UserDefinedFunctionViewModel udfvm)
+        public async void UserDefinedFunctionTap(UserDefinedFunctionViewModel udfvm)
         {
             await model.RunUserDefineFunction(udfvm);
         }
