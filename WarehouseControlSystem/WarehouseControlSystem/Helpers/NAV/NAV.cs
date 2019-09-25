@@ -2936,7 +2936,10 @@ namespace WarehouseControlSystem.Helpers.NAV
                 {
                     HttpRequestMessage request = CreateHttpRequest(sp, connection);
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
-                    client.DefaultRequestHeaders.Add("SOAPAction", connection.GetSoapActionTxt() + "/" + sp.FunctionName);
+                    //client.DefaultRequestHeaders.Add("SOAPAction", connection.GetSoapActionTxt() + "/" + sp.FunctionName);
+                    //переход на версию SOAP 1.0 для совместимости с nAV2009
+                    client.DefaultRequestHeaders.Add("SOAPAction", "\"" + connection.GetSoapActionV1() + ":" +  sp.FunctionName+ "\"");
+
                     using (var response = await client.SendAsync(request, cts.Token))
                     {
                         return GetResponseContent(response);
@@ -2980,13 +2983,27 @@ namespace WarehouseControlSystem.Helpers.NAV
 
         private static XDocument CreateSOAPRequest(XElement body, XNamespace myns)
         {
+            XNamespace ns = "http://schemas.xmlsoap.org/soap/envelope/";
+            XNamespace nsxsi = "http://www.w3.org/2001/XMLSchema-instance";
+            XNamespace nsxsd = "http://www.w3.org/2001/XMLSchema";
             XDocument requestdoc = new XDocument(
                             new XElement(ns + "Envelope",
-                                new XAttribute(XNamespace.Xmlns + "soapenv", ns),
-                                new XAttribute(XNamespace.Xmlns + "ns1", myns),
+                                new XAttribute(XNamespace.Xmlns + "soap", ns),
+                                new XAttribute(XNamespace.Xmlns + "xsi", nsxsi),
+                                new XAttribute(XNamespace.Xmlns + "xsd", nsxsd),
                                 new XElement(ns + "Body",
                                     body)));
             requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
+
+
+            //XDocument requestdoc = new XDocument(
+            //                new XElement(ns + "Envelope",
+            //                    new XAttribute(XNamespace.Xmlns + "soapenv", ns),
+            //                    new XAttribute(XNamespace.Xmlns + "ns1", myns),
+            //                    new XElement(ns + "Body",
+            //                        body)));
+            //requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
+
             return requestdoc;
         }
 

@@ -78,6 +78,16 @@ namespace WarehouseControlSystem.Helpers.NAV
             return uriBuilder.Uri.ToString();
         }
 
+        /// <summary>
+        /// переход на версию SOAP 1.0 для совместимости с nAV2009
+        /// </summary>
+        /// <returns></returns>
+        public string GetSoapActionV1()
+        {
+            //для старой версии SOAP
+            return "urn:microsoft-dynamics-schemas/codeunit/" + Codeunit;
+        }
+
         private string SOAPActionConverter(string input)
         {
             string rv = "";
