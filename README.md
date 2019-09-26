@@ -34,9 +34,6 @@ Let's make changes on the fly:
   
 </p>
 
-## Project site:
-[https://www.touchtheerp.com](https://www.touchtheerp.com)
-
 ## Demo
 ### Intro
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=kHZm8fLu6Fg" target="_blank"><img src="http://img.youtube.com/vi/kHZm8fLu6Fg/0.jpg" 
