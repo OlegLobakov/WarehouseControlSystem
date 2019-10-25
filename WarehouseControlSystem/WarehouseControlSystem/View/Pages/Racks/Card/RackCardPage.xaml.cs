@@ -171,6 +171,7 @@ namespace WarehouseControlSystem.View.Pages.Racks.Card
             Settings.ShowImages = !Settings.ShowImages;
             model.BinsViewModel.LoadContentImages(true);
             UpdateToolbarLabels();
+
             model.LoadBinImages();
         }
 

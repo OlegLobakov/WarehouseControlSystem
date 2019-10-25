@@ -180,7 +180,11 @@ namespace WarehouseControlSystem.ViewModel
                 {
                     schemevisible = value;
                     Changed = true;
-                    SaveToRackSchemeVisible(value);
+                    int x = Task.Run(async () =>
+                    {
+                        await SaveToRackSchemeVisible(value);
+                        return 0;
+                    }).Result;
                     OnPropertyChanged(nameof(SchemeVisible));
                 }
             }

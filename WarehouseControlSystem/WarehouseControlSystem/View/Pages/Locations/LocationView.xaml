@@ -63,7 +63,7 @@
                         ItemsSource="{Binding Indicators}" Padding="0">
                             <hs:HorizontalFlowListView.ItemTemplate>
                                 <DataTemplate>
-                                    <components:IndicatorView WidthRequest="150" HeightRequest="150" WidthHeight="150" VerticalOptions="Start"/>
+                                    <components:IndicatorView WidthRequest="150" VerticalOptions="Start"/>
                                 </DataTemplate>
                             </hs:HorizontalFlowListView.ItemTemplate>
                         </hs:HorizontalFlowListView>

@@ -16,17 +16,16 @@ using System.Text;
 
 namespace WarehouseControlSystem.Model.NAV
 {
-    public class Indicator
+    public class IndicatorContent
     {
         public string Header { get; set; } = "";
         public string Description { get; set; } = "";
-        public string Value { get; set; } = "";
-        public string ValueColor { get; set; } = "";
-        public int Position { get; set; }
-        public string URL { get; set; } = "";
-
+        public string Detail { get; set; } = "";
+        public string LeftValue { get; set; } = "";
+        public string RightValue { get; set; } = "";
+        public string Color { get; set; } = "";
         public string ID { get; set; } = "";
-
         public string Parameters { get; set; } = "";
+        public decimal SortOrder { get; set; } = 0;
     }
 }

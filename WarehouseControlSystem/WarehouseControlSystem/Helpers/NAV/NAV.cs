@@ -536,6 +536,16 @@ namespace WarehouseControlSystem.Helpers.NAV
                             ind.URL = currentatribute.Value;
                             break;
                         }
+                    case "ID":
+                        {
+                            ind.ID = currentatribute.Value;
+                            break;
+                        }
+                    case "Parameters":
+                        {
+                            ind.Parameters = currentatribute.Value;
+                            break;
+                        }
                 }
             }
             return ind;
@@ -704,7 +714,6 @@ namespace WarehouseControlSystem.Helpers.NAV
                 tcs.SetException(e);
             }
         }
-
         private static Zone GetZoneFromXML(XElement currentnode)
         {
             Zone zone = new Zone();
@@ -866,12 +875,116 @@ namespace WarehouseControlSystem.Helpers.NAV
                             ind.URL = currentatribute.Value;
                             break;
                         }
+                    case "ID":
+                        {
+                            ind.ID = currentatribute.Value;
+                            break;
+                        }
+                    case "Parameters":
+                        {
+                            ind.ID = currentatribute.Value;
+                            break;
+                        }
                 }
             }
             return ind;
         }
         #endregion
 
+
+        #region Indicator Content
+        public static Task<List<IndicatorContent>> GetIndicatorContent(string locationcode, string zonecode, string bincode, string id, string parameters, CancellationTokenSource cts)
+        {
+            var tcs = new TaskCompletionSource<List<IndicatorContent>>();
+
+            if (IsConnectionFaild())
+            {
+                tcs.SetResult(null);
+                return tcs.Task;
+            }
+
+            XNamespace myns = GetNameSpace();
+            string functionname = "LoadIndicatorContent";
+            XElement body =
+                new XElement(myns + functionname,
+                    new XElement(myns + "locationCode", locationcode),
+                    new XElement(myns + "zoneCode", zonecode),
+                    new XElement(myns + "binCode", bincode),
+                    new XElement(myns + "iD", id),
+                    new XElement(myns + "parameters", parameters),
+                    new XElement(myns + "responseDocument", ""));
+            SoapParams sp = new SoapParams(functionname, body, myns);
+            Task.Run(() => GetGetIndicatorContentNAV(tcs, sp, cts));
+            return tcs.Task;
+        }
+        private static async Task GetGetIndicatorContentNAV(TaskCompletionSource<List<IndicatorContent>> tcs, SoapParams sp, CancellationTokenSource cts)
+        {
+            try
+            {
+                XElement soapbodynode = await Process(sp, false, cts).ConfigureAwait(false);
+                string response = soapbodynode.Value;
+                XDocument document = GetDoc(response);
+                List<IndicatorContent> rv = new List<IndicatorContent>();
+                foreach (XElement currentnode in document.Root.Elements())
+                {
+                    IndicatorContent bi = GetGetIndicatorContentFromXML(currentnode);
+                    rv.Add(bi);
+                }
+                tcs.SetResult(rv);
+            }
+            catch (Exception e)
+            {
+                tcs.SetException(e);
+            }
+        }
+        private static IndicatorContent GetGetIndicatorContentFromXML(XElement currentnode)
+        {
+            IndicatorContent ind = new IndicatorContent();
+            foreach (XAttribute currentatribute in currentnode.Attributes())
+            {
+                switch (currentatribute.Name.LocalName)
+                {
+                    case "Header":
+                        {
+                            ind.Header = currentatribute.Value;
+                            break;
+                        }
+                    case "Description":
+                        {
+                            ind.Description = currentatribute.Value;
+                            break;
+                        }
+                    case "Detail":
+                        {
+                            ind.Detail = currentatribute.Value;
+                            break;
+                        }
+                    case "LeftValue":
+                        {
+                            ind.LeftValue = currentatribute.Value;
+                            break;
+                        }
+                    case "RightValue":
+                        {
+                            ind.RightValue = currentatribute.Value;
+                            break;
+                        }
+                    case "Color":
+                        {
+                            ind.Color = currentatribute.Value;
+                            break;
+                        }
+                    case "SortOrder":
+                        {
+                            ind.SortOrder = StringToDec(currentatribute.Value);
+                            break;
+                        }
+                }
+            }
+            return ind;
+        }
+
+        #endregion
         #region Rack
         public static XElement[] SetRackParams(XNamespace myns, Rack rack)
         {
@@ -2899,12 +3012,12 @@ namespace WarehouseControlSystem.Helpers.NAV
         }
         private static XElement GetResponseContent(HttpResponseMessage response)
         {
-            Task<Stream> streamTask = response.Content.ReadAsStreamAsync();
-            Stream stream = streamTask.Result;
-            var sr = new StreamReader(stream);
-            XDocument xmldoc = XDocument.Load(sr);
             if (response.IsSuccessStatusCode)
             {
+                Task<Stream> streamTask = response.Content.ReadAsStreamAsync();
+                Stream stream = streamTask.Result;
+                var sr = new StreamReader(stream);
+                XDocument xmldoc = XDocument.Load(sr);
                 XElement bodysopeenvelopenode = xmldoc.Root.Element(ns + "Body");
                 if (bodysopeenvelopenode is XElement)
                 {
@@ -2915,7 +3028,15 @@ namespace WarehouseControlSystem.Helpers.NAV
             {
                 if (response.ReasonPhrase == "Internal Server Error")
                 {
+                    Task<Stream> streamTask = response.Content.ReadAsStreamAsync();
+                    Stream stream = streamTask.Result;
+                    var sr = new StreamReader(stream);
+                    XDocument xmldoc = XDocument.Load(sr);
                     throw CreateNAVException(xmldoc);
+                }
+                if (response.ReasonPhrase == "Unauthorized")
+                {
+                    throw new NAVErrorException("Unauthorized", "Unauthorized", "Unauthorized");
                 }
                 else
                 {

@@ -21,6 +21,7 @@ using WarehouseControlSystem.Model.NAV;
 using System.Collections.ObjectModel;
 using Xamarin.Forms;
 using WarehouseControlSystem.Helpers.NAV;
+using WarehouseControlSystem.View.Pages.IndicatorContent;
 using WarehouseControlSystem.Resx;
 using System.Windows.Input;
 
@@ -66,7 +67,11 @@ namespace WarehouseControlSystem.ViewModel
                 {
                     schemevisible = value;
                     Changed = true;
-                    SaveToLocationSchemeVisible(value);
+                    int x = Task.Run(async () =>
+                    {
+                        await SaveToLocationSchemeVisible(value);
+                        return 0;
+                    }).Result;
                     OnPropertyChanged(nameof(SchemeVisible));
                 }
             }
@@ -510,6 +515,8 @@ namespace WarehouseControlSystem.ViewModel
                     foreach (Indicator indicator in list)
                     {
                         IndicatorViewModel ivm = new IndicatorViewModel(Navigation, indicator);
+                        ivm.LocationCode = Code;
+                        ivm.OnTap += Ivm_OnTap;
                         nlist.Add(ivm);
                     }
                     Indicators = nlist;
@@ -519,6 +526,20 @@ namespace WarehouseControlSystem.ViewModel
             {
                 System.Diagnostics.Debug.WriteLine(e.Message);
                 ErrorText = e.Message;
+            }
+        }
+
+
+        /// <summary>
+        /// Press Indicator
+        /// </summary>
+        /// <param name="obj"></param>
+        private async  void Ivm_OnTap(IndicatorViewModel obj)
+        {
+            if (obj.ID != "")
+            {
+                IndicatorPage zsp = new IndicatorPage(obj);
+                await Navigation.PushAsync(zsp);
             }
         }
 

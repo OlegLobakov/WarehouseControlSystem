@@ -30,7 +30,7 @@
                             <StackLayout 
                                   WidthRequest="{Binding BlockSize, Source={x:Reference Name=ThisPage}}" 
                                   HeightRequest="{Binding BlockSize, Source={x:Reference Name=ThisPage}}"
-                                  Padding="20,0,20,0">
+                                  Padding="5,5,5,5">
                                 <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                                       BackgroundColor="{StaticResource WellcodeButtonBackgoundColor}">
                                     <Grid.Triggers>
@@ -46,7 +46,7 @@
                                     </Grid.RowDefinitions>
                                     <Label Grid.Row="0" Text="   " FontSize="{Binding LargeFontSize, Source={x:Reference Name=ThisPage}}" 
                                            HorizontalOptions="CenterAndExpand" TextColor="White"/>
-                                    <Image Grid.Row="1" Margin="20" Aspect="AspectFit" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                                    <Image Grid.Row="1" Margin="2" Aspect="AspectFill" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
                                         <Image.Source>
                                             <OnPlatform x:TypeArguments="FileImageSource">
                                                 <On Platform="UWP,WinPhone">
@@ -59,9 +59,9 @@
                                         </Image.Source>
                                     </Image>
                                     <Label Grid.Row="2" Text="{Binding Name}" FontSize="{Binding LargeFontSize, Source={x:Reference Name=ThisPage}}" 
-                                           HorizontalOptions="CenterAndExpand" TextColor="White" Margin="15"/>
+                                           HorizontalOptions="CenterAndExpand" TextColor="White" Margin="5"/>
                                     <Label Grid.Row="3" Text="{Binding Comment}" FontSize="{Binding SmallFontSize, Source={x:Reference Name=ThisPage}}" 
-                                           HorizontalOptions="CenterAndExpand" TextColor="White" Margin="10,10,10,25"/>
+                                           HorizontalOptions="CenterAndExpand" TextColor="White" Margin="5"/>
                                 </Grid>
                             </StackLayout>
                         </DataTemplate>

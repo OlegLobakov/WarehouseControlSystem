@@ -56,6 +56,9 @@
     <Compile Update="View\Content\IndicatorView.xaml.cs">
       <DependentUpon>IndicatorView.xaml</DependentUpon>
     </Compile>
+    <Compile Update="View\Pages\IndicatorContent\IndicatorPage.xaml.cs">
+      <DependentUpon>IndicatorPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="View\Pages\Racks\Card\BinInfoPanelRackCard.xaml.cs">
       <DependentUpon>BinInfoPanelRackCard.xaml</DependentUpon>
     </Compile>
@@ -112,6 +115,9 @@
       <LastGenOutput>AppResources.ru.Designer.cs</LastGenOutput>
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="View\Content\IndicatorContentView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="View\Content\StepIntegerValueView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
@@ -119,6 +125,9 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="View\Content\IndicatorView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="View\Pages\IndicatorContent\IndicatorPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="View\Pages\Racks\New\MasterNewRackPage.xaml">

@@ -200,9 +200,11 @@ namespace WarehouseControlSystem.View.Pages.Racks.Scheme
                         Order = ToolbarItemOrder.Primary,
                         Priority = 10,
                         Text = AppResources.RackSchemePage_Toolbar_New,
-                        Icon = new FileImageSource()
+                        IconImageSource = new FileImageSource()
+                        {
+                            File = Global.GetPlatformPath("ic_action_add_circle.png")
+                        }
                     };
-                    addbutton.Icon.File = Global.GetPlatformPath("ic_action_add_circle.png");
                     addbutton.SetBinding(MenuItem.CommandProperty, new Binding("NewRackCommand"));
                 }
                 ToolbarItems.Add(addbutton);
@@ -214,9 +216,11 @@ namespace WarehouseControlSystem.View.Pages.Racks.Scheme
                         Order = ToolbarItemOrder.Primary,
                         Priority = 20,
                         Text = AppResources.LocationsSchemePage_Toolbar_Delete,
-                        Icon = new FileImageSource()
+                        IconImageSource = new FileImageSource()
+                        {
+                            File = Global.GetPlatformPath("ic_action_remove_circle.png")
+                        }
                     };
-                    removebutton.Icon.File = Global.GetPlatformPath("ic_action_remove_circle.png");
                     removebutton.SetBinding(MenuItem.CommandProperty, new Binding("DeleteRackCommand"));
                     removebutton.SetBinding(MenuItem.CommandParameterProperty, new Binding("SelectedRackViewModel"));
                 }
@@ -230,9 +234,11 @@ namespace WarehouseControlSystem.View.Pages.Racks.Scheme
                         Order = ToolbarItemOrder.Primary,
                         Priority = 20,
                         Text = AppResources.LocationsSchemePage_Toolbar_Edit,
-                        Icon = new FileImageSource()
+                        IconImageSource = new FileImageSource()
+                        {
+                            File = Global.GetPlatformPath("ic_action_create.png")
+                        }
                     };
-                    editbutton.Icon.File = Global.GetPlatformPath("ic_action_create.png");
                     editbutton.SetBinding(MenuItem.CommandProperty, new Binding("EditRackCommand"));
                     editbutton.SetBinding(MenuItem.CommandParameterProperty, new Binding("SelectedRackViewModel"));
                 }
@@ -245,9 +251,11 @@ namespace WarehouseControlSystem.View.Pages.Racks.Scheme
                         Order = ToolbarItemOrder.Primary,
                         Priority = 30,
                         Text = AppResources.RackSchemePage_Toolbar_List,
-                        Icon = new FileImageSource()
+                        IconImageSource = new FileImageSource()
+                        {
+                            File = Global.GetPlatformPath("ic_action_dehaze.png")
+                        }
                     };
-                    listbutton.Icon.File = Global.GetPlatformPath("ic_action_dehaze.png");
                     listbutton.SetBinding(MenuItem.CommandProperty, new Binding("RackListCommand"));
                 }
                 ToolbarItems.Add(listbutton);
@@ -281,9 +289,11 @@ namespace WarehouseControlSystem.View.Pages.Racks.Scheme
                         Order = ToolbarItemOrder.Primary,
                         Priority = 30,
                         Text = AppResources.RackSchemePage_Toolbar_Search,
-                        Icon = new FileImageSource()
+                        IconImageSource = new FileImageSource()
+                        {
+                            File = Global.GetPlatformPath("ic_action_search.png")
+                        }
                     };
-                    searchbutton.Icon.File = Global.GetPlatformPath("ic_action_search.png");
                     searchbutton.Clicked += ToolbarItem_Search;
                 }
                 ToolbarItems.Add(searchbutton);
@@ -295,9 +305,11 @@ namespace WarehouseControlSystem.View.Pages.Racks.Scheme
                         Order = ToolbarItemOrder.Primary,
                         Priority = 40,
                         Text = AppResources.RackSchemePage_Toolbar_UDSF,
-                        Icon = new FileImageSource()
+                        IconImageSource = new FileImageSource()
+                        {
+                            File = Global.GetPlatformPath("ic_action_widgets.png")
+                        }
                     };
-                    udcsbutton.Icon.File = Global.GetPlatformPath("ic_action_widgets.png");
                     udcsbutton.Clicked += ToolbarItem_UDS;
                 }
                 ToolbarItems.Add(udcsbutton);

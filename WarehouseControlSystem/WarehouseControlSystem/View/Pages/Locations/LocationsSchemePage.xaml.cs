@@ -25,7 +25,6 @@ namespace WarehouseControlSystem.View.Pages.Locations
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class LocationsSchemePage : SchemeBasePlanPage
     {
-        private bool Faded = false;
         private readonly LocationsPlanViewModel Model;
 
         public LocationsSchemePage(LocationsPlanViewModel model) :base(model)
@@ -77,6 +76,7 @@ namespace WarehouseControlSystem.View.Pages.Locations
                 AbsoluteLayout.SetLayoutBounds(lv, new Rectangle(lvm1.ViewLeft, lvm1.ViewTop, lvm1.ViewWidth, lvm1.ViewHeight));
                 abslayout.Children.Add(lv);
                 Views.Add(lv);
+
                 lvm1.LoadZones();
                 lvm1.LoadIndicators();
             }
@@ -147,9 +147,11 @@ namespace WarehouseControlSystem.View.Pages.Locations
                         Order = ToolbarItemOrder.Primary,
                         Priority = 30,
                         Text = AppResources.LocationsSchemePage_Toolbar_List,
-                        Icon = new FileImageSource()
+                        IconImageSource = new FileImageSource()
+                        {
+                            File = Global.GetPlatformPath("ic_action_dehaze.png")
+                        }
                     };
-                    listbutton.Icon.File = Global.GetPlatformPath("ic_action_dehaze.png");
                     listbutton.SetBinding(MenuItem.CommandProperty, new Binding("ListLocationsCommand"));
                 }
                 ToolbarItems.Add(listbutton);
@@ -161,9 +163,11 @@ namespace WarehouseControlSystem.View.Pages.Locations
                         Order = ToolbarItemOrder.Primary,
                         Priority = 10,
                         Text = AppResources.LocationsSchemePage_Toolbar_New,
-                        Icon = new FileImageSource()
+                        IconImageSource = new FileImageSource()
+                        {
+                            File = Global.GetPlatformPath("ic_action_add_circle.png")
+                        }
                     };
-                    addbutton.Icon.File = Global.GetPlatformPath("ic_action_add_circle.png");
                     addbutton.SetBinding(MenuItem.CommandProperty, new Binding("NewLocationCommand"));
                 }
                 ToolbarItems.Add(addbutton);
@@ -175,9 +179,11 @@ namespace WarehouseControlSystem.View.Pages.Locations
                         Order = ToolbarItemOrder.Primary,
                         Priority = 20,
                         Text = AppResources.LocationsSchemePage_Toolbar_Delete,
-                        Icon = new FileImageSource()
+                        IconImageSource = new FileImageSource()
+                        {
+                            File = Global.GetPlatformPath("ic_action_remove_circle.png")
+                        }
                     };
-                    removebutton.Icon.File = Global.GetPlatformPath("ic_action_remove_circle.png");
                     removebutton.SetBinding(MenuItem.CommandProperty, new Binding("DeleteLocationCommand"));
                     removebutton.SetBinding(MenuItem.CommandParameterProperty, new Binding("SelectedLocationViewModel"));
                 }
@@ -191,9 +197,11 @@ namespace WarehouseControlSystem.View.Pages.Locations
                         Order = ToolbarItemOrder.Primary,
                         Priority = 20,
                         Text = AppResources.LocationsSchemePage_Toolbar_Edit,
-                        Icon = new FileImageSource()
+                        IconImageSource = new FileImageSource()
+                        {
+                            File = Global.GetPlatformPath("ic_action_create.png")
+                        }
                     };
-                    editbutton.Icon.File = Global.GetPlatformPath("ic_action_create.png");
                     editbutton.SetBinding(MenuItem.CommandProperty, new Binding("EditLocationCommand"));
                     editbutton.SetBinding(MenuItem.CommandParameterProperty, new Binding("SelectedLocationViewModel"));
                 }
@@ -228,9 +236,11 @@ namespace WarehouseControlSystem.View.Pages.Locations
                         Order = ToolbarItemOrder.Primary,
                         Priority = 20,
                         Text = AppResources.LocationsSchemePage_Toolbar_Indicators,
-                        Icon = new FileImageSource()
+                        IconImageSource = new FileImageSource()
+                        {
+                            File = Global.GetPlatformPath("ic_action_dashboard.png")
+                        }
                     };
-                    indicatorsbutton.Icon.File = Global.GetPlatformPath("ic_action_dashboard.png");
                     indicatorsbutton.SetBinding(MenuItem.CommandProperty, new Binding("IndicatorsViewCommand"));
                 }
                 ToolbarItems.Add(indicatorsbutton);

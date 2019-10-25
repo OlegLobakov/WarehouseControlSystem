@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2036
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29215.179
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarehouseControlSystem.Android", "WarehouseControlSystem\WarehouseControlSystem.Android\WarehouseControlSystem.Android.csproj", "{B0EDEBA3-CE9F-4AEE-92A0-664C14539CF7}"
 EndProject
@@ -144,8 +144,6 @@ Global
 		{B7B112DC-0407-41A4-B872-6DDA28940EB0}.AppStore|x86.Build.0 = Release|x86
 		{B7B112DC-0407-41A4-B872-6DDA28940EB0}.AppStore|x86.Deploy.0 = Release|x86
 		{B7B112DC-0407-41A4-B872-6DDA28940EB0}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{B7B112DC-0407-41A4-B872-6DDA28940EB0}.Debug|Any CPU.Build.0 = Debug|x86
-		{B7B112DC-0407-41A4-B872-6DDA28940EB0}.Debug|Any CPU.Deploy.0 = Debug|x86
 		{B7B112DC-0407-41A4-B872-6DDA28940EB0}.Debug|ARM.ActiveCfg = Debug|ARM
 		{B7B112DC-0407-41A4-B872-6DDA28940EB0}.Debug|ARM.Build.0 = Debug|ARM
 		{B7B112DC-0407-41A4-B872-6DDA28940EB0}.Debug|ARM.Deploy.0 = Debug|ARM

@@ -39,7 +39,7 @@ namespace WarehouseControlSystem.Helpers.Containers.HorizontalListView
                 Margin = 0,
                 AlignItems  = FlexAlignItems.Start,
                 JustifyContent= FlexJustify.Start,
-                AlignContent = FlexAlignContent.Start
+                AlignContent = FlexAlignContent.Stretch
             };
 
             Children.Add(ItemsFlexLayout);

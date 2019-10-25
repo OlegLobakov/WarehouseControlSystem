@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:hs="clr-namespace:WarehouseControlSystem.Helpers.Containers.HorizontalListView"
+             xmlns:components="clr-namespace:WarehouseControlSystem.View.Content"
+             xmlns:i18n="clr-namespace:WarehouseControlSystem;assembly=WarehouseControlSystem"
+             mc:Ignorable="d"
+             x:Class="WarehouseControlSystem.View.Pages.IndicatorContent.IndicatorPage"
+             Title="{Binding Title}">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem  Order="Primary" Priority="1000" Text="Show Detail Text" Clicked="ToolbarItem_Clicked">
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="UWP">
+                        <FileImageSource File="Assets/Images/ic_action_settings.png"/>
+                    </On>
+                    <On Platform="iOS,Android">
+                        <FileImageSource File="ic_action_settings.png"/>
+                    </On>
+                </OnPlatform>
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Padding="0" x:Name="mainsl">
+            <Grid IsVisible="{Binding IsLoadingState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                <StackLayout VerticalOptions="Center" HorizontalOptions="Center" Orientation="Vertical">
+                    <ActivityIndicator IsRunning="{Binding LoadAnimation}" HeightRequest="50" WidthRequest="50"/>
+                    <Label Text="{Binding LoadingText}" FontSize="Small"/>
+                </StackLayout>
+            </Grid>
+            <StackLayout IsVisible="{Binding IsNormalState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                <ScrollView Grid.Row="2"  Orientation="Vertical">
+                    <!--<hs:HorizontalFlowListView 
+                         HorizontalOptions="FillAndExpand" VerticalOptions="Start"
+                        ItemsSource="{Binding Content}" Padding="0" x:Name="hflv">
+                        <hs:HorizontalFlowListView.ItemTemplate>
+                            <DataTemplate>
+                                <components:IndicatorContentView WidthRequest="250" VerticalOptions="Start"/>
+                            </DataTemplate>
+                        </hs:HorizontalFlowListView.ItemTemplate>
+                    </hs:HorizontalFlowListView>-->
+                    <FlexLayout  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
+                                 Direction="Row" 
+                                 FlowDirection="LeftToRight" 
+                                 AlignItems="Stretch"
+                                 JustifyContent="Start"
+                                 AlignContent="Stretch"
+                                 Margin="0" 
+                                 Wrap="Wrap" x:Name="fl"></FlexLayout>
+                </ScrollView>
+            </StackLayout>
+            <StackLayout IsVisible="{Binding IsErrorState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="4*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" Text="{i18n:Translate StateContainer_Error}" 
+                           FontSize="Large" HorizontalOptions="Center"
+                           TextColor="Black"
+                           VerticalOptions="Center"/>
+                    <ScrollView Orientation="Vertical" Grid.Row="1" >
+                        <StackLayout>
+                            <Label Text="{Binding ErrorText}" FontSize="Large" 
+                                   TextColor="Black"
+                                   HorizontalOptions="FillAndExpand" 
+                                   VerticalOptions="FillAndExpand" 
+                                   HorizontalTextAlignment="Center"
+                                   VerticalTextAlignment="Center"/>
+                        </StackLayout>
+                    </ScrollView>
+                    <Button Grid.Row="2" Text="OK" FontSize="Large" 
+                            Command="{Binding ErrorOKCommand}" 
+                            TextColor="Black"
+                            BackgroundColor="White"/>
+                </Grid>
+            </StackLayout>
+            <Grid IsVisible="{Binding IsNoDataState}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Padding="0">
+                <StackLayout VerticalOptions="Center" HorizontalOptions="Center" Orientation="Vertical">
+                    <Label Text="{i18n:Translate LocationsSchemePage_StateMessageNoData}" FontSize="Medium" TextColor="Black"/>
+                </StackLayout>
+            </Grid>
+        </StackLayout>
+
+    </ContentPage.Content>
+</ContentPage>

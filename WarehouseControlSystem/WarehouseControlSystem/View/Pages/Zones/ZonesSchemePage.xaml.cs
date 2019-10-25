@@ -20,6 +20,7 @@ using WarehouseControlSystem.Resx;
 using WarehouseControlSystem.ViewModel;
 using WarehouseControlSystem.View.Pages.Find;
 using WarehouseControlSystem.View.Pages.Base;
+using System.Threading.Tasks;
 
 namespace WarehouseControlSystem.View.Pages.Zones
 {
@@ -87,8 +88,12 @@ namespace WarehouseControlSystem.View.Pages.Zones
                 AbsoluteLayout.SetLayoutBounds(zv, new Rectangle(zvm.ViewLeft, zvm.ViewTop, zvm.ViewWidth, zvm.ViewHeight));
                 abslayout.Children.Add(zv);
                 Views.Add(zv);
-                zvm.LoadRacks();
-                zvm.LoadIndicators();
+                int x = Task.Run(async () =>
+                {
+                    await zvm.LoadRacks();
+                    await zvm.LoadIndicators();
+                    return 0;
+                }).Result;
             }
         }
 
@@ -171,9 +176,11 @@ namespace WarehouseControlSystem.View.Pages.Zones
                         Order = ToolbarItemOrder.Primary,
                         Priority = 10,
                         Text = AppResources.ZonesSchemePage_Toolbar_New,
-                        Icon = new FileImageSource()
+                        IconImageSource = new FileImageSource()
+                        {
+                            File = Global.GetPlatformPath("ic_action_add_circle.png")
+                        }
                     };
-                    addbutton.Icon.File = Global.GetPlatformPath("ic_action_add_circle.png");
                     addbutton.SetBinding(MenuItem.CommandProperty, new Binding("NewZoneCommand"));
                 }
                 ToolbarItems.Add(addbutton);
@@ -185,9 +192,11 @@ namespace WarehouseControlSystem.View.Pages.Zones
                         Order = ToolbarItemOrder.Primary,
                         Priority = 20,
                         Text = AppResources.LocationsSchemePage_Toolbar_Delete,
-                        Icon = new FileImageSource()
+                        IconImageSource = new FileImageSource()
+                        {
+                            File = Global.GetPlatformPath("ic_action_remove_circle.png")
+                        }
                     };
-                    removebutton.Icon.File = Global.GetPlatformPath("ic_action_remove_circle.png");
                     removebutton.SetBinding(MenuItem.CommandProperty, new Binding("DeleteZoneCommand"));
                     removebutton.SetBinding(MenuItem.CommandParameterProperty, new Binding("SelectedZoneViewModel"));
                 }
@@ -201,9 +210,11 @@ namespace WarehouseControlSystem.View.Pages.Zones
                         Order = ToolbarItemOrder.Primary,
                         Priority = 20,
                         Text = AppResources.LocationsSchemePage_Toolbar_Edit,
-                        Icon = new FileImageSource()
+                        IconImageSource = new FileImageSource()
+                        {
+                            File = Global.GetPlatformPath("ic_action_create.png")
+                        }
                     };
-                    editbutton.Icon.File = Global.GetPlatformPath("ic_action_create.png");
                     editbutton.SetBinding(MenuItem.CommandProperty, new Binding("EditZoneCommand"));
                     editbutton.SetBinding(MenuItem.CommandParameterProperty, new Binding("SelectedZoneViewModel"));
                 }
@@ -216,9 +227,11 @@ namespace WarehouseControlSystem.View.Pages.Zones
                         Order = ToolbarItemOrder.Primary,
                         Priority = 30,
                         Text = AppResources.ZonesSchemePage_Toolbar_List,
-                        Icon = new FileImageSource()
+                        IconImageSource = new FileImageSource()
+                        {
+                            File = Global.GetPlatformPath("ic_action_dehaze.png")
+                        }
                     };
-                    listbutton.Icon.File = Global.GetPlatformPath("ic_action_dehaze.png");
                     listbutton.SetBinding(MenuItem.CommandProperty, new Binding("ListZonesCommand"));
                 }
                 ToolbarItems.Add(listbutton);
@@ -252,9 +265,11 @@ namespace WarehouseControlSystem.View.Pages.Zones
                         Order = ToolbarItemOrder.Primary,
                         Priority = 30,
                         Text = AppResources.ZonesSchemePage_Toolbar_Search,
-                        Icon = new FileImageSource()
+                        IconImageSource = new FileImageSource()
+                        {
+                            File = Global.GetPlatformPath("ic_action_search.png")
+                        }
                     };
-                    searchbutton.Icon.File = Global.GetPlatformPath("ic_action_search.png");
                     searchbutton.Clicked += ToolbarItem_Search;
                 }
                 ToolbarItems.Add(searchbutton);
@@ -266,9 +281,11 @@ namespace WarehouseControlSystem.View.Pages.Zones
                         Order = ToolbarItemOrder.Primary,
                         Priority = 40,
                         Text = AppResources.LocationsSchemePage_Toolbar_Indicators,
-                        Icon = new FileImageSource()
+                        IconImageSource = new FileImageSource()
+                        {
+                            File = Global.GetPlatformPath("ic_action_dashboard.png")
+                        }
                     };
-                    indicatorsbutton.Icon.File = Global.GetPlatformPath("ic_action_dashboard.png");
                     indicatorsbutton.SetBinding(MenuItem.CommandProperty, new Binding("IndicatorsViewCommand"));
                 }
                 ToolbarItems.Add(indicatorsbutton);

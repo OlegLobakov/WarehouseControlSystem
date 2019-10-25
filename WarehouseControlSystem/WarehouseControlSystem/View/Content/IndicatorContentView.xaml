@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="WarehouseControlSystem.View.Content.IndicatorContentView">
+  <ContentView.Content>
+        <StackLayout BackgroundColor="{Binding Color}" Margin="2" WidthRequest="280"            
+              Padding="2">
+            <!--WidthRequest="{Binding WidthHeight, Source={x:Reference Name=ThisIndView}}" 
+              HeightRequest="{Binding WidthHeight, Source={x:Reference Name=ThisIndView}}"-->
+            <StackLayout.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding TapCommand}" Tapped="TapGestureRecognizer_Tapped"/>
+            </StackLayout.GestureRecognizers>
+            <Grid 
+              HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+              ColumnSpacing="0"
+              RowSpacing="0"
+              BackgroundColor="{Binding ValueColor}">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="0" 
+                   Text="{Binding Header}" 
+                   TextColor="White" 
+                   FontSize="Medium"
+                   Margin="10,5,0,0"/>
+
+                <Label Grid.Row="1" 
+                   Text="{Binding Description}" 
+                   TextColor="White" 
+                   FontSize="Default"
+                   HorizontalOptions="StartAndExpand"
+                   VerticalOptions="StartAndExpand"
+                   Margin="10,5,0,0"/>
+                
+                <Label Grid.Row="2" 
+                   Text="{Binding Detail}" 
+                   IsVisible="{Binding IsShowDetail}"
+                   TextColor="White" 
+                   FontSize="Micro"
+                   HorizontalOptions="StartAndExpand"
+                   VerticalOptions="StartAndExpand"
+                   Margin="10,5,0,0"/>
+
+                <Label Grid.Row="3" 
+                   Text="{Binding LeftValue}" 
+                   TextColor="White" 
+                   FontSize="Small"
+                   HorizontalOptions="StartAndExpand"
+                   Margin="10,0,0,5"/>
+                
+                <Label Grid.Row="3" 
+                   Text="{Binding RightValue}" 
+                   TextColor="White" 
+                   FontSize="Medium"
+                   HorizontalOptions="EndAndExpand"
+                   Margin="0,0,10,5"/>
+            </Grid>
+        </StackLayout>
+    </ContentView.Content>
+</ContentView>

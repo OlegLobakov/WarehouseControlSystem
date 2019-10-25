@@ -148,6 +148,12 @@ namespace WarehouseControlSystem
 
             set => AppSettings.AddOrUpdateValue(nameof(ShowIndicators), value);
         }
+        public static bool ShowIndicatorDetailDescription
+        {
+            get => AppSettings.GetValueOrDefault(nameof(ShowIndicatorDetailDescription), true);
+
+            set => AppSettings.AddOrUpdateValue(nameof(ShowIndicatorDetailDescription), value);
+        }
 
         public static bool MultiSelectBins
         {

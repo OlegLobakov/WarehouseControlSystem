@@ -16,7 +16,11 @@ using System.Text;
 using WarehouseControlSystem.ViewModel.Base;
 using Xamarin.Forms;
 using WarehouseControlSystem.Model.NAV;
+using WarehouseControlSystem.Helpers.NAV;
+using WarehouseControlSystem.Resx;
 using System.Windows.Input;
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 namespace WarehouseControlSystem.ViewModel
 {
@@ -107,13 +111,98 @@ namespace WarehouseControlSystem.ViewModel
             }
         } string url;
 
+        public string ID
+        {
+            get { return id; }
+            set
+            {
+                if (id != value)
+                {
+                    id = value;
+                    OnPropertyChanged(nameof(ID));
+                }
+            }
+        }
+        string id;
+
+        public string Parameters
+        {
+            get { return parameters; }
+            set
+            {
+                if (parameters != value)
+                {
+                    parameters = value;
+                    OnPropertyChanged(nameof(Parameters));
+                }
+            }
+        }
+        string parameters;
+
+        public string LocationCode
+        {
+            get { return locationcode; }
+            set
+            {
+                if (locationcode != value)
+                {
+                    locationcode = value;
+                    OnPropertyChanged(nameof(LocationCode));
+                }
+            }
+        }
+        string locationcode = "";
+        public string ZoneCode
+        {
+            get { return zondecode; }
+            set
+            {
+                if (zondecode != value)
+                {
+                    zondecode = value;
+                    OnPropertyChanged(nameof(ZoneCode));
+                }
+            }
+        }
+        string zondecode = "";
+
+        public string BinCode
+        {
+            get { return bincode; }
+            set
+            {
+                if (bincode != value)
+                {
+                    bincode = value;
+                    OnPropertyChanged(nameof(BinCode));
+                }
+            }
+        }
+        string bincode = "";
+
+        public ObservableCollection<IndicatorContentViewModel> Content
+        {
+            get { return indicatorcontent; }
+            set
+            {
+                if (indicatorcontent != value)
+                {
+                    indicatorcontent = value;
+                    OnPropertyChanged(nameof(Content));
+                }
+            }
+        }
+        ObservableCollection<IndicatorContentViewModel> indicatorcontent;
+
         public ICommand TapCommand { protected set; get; }
         public event Action<IndicatorViewModel> OnTap;
 
         public IndicatorViewModel(INavigation navigation, Indicator indicator) : base(navigation)
         {
+            Title = "Content";
             FillFields(indicator);
             TapCommand = new Command<object>(Tap);
+            Content = new ObservableCollection<IndicatorContentViewModel>();
         }
 
         public void FillFields(Indicator indicator)
@@ -124,6 +213,67 @@ namespace WarehouseControlSystem.ViewModel
             ValueColor = Color.FromHex(indicator.ValueColor);
             URL = indicator.URL;
             IsURLExist = !string.IsNullOrEmpty(indicator.URL);
+            ID = indicator.ID;
+            Parameters = indicator.Parameters;
+        }
+
+        /// <summary>
+        /// Load Indicator Content
+        /// </summary>
+        /// <returns></returns>
+        public async Task LoadContent()
+        {
+            if (NotNetOrConnection)
+            {
+                return;
+            }
+
+            try
+            {
+                State = ModelState.Loading;
+                List<IndicatorContent> indicatorcontents = await NAV.GetIndicatorContent(LocationCode, ZoneCode, BinCode, ID, Parameters, ACD.Default).ConfigureAwait(true);
+                if ((NotDisposed) && (indicatorcontents is List<IndicatorContent>))
+                {
+                    FillContent(indicatorcontents);
+                }
+            }
+            catch (Exception e)
+            {
+                State = ModelState.Error;
+                //ErrorText = AppResources.Error_LoadRacks;
+                ErrorText = e.Message; // AppResources.Error_LoadRacks;
+            }
+        }
+        private void FillContent(List<IndicatorContent> indicatorcontents)
+        {
+            if (indicatorcontents.Count > 0)
+            {
+                Content.Clear();
+                State = ModelState.Normal;
+
+                List<IndicatorContentViewModel> list1 = new List<IndicatorContentViewModel> ();
+                foreach (IndicatorContent ic in indicatorcontents)
+                {
+                    IndicatorContentViewModel icm = new IndicatorContentViewModel(Navigation, ic);
+                    icm.IsShowDetail = Settings.ShowIndicatorDetailDescription;
+                    list1.Add(icm);
+                }
+                list1.Sort((icm1, icm2) => icm1.SortOrder.CompareTo(icm2.SortOrder));
+
+                ObservableCollection<IndicatorContentViewModel> nlist = new ObservableCollection<IndicatorContentViewModel>();
+                foreach (IndicatorContentViewModel icvm in list1)
+                {
+                    nlist.Add(icvm);
+                }
+                 
+                Content = nlist;
+                State = ModelState.Normal;
+                MessagingCenter.Send(this, "ContentIsLoaded");
+            }
+            else
+            {
+                State = ModelState.NoData;
+            }
         }
 
         public void Tap(object sender)
@@ -139,11 +289,10 @@ namespace WarehouseControlSystem.ViewModel
                 {
                     System.Diagnostics.Debug.WriteLine(ex.Message);
                 }
-
-                if (OnTap is Action<LocationViewModel>)
-                {
-                    OnTap(this);
-                }
+            }
+            if (OnTap is Action<IndicatorViewModel>)
+            {
+                OnTap(this);
             }
         }
     }

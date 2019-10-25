@@ -80,7 +80,11 @@ namespace WarehouseControlSystem.ViewModel
                 {
                     schemevisible = value;
                     Changed = true;
-                    SaveToZoneSchemeVisible(value);
+                    int x = Task.Run(async () =>
+                    {
+                        await SaveToZoneSchemeVisible(value);
+                        return 0;
+                    }).Result;
                     OnPropertyChanged(nameof(SchemeVisible));
                 }
             }
@@ -491,6 +495,8 @@ namespace WarehouseControlSystem.ViewModel
                     foreach (Indicator indicator in list)
                     {
                         IndicatorViewModel ivm = new IndicatorViewModel(Navigation, indicator);
+                        ivm.LocationCode = LocationCode;
+                        ivm.ZoneCode = Code;
                         nlist.Add(ivm);
                     }
                     Indicators = nlist;
