@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml.Linq;
+using System.Xml;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
@@ -3116,7 +3117,6 @@ namespace WarehouseControlSystem.Helpers.NAV
                                     body)));
             requestdoc.Declaration = new XDeclaration("1.0", "UTF-8", null);
 
-
             //XDocument requestdoc = new XDocument(
             //                new XElement(ns + "Envelope",
             //                    new XAttribute(XNamespace.Xmlns + "soapenv", ns),
@@ -3139,18 +3139,29 @@ namespace WarehouseControlSystem.Helpers.NAV
         public static string GetRequestText(XDocument doc)
         {
             string rv = "";
-            using (StringWriter writer = new Utf8StringWriter())
+            var settings = new XmlWriterSettings
             {
-                doc.Save(writer);
-                rv = writer.ToString();
+                Encoding = Encoding.UTF8,
+                OmitXmlDeclaration = true,
+                NewLineHandling = NewLineHandling.None
+            };
+
+            using (var sw = new StringWriter())
+            {
+                using (var xw = XmlWriter.Create(sw, settings))
+                {
+                    doc.WriteTo(xw);
+                }
+                rv = sw.ToString();
             }
+
             return rv;
         }
 
-        private class Utf8StringWriter : StringWriter
-        {
-            public override Encoding Encoding { get { return Encoding.UTF8; } }
-        }
+        //private class Utf8StringWriter : StringWriter
+        //{
+        //    public override Encoding Encoding { get { return Encoding.UTF8; } }
+        //}
 
         public static int StringToInt(string value)
         {
