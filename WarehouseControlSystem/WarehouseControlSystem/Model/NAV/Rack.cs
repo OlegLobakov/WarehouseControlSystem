@@ -123,13 +123,13 @@ namespace WarehouseControlSystem.Model.NAV
         {
             if ((RackOrientation == RackOrientationEnum.HorizontalLeft) || (RackOrientation == RackOrientationEnum.HorizontalRight))
             {
-                Width = Sections + 1;
+                Width = Sections;
                 Height = Depth;
             }
             else
             {
                 Width = Depth;
-                Height = Sections + 1;
+                Height = Sections;
             }
         }
 

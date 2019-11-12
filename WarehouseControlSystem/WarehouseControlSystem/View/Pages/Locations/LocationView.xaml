@@ -57,20 +57,50 @@
                         </Label.Triggers>
                     </Label>
 
-                    <ScrollView Grid.Row="2"  Orientation="Vertical"  IsVisible="{Binding IsIndicatorsVisible}">
+                    <!--<ScrollView Grid.Row="2"  Orientation="Vertical"  IsVisible="{Binding IsIndicatorsVisible}">
                         <hs:HorizontalFlowListView 
                          HorizontalOptions="FillAndExpand" VerticalOptions="Start"
                         ItemsSource="{Binding Indicators}" Padding="0">
+                            <hs:HorizontalFlowListView.GestureRecognizers>
+                                <TapGestureRecognizer  Command="{Binding TapCommand}"/>
+                            </hs:HorizontalFlowListView.GestureRecognizers>
                             <hs:HorizontalFlowListView.ItemTemplate>
                                 <DataTemplate>
                                     <components:IndicatorView WidthRequest="150" VerticalOptions="Start"/>
                                 </DataTemplate>
                             </hs:HorizontalFlowListView.ItemTemplate>
                         </hs:HorizontalFlowListView>
-                    </ScrollView>
+                    </ScrollView>-->
 
+                    <ScrollView Grid.Row="2"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"  
+                                 IsVisible="{Binding IsIndicatorsVisible}">
+
+                        <FlexLayout  HorizontalOptions="FillAndExpand"
+                                 BindableLayout.ItemsSource="{Binding Indicators}"
+                                 Direction="Row" 
+                                 FlowDirection="LeftToRight" 
+                                 AlignItems="Stretch"
+                                 JustifyContent="Start"
+                                 Margin="0" 
+                                 Wrap="Wrap" x:Name="IndicatorsFlexLyout">
+                            <FlexLayout.GestureRecognizers>
+                                <TapGestureRecognizer  Command="{Binding TapCommand}"/>
+                            </FlexLayout.GestureRecognizers>
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate>
+                                    <components:IndicatorView WidthRequest="150" HeightRequest="50"/>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </FlexLayout>
+                    </ScrollView>
+                    
                     <StackLayout Grid.Row="2"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"  
                                  IsVisible="{Binding IsNotIndicatorsVisible}">
+                        
+                        <StackLayout.GestureRecognizers>
+                            <TapGestureRecognizer  Command="{Binding TapCommand}"/>
+                        </StackLayout.GestureRecognizers>
+                        
                         <components:InnerSubSchemeView                                     
                         HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"  
                         PlanWidth="{Binding PlanWidth}"
@@ -80,6 +110,8 @@
                         SubSchemeBackgroundColor="{Binding Color}"
                         UpdateScheme="{Binding ZonesIsLoaded}" SchemeType="1"/>
                     </StackLayout>
+
+
 
 
                     <StackLayout Grid.Row="3" Orientation="Horizontal">

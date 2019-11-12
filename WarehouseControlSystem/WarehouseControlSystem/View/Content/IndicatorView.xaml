@@ -4,8 +4,7 @@
              x:Class="WarehouseControlSystem.View.Content.IndicatorView"
              x:Name="ThisIndView">
   <ContentView.Content>
-        <StackLayout             
-              Padding="2">
+        <StackLayout Padding="2">
             <!--WidthRequest="{Binding WidthHeight, Source={x:Reference Name=ThisIndView}}" 
               HeightRequest="{Binding WidthHeight, Source={x:Reference Name=ThisIndView}}"-->
             <StackLayout.GestureRecognizers>

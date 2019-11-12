@@ -542,6 +542,14 @@ namespace WarehouseControlSystem.ViewModel
             Top = rack.Top;
             Width = rack.Width;
             Height = rack.Height;
+            if ((RackOrientation == RackOrientationEnum.HorizontalLeft) || (RackOrientation == RackOrientationEnum.HorizontalRight))
+            {
+                Width += 2;
+            }
+            else
+            {
+                Height += 2;
+            }
             Comment = rack.Comment;
 
             bool savevalue = IsNumberingEnabled;

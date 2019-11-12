@@ -88,7 +88,7 @@ namespace WarehouseControlSystem.View.Pages.Racks.Scheme
 
             if ((model.RackOrientation == RackOrientationEnum.HorizontalLeft || model.RackOrientation == RackOrientationEnum.HorizontalRight))
             {
-                for (int i = 1; i <= model.Sections + 1; i++)
+                for (int i = 1; i <= model.Sections + 2; i++)
                 {
                     grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
                 }
@@ -96,7 +96,7 @@ namespace WarehouseControlSystem.View.Pages.Racks.Scheme
 
             if ((model.RackOrientation == RackOrientationEnum.VerticalUp || model.RackOrientation == RackOrientationEnum.VerticalDown))
             {
-                for (int i = 1; i <= model.Sections + 1; i++)
+                for (int i = 1; i <= model.Sections + 2; i++)
                 {
                     grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
                 }
@@ -114,25 +114,31 @@ namespace WarehouseControlSystem.View.Pages.Racks.Scheme
                 VerticalOptions = LayoutOptions.FillAndExpand,
                 HorizontalTextAlignment = TextAlignment.Center,
                 VerticalTextAlignment = TextAlignment.Center,
+                Margin = 0,
                 TextColor = Color.White,
             };
 
             lb.Text = model.No;
             lb.SetBinding(Label.FontSizeProperty, new Binding("SchemeFontSize"));
 
-            if (model.RackOrientation == RackOrientationEnum.HorizontalLeft || model.RackOrientation == RackOrientationEnum.VerticalUp)
+            if (model.RackOrientation == RackOrientationEnum.HorizontalLeft)
             {
-                grid.Children.Add(lb, 0, 0);
+                grid.Children.Add(lb, 0, 2, 0, 1);
+            }
+
+            if (model.RackOrientation == RackOrientationEnum.VerticalUp)
+            {
+                grid.Children.Add(lb, 0, 1 ,0, 2);
             }
 
             if (model.RackOrientation == RackOrientationEnum.HorizontalRight)
             {
-                grid.Children.Add(lb, model.Sections, 0);
+                grid.Children.Add(lb, model.Sections, model.Sections + 2, 0, 1);
             }
 
             if (model.RackOrientation == RackOrientationEnum.VerticalDown)
             {
-                grid.Children.Add(lb, 0, model.Sections);
+                grid.Children.Add(lb, 0, 1, model.Sections, model.Sections + 2);
             }
         }
 
@@ -180,13 +186,13 @@ namespace WarehouseControlSystem.View.Pages.Racks.Scheme
             switch (model.RackOrientation)
             {
                 case RackOrientationEnum.HorizontalLeft:
-                    grid.Children.Add(label1, i, 0);
+                    grid.Children.Add(label1, i + 1, 0);
                     break;
                 case RackOrientationEnum.HorizontalRight:
                     grid.Children.Add(label1, i - 1, 0);
                     break;
                 case RackOrientationEnum.VerticalUp:
-                    grid.Children.Add(label1, 0, i);
+                    grid.Children.Add(label1, 0, i + 1);
                     break;
                 case RackOrientationEnum.VerticalDown:
                     grid.Children.Add(label1, 0, i - 1);
@@ -203,6 +209,7 @@ namespace WarehouseControlSystem.View.Pages.Racks.Scheme
                 VerticalOptions = LayoutOptions.FillAndExpand,
                 HorizontalTextAlignment = TextAlignment.Center,
                 VerticalTextAlignment = TextAlignment.Center,
+                Margin = 0
             };
         }
 
@@ -214,11 +221,11 @@ namespace WarehouseControlSystem.View.Pages.Racks.Scheme
             model.SchemeHeight = height;
 
             double fs = width;
-            if (width > height)
+            if (height > width)
             {
-                fs = width / (model.Sections + 1);
+                fs = height;
             }
-            model.SchemeFontSize = fs * 0.6;
+            model.SchemeFontSize = (fs / (model.Sections + 2)) * 0.6;
         }
     }
 }

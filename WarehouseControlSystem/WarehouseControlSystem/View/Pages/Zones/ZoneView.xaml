@@ -54,17 +54,39 @@
                         </Label.Triggers>
                     </Label>
 
-                    <ScrollView Grid.Row="2"  Orientation="Vertical"  IsVisible="{Binding IsIndicatorsVisible}">
+                    <!--<ScrollView Grid.Row="2"  Orientation="Vertical"  IsVisible="{Binding IsIndicatorsVisible}">
                         <hs:HorizontalFlowListView 
                          HorizontalOptions="FillAndExpand" VerticalOptions="Start"
                         ItemsSource="{Binding Indicators}" Padding="0">
                             <hs:HorizontalFlowListView.ItemTemplate>
                                 <DataTemplate>
                                     <components:IndicatorView WidthRequest="150" VerticalOptions="Start"/>
-                                    <!--<components:IndicatorView WidthRequest="150" HeightRequest="150" WidthHeight="150" VerticalOptions="Start"/>-->
+                                    --><!--<components:IndicatorView WidthRequest="150" HeightRequest="150" WidthHeight="150" VerticalOptions="Start"/>--><!--
                                 </DataTemplate>
                             </hs:HorizontalFlowListView.ItemTemplate>
                         </hs:HorizontalFlowListView>
+                    </ScrollView>-->
+                    
+                    <ScrollView Grid.Row="2"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"  
+                                 IsVisible="{Binding IsIndicatorsVisible}">
+
+                        <FlexLayout  HorizontalOptions="FillAndExpand"
+                                 BindableLayout.ItemsSource="{Binding Indicators}"
+                                 Direction="Row" 
+                                 FlowDirection="LeftToRight" 
+                                 AlignItems="Stretch"
+                                 JustifyContent="Start"
+                                 Margin="0" 
+                                 Wrap="Wrap" x:Name="IndicatorsFlexLyout">
+                            <FlexLayout.GestureRecognizers>
+                                <TapGestureRecognizer  Command="{Binding TapCommand}"/>
+                            </FlexLayout.GestureRecognizers>
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate>
+                                    <components:IndicatorView WidthRequest="150" HeightRequest="50"/>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </FlexLayout>
                     </ScrollView>
                     
                     <!--<hs:HorizontalListView  IsVisible="{Binding IsIndicatorsVisible}"
